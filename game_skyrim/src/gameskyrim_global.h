@@ -1,0 +1,12 @@
+#ifndef GAMESKYRIM_GLOBAL_H
+#define GAMESKYRIM_GLOBAL_H
+
+#include <QtCore/qglobal.h>
+
+#if defined(GAMESKYRIM_LIBRARY)
+#  define GAMESKYRIMSHARED_EXPORT Q_DECL_EXPORT
+#else
+#  define GAMESKYRIMSHARED_EXPORT Q_DECL_IMPORT
+#endif
+
+#endif // GAMESKYRIM_GLOBAL_H
