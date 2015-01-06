@@ -4,6 +4,7 @@
 
 #include <iplugingame.h>
 #include <QFileInfo>
+#include <ShlObj.h>
 
 
 class GameSkyrim : public MOBase::IPluginGame
@@ -21,10 +22,13 @@ public:
 public:
 
   virtual QString gameName() const;
-
   virtual QDir gameDirectory() const;
-
+  virtual QDir savesDirectory() const;
+  virtual QDir documentsDirectory() const;
   virtual QList<MOBase::ExecutableInfo> executables();
+  virtual void initializeProfile(const QDir &path, ProfileSettings settings) const;
+  virtual QString savegameExtension() const;
+  virtual QString steamAPPId() const;
 
   // IPlugin interface
 public:
@@ -40,11 +44,19 @@ private:
 
   QFileInfo findInGameFolder(const QString &relativePath);
 
-  QString identifyPath();
+  QString identifyGamePath();
+  QString myGamesPath();
+  QString getKnownFolderPath(REFKNOWNFOLDERID folderId, bool useDefault) const;
+  QString getSpecialPath(const QString &name) const;
+  QString localAppFolder() const;
+  void copyToProfile(const QString &sourcePath, const QDir &destinationDirectory,
+                     const QString &sourceFileName, const QString &destinationFileName = QString()) const;
 
 private:
 
   QString m_GamePath;
+  QString m_MyGamesPath;
+
 };
 
 #endif // GAMESKYRIM_H

@@ -22,7 +22,7 @@ include(../plugin_template.pri)
 
 INCLUDEPATH += "$${BOOSTPATH}"
 
-LIBS += -ladvapi32
+LIBS += -ladvapi32 -lole32
 
 OTHER_FILES += \
     gameskyrim.json
