@@ -4,7 +4,6 @@
 #
 #-------------------------------------------------
 
-QT       -= gui
 
 TARGET = gameSkyrim
 TEMPLATE = lib
@@ -14,15 +13,31 @@ CONFIG += dll
 
 DEFINES += GAMESKYRIM_LIBRARY
 
-SOURCES += gameskyrim.cpp
+SOURCES += gameskyrim.cpp \
+    skyrimbsainvalidation.cpp \
+    skyrimscriptextender.cpp \
+    skyrimdataarchives.cpp
 
-HEADERS += gameskyrim.h
+HEADERS += gameskyrim.h \
+    skyrimbsainvalidation.h \
+    skyrimscriptextender.h \
+    skyrimdataarchives.h
+
+CONFIG(debug, debug|release) {
+  LIBS += -L"$${OUT_PWD}/../gameGamebryo/debug"
+  PRE_TARGETDEPS += \
+    $$OUT_PWD/../gameGamebryo/debug/gameGamebryo.lib
+} else {
+  LIBS += -L"$${OUT_PWD}/../gameGamebryo/release"
+  PRE_TARGETDEPS += \
+    $$OUT_PWD/../gameGamebryo/release/gameGamebryo.lib
+}
 
 include(../plugin_template.pri)
 
-INCLUDEPATH += "$${BOOSTPATH}"
+INCLUDEPATH += "$${BOOSTPATH}" "$${PWD}/../gamefeatures" "$${PWD}/../gamegamebryo"
 
-LIBS += -ladvapi32 -lole32
+LIBS += -ladvapi32 -lole32 -lgameGamebryo
 
 OTHER_FILES += \
     gameskyrim.json
