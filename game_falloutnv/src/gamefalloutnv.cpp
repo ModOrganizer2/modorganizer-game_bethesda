@@ -33,7 +33,7 @@ QString GameFalloutNV::identifyGamePath() const
 
 QString GameFalloutNV::gameName() const
 {
-  return "FalloutNV";
+  return "New Vegas";
 }
 
 QString GameFalloutNV::localAppFolder() const
@@ -51,8 +51,6 @@ QString GameFalloutNV::myGamesFolderName() const
 {
   return "FalloutNV";
 }
-
-
 
 QList<ExecutableInfo> GameFalloutNV::executables()
 {
