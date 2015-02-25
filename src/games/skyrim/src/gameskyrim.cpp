@@ -143,7 +143,7 @@ QString GameSkyrim::steamAPPId() const
 
 QStringList GameSkyrim::getPrimaryPlugins()
 {
-  return { "skyrim.esm", "update.esm" };
+  return QStringList({ QString("skyrim.esm"), QString("update.esm") });
 }
 
 QIcon GameSkyrim::gameIcon() const
