@@ -10,7 +10,6 @@ TEMPLATE = lib
 
 CONFIG += plugins
 CONFIG += dll
-
 DEFINES += GAMESKYRIM_LIBRARY
 
 SOURCES += gameskyrim.cpp \
