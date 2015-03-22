@@ -1,0 +1,15 @@
+import os
+
+Import('qt_env')
+
+env = qt_env.Clone()
+
+env.AppendUnique(CPPPATH = [
+    os.path.join('..', 'gamefeatures'),
+    '${BOOSTPATH}'
+])
+
+env.StaticLibrary('gameGamebryo', env.Glob('*.cpp'))
+
+res = env['QT_USED_MODULES']
+Return('res')
