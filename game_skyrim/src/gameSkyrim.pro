@@ -39,4 +39,5 @@ INCLUDEPATH += "$${BOOSTPATH}" "$${PWD}/../gamefeatures" "$${PWD}/../gamegamebry
 LIBS += -ladvapi32 -lole32 -lgameGamebryo
 
 OTHER_FILES += \
-    gameskyrim.json
+    gameskyrim.json\
+    SConscript
