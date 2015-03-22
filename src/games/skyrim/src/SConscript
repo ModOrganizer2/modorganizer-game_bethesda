@@ -1,0 +1,36 @@
+import os
+
+Import('qt_env')
+
+env = qt_env.Clone()
+
+env.AppendUnique(CPPDEFINES = [ 'GAMESKYRIM_LIBRARY' ])
+
+env.AppendUnique(CPPPATH = [
+    os.path.join('..', 'gameGamebryo'),
+    os.path.join('..', 'gamefeatures'),
+    '${BOOSTPATH}'
+])
+
+env.AppendUnique(LIBPATH = '../gameGamebryo')
+
+env.AppendUnique(LIBS = [
+    'gameGamebryo',
+    'advapi32',
+    'ole32',
+    'shell32'
+])
+
+lib = env.SharedLibrary('gameSkyrim', env.Glob('*.cpp'))
+env.InstallModule(lib)
+
+res = env['QT_USED_MODULES']
+Return('res')
+
+"""
+
+LIBS += -ladvapi32 -lole32 -lgameGamebryo
+
+OTHER_FILES += \
+    gameskyrim.json\
+"""
