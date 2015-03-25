@@ -1,0 +1,13 @@
+Import('qt_env')
+
+env = qt_env.Clone()
+
+env.AppendUnique(CPPDEFINES = [ 'GAMEOBLIVION_LIBRARY' ])
+
+env.RequiresGamebryo()
+
+lib = env.SharedLibrary('gameOblivion', env.Glob('*.cpp'))
+env.InstallModule(lib)
+
+res = env['QT_USED_MODULES']
+Return('res')
