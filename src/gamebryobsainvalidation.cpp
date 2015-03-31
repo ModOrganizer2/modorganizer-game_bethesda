@@ -40,6 +40,8 @@ void GamebryoBSAInvalidation::deactivate(MOBase::IProfile *profile)
 
   QString iniFile = QDir(profile->absolutePath()).absoluteFilePath(m_IniFileName);
 
+  ::SetFileAttributesW(iniFile.toStdWString().c_str(), FILE_ATTRIBUTE_NORMAL);
+
   if (!::WritePrivateProfileStringW(L"Archive", L"bInvalidateOlderFiles", L"0", iniFile.toStdWString().c_str()) ||
       !::WritePrivateProfileStringW(L"Archive", L"SInvalidationFile", L"ArchiveInvalidation.txt", iniFile.toStdWString().c_str())) {
     throw MOBase::MyException(QObject::tr("failed to deactivate BSA invalidation in \"%1\" (errorcode %2)").arg(iniFile, ::GetLastError()));
@@ -70,6 +72,8 @@ void GamebryoBSAInvalidation::activate(MOBase::IProfile *profile)
 
   // set the remaining ini settings required
   QString iniFile = QDir(profile->absolutePath()).absoluteFilePath(m_IniFileName);
+
+  ::SetFileAttributesW(iniFile.toStdWString().c_str(), FILE_ATTRIBUTE_NORMAL);
 
   if (!::WritePrivateProfileStringW(L"Archive", L"bInvalidateOlderFiles", L"1", iniFile.toStdWString().c_str()) ||
       !::WritePrivateProfileStringW(L"Archive", L"SInvalidationFile", L"", iniFile.toStdWString().c_str())) {
