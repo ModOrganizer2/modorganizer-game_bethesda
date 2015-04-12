@@ -6,6 +6,7 @@
 #include <utility.h>
 #include <memory>
 #include <QStandardPaths>
+#include <QDebug>
 
 
 using namespace MOBase;
