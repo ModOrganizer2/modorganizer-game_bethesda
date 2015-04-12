@@ -1,6 +1,7 @@
 #include "gamegamebryo.h"
 #include <utility.h>
 #include <scopeguard.h>
+#include <QDebug>
 
 
 GameGamebryo::GameGamebryo()
@@ -18,6 +19,11 @@ bool GameGamebryo::init(MOBase::IOrganizer *moInfo)
 QDir GameGamebryo::gameDirectory() const
 {
   return QDir(m_GamePath);
+}
+
+void GameGamebryo::setGamePath(const QString &path)
+{
+  m_GamePath = path;
 }
 
 QDir GameGamebryo::savesDirectory() const
