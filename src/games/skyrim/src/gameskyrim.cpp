@@ -79,7 +79,7 @@ QString GameSkyrim::author() const
 
 QString GameSkyrim::description() const
 {
-  return tr("Adds support for the game Sykrim");
+  return tr("Adds support for the game Skyrim");
 }
 
 MOBase::VersionInfo GameSkyrim::version() const
