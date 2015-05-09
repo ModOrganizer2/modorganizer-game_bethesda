@@ -62,7 +62,7 @@ QList<ExecutableInfo> GameSkyrim::executables()
       << ExecutableInfo("Skyrim", findInGameFolder("TESV.exe"))
       << ExecutableInfo("Skyrim Launcher", findInGameFolder("SkyrimLauncher.exe"))
       << ExecutableInfo("BOSS", findInGameFolder("BOSS/BOSS.exe"))
-      << ExecutableInfo("LOOT", findInRegistry(HKEY_LOCAL_MACHINE, L"Software\\LOOT", L"Installed Path"))
+      << ExecutableInfo("LOOT", getLootPath())
       << ExecutableInfo("Creation Kit", findInGameFolder("CreationKit.exe")).withSteamAppId("202480")
   ;
 }
