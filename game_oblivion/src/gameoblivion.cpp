@@ -62,7 +62,7 @@ QList<ExecutableInfo> GameOblivion::executables()
       << ExecutableInfo("Oblivion Launcher", findInGameFolder("OblivionLauncher.exe"))
       << ExecutableInfo("Oblivion Mod Manager", findInGameFolder("OblivionModManager.exe"))
       << ExecutableInfo("BOSS", findInGameFolder("BOSS/BOSS.exe"))
-      << ExecutableInfo("LOOT", findInRegistry(HKEY_LOCAL_MACHINE, L"Software\\LOOT", L"Installed Path"))
+      << ExecutableInfo("LOOT", getLootPath())
       << ExecutableInfo("Construction Set", findInGameFolder("TESConstructionSet.exe"))
   ;
 }
