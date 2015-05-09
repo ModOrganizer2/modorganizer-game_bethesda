@@ -34,6 +34,8 @@ protected:
   QString getKnownFolderPath(REFKNOWNFOLDERID folderId, bool useDefault) const;
   QString getSpecialPath(const QString &name) const;
   QString myGamesPath() const;
+  //Arguably this shouldn't really be here but every gamebryo program seems to use it
+  QString GameGamebryo::getLootPath() const;
 
 private:
 
