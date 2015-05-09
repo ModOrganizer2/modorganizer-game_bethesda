@@ -61,7 +61,7 @@ QList<ExecutableInfo> GameFalloutNV::executables()
       << ExecutableInfo("Construction Kit", findInGameFolder("geck.exe"))
       << ExecutableInfo("Fallout Launcher", findInGameFolder("FalloutNVLauncher.exe"))
       << ExecutableInfo("BOSS", findInGameFolder("BOSS/BOSS.exe"))
-      << ExecutableInfo("LOOT", findInRegistry(HKEY_LOCAL_MACHINE, L"Software\\LOOT", L"Installed Path"))
+      << ExecutableInfo("LOOT", getLootPath())
          ;
 }
 
