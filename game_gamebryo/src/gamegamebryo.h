@@ -21,6 +21,7 @@ public:
 public: // IPluginGame interface
 
   virtual QDir gameDirectory() const;
+  virtual void setGamePath(const QString &path);
   virtual QDir savesDirectory() const;
   virtual QDir documentsDirectory() const;
 
