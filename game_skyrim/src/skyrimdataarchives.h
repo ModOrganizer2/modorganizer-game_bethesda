@@ -17,7 +17,7 @@ public:
 
 private:
 
-  virtual void writeArchiveList(MOBase::IProfile *profile, QStringList before) override;
+  virtual void writeArchiveList(MOBase::IProfile *profile, const QStringList &before) override;
 
 };
 
