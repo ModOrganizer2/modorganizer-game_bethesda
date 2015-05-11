@@ -24,9 +24,9 @@ QStringList Fallout3DataArchives::archives(const MOBase::IProfile *profile) cons
   return result;
 }
 
-void Fallout3DataArchives::writeArchiveList(MOBase::IProfile *profile, QStringList before)
+void Fallout3DataArchives::writeArchiveList(MOBase::IProfile *profile, const QStringList &before)
 {
-  QString list = before.join(',');
+  QString list = before.join(", ");
 
   QString iniFile = QDir(profile->absolutePath()).absoluteFilePath("fallout3.ini");
   setArchivesToKey(iniFile, "SArchiveList", list);
