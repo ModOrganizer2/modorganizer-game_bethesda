@@ -26,15 +26,15 @@ QStringList OblivionDataArchives::archives(const MOBase::IProfile *profile) cons
   return result;
 }
 
-void OblivionDataArchives::writeArchiveList(MOBase::IProfile *profile, QStringList before)
+void OblivionDataArchives::writeArchiveList(MOBase::IProfile *profile, const QStringList &before)
 {
-  QString list = before.join(',');
+  QString list = before.join(", ");
 
   QString iniFile = QDir(profile->absolutePath()).absoluteFilePath("oblivion.ini");
   if (list.length() > 255) {
     int splitIdx = list.lastIndexOf(",", 256);
     setArchivesToKey(iniFile, "SResourceArchiveList", list.mid(0, splitIdx));
-    setArchivesToKey(iniFile, "SResourceArchiveList2", list.mid(splitIdx + 1));
+    setArchivesToKey(iniFile, "SResourceArchiveList2", list.mid(splitIdx + 2));
   } else {
     setArchivesToKey(iniFile, "SResourceArchiveList", list);
   }
