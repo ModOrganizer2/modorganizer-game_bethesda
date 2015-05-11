@@ -20,7 +20,7 @@ protected:
 
 private:
 
-  virtual void writeArchiveList(MOBase::IProfile *profile, QStringList before) = 0;
+  virtual void writeArchiveList(MOBase::IProfile *profile, const QStringList &before) = 0;
 
 };
 
