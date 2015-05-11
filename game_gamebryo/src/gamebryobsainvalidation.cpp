@@ -3,6 +3,7 @@
 #include <utility.h>
 #include <imoinfo.h>
 #include <igameinfo.h>
+#include <utility.h>
 #include <QStringList>
 #include <QDir>
 #include <Windows.h>
@@ -33,9 +34,14 @@ void GamebryoBSAInvalidation::deactivate(MOBase::IProfile *profile)
 {
   QStringList archivesBefore = m_DataArchives->archives(profile);
   for (const QString &archive : archivesBefore) {
-    if (!isInvalidationBSA(archive)) {
+    if (isInvalidationBSA(archive)) {
       m_DataArchives->removeArchive(profile, archive);
     }
+  }
+
+  QString bsaFile = m_Organizer->gameInfo().path() + "/data/" + invalidationBSAName();
+  if (QFile::exists(bsaFile)) {
+    MOBase::shellDeleteQuiet(bsaFile);
   }
 
   QString iniFile = QDir(profile->absolutePath()).absoluteFilePath(m_IniFileName);
@@ -63,7 +69,7 @@ void GamebryoBSAInvalidation::activate(MOBase::IProfile *profile)
     m_DataArchives->addArchive(profile, 0, invalidationBSAName());
 
     // create the dummy bsa if necessary
-    QString bsaFile = m_Organizer->gameInfo().path() + "/" + invalidationBSAName();
+    QString bsaFile = m_Organizer->gameInfo().path() + "/data/" + invalidationBSAName();
     if (!QFile::exists(bsaFile)) {
       DummyBSA bsa(bsaVersion());
       bsa.write(bsaFile);

@@ -50,7 +50,6 @@ void GamebryoDataArchives::removeArchive(MOBase::IProfile *profile, const QStrin
   if (!current.contains(archiveName, Qt::CaseInsensitive)) {
     return;
   }
-
   current.removeAll(archiveName);
 
   writeArchiveList(profile, current);
