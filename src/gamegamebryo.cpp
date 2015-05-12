@@ -128,3 +128,8 @@ QString GameGamebryo::myGamesPath() const
 {
   return m_MyGamesPath;
 }
+
+QString GameGamebryo::getLootPath() const
+{
+  return findInRegistry(HKEY_LOCAL_MACHINE, L"Software\\LOOT", L"Installed Path") + "/Loot.exe";
+}
