@@ -24,9 +24,9 @@ QStringList FalloutNVDataArchives::archives(const MOBase::IProfile *profile) con
   return result;
 }
 
-void FalloutNVDataArchives::writeArchiveList(MOBase::IProfile *profile, QStringList before)
+void FalloutNVDataArchives::writeArchiveList(MOBase::IProfile *profile, const QStringList &before)
 {
-  QString list = before.join(',');
+  QString list = before.join(", ");
 
   QString iniFile = QDir(profile->absolutePath()).absoluteFilePath("falloutnv.ini");
   setArchivesToKey(iniFile, "SArchiveList", list);
