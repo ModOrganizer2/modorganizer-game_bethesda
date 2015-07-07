@@ -67,13 +67,13 @@ void GamebryoBSAInvalidation::activate(MOBase::IProfile *profile)
   }
   if (!bsaInstalled) {
     m_DataArchives->addArchive(profile, 0, invalidationBSAName());
+  }
 
-    // create the dummy bsa if necessary
-    QString bsaFile = m_Organizer->gameInfo().path() + "/data/" + invalidationBSAName();
-    if (!QFile::exists(bsaFile)) {
-      DummyBSA bsa(bsaVersion());
-      bsa.write(bsaFile);
-    }
+  // create the dummy bsa if necessary
+  QString bsaFile = m_Organizer->gameInfo().path() + "/data/" + invalidationBSAName();
+  if (!QFile::exists(bsaFile)) {
+    DummyBSA bsa(bsaVersion());
+    bsa.write(bsaFile);
   }
 
   // set the remaining ini settings required
