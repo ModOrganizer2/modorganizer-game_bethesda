@@ -21,6 +21,11 @@ QDir GameGamebryo::gameDirectory() const
   return QDir(m_GamePath);
 }
 
+QDir GameGamebryo::dataDirectory() const
+{
+  return gameDirectory().absoluteFilePath("data");
+}
+
 void GameGamebryo::setGamePath(const QString &path)
 {
   m_GamePath = path;
