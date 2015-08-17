@@ -138,7 +138,7 @@ QString GameOblivion::savegameExtension() const
 
 QString GameOblivion::steamAPPId() const
 {
-  return "72850";
+  return "22330";
 }
 
 QStringList GameOblivion::getPrimaryPlugins()
