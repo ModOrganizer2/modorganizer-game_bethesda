@@ -28,6 +28,9 @@ public: // IPluginGame interface
 
   virtual bool isInstalled() const override;
 
+  virtual QStringList gameVariants() const;
+  virtual void setGameVariant(const QString &variant);
+
 protected:
 
   std::unique_ptr<BYTE[]> getRegValue(HKEY key, LPCWSTR subKey, LPCWSTR value, DWORD flags, LPDWORD type = nullptr) const;
@@ -37,7 +40,8 @@ protected:
   QString getSpecialPath(const QString &name) const;
   QString myGamesPath() const;
   //Arguably this shouldn't really be here but every gamebryo program seems to use it
-  QString GameGamebryo::getLootPath() const;
+  QString getLootPath() const;
+  QString selectedVariant() const;
 
 private:
 
@@ -50,6 +54,8 @@ private:
 
   QString m_GamePath;
   QString m_MyGamesPath;
+
+  QString m_GameVariant;
 
   MOBase::IOrganizer *m_Organizer;
 
