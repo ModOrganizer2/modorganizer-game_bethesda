@@ -96,8 +96,6 @@ QList<PluginSetting> GameFallout3::settings() const
   return QList<PluginSetting>();
 }
 
-
-
 void GameFallout3::copyToProfile(const QString &sourcePath, const QDir &destinationDirectory,
                                const QString &sourceFileName, const QString &destinationFileName) const
 {
@@ -137,7 +135,11 @@ QString GameFallout3::savegameExtension() const
 
 QString GameFallout3::steamAPPId() const
 {
-  return "22380";
+  if (selectedVariant() == "Game Of The Year") {
+    return "22370";
+  } else {
+    return "22300";
+  }
 }
 
 QStringList GameFallout3::getPrimaryPlugins()
@@ -159,4 +161,10 @@ const std::map<std::type_index, boost::any> &GameFallout3::featureList() const
   };
 
   return result;
+}
+
+
+QStringList GameFallout3::gameVariants() const
+{
+  return { "Regular", "Game Of The Year" };
 }
