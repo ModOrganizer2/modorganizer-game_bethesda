@@ -115,6 +115,11 @@ QString GameGamebryo::determineMyGamesPath(const QString &gameName)
   return result + "/My Games/" + gameName;
 }
 
+QString GameGamebryo::selectedVariant() const
+{
+  return m_GameVariant;
+}
+
 QString GameGamebryo::getSpecialPath(const QString &name) const
 {
   QString base = findInRegistry(HKEY_CURRENT_USER,
@@ -137,4 +142,15 @@ QString GameGamebryo::myGamesPath() const
 QString GameGamebryo::getLootPath() const
 {
   return findInRegistry(HKEY_LOCAL_MACHINE, L"Software\\LOOT", L"Installed Path") + "/Loot.exe";
+}
+
+
+QStringList GameGamebryo::gameVariants() const
+{
+  return QStringList();
+}
+
+void GameGamebryo::setGameVariant(const QString &variant)
+{
+  m_GameVariant = variant;
 }
