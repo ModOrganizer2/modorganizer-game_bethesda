@@ -32,11 +32,12 @@ GET_FILENAME_COMPONENT(${default_project_path} ${default_project_path} REALPATH)
 
 SET(project_path "${default_project_path}" CACHE PATH "path to the other mo projects")
 
-INCLUDE_DIRECTORIES(${project_path}/uibase/src)
-LINK_DIRECTORIES(${project_path}/uibase/src)
+INCLUDE_DIRECTORIES(${project_path}/uibase/src
+					${project_path}/plugin/game_features/src)
+LINK_DIRECTORIES(${project_path}/uibase/build/src)
 
 
-ADD_LIBRARY(${PROJ_NAME} SHARED ${${PROJ_NAME}_HDRS} ${${PROJ_NAME}_SRCS} ${${PROJ_NAME}_UIHDRS})
+ADD_LIBRARY(${PROJ_NAME} STATIC ${${PROJ_NAME}_HDRS} ${${PROJ_NAME}_SRCS} ${${PROJ_NAME}_UIHDRS})
 TARGET_LINK_LIBRARIES(${PROJ_NAME}
                       Qt5::Widgets
                       ${Boost_LIBRARIES}
@@ -51,5 +52,4 @@ QT5_USE_MODULES(${PROJ_NAME} Widgets)
 ## Installation
 
 INSTALL(TARGETS ${PROJ_NAME}
-        RUNTIME DESTINATION bin/plugins)
-INSTALL(FILES ${CMAKE_CURRENT_BINARY_DIR}/${PROJ_NAME}.pdb DESTINATION pdb)
+        ARCHIVE DESTINATION libs)
