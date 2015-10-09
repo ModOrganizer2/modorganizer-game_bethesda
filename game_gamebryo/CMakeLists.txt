@@ -1,5 +1,8 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 
+SET(PROJ_NAME game_gamebryo)
+PROJECT(${PROJ_NAME})
+
 SET(DEPENDENCIES_DIR CACHE PATH "")
 
 # hint to find qt in dependencies path
