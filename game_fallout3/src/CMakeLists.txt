@@ -22,15 +22,15 @@ IF (Boost_FOUND)
   INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
 ENDIF ()
 
-SET(default_project_path "${CMAKE_SOURCE_DIR}/../..")
+SET(default_project_path "${CMAKE_SOURCE_DIR}/..")
 GET_FILENAME_COMPONENT(${default_project_path} ${default_project_path} REALPATH)
 
 SET(project_path "${default_project_path}" CACHE PATH "path to the other mo projects")
-SET(lib_path "${project_path}/../install/libs")
+SET(lib_path "${project_path}/../../install/libs")
 
 INCLUDE_DIRECTORIES(${project_path}/uibase/src
-                    ${project_path}/plugin/game_features/src
-                    ${project_path}/plugin/game_gamebryo/src)
+                    ${project_path}/game_features/src
+                    ${project_path}/game_gamebryo/src)
 LINK_DIRECTORIES(${project_path}/uibase/build/src
                  ${lib_path})
 
