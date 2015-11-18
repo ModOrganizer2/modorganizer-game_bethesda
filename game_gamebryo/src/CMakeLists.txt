@@ -22,14 +22,20 @@ IF (Boost_FOUND)
   INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
 ENDIF (Boost_FOUND)
 
-SET(default_project_path "${CMAKE_SOURCE_DIR}/../..")
+SET(default_project_path "${CMAKE_SOURCE_DIR}/..")
 GET_FILENAME_COMPONENT(${default_project_path} ${default_project_path} REALPATH)
 
 SET(project_path "${default_project_path}" CACHE PATH "path to the other mo projects")
+SET(lib_path "${project_path}/../../install/libs")
+SET(plugin_path "${project_path}")
+
+MESSAGE(STATUS ${lib_path})
+MESSAGE(STATUS ${plugin_path})
+MESSAGE(STATUS ${project_path})
 
 INCLUDE_DIRECTORIES(${project_path}/uibase/src
-					${project_path}/plugin/game_features/src)
-LINK_DIRECTORIES(${project_path}/uibase/build/src)
+					${project_path}/game_features/src)
+LINK_DIRECTORIES(${lib_path})
 
 
 ADD_LIBRARY(${PROJ_NAME} STATIC ${${PROJ_NAME}_HDRS} ${${PROJ_NAME}_SRCS} ${${PROJ_NAME}_UIHDRS})
