@@ -1,7 +1,6 @@
 #include "gameoblivion.h"
 #include <scopeguard.h>
 #include <pluginsetting.h>
-#include <igameinfo.h>
 #include <executableinfo.h>
 #include <utility.h>
 #include <memory>
@@ -58,7 +57,7 @@ QList<ExecutableInfo> GameOblivion::executables()
 {
   return QList<ExecutableInfo>()
       << ExecutableInfo("OBSE", findInGameFolder("obse_loader.exe"))
-      << ExecutableInfo("Oblivion", findInGameFolder("oblivion.exe"))
+      << ExecutableInfo("Oblivion", findInGameFolder(getBinaryName()))
       << ExecutableInfo("Oblivion Launcher", findInGameFolder("OblivionLauncher.exe"))
       << ExecutableInfo("Oblivion Mod Manager", findInGameFolder("OblivionModManager.exe"))
       << ExecutableInfo("BOSS", findInGameFolder("BOSS/BOSS.exe"))
@@ -148,7 +147,7 @@ QStringList GameOblivion::getPrimaryPlugins()
 
 QIcon GameOblivion::gameIcon() const
 {
-  return MOBase::iconForExecutable(gameDirectory().absoluteFilePath("Oblivion.exe"));
+  return MOBase::iconForExecutable(gameDirectory().absoluteFilePath(getBinaryName()));
 }
 
 const std::map<std::type_index, boost::any> &GameOblivion::featureList() const
@@ -161,3 +160,9 @@ const std::map<std::type_index, boost::any> &GameOblivion::featureList() const
 
   return result;
 }
+
+QString GameOblivion::getBinaryName() const
+{
+  return "Oblivion.exe";
+}
+
