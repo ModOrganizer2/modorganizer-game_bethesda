@@ -57,7 +57,7 @@ QList<ExecutableInfo> GameFallout3::executables()
 {
   return QList<ExecutableInfo>()
       << ExecutableInfo("FOSE", findInGameFolder("fose_loader.exe"))
-      << ExecutableInfo("Fallout 3", findInGameFolder("Fallout3.exe"))
+      << ExecutableInfo("Fallout 3", findInGameFolder(getBinaryName()))
       << ExecutableInfo("Fallout Mod Manager", findInGameFolder("fomm/fomm.exe"))
       << ExecutableInfo("Construction Kit", findInGameFolder("geck.exe"))
       << ExecutableInfo("Fallout Launcher", findInGameFolder("Fallout3Launcher.exe"))
@@ -149,7 +149,7 @@ QStringList GameFallout3::getPrimaryPlugins()
 
 QIcon GameFallout3::gameIcon() const
 {
-  return MOBase::iconForExecutable(gameDirectory().absoluteFilePath("Fallout3.exe"));
+  return MOBase::iconForExecutable(gameDirectory().absoluteFilePath(getBinaryName()));
 }
 
 const std::map<std::type_index, boost::any> &GameFallout3::featureList() const
@@ -167,4 +167,9 @@ const std::map<std::type_index, boost::any> &GameFallout3::featureList() const
 QStringList GameFallout3::gameVariants() const
 {
   return { "Regular", "Game Of The Year" };
+}
+
+QString GameFallout3::getBinaryName() const
+{
+  return "Fallout3.exe";
 }
