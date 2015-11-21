@@ -2,16 +2,16 @@
 #define FALLOUTNVBSAINVALIDATION_H
 
 
-#include <gamebryobsainvalidation.h>
-#include <memory>
+#include "gamebryobsainvalidation.h"
 #include "falloutnvdataarchives.h"
 
+#include <memory>
 
 class FalloutNVBSAInvalidation : public GamebryoBSAInvalidation
 {
 public:
 
-  FalloutNVBSAInvalidation(const std::shared_ptr<DataArchives> &dataArchives, MOBase::IOrganizer *moInfo);
+  FalloutNVBSAInvalidation(const std::shared_ptr<DataArchives> &dataArchives, MOBase::IPluginGame *game);
 
 private:
 
