@@ -2,16 +2,16 @@
 #define OBLIVIONBSAINVALIDATION_H
 
 
-#include <gamebryobsainvalidation.h>
-#include <memory>
+#include "gamebryobsainvalidation.h"
 #include "obliviondataarchives.h"
 
+#include <memory>
 
 class OblivionBSAInvalidation : public GamebryoBSAInvalidation
 {
 public:
 
-  OblivionBSAInvalidation(const std::shared_ptr<DataArchives> &dataArchives, MOBase::IOrganizer *moInfo);
+  OblivionBSAInvalidation(const std::shared_ptr<DataArchives> &dataArchives, MOBase::IPluginGame *game);
 
 private:
 

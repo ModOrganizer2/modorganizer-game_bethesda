@@ -21,7 +21,7 @@ bool GameOblivion::init(IOrganizer *moInfo)
   }
   m_ScriptExtender = std::shared_ptr<ScriptExtender>(new OblivionScriptExtender());
   m_DataArchives = std::shared_ptr<DataArchives>(new OblivionDataArchives());
-  m_BSAInvalidation = std::shared_ptr<BSAInvalidation>(new OblivionBSAInvalidation(m_DataArchives, moInfo));
+  m_BSAInvalidation = std::shared_ptr<BSAInvalidation>(new OblivionBSAInvalidation(m_DataArchives, this));
   return true;
 }
 
