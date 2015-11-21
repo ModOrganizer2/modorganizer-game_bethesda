@@ -31,6 +31,7 @@ public: // IPluginGame interface
   virtual QString steamAPPId() const;
   virtual QStringList getPrimaryPlugins();
   virtual QIcon gameIcon() const override;
+  virtual QString getBinaryName() const override;
 
 public: // IPlugin interface
 
