@@ -22,7 +22,7 @@ bool GameFalloutNV::init(IOrganizer *moInfo)
   }
   m_ScriptExtender = std::shared_ptr<ScriptExtender>(new FalloutNVScriptExtender());
   m_DataArchives = std::shared_ptr<DataArchives>(new FalloutNVDataArchives());
-  m_BSAInvalidation = std::shared_ptr<BSAInvalidation>(new FalloutNVBSAInvalidation(m_DataArchives, moInfo));
+  m_BSAInvalidation = std::shared_ptr<BSAInvalidation>(new FalloutNVBSAInvalidation(m_DataArchives, this));
   return true;
 }
 
