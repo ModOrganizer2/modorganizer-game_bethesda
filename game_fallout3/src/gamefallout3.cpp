@@ -23,7 +23,7 @@ bool GameFallout3::init(IOrganizer *moInfo)
   }
   m_ScriptExtender = std::shared_ptr<ScriptExtender>(new Fallout3ScriptExtender());
   m_DataArchives = std::shared_ptr<DataArchives>(new Fallout3DataArchives());
-  m_BSAInvalidation = std::shared_ptr<BSAInvalidation>(new Fallout3BSAInvalidation(m_DataArchives, moInfo));
+  m_BSAInvalidation = std::shared_ptr<BSAInvalidation>(new Fallout3BSAInvalidation(m_DataArchives, this));
   return true;
 }
 
