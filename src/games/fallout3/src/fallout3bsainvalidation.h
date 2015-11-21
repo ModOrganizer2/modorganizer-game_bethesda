@@ -2,16 +2,16 @@
 #define FALLOUT3BSAINVALIDATION_H
 
 
-#include <gamebryobsainvalidation.h>
-#include <memory>
+#include "gamebryobsainvalidation.h"
 #include "fallout3dataarchives.h"
 
+#include <memory>
 
 class Fallout3BSAInvalidation : public GamebryoBSAInvalidation
 {
 public:
 
-  Fallout3BSAInvalidation(const std::shared_ptr<DataArchives> &dataArchives, MOBase::IOrganizer *moInfo);
+  Fallout3BSAInvalidation(const std::shared_ptr<DataArchives> &dataArchives, MOBase::IPluginGame *game);
 
 private:
 
