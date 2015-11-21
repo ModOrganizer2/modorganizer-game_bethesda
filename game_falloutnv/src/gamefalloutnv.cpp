@@ -56,7 +56,7 @@ QList<ExecutableInfo> GameFalloutNV::executables()
 {
   return QList<ExecutableInfo>()
       << ExecutableInfo("NVSE", findInGameFolder("nvse_loader.exe"))
-      << ExecutableInfo("New Vegas", findInGameFolder("FalloutNV.exe"))
+      << ExecutableInfo("New Vegas", findInGameFolder(getBinaryName()))
       << ExecutableInfo("Fallout Mod Manager", findInGameFolder("fomm/fomm.exe"))
       << ExecutableInfo("Construction Kit", findInGameFolder("geck.exe"))
       << ExecutableInfo("Fallout Launcher", findInGameFolder("FalloutNVLauncher.exe"))
@@ -146,7 +146,7 @@ QStringList GameFalloutNV::getPrimaryPlugins()
 
 QIcon GameFalloutNV::gameIcon() const
 {
-  return MOBase::iconForExecutable(gameDirectory().absoluteFilePath("FalloutNV.exe"));
+  return MOBase::iconForExecutable(gameDirectory().absoluteFilePath(getBinaryName()));
 }
 
 const std::map<std::type_index, boost::any> &GameFalloutNV::featureList() const
@@ -159,3 +159,9 @@ const std::map<std::type_index, boost::any> &GameFalloutNV::featureList() const
 
   return result;
 }
+
+QString GameFalloutNV::getBinaryName() const
+{
+  return "FalloutNV.exe";
+}
+
