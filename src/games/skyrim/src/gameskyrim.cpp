@@ -1,7 +1,6 @@
 #include "gameskyrim.h"
 #include <scopeguard.h>
 #include <pluginsetting.h>
-#include <igameinfo.h>
 #include <executableinfo.h>
 #include <utility.h>
 #include <memory>
@@ -59,7 +58,7 @@ QList<ExecutableInfo> GameSkyrim::executables()
   return QList<ExecutableInfo>()
       << ExecutableInfo("SKSE", findInGameFolder("skse_loader.exe"))
       << ExecutableInfo("SBW", findInGameFolder("SBW.exe"))
-      << ExecutableInfo("Skyrim", findInGameFolder("TESV.exe"))
+      << ExecutableInfo("Skyrim", findInGameFolder(getBinaryName()))
       << ExecutableInfo("Skyrim Launcher", findInGameFolder("SkyrimLauncher.exe"))
       << ExecutableInfo("BOSS", findInGameFolder("BOSS/BOSS.exe"))
       << ExecutableInfo("LOOT", getLootPath())
@@ -148,7 +147,7 @@ QStringList GameSkyrim::getPrimaryPlugins()
 
 QIcon GameSkyrim::gameIcon() const
 {
-  return MOBase::iconForExecutable(gameDirectory().absoluteFilePath("TESV.exe"));
+  return MOBase::iconForExecutable(gameDirectory().absoluteFilePath(getBinaryName()));
 }
 
 const std::map<std::type_index, boost::any> &GameSkyrim::featureList() const
@@ -160,4 +159,10 @@ const std::map<std::type_index, boost::any> &GameSkyrim::featureList() const
   };
 
   return result;
+}
+
+
+QString GameSkyrim::getBinaryName() const
+{
+  return "TESV.exe";
 }
