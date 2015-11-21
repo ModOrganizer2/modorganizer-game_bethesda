@@ -2,16 +2,16 @@
 #define SKYRIMBSAINVALIDATION_H
 
 
-#include <gamebryobsainvalidation.h>
-#include <memory>
+#include "gamebryobsainvalidation.h"
 #include "skyrimdataarchives.h"
 
+#include <memory>
 
 class SkyrimBSAInvalidation : public GamebryoBSAInvalidation
 {
 public:
 
-  SkyrimBSAInvalidation(const std::shared_ptr<DataArchives> &dataArchives, MOBase::IOrganizer *moInfo);
+  SkyrimBSAInvalidation(const std::shared_ptr<DataArchives> &dataArchives, MOBase::IPluginGame *game);
 
 private:
 

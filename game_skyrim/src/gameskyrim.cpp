@@ -21,7 +21,7 @@ bool GameSkyrim::init(IOrganizer *moInfo)
   }
   m_ScriptExtender = std::shared_ptr<ScriptExtender>(new SkyrimScriptExtender());
   m_DataArchives = std::shared_ptr<DataArchives>(new SkyrimDataArchives());
-  m_BSAInvalidation = std::shared_ptr<BSAInvalidation>(new SkyrimBSAInvalidation(m_DataArchives, moInfo));
+  m_BSAInvalidation = std::shared_ptr<BSAInvalidation>(new SkyrimBSAInvalidation(m_DataArchives, this));
   return true;
 }
 
