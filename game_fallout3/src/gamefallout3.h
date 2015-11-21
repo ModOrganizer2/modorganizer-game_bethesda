@@ -32,6 +32,7 @@ public: // IPluginGame interface
   virtual QStringList getPrimaryPlugins();
   virtual QIcon gameIcon() const override;
   virtual QStringList gameVariants() const;
+  virtual QString getBinaryName() const override;
 
 public: // IPlugin interface
 
