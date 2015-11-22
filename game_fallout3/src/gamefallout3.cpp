@@ -55,7 +55,7 @@ QString GameFallout3::myGamesFolderName() const
   return "Fallout3";
 }
 
-QList<ExecutableInfo> GameFallout3::executables()
+QList<ExecutableInfo> GameFallout3::executables() const
 {
   return QList<ExecutableInfo>()
       << ExecutableInfo("FOSE", findInGameFolder("fose_loader.exe"))
@@ -144,7 +144,7 @@ QString GameFallout3::steamAPPId() const
   }
 }
 
-QStringList GameFallout3::getPrimaryPlugins()
+QStringList GameFallout3::getPrimaryPlugins() const
 {
   return { "fallout3.esm" };
 }
@@ -154,7 +154,7 @@ QIcon GameFallout3::gameIcon() const
   return MOBase::iconForExecutable(gameDirectory().absoluteFilePath(getBinaryName()));
 }
 
-const std::map<std::type_index, boost::any> &GameFallout3::featureList() const
+std::map<std::type_index, boost::any> GameFallout3::featureList() const
 {
   static std::map<std::type_index, boost::any> result {
     { typeid(BSAInvalidation), m_BSAInvalidation.get() },
