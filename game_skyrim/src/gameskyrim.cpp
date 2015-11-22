@@ -53,7 +53,7 @@ QString GameSkyrim::myGamesFolderName() const
 
 
 
-QList<ExecutableInfo> GameSkyrim::executables()
+QList<ExecutableInfo> GameSkyrim::executables() const
 {
   return QList<ExecutableInfo>()
       << ExecutableInfo("SKSE", findInGameFolder("skse_loader.exe"))
@@ -140,9 +140,9 @@ QString GameSkyrim::steamAPPId() const
   return "72850";
 }
 
-QStringList GameSkyrim::getPrimaryPlugins()
+QStringList GameSkyrim::getPrimaryPlugins() const
 {
-  return QStringList({ QString("skyrim.esm"), QString("update.esm") });
+  return { "skyrim.esm", "update.esm" };
 }
 
 QIcon GameSkyrim::gameIcon() const
@@ -150,7 +150,7 @@ QIcon GameSkyrim::gameIcon() const
   return MOBase::iconForExecutable(gameDirectory().absoluteFilePath(getBinaryName()));
 }
 
-const std::map<std::type_index, boost::any> &GameSkyrim::featureList() const
+std::map<std::type_index, boost::any> GameSkyrim::featureList() const
 {
   static std::map<std::type_index, boost::any> result {
     { typeid(BSAInvalidation), m_BSAInvalidation.get() },
