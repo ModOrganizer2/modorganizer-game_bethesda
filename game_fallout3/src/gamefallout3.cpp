@@ -1,10 +1,12 @@
 #include "gameFallout3.h"
+
 #include <scopeguard.h>
 #include <pluginsetting.h>
-#include <igameinfo.h>
 #include <executableinfo.h>
 #include <utility.h>
+
 #include <memory>
+
 #include <QStandardPaths>
 #include <QDebug>
 
@@ -172,4 +174,14 @@ QStringList GameFallout3::gameVariants() const
 QString GameFallout3::getBinaryName() const
 {
   return "Fallout3.exe";
+}
+
+QString GameFallout3::getNexusName() const
+{
+  return "Fallout3";
+}
+
+QStringList GameFallout3::getIniFiles() const
+{
+  return { "fallout.ini", "falloutprefs.ini" };
 }
