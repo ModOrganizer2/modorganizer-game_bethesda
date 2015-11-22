@@ -54,7 +54,7 @@ QString GameFalloutNV::myGamesFolderName() const
   return "FalloutNV";
 }
 
-QList<ExecutableInfo> GameFalloutNV::executables()
+QList<ExecutableInfo> GameFalloutNV::executables() const
 {
   return QList<ExecutableInfo>()
       << ExecutableInfo("NVSE", findInGameFolder("nvse_loader.exe"))
@@ -141,7 +141,7 @@ QString GameFalloutNV::steamAPPId() const
   return "22380";
 }
 
-QStringList GameFalloutNV::getPrimaryPlugins()
+QStringList GameFalloutNV::getPrimaryPlugins() const
 {
   return { "falloutnv.esm" };
 }
@@ -151,7 +151,7 @@ QIcon GameFalloutNV::gameIcon() const
   return MOBase::iconForExecutable(gameDirectory().absoluteFilePath(getBinaryName()));
 }
 
-const std::map<std::type_index, boost::any> &GameFalloutNV::featureList() const
+std::map<std::type_index, boost::any> GameFalloutNV::featureList() const
 {
   static std::map<std::type_index, boost::any> result {
     { typeid(BSAInvalidation), m_BSAInvalidation.get() },
