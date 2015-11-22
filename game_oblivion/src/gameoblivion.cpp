@@ -166,3 +166,12 @@ QString GameOblivion::getBinaryName() const
   return "Oblivion.exe";
 }
 
+QString GameOblivion::getNexusName() const
+{
+  return "Oblivion";
+}
+
+QStringList GameOblivion::getIniFiles() const
+{
+  return { "oblivion.ini", "oblivionprefs.ini" };
+}
