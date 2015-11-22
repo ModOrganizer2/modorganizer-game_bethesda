@@ -53,7 +53,7 @@ QString GameOblivion::myGamesFolderName() const
 
 
 
-QList<ExecutableInfo> GameOblivion::executables()
+QList<ExecutableInfo> GameOblivion::executables() const
 {
   return QList<ExecutableInfo>()
       << ExecutableInfo("OBSE", findInGameFolder("obse_loader.exe"))
@@ -140,7 +140,7 @@ QString GameOblivion::steamAPPId() const
   return "22330";
 }
 
-QStringList GameOblivion::getPrimaryPlugins()
+QStringList GameOblivion::getPrimaryPlugins() const
 {
   return { "oblivion.esm", "update.esm" };
 }
@@ -150,7 +150,7 @@ QIcon GameOblivion::gameIcon() const
   return MOBase::iconForExecutable(gameDirectory().absoluteFilePath(getBinaryName()));
 }
 
-const std::map<std::type_index, boost::any> &GameOblivion::featureList() const
+std::map<std::type_index, boost::any> GameOblivion::featureList() const
 {
   static std::map<std::type_index, boost::any> result {
     { typeid(BSAInvalidation), m_BSAInvalidation.get() },
