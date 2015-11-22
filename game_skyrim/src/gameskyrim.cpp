@@ -161,8 +161,17 @@ const std::map<std::type_index, boost::any> &GameSkyrim::featureList() const
   return result;
 }
 
-
 QString GameSkyrim::getBinaryName() const
 {
   return "TESV.exe";
+}
+
+QString GameSkyrim::getNexusName() const
+{
+  return "Skyrim";
+}
+
+QStringList GameSkyrim::getIniFiles() const
+{
+  return { "skyrim.ini", "skyrimprefs.ini" };
 }
