@@ -77,7 +77,7 @@ QString GameGamebryo::findInRegistry(HKEY baseKey, LPCWSTR path, LPCWSTR value) 
   }
 }
 
-QFileInfo GameGamebryo::findInGameFolder(const QString &relativePath)
+QFileInfo GameGamebryo::findInGameFolder(const QString &relativePath) const
 {
   return QFileInfo(m_GamePath + "/" + relativePath);
 }

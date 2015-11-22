@@ -35,7 +35,7 @@ protected:
 
   std::unique_ptr<BYTE[]> getRegValue(HKEY key, LPCWSTR subKey, LPCWSTR value, DWORD flags, LPDWORD type = nullptr) const;
   QString findInRegistry(HKEY baseKey, LPCWSTR path, LPCWSTR value) const;
-  QFileInfo findInGameFolder(const QString &relativePath);
+  QFileInfo findInGameFolder(const QString &relativePath) const;
   QString getKnownFolderPath(REFKNOWNFOLDERID folderId, bool useDefault) const;
   QString getSpecialPath(const QString &name) const;
   QString myGamesPath() const;
