@@ -1,10 +1,12 @@
 #include "gameFalloutNV.h"
+
 #include <scopeguard.h>
 #include <pluginsetting.h>
-#include <igameinfo.h>
 #include <executableinfo.h>
 #include <utility.h>
+
 #include <memory>
+
 #include <QStandardPaths>
 
 
@@ -165,3 +167,12 @@ QString GameFalloutNV::getBinaryName() const
   return "FalloutNV.exe";
 }
 
+QString GameFalloutNV::getNexusName() const
+{
+  return "FalloutNV";
+}
+
+QStringList GameFalloutNV::getIniFiles() const
+{
+  return { "fallout.ini", "falloutprefs.ini" };
+}
