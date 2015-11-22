@@ -33,6 +33,8 @@ public: // IPluginGame interface
   virtual QIcon gameIcon() const override;
   virtual QStringList gameVariants() const;
   virtual QString getBinaryName() const override;
+  virtual QString getNexusName() const override;
+  virtual QStringList getIniFiles() const override;
 
 public: // IPlugin interface
 
