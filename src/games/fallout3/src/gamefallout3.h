@@ -24,12 +24,12 @@ public:
 
 public: // IPluginGame interface
 
-  virtual QString gameName() const;
-  virtual QList<MOBase::ExecutableInfo> executables();
-  virtual void initializeProfile(const QDir &path, ProfileSettings settings) const;
-  virtual QString savegameExtension() const;
-  virtual QString steamAPPId() const;
-  virtual QStringList getPrimaryPlugins();
+  virtual QString gameName() const override;
+  virtual QList<MOBase::ExecutableInfo> executables() const override;
+  virtual void initializeProfile(const QDir &path, ProfileSettings settings) const override;
+  virtual QString savegameExtension() const override;
+  virtual QString steamAPPId() const override;
+  virtual QStringList getPrimaryPlugins() const override;
   virtual QIcon gameIcon() const override;
   virtual QStringList gameVariants() const;
   virtual QString getBinaryName() const override;
@@ -47,7 +47,7 @@ public: // IPlugin interface
 
 protected:
 
-  virtual const std::map<std::type_index, boost::any> &featureList() const;
+  virtual std::map<std::type_index, boost::any> featureList() const override;
 
 private:
 
