@@ -34,6 +34,7 @@ public: // IPluginGame interface
   virtual QString getBinaryName() const override;
   virtual QString getNexusName() const override;
   virtual QStringList getIniFiles() const override;
+  virtual QStringList getDLCPlugins() const override;
 
 public: // IPlugin interface
 

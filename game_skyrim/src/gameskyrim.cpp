@@ -175,3 +175,9 @@ QStringList GameSkyrim::getIniFiles() const
 {
   return { "skyrim.ini", "skyrimprefs.ini" };
 }
+
+QStringList GameSkyrim::getDLCPlugins() const
+{
+  return { "Dawnguard.esm", "Dragonborn.esm", "HearthFires.esm",
+           "HighResTexturePack01.esp", "HighResTexturePack02.esp", "HighResTexturePack03.esp" };
+}
