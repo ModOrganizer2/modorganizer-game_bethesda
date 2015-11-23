@@ -175,3 +175,10 @@ QStringList GameOblivion::getIniFiles() const
 {
   return { "oblivion.ini", "oblivionprefs.ini" };
 }
+
+QStringList GameOblivion::getDLCPlugins() const
+{
+  return { "DLCShiveringIsles.esp", "Knights.esp", "DLCFrostcrag.esp",
+           "DLCSpellTomes.esp", "DLCMehrunesRazor.esp", "DLCOrrery.esp",
+           "DLCThievesDen.esp", "DLCVileLair.esp", "DLCHorseArmor.esp" };
+}
