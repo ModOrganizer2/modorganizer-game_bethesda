@@ -176,3 +176,10 @@ QStringList GameFalloutNV::getIniFiles() const
 {
   return { "fallout.ini", "falloutprefs.ini" };
 }
+
+QStringList GameFalloutNV::getDLCPlugins() const
+{
+  return { "DeadMoney.esm", "HonestHearts.esm", "OldWorldBlues.esm",
+           "LonesomeRoad.esm", "GunRunnersArsenal.esm", "CaravanPack.esm",
+           "ClassicPack.esm", "MercenaryPack.esm", "TribalPack.esm" };
+}
