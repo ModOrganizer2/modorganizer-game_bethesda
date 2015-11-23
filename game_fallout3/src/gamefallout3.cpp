@@ -185,3 +185,8 @@ QStringList GameFallout3::getIniFiles() const
 {
   return { "fallout.ini", "falloutprefs.ini" };
 }
+
+QStringList GameFallout3::getDLCPlugins() const
+{
+  return { "ThePitt.esm", "Anchorage.esm", "BrokenSteel.esm", "PointLookout.esm", "Zeta.esm" };
+}
