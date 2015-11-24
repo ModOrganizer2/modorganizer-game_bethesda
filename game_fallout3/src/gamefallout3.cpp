@@ -190,3 +190,13 @@ QStringList GameFallout3::getDLCPlugins() const
 {
   return { "ThePitt.esm", "Anchorage.esm", "BrokenSteel.esm", "PointLookout.esm", "Zeta.esm" };
 }
+
+int GameFallout3::getNexusModOrganizerID() const
+{
+  return 16348;
+}
+
+int GameFallout3::getNexusGameID() const
+{
+  return 120;
+}
