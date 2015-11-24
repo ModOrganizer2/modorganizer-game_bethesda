@@ -183,3 +183,13 @@ QStringList GameFalloutNV::getDLCPlugins() const
            "LonesomeRoad.esm", "GunRunnersArsenal.esm", "CaravanPack.esm",
            "ClassicPack.esm", "MercenaryPack.esm", "TribalPack.esm" };
 }
+
+int GameFalloutNV::getNexusModOrganizerID() const
+{
+  return 42572;
+}
+
+int GameFalloutNV::getNexusGameID() const
+{
+  return 130;
+}
