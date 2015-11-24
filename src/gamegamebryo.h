@@ -20,16 +20,17 @@ public:
 
 public: // IPluginGame interface
 
-  virtual QDir gameDirectory() const;
-  virtual QDir dataDirectory() const;
-  virtual void setGamePath(const QString &path);
-  virtual QDir savesDirectory() const;
-  virtual QDir documentsDirectory() const;
+  virtual QDir gameDirectory() const override;
+  virtual QDir dataDirectory() const override;
+  virtual void setGamePath(const QString &path) override;
+  virtual QDir savesDirectory() const override;
+  virtual QDir documentsDirectory() const override;
 
   virtual bool isInstalled() const override;
 
-  virtual QStringList gameVariants() const;
-  virtual void setGameVariant(const QString &variant);
+  virtual QStringList gameVariants() const override;
+  virtual void setGameVariant(const QString &variant) override;
+  virtual LoadOrderMechanism getLoadOrderMechanism() const override;
 
 protected:
 
