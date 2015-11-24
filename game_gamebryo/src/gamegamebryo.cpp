@@ -154,3 +154,8 @@ void GameGamebryo::setGameVariant(const QString &variant)
 {
   m_GameVariant = variant;
 }
+
+MOBase::IPluginGame::LoadOrderMechanism GameGamebryo::getLoadOrderMechanism() const
+{
+  return LoadOrderMechanism::FileTime;
+}
