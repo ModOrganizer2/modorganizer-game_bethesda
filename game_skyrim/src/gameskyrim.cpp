@@ -1,10 +1,18 @@
 #include "gameskyrim.h"
+
 #include <scopeguard.h>
 #include <pluginsetting.h>
 #include <executableinfo.h>
 #include <utility.h>
-#include <memory>
+
+#include <QDebug>
 #include <QStandardPaths>
+
+#include <Windows.h>
+
+#include <exception>
+#include <memory>
+#include <vector>
 
 
 using namespace MOBase;
@@ -180,4 +188,49 @@ QStringList GameSkyrim::getDLCPlugins() const
 {
   return { "Dawnguard.esm", "Dragonborn.esm", "HearthFires.esm",
            "HighResTexturePack01.esp", "HighResTexturePack02.esp", "HighResTexturePack03.esp" };
+}
+
+namespace {
+//Note: This is ripped off from shared/util. And in an upcoming move, the fomod
+//installer requires something similar. I suspect I should abstract this out
+//into gamebro and add a getVersion mechanism in gamebryo (or lower level)
+
+VS_FIXEDFILEINFO GetFileVersion(const std::wstring &fileName)
+{
+  DWORD handle = 0UL;
+  DWORD size = ::GetFileVersionInfoSizeW(fileName.c_str(), &handle);
+  if (size == 0) {
+    throw std::runtime_error("failed to determine file version info size");
+  }
+
+  std::vector<char> buffer(size);
+  handle = 0UL;
+  if (!::GetFileVersionInfoW(fileName.c_str(), handle, size, buffer.data())) {
+    throw std::runtime_error("failed to determine file version info");
+  }
+
+  void *versionInfoPtr = nullptr;
+  UINT versionInfoLength = 0;
+  if (!::VerQueryValue(buffer.data(), L"\\", &versionInfoPtr, &versionInfoLength)) {
+    throw std::runtime_error("failed to determine file version");
+  }
+
+  return *static_cast<VS_FIXEDFILEINFO*>(versionInfoPtr);
+}
+
+}
+
+IPluginGame::LoadOrderMechanism GameSkyrim::getLoadOrderMechanism() const
+{
+  try {
+    std::wstring fileName = gameDirectory().absoluteFilePath(getBinaryName()).toStdWString().c_str();
+    VS_FIXEDFILEINFO versionInfo = ::GetFileVersion(fileName);
+    if ((versionInfo.dwFileVersionMS > 0x10004) || // version >= 1.5.x?
+        ((versionInfo.dwFileVersionMS == 0x10004) && (versionInfo.dwFileVersionLS >= 0x1A0000))) { // version >= ?.4.26
+      return LoadOrderMechanism::PluginsTxt;
+    }
+  } catch (const std::exception &e) {
+    qCritical() << "TESV.exe is invalid: " << e.what();
+  }
+  return LoadOrderMechanism::FileTime;
 }

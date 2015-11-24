@@ -6,6 +6,8 @@ env.AppendUnique(CPPDEFINES = [ 'GAMESKYRIM_LIBRARY' ])
 
 env.RequiresGamebryo()
 
+env.AppendUnique(LIBS = [ 'Version' ])
+
 lib = env.SharedLibrary('gameSkyrim', env.Glob('*.cpp'))
 env.InstallModule(lib)
 

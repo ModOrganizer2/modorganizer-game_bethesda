@@ -35,6 +35,7 @@ public: // IPluginGame interface
   virtual QString getNexusName() const override;
   virtual QStringList getIniFiles() const override;
   virtual QStringList getDLCPlugins() const override;
+  virtual LoadOrderMechanism getLoadOrderMechanism() const override;
 
 public: // IPlugin interface
 
