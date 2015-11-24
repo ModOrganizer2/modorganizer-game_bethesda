@@ -182,3 +182,14 @@ QStringList GameOblivion::getDLCPlugins() const
            "DLCSpellTomes.esp", "DLCMehrunesRazor.esp", "DLCOrrery.esp",
            "DLCThievesDen.esp", "DLCVileLair.esp", "DLCHorseArmor.esp" };
 }
+
+
+int GameOblivion::getNexusModOrganizerID() const
+{
+  return 38277;
+}
+
+int GameOblivion::getNexusGameID() const
+{
+  return 101;
+}
