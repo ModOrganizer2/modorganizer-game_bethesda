@@ -193,7 +193,7 @@ QStringList GameSkyrim::getDLCPlugins() const
 namespace {
 //Note: This is ripped off from shared/util. And in an upcoming move, the fomod
 //installer requires something similar. I suspect I should abstract this out
-//into gamebro and add a getVersion mechanism in gamebryo (or lower level)
+//into gamebryo (or lower level)
 
 VS_FIXEDFILEINFO GetFileVersion(const std::wstring &fileName)
 {
@@ -233,4 +233,15 @@ IPluginGame::LoadOrderMechanism GameSkyrim::getLoadOrderMechanism() const
     qCritical() << "TESV.exe is invalid: " << e.what();
   }
   return LoadOrderMechanism::FileTime;
+}
+
+
+int GameSkyrim::getNexusModOrganizerID() const
+{
+  return 1334;
+}
+
+int GameSkyrim::getNexusGameID() const
+{
+  return 110;
 }
