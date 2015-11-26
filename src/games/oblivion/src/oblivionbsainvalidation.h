@@ -11,7 +11,7 @@ class OblivionBSAInvalidation : public GamebryoBSAInvalidation
 {
 public:
 
-  OblivionBSAInvalidation(const std::shared_ptr<DataArchives> &dataArchives, MOBase::IPluginGame *game);
+  OblivionBSAInvalidation(const std::shared_ptr<DataArchives> &dataArchives, MOBase::IPluginGame const *game);
 
 private:
 
