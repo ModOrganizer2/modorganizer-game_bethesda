@@ -176,7 +176,7 @@ QString GameFallout3::getBinaryName() const
   return "Fallout3.exe";
 }
 
-QString GameFallout3::getNexusName() const
+QString GameFallout3::getGameShortName() const
 {
   return "Fallout3";
 }
