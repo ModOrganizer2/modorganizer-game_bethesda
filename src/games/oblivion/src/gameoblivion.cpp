@@ -166,7 +166,7 @@ QString GameOblivion::getBinaryName() const
   return "Oblivion.exe";
 }
 
-QString GameOblivion::getNexusName() const
+QString GameOblivion::getGameShortName() const
 {
   return "Oblivion";
 }
