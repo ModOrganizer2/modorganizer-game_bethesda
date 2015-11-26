@@ -17,7 +17,7 @@ public:
 
   GamebryoBSAInvalidation(const std::shared_ptr<DataArchives> &dataArchives,
                           const QString &iniFilename,
-                          MOBase::IPluginGame *game);
+                          MOBase::IPluginGame const *game);
 
   virtual bool isInvalidationBSA(const QString &bsaName) override;
   virtual void deactivate(MOBase::IProfile *profile) override;
@@ -32,7 +32,7 @@ private:
 
   std::shared_ptr<DataArchives> m_DataArchives;
   QString m_IniFileName;
-  MOBase::IPluginGame *m_Game;
+  MOBase::IPluginGame const *m_Game;
 
 };
 

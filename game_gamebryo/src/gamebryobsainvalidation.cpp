@@ -14,7 +14,7 @@
 
 GamebryoBSAInvalidation::GamebryoBSAInvalidation(const std::shared_ptr<DataArchives> &dataArchives
                                                  , const QString &iniFilename
-                                                 , MOBase::IPluginGame *game)
+                                                 , MOBase::IPluginGame const *game)
   : m_DataArchives(dataArchives)
   , m_IniFileName(iniFilename)
   , m_Game(game)
