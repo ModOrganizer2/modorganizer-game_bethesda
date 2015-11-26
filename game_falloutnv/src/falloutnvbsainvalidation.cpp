@@ -1,6 +1,6 @@
 #include "falloutnvbsainvalidation.h"
 
-FalloutNVBSAInvalidation::FalloutNVBSAInvalidation(const std::shared_ptr<DataArchives> &dataArchives, MOBase::IPluginGame *game)
+FalloutNVBSAInvalidation::FalloutNVBSAInvalidation(const std::shared_ptr<DataArchives> &dataArchives, MOBase::IPluginGame const *game)
   : GamebryoBSAInvalidation(dataArchives, "fallout.ini", game)
 {
 }
