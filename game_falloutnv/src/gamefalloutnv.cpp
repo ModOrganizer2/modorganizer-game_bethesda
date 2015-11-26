@@ -167,7 +167,7 @@ QString GameFalloutNV::getBinaryName() const
   return "FalloutNV.exe";
 }
 
-QString GameFalloutNV::getNexusName() const
+QString GameFalloutNV::getGameShortName() const
 {
   return "FalloutNV";
 }
