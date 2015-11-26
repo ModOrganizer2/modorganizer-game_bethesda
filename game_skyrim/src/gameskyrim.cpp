@@ -174,7 +174,7 @@ QString GameSkyrim::getBinaryName() const
   return "TESV.exe";
 }
 
-QString GameSkyrim::getNexusName() const
+QString GameSkyrim::getGameShortName() const
 {
   return "Skyrim";
 }
