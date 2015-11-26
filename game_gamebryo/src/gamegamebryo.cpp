@@ -1,8 +1,9 @@
 #include "gamegamebryo.h"
-#include <utility.h>
-#include <scopeguard.h>
-#include <QDebug>
 
+#include "utility.h"
+#include "scopeguard.h"
+
+#include <QUrl>
 
 GameGamebryo::GameGamebryo()
 {
@@ -160,12 +161,14 @@ MOBase::IPluginGame::LoadOrderMechanism GameGamebryo::getLoadOrderMechanism() co
   return LoadOrderMechanism::FileTime;
 }
 
-QString GameGamebryo::getNexusManagementURL() const
-{
-  return "http://nmm.nexusmods.com/" + getNexusName().toLower();
-}
-
 QString GameGamebryo::getNexusDisplayURL() const
 {
   return "http://www.nexusmods.com/" + getNexusName().toLower();
+}
+
+bool GameGamebryo::isRelatedURL(QUrl const &url) const
+{
+  QString const name(url.toString());
+  return name.startsWith(getNexusDisplayURL() + "/") ||
+         name.startsWith("http://" + getNexusName().toLower() + ".nexusmods.com/mods/");
 }

@@ -31,8 +31,8 @@ public: // IPluginGame interface
   virtual QStringList gameVariants() const override;
   virtual void setGameVariant(const QString &variant) override;
   virtual LoadOrderMechanism getLoadOrderMechanism() const override;
-  virtual QString getNexusManagementURL() const override;
   virtual QString getNexusDisplayURL() const override;
+  virtual bool isRelatedURL(QUrl const &) const override;
 
 protected:
 
