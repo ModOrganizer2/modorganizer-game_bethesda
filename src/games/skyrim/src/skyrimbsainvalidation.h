@@ -11,7 +11,7 @@ class SkyrimBSAInvalidation : public GamebryoBSAInvalidation
 {
 public:
 
-  SkyrimBSAInvalidation(const std::shared_ptr<DataArchives> &dataArchives, MOBase::IPluginGame *game);
+  SkyrimBSAInvalidation(const std::shared_ptr<DataArchives> &dataArchives, MOBase::IPluginGame const *game);
 
 private:
 
