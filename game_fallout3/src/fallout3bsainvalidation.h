@@ -11,7 +11,7 @@ class Fallout3BSAInvalidation : public GamebryoBSAInvalidation
 {
 public:
 
-  Fallout3BSAInvalidation(const std::shared_ptr<DataArchives> &dataArchives, MOBase::IPluginGame *game);
+  Fallout3BSAInvalidation(const std::shared_ptr<DataArchives> &dataArchives, MOBase::IPluginGame const *game);
 
 private:
 
