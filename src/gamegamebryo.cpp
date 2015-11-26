@@ -159,3 +159,13 @@ MOBase::IPluginGame::LoadOrderMechanism GameGamebryo::getLoadOrderMechanism() co
 {
   return LoadOrderMechanism::FileTime;
 }
+
+QString GameGamebryo::getNexusManagementURL() const
+{
+  return "http://nmm.nexusmods.com/" + getNexusName().toLower();
+}
+
+QString GameGamebryo::getNexusDisplayURL() const
+{
+  return "http://www.nexusmods.com/" + getNexusName().toLower();
+}
