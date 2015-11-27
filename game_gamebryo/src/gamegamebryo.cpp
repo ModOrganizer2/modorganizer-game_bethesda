@@ -1,4 +1,5 @@
 #include "gamegamebryo.h"
+#include <winreg.h>
 #include <utility.h>
 #include <scopeguard.h>
 #include <QDebug>
@@ -46,10 +47,18 @@ bool GameGamebryo::isInstalled() const
   return !m_GamePath.isEmpty();
 }
 
-std::unique_ptr<BYTE[]> GameGamebryo::getRegValue(HKEY key, LPCWSTR subKey, LPCWSTR value, DWORD flags, LPDWORD type) const
+std::unique_ptr<BYTE[]> GameGamebryo::getRegValue(HKEY key, LPCWSTR path,
+                                                  LPCWSTR value, DWORD flags,
+                                                  LPDWORD type) const
 {
   DWORD size = 0;
-  DWORD res = ::RegGetValueW(key, subKey, value, flags, type, nullptr, &size);
+  HKEY subKey;
+  LONG res = ::RegOpenKeyExW(key, path, 0,
+                              KEY_QUERY_VALUE | KEY_WOW64_32KEY, &subKey);
+  if (res != ERROR_SUCCESS) {
+    return std::unique_ptr<BYTE[]>();
+  }
+  res = ::RegGetValueW(subKey, L"", value, flags, type, nullptr, &size);
   if ((res == ERROR_FILE_NOT_FOUND) || (res == ERROR_UNSUPPORTED_TYPE)) {
     return std::unique_ptr<BYTE[]>();
   } else if ((res != ERROR_SUCCESS) && (res != ERROR_MORE_DATA)) {
@@ -57,7 +66,7 @@ std::unique_ptr<BYTE[]> GameGamebryo::getRegValue(HKEY key, LPCWSTR subKey, LPCW
   }
 
   std::unique_ptr<BYTE[]> result(new BYTE[size]);
-  res = ::RegGetValueW(key, subKey, value, flags, type, result.get(), &size);
+  res = ::RegGetValueW(subKey, L"", value, flags, type, result.get(), &size);
 
   if (res != ERROR_SUCCESS) {
     throw MOBase::MyException(QObject::tr("failed to query registry path (read): %1").arg(res, 0, 16));
