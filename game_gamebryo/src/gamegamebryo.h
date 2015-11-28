@@ -20,17 +20,28 @@ public:
 
 public: // IPluginGame interface
 
+  //initializeProfile
+  //savegameExtension
+  virtual bool isInstalled() const override;
+  //gameIcon
   virtual QDir gameDirectory() const override;
   virtual QDir dataDirectory() const override;
   virtual void setGamePath(const QString &path) override;
-  virtual QDir savesDirectory() const override;
   virtual QDir documentsDirectory() const override;
-
-  virtual bool isInstalled() const override;
-
+  virtual QDir savesDirectory() const override;
+  //executables
+  //steamAPPId
+  //getPrimaryPlugins
   virtual QStringList gameVariants() const override;
   virtual void setGameVariant(const QString &variant) override;
+  virtual QString getBinaryName() const override;
+  //getGameShortName
+  //getIniFiles
+  //getDLCPlugins
   virtual LoadOrderMechanism getLoadOrderMechanism() const override;
+  //getNexusModOrganizerID
+  //getNexusGameID
+  virtual bool looksValid(QDir const &) const override;
 
 protected:
 
@@ -43,6 +54,7 @@ protected:
   //Arguably this shouldn't really be here but every gamebryo program seems to use it
   QString getLootPath() const;
   QString selectedVariant() const;
+  virtual QString getLauncherName() const;
 
 private:
 
