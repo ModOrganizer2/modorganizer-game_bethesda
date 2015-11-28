@@ -19,7 +19,7 @@ bool GameOblivion::init(IOrganizer *moInfo)
   if (!GameGamebryo::init(moInfo)) {
     return false;
   }
-  m_ScriptExtender = std::shared_ptr<ScriptExtender>(new OblivionScriptExtender());
+  m_ScriptExtender = std::shared_ptr<ScriptExtender>(new OblivionScriptExtender(this));
   m_DataArchives = std::shared_ptr<DataArchives>(new OblivionDataArchives());
   m_BSAInvalidation = std::shared_ptr<BSAInvalidation>(new OblivionBSAInvalidation(m_DataArchives, this));
   return true;
@@ -56,7 +56,7 @@ QString GameOblivion::myGamesFolderName() const
 QList<ExecutableInfo> GameOblivion::executables() const
 {
   return QList<ExecutableInfo>()
-      << ExecutableInfo("OBSE", findInGameFolder("obse_loader.exe"))
+      << ExecutableInfo("OBSE", findInGameFolder(m_ScriptExtender->loaderName()))
       << ExecutableInfo("Oblivion", findInGameFolder(getBinaryName()))
       << ExecutableInfo("Oblivion Launcher", findInGameFolder(getLauncherName()))
       << ExecutableInfo("Oblivion Mod Manager", findInGameFolder("OblivionModManager.exe"))
@@ -143,11 +143,6 @@ QString GameOblivion::steamAPPId() const
 QStringList GameOblivion::getPrimaryPlugins() const
 {
   return { "oblivion.esm", "update.esm" };
-}
-
-QIcon GameOblivion::gameIcon() const
-{
-  return MOBase::iconForExecutable(gameDirectory().absoluteFilePath(getBinaryName()));
 }
 
 std::map<std::type_index, boost::any> GameOblivion::featureList() const
