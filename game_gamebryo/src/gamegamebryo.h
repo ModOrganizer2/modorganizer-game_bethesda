@@ -23,7 +23,7 @@ public: // IPluginGame interface
   //initializeProfile
   //savegameExtension
   virtual bool isInstalled() const override;
-  //gameIcon
+  virtual QIcon gameIcon() const override;
   virtual QDir gameDirectory() const override;
   virtual QDir dataDirectory() const override;
   virtual void setGamePath(const QString &path) override;
