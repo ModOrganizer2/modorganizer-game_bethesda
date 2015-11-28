@@ -67,7 +67,7 @@ QList<ExecutableInfo> GameSkyrim::executables() const
       << ExecutableInfo("SKSE", findInGameFolder("skse_loader.exe"))
       << ExecutableInfo("SBW", findInGameFolder("SBW.exe"))
       << ExecutableInfo("Skyrim", findInGameFolder(getBinaryName()))
-      << ExecutableInfo("Skyrim Launcher", findInGameFolder("SkyrimLauncher.exe"))
+      << ExecutableInfo("Skyrim Launcher", findInGameFolder(getLauncherName()))
       << ExecutableInfo("BOSS", findInGameFolder("BOSS/BOSS.exe"))
       << ExecutableInfo("LOOT", getLootPath())
       << ExecutableInfo("Creation Kit", findInGameFolder("CreationKit.exe")).withSteamAppId("202480")
