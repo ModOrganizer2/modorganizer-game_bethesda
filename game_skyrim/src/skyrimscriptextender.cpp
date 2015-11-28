@@ -3,14 +3,14 @@
 #include <QString>
 #include <QStringList>
 
+SkyrimScriptExtender::SkyrimScriptExtender(GameGamebryo const *game) :
+  GamebryoScriptExtender(game)
+{
+}
+
 QString SkyrimScriptExtender::name() const
 {
   return "skse";
-}
-
-QString SkyrimScriptExtender::loaderName() const
-{
-  return name() + "_loader.exe";
 }
 
 QStringList SkyrimScriptExtender::saveGameAttachmentExtensions() const
