@@ -3,14 +3,14 @@
 #include <QString>
 #include <QStringList>
 
+OblivionScriptExtender::OblivionScriptExtender(GameGamebryo const *game) :
+  GamebryoScriptExtender(game)
+{
+}
+
 QString OblivionScriptExtender::name() const
 {
   return "obse";
-}
-
-QString OblivionScriptExtender::loaderName() const
-{
-  return name() + "_loader.exe";
 }
 
 QStringList OblivionScriptExtender::saveGameAttachmentExtensions() const
