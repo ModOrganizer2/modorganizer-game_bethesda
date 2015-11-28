@@ -2,15 +2,14 @@
 #define FALLOUT3SCRIPTEXTENDER_H
 
 
-#include <scriptextender.h>
+#include "gamebryoscriptextender.h"
 
-
-class Fallout3ScriptExtender : public ScriptExtender
+class Fallout3ScriptExtender : public GamebryoScriptExtender
 {
 public:
-  virtual QString name() const override;
+  Fallout3ScriptExtender(GameGamebryo const *game);
 
-  virtual QString loaderName() const override;
+  virtual QString name() const override;
 
   virtual QStringList saveGameAttachmentExtensions() const override;
 
