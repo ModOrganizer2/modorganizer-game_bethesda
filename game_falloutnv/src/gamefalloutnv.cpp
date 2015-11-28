@@ -22,7 +22,7 @@ bool GameFalloutNV::init(IOrganizer *moInfo)
   if (!GameGamebryo::init(moInfo)) {
     return false;
   }
-  m_ScriptExtender = std::shared_ptr<ScriptExtender>(new FalloutNVScriptExtender());
+  m_ScriptExtender = std::shared_ptr<ScriptExtender>(new FalloutNVScriptExtender(this));
   m_DataArchives = std::shared_ptr<DataArchives>(new FalloutNVDataArchives());
   m_BSAInvalidation = std::shared_ptr<BSAInvalidation>(new FalloutNVBSAInvalidation(m_DataArchives, this));
   return true;
@@ -57,7 +57,7 @@ QString GameFalloutNV::myGamesFolderName() const
 QList<ExecutableInfo> GameFalloutNV::executables() const
 {
   return QList<ExecutableInfo>()
-      << ExecutableInfo("NVSE", findInGameFolder("nvse_loader.exe"))
+      << ExecutableInfo("NVSE", findInGameFolder(m_ScriptExtender->loaderName()))
       << ExecutableInfo("New Vegas", findInGameFolder(getBinaryName()))
       << ExecutableInfo("Fallout Mod Manager", findInGameFolder("fomm/fomm.exe"))
       << ExecutableInfo("Construction Kit", findInGameFolder("geck.exe"))
@@ -144,11 +144,6 @@ QString GameFalloutNV::steamAPPId() const
 QStringList GameFalloutNV::getPrimaryPlugins() const
 {
   return { "falloutnv.esm" };
-}
-
-QIcon GameFalloutNV::gameIcon() const
-{
-  return MOBase::iconForExecutable(gameDirectory().absoluteFilePath(getBinaryName()));
 }
 
 std::map<std::type_index, boost::any> GameFalloutNV::featureList() const
