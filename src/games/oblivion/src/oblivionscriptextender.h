@@ -9,6 +9,11 @@ class OblivionScriptExtender : public ScriptExtender
 {
 public:
   virtual QString name() const override;
+
+  virtual QString loaderName() const override;
+
+  virtual QStringList saveGameAttachmentExtensions() const override;
+
 };
 
 #endif // OBLIVIONSCRIPTEXTENDER_H
