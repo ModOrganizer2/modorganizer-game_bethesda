@@ -24,6 +24,11 @@ bool GameGamebryo::isInstalled() const
   return !m_GamePath.isEmpty();
 }
 
+QIcon GameGamebryo::gameIcon() const
+{
+  return MOBase::iconForExecutable(gameDirectory().absoluteFilePath(getBinaryName()));
+}
+
 QDir GameGamebryo::gameDirectory() const
 {
   return QDir(m_GamePath);
