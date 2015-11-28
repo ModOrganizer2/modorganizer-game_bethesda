@@ -27,7 +27,7 @@ bool GameSkyrim::init(IOrganizer *moInfo)
   if (!GameGamebryo::init(moInfo)) {
     return false;
   }
-  m_ScriptExtender = std::shared_ptr<ScriptExtender>(new SkyrimScriptExtender());
+  m_ScriptExtender = std::shared_ptr<ScriptExtender>(new SkyrimScriptExtender(this));
   m_DataArchives = std::shared_ptr<DataArchives>(new SkyrimDataArchives());
   m_BSAInvalidation = std::shared_ptr<BSAInvalidation>(new SkyrimBSAInvalidation(m_DataArchives, this));
   return true;
@@ -64,7 +64,7 @@ QString GameSkyrim::myGamesFolderName() const
 QList<ExecutableInfo> GameSkyrim::executables() const
 {
   return QList<ExecutableInfo>()
-      << ExecutableInfo("SKSE", findInGameFolder("skse_loader.exe"))
+      << ExecutableInfo("SKSE", findInGameFolder(m_ScriptExtender->loaderName()))
       << ExecutableInfo("SBW", findInGameFolder("SBW.exe"))
       << ExecutableInfo("Skyrim", findInGameFolder(getBinaryName()))
       << ExecutableInfo("Skyrim Launcher", findInGameFolder(getLauncherName()))
@@ -151,11 +151,6 @@ QString GameSkyrim::steamAPPId() const
 QStringList GameSkyrim::getPrimaryPlugins() const
 {
   return { "skyrim.esm", "update.esm" };
-}
-
-QIcon GameSkyrim::gameIcon() const
-{
-  return MOBase::iconForExecutable(gameDirectory().absoluteFilePath(getBinaryName()));
 }
 
 std::map<std::type_index, boost::any> GameSkyrim::featureList() const
