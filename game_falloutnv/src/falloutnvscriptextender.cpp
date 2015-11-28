@@ -3,14 +3,14 @@
 #include <QString>
 #include <QStringList>
 
+FalloutNVScriptExtender::FalloutNVScriptExtender(GameGamebryo const *game) :
+  GamebryoScriptExtender(game)
+{
+}
+
 QString FalloutNVScriptExtender::name() const
 {
   return "nvse";
-}
-
-QString FalloutNVScriptExtender::loaderName() const
-{
-  return name() + "_loader.exe";
 }
 
 QStringList FalloutNVScriptExtender::saveGameAttachmentExtensions() const

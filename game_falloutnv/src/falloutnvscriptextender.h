@@ -1,16 +1,14 @@
 #ifndef FALLOUTNVSCRIPTEXTENDER_H
 #define FALLOUTNVSCRIPTEXTENDER_H
 
+#include "gamebryoscriptextender.h"
 
-#include <scriptextender.h>
-
-
-class FalloutNVScriptExtender : public ScriptExtender
+class FalloutNVScriptExtender : public GamebryoScriptExtender
 {
 public:
-  virtual QString name() const override;
+  FalloutNVScriptExtender(const GameGamebryo *game);
 
-  virtual QString loaderName() const override;
+  virtual QString name() const override;
 
   virtual QStringList saveGameAttachmentExtensions() const override;
 
