@@ -61,7 +61,7 @@ QList<ExecutableInfo> GameFalloutNV::executables() const
       << ExecutableInfo("New Vegas", findInGameFolder(getBinaryName()))
       << ExecutableInfo("Fallout Mod Manager", findInGameFolder("fomm/fomm.exe"))
       << ExecutableInfo("Construction Kit", findInGameFolder("geck.exe"))
-      << ExecutableInfo("Fallout Launcher", findInGameFolder("FalloutNVLauncher.exe"))
+      << ExecutableInfo("Fallout Launcher", findInGameFolder(getLauncherName()))
       << ExecutableInfo("BOSS", findInGameFolder("BOSS/BOSS.exe"))
       << ExecutableInfo("LOOT", getLootPath())
          ;
@@ -160,11 +160,6 @@ std::map<std::type_index, boost::any> GameFalloutNV::featureList() const
   };
 
   return result;
-}
-
-QString GameFalloutNV::getBinaryName() const
-{
-  return "FalloutNV.exe";
 }
 
 QString GameFalloutNV::getGameShortName() const
