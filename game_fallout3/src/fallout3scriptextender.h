@@ -9,6 +9,11 @@ class Fallout3ScriptExtender : public ScriptExtender
 {
 public:
   virtual QString name() const override;
+
+  virtual QString loaderName() const override;
+
+  virtual QStringList saveGameAttachmentExtensions() const override;
+
 };
 
 #endif // FALLOUT3SCRIPTEXTENDER_H
