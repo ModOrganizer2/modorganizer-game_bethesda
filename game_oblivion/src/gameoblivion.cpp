@@ -58,7 +58,7 @@ QList<ExecutableInfo> GameOblivion::executables() const
   return QList<ExecutableInfo>()
       << ExecutableInfo("OBSE", findInGameFolder("obse_loader.exe"))
       << ExecutableInfo("Oblivion", findInGameFolder(getBinaryName()))
-      << ExecutableInfo("Oblivion Launcher", findInGameFolder("OblivionLauncher.exe"))
+      << ExecutableInfo("Oblivion Launcher", findInGameFolder(getLauncherName()))
       << ExecutableInfo("Oblivion Mod Manager", findInGameFolder("OblivionModManager.exe"))
       << ExecutableInfo("BOSS", findInGameFolder("BOSS/BOSS.exe"))
       << ExecutableInfo("LOOT", getLootPath())
@@ -159,11 +159,6 @@ std::map<std::type_index, boost::any> GameOblivion::featureList() const
   };
 
   return result;
-}
-
-QString GameOblivion::getBinaryName() const
-{
-  return "Oblivion.exe";
 }
 
 QString GameOblivion::getGameShortName() const
