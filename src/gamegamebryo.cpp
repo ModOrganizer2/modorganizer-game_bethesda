@@ -19,6 +19,11 @@ bool GameGamebryo::init(MOBase::IOrganizer *moInfo)
   return true;
 }
 
+bool GameGamebryo::isInstalled() const
+{
+  return !m_GamePath.isEmpty();
+}
+
 QDir GameGamebryo::gameDirectory() const
 {
   return QDir(m_GamePath);
@@ -34,19 +39,45 @@ void GameGamebryo::setGamePath(const QString &path)
   m_GamePath = path;
 }
 
-QDir GameGamebryo::savesDirectory() const
-{
-  return QDir(m_MyGamesPath + "/Saves");
-}
-
 QDir GameGamebryo::documentsDirectory() const
 {
   return m_MyGamesPath;
 }
 
-bool GameGamebryo::isInstalled() const
+QDir GameGamebryo::savesDirectory() const
 {
-  return !m_GamePath.isEmpty();
+  return QDir(m_MyGamesPath + "/Saves");
+}
+
+QStringList GameGamebryo::gameVariants() const
+{
+  return QStringList();
+}
+
+void GameGamebryo::setGameVariant(const QString &variant)
+{
+  m_GameVariant = variant;
+}
+
+QString GameGamebryo::getBinaryName() const
+{
+  return getGameShortName() + ".exe";
+}
+
+MOBase::IPluginGame::LoadOrderMechanism GameGamebryo::getLoadOrderMechanism() const
+{
+  return LoadOrderMechanism::FileTime;
+}
+
+bool GameGamebryo::looksValid(QDir const &path) const
+{
+  //Check for <prog>.exe and <gamename>Launcher.exe for now.
+  return path.exists(getBinaryName()) && path.exists(getLauncherName());
+}
+
+QString GameGamebryo::getLauncherName() const
+{
+  return getGameShortName() + "Launcher.exe";
 }
 
 std::unique_ptr<BYTE[]> GameGamebryo::getRegValue(HKEY key, LPCWSTR path,
@@ -155,18 +186,3 @@ QString GameGamebryo::getLootPath() const
   return findInRegistry(HKEY_LOCAL_MACHINE, L"Software\\LOOT", L"Installed Path") + "/Loot.exe";
 }
 
-
-QStringList GameGamebryo::gameVariants() const
-{
-  return QStringList();
-}
-
-void GameGamebryo::setGameVariant(const QString &variant)
-{
-  m_GameVariant = variant;
-}
-
-MOBase::IPluginGame::LoadOrderMechanism GameGamebryo::getLoadOrderMechanism() const
-{
-  return LoadOrderMechanism::FileTime;
-}
