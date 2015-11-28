@@ -159,7 +159,22 @@ QStringList GameGamebryo::gameVariants() const
   return QStringList();
 }
 
+
 void GameGamebryo::setGameVariant(const QString &variant)
 {
   m_GameVariant = variant;
+}
+
+
+MappingType GameGamebryo::mappings() const
+{
+  MappingType result;
+
+  for (const QString &profileFile : { "plugins.txt", "loadorder.txt" }) {
+    result.push_back({ m_Organizer->profilePath() + "/" + profileFile,
+                       m_MyGamesPath + "/" + profileFile,
+                       false });
+  }
+
+  return result;
 }

@@ -3,14 +3,16 @@
 
 
 #include <iplugingame.h>
+#include <ipluginfilemapper.h>
 #include <memory>
 #include <ShlObj.h>
 
 
-class GameGamebryo : public MOBase::IPluginGame
+class GameGamebryo : public MOBase::IPluginGame,
+                     public MOBase::IPluginFileMapper
 {
   Q_OBJECT
-  Q_INTERFACES(MOBase::IPlugin MOBase::IPluginGame)
+  Q_INTERFACES(MOBase::IPlugin MOBase::IPluginGame MOBase::IPluginFileMapper)
 
 public:
 
@@ -30,6 +32,10 @@ public: // IPluginGame interface
 
   virtual QStringList gameVariants() const;
   virtual void setGameVariant(const QString &variant);
+
+public: // IPluginFileMapper interface
+
+  virtual MappingType mappings() const;
 
 protected:
 
