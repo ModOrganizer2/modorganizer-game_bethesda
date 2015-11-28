@@ -23,7 +23,7 @@ bool GameFallout3::init(IOrganizer *moInfo)
   if (!GameGamebryo::init(moInfo)) {
     return false;
   }
-  m_ScriptExtender = std::shared_ptr<ScriptExtender>(new Fallout3ScriptExtender());
+  m_ScriptExtender = std::shared_ptr<ScriptExtender>(new Fallout3ScriptExtender(this));
   m_DataArchives = std::shared_ptr<DataArchives>(new Fallout3DataArchives());
   m_BSAInvalidation = std::shared_ptr<BSAInvalidation>(new Fallout3BSAInvalidation(m_DataArchives, this));
   return true;
@@ -58,7 +58,7 @@ QString GameFallout3::myGamesFolderName() const
 QList<ExecutableInfo> GameFallout3::executables() const
 {
   return QList<ExecutableInfo>()
-      << ExecutableInfo("FOSE", findInGameFolder("fose_loader.exe"))
+      << ExecutableInfo("FOSE", findInGameFolder(m_ScriptExtender->loaderName()))
       << ExecutableInfo("Fallout 3", findInGameFolder(getBinaryName()))
       << ExecutableInfo("Fallout Mod Manager", findInGameFolder("fomm/fomm.exe"))
       << ExecutableInfo("Construction Kit", findInGameFolder("geck.exe"))
@@ -147,11 +147,6 @@ QString GameFallout3::steamAPPId() const
 QStringList GameFallout3::getPrimaryPlugins() const
 {
   return { "fallout3.esm" };
-}
-
-QIcon GameFallout3::gameIcon() const
-{
-  return MOBase::iconForExecutable(gameDirectory().absoluteFilePath(getBinaryName()));
 }
 
 std::map<std::type_index, boost::any> GameFallout3::featureList() const
