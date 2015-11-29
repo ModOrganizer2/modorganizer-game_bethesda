@@ -25,4 +25,5 @@ include(../plugin_template.pri)
 INCLUDEPATH +=  "$${BOOSTPATH}" "$${PWD}/../gamefeatures"
 
 OTHER_FILES +=\
-    SConscript
+    SConscript \
+    CMakeLists.txt
