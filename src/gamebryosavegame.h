@@ -8,8 +8,9 @@
 #include <QString>
 #include <QStringList>
 
-//class QFile;
 #include <QFile>
+
+struct _SYSTEMTIME;
 
 class GamebryoSaveGame : public MOBase::ISaveGame
 {
@@ -21,6 +22,8 @@ public:
   virtual QString getFilename() const override;
 
   virtual QDateTime getCreationTime() const override;
+
+  virtual QString getIdentifier() const override;
 
   //Simple getters
   QString getPCName() const { return m_PCName; }
@@ -74,7 +77,19 @@ protected:
 
     void read(void *buff, std::size_t length);
 
+    /* Reads RGB image from save
+     * Assumes picture dimentions come immediately before the save
+     */
+    void readImage(int scale = 0);
+
+    /* Reads RGB image from save */
+    void readImage(unsigned long width, unsigned long height, int scale = 0);
+
+    /* Read the plugin list */
     void readPlugins();
+
+    /* Set the creation time from a system date */
+    void setCreationTime(::_SYSTEMTIME const &);
 
   private:
     GamebryoSaveGame *m_Game;
@@ -83,23 +98,7 @@ protected:
     std::size_t m_Length;
   };
 
-
-  template <typename T> void FileRead(QFile &file, T &value)
-  {
-    int read = file.read(reinterpret_cast<char*>(&value), sizeof(T));
-    if (read != sizeof(T)) {
-      throw std::runtime_error("unexpected end of file");
-    }
-  }
-
-  template <typename T> void FileSkip(QFile &file, int count = 1)
-  {
-    if (!file.seek(file.pos() + count * sizeof(T))) {
-      throw std::runtime_error("unexpected end of file");
-    }
-  }
-
-  void readHeader(QFile &file, QString const &expected);
+  void setCreationTime(_SYSTEMTIME const &time);
 
   QString m_FileName;
   QString m_PCName;
