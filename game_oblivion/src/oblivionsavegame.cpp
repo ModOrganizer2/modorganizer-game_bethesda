@@ -6,18 +6,15 @@ OblivionSaveGame::OblivionSaveGame(const QString &game) :
   GamebryoSaveGame(game)
 {
   FileWrapper file(this, "TES4SAVEGAME");
-  file.setStringLength(1);
+  file.setBZString(true);
 
-  file.skip<unsigned char>();
+  file.skip<unsigned char>(); //Major version
+  file.skip<unsigned char>(); //Minor version
 
-  //Hmm. We could probably just skip all of these
-  unsigned char version_minor;
-  file.read(version_minor);
-  file.skip<SYSTEMTIME>();
-  unsigned long headerVersion;
-  file.read(headerVersion);
-  unsigned long saveHeaderSize;
-  file.read(saveHeaderSize);
+  file.skip<SYSTEMTIME>();  // exe last modified (!)
+
+  file.skip<unsigned long>(); //Header version
+  file.skip<unsigned long>(); //Header size
 
   file.read(m_SaveNumber);
 
@@ -30,12 +27,15 @@ OblivionSaveGame::OblivionSaveGame(const QString &game) :
 
   //there is a save time stored here. So use it rather than the file time, which
   //could have been copied.
+  //Note: This says it uses getlocaltime api to obtain it which is u/s - if so
+  //we should ignore this.
   SYSTEMTIME ctime;
   file.read(ctime);
   setCreationTime(ctime);
 
-  unsigned long size;
-  file.read(size);
+  //Note that screenshot size, width, height and data are apparently the same
+  //structure
+  file.skip<unsigned long>(); //Screenshot size.
 
   file.readImage();
 
