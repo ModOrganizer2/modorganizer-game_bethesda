@@ -191,3 +191,15 @@ QString GameGamebryo::getLootPath() const
   return findInRegistry(HKEY_LOCAL_MACHINE, L"Software\\LOOT", L"Installed Path") + "/Loot.exe";
 }
 
+std::map<std::type_index, boost::any> GameGamebryo::featureList() const
+{
+  static std::map<std::type_index, boost::any> result {
+    { typeid(BSAInvalidation), m_BSAInvalidation.get() },
+    { typeid(ScriptExtender), m_ScriptExtender.get() },
+    { typeid(DataArchives), m_DataArchives.get() },
+    { typeid(SaveGameInfo), m_SaveGameInfo.get() }
+  };
+
+  return result;
+}
+

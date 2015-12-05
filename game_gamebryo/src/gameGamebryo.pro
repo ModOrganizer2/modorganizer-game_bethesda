@@ -12,13 +12,15 @@ SOURCES += gamegamebryo.cpp \
     dummybsa.cpp \
     gamebryobsainvalidation.cpp \
     gamebryodataarchives.cpp \
-    gamebryoscriptextender.cpp
+    gamebryoscriptextender.cpp \
+    gamebryosavegame.cpp
 
 HEADERS += gamegamebryo.h \
     dummybsa.h \
     gamebryobsainvalidation.h \
     gamebryodataarchives.h \
-    gamebryoscriptextender.h
+    gamebryoscriptextender.h \
+    gamebryosavegame.h
 
 include(../plugin_template.pri)
 

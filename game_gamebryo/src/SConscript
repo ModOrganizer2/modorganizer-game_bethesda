@@ -1,5 +1,7 @@
 import os
 
+print 'calling gamebro sconscript'
+
 Import('qt_env')
 
 env = qt_env.Clone()
