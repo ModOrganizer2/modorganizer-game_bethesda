@@ -1,4 +1,10 @@
 #include "gameoblivion.h"
+
+#include "oblivionbsainvalidation.h"
+#include "obliviondataarchives.h"
+#include "oblivionsavegameinfo.h"
+#include "oblivionscriptextender.h"
+
 #include <scopeguard.h>
 #include <pluginsetting.h>
 #include <executableinfo.h>
@@ -22,6 +28,7 @@ bool GameOblivion::init(IOrganizer *moInfo)
   m_ScriptExtender = std::shared_ptr<ScriptExtender>(new OblivionScriptExtender(this));
   m_DataArchives = std::shared_ptr<DataArchives>(new OblivionDataArchives());
   m_BSAInvalidation = std::shared_ptr<BSAInvalidation>(new OblivionBSAInvalidation(m_DataArchives, this));
+  m_SaveGameInfo = std::shared_ptr<SaveGameInfo>(new OblivionSaveGameInfo());
   return true;
 }
 
@@ -143,17 +150,6 @@ QString GameOblivion::steamAPPId() const
 QStringList GameOblivion::getPrimaryPlugins() const
 {
   return { "oblivion.esm", "update.esm" };
-}
-
-std::map<std::type_index, boost::any> GameOblivion::featureList() const
-{
-  static std::map<std::type_index, boost::any> result {
-    { typeid(BSAInvalidation), m_BSAInvalidation.get() },
-    { typeid(ScriptExtender), m_ScriptExtender.get() },
-    { typeid(DataArchives), m_DataArchives.get() }
-  };
-
-  return result;
 }
 
 QString GameOblivion::getGameShortName() const
