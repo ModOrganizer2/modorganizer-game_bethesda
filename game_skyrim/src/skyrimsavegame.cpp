@@ -1,11 +1,13 @@
 #include "skyrimsavegame.h"
 
+#include <Windows.h>
+
 SkyrimSaveGame::SkyrimSaveGame(QString const &fileName) :
   GamebryoSaveGame(fileName)
 {
   FileWrapper file(this, "TESV_SAVEGAME");
   file.skip<unsigned long>(); // header size
-  file.skip<unsigned long>(); // header version, -> 8
+  file.skip<unsigned long>(); // header version
   file.read(m_SaveNumber);
 
   file.read(m_PCName);
@@ -16,26 +18,26 @@ SkyrimSaveGame::SkyrimSaveGame(QString const &fileName) :
 
   file.read(m_PCLocation);
 
-  QString playTime;
-  file.read(playTime);
+  QString timeOfDay;
+  file.read(timeOfDay);
 
   QString race;
   file.read(race); // race name (i.e. BretonRace)
 
-  file.skip<unsigned short>(); // ???
-  file.skip<float>(2); // ???
-  //FIXME If this is a system time read it and use it as the creation time
-  file.skip<unsigned char>(8); // filetime
+  file.skip<unsigned short>(); // Player gender (0 = male)
+  file.skip<float>(2); // experience gathered, experience required
 
-  unsigned long width, height;
-  file.read(width); // 320
-  file.read(height); // 192
+  FILETIME ftime;
+  file.read(ftime);
+  //A file time is a 64-bit value that represents the number of 100-nanosecond
+  //intervals that have elapsed since 12:00 A.M. January 1, 1601 Coordinated Universal Time (UTC).
+  //So we need to convert that to something useful
+  SYSTEMTIME ctime;
+  ::FileTimeToSystemTime(&ftime, &ctime);
 
-  QScopedArrayPointer<unsigned char> buffer(new unsigned char[width * height * 3]);
-  file.read(buffer.data(), width * height * 3);
-  // why do I have to copy here? without the copy, the buffer seems to get deleted after the
-  // temporary vanishes, but Qts implicit sharing should handle that?
-  m_Screenshot = QImage(buffer.data(), width, height, QImage::Format_RGB888).copy();
+  setCreationTime(ctime);
+
+  file.readImage();
 
   file.skip<unsigned char>(); // form version
   file.skip<unsigned long>(); // plugin info size
