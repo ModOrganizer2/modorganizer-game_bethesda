@@ -42,12 +42,7 @@ FalloutNVSaveGame::FalloutNVSaveGame(QString const &fileName) :
   QString playtime;
   file.read(playtime);
 
-  //Abstract this
-  QScopedArrayPointer<unsigned char> buffer(new unsigned char[width * height * 3]);
-  file.read(buffer.data(), width * height * 3);
-  // why do I have to copy here? without the copy, the buffer seems to get deleted after the
-  // temporary vanishes, but Qts implicit sharing should handle that?
-  m_Screenshot = QImage(buffer.data(), width, height, QImage::Format_RGB888).scaledToWidth(256);
+  file.readImage(width, height, 256);
 
   file.skip<char>(5); // unknown
 
