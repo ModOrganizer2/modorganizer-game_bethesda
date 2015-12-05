@@ -8,6 +8,10 @@ OblivionScriptExtender::OblivionScriptExtender(GameGamebryo const *game) :
 {
 }
 
+OblivionScriptExtender::~OblivionScriptExtender()
+{
+}
+
 QString OblivionScriptExtender::name() const
 {
   return "obse";

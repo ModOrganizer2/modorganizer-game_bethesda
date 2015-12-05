@@ -7,6 +7,7 @@ class OblivionScriptExtender : public GamebryoScriptExtender
 {
 public:
   OblivionScriptExtender(const GameGamebryo *game);
+  ~OblivionScriptExtender();
 
   virtual QString name() const override;
 
