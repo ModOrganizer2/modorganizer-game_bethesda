@@ -28,23 +28,16 @@ OblivionSaveGame::OblivionSaveGame(const QString &game) :
   file.skip<float>(); //game days
   file.skip<unsigned long>(); //game ticks
 
+  //there is a save time stored here. So use it rather than the file time, which
+  //could have been copied.
   SYSTEMTIME ctime;
   file.read(ctime);
-  //FIXME update creation time with this
+  setCreationTime(ctime);
 
   unsigned long size;
   file.read(size);
 
-  unsigned long width;
-  file.read(width);
-  unsigned long height;
-  file.read(height);
-
-  QScopedArrayPointer<unsigned char> buffer(new unsigned char[width * height * 3]);
-  file.read(buffer.data(), width * height * 3);
-  // why do I have to copy here? without the copy, the buffer seems to get deleted after the
-  // temporary vanishes, but Qts implicit sharing should handle that?
-  m_Screenshot = QImage(buffer.data(), width, height, QImage::Format_RGB888).copy();
+  file.readImage();
 
   file.readPlugins();
 }
