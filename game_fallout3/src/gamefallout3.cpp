@@ -1,5 +1,10 @@
 #include "gameFallout3.h"
 
+#include "fallout3bsainvalidation.h"
+#include "fallout3scriptextender.h"
+#include "fallout3dataarchives.h"
+#include "fallout3savegameinfo.h"
+
 #include <scopeguard.h>
 #include <pluginsetting.h>
 #include <executableinfo.h>
@@ -26,6 +31,7 @@ bool GameFallout3::init(IOrganizer *moInfo)
   m_ScriptExtender = std::shared_ptr<ScriptExtender>(new Fallout3ScriptExtender(this));
   m_DataArchives = std::shared_ptr<DataArchives>(new Fallout3DataArchives());
   m_BSAInvalidation = std::shared_ptr<BSAInvalidation>(new Fallout3BSAInvalidation(m_DataArchives, this));
+  m_SaveGameInfo = std::shared_ptr<SaveGameInfo>(new Fallout3SaveGameInfo());
   return true;
 }
 
@@ -147,17 +153,6 @@ QString GameFallout3::steamAPPId() const
 QStringList GameFallout3::getPrimaryPlugins() const
 {
   return { "fallout3.esm" };
-}
-
-std::map<std::type_index, boost::any> GameFallout3::featureList() const
-{
-  static std::map<std::type_index, boost::any> result {
-    { typeid(BSAInvalidation), m_BSAInvalidation.get() },
-    { typeid(ScriptExtender), m_ScriptExtender.get() },
-    { typeid(DataArchives), m_DataArchives.get() }
-  };
-
-  return result;
 }
 
 

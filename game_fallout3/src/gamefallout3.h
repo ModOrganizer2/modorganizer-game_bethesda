@@ -1,13 +1,7 @@
 #ifndef GAMEFALLOUT3_H
 #define GAMEFALLOUT3_H
 
-
-#include "fallout3bsainvalidation.h"
-#include "fallout3scriptextender.h"
-#include "fallout3dataarchives.h"
-#include <gamegamebryo.h>
-#include <QFileInfo>
-
+#include "gamegamebryo.h"
 
 class GameFallout3 : public GameGamebryo
 {
@@ -46,10 +40,6 @@ public: // IPlugin interface
   virtual bool isActive() const;
   virtual QList<MOBase::PluginSetting> settings() const;
 
-protected:
-
-  virtual std::map<std::type_index, boost::any> featureList() const override;
-
 private:
 
   virtual QString identifyGamePath() const override;
@@ -58,12 +48,6 @@ private:
   QString localAppFolder() const;
   void copyToProfile(const QString &sourcePath, const QDir &destinationDirectory,
                      const QString &sourceFileName, const QString &destinationFileName = QString()) const;
-
-private:
-
-  std::shared_ptr<ScriptExtender> m_ScriptExtender { nullptr };
-  std::shared_ptr<DataArchives> m_DataArchives { nullptr };
-  std::shared_ptr<BSAInvalidation> m_BSAInvalidation { nullptr };
 
 };
 

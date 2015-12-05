@@ -1,5 +1,8 @@
 #include "fallout3dataarchives.h"
+
+#include "iprofile.h"
 #include <utility.h>
+
 #include <QDir>
 
 
