@@ -3,6 +3,8 @@
 #include <QFile>
 #include <QFileInfo>
 
+#include "Windows.h"
+
 #include <stdexcept>
 #include <vector>
 
@@ -26,29 +28,27 @@ QDateTime GamebryoSaveGame::getCreationTime() const
   return m_CreationTime;
 }
 
-void GamebryoSaveGame::readHeader(QFile &file, const QString &expected)
+QString GamebryoSaveGame::getIdentifier() const
 {
-  file.setFileName(m_FileName);
-  if (!file.open(QIODevice::ReadOnly)) {
-    throw std::runtime_error(QObject::tr("failed to open %1").arg(m_FileName).toUtf8().constData());
-  }
+  return m_PCName;
+}
 
-  std::vector<char> fileID(expected.length() + 1);
-  file.read(fileID.data(), expected.length());
-  fileID[expected.length()] = '\0';
+void GamebryoSaveGame::setCreationTime(_SYSTEMTIME const &ctime)
+{
+  QDate date;
+  date.setDate(ctime.wYear, ctime.wMonth, ctime.wDay);
+  QTime time;
+  time.setHMS(ctime.wHour, ctime.wMinute, ctime.wSecond, ctime.wMilliseconds);
 
-  QString id(fileID.data());
-  if (expected != id) {
-    throw std::runtime_error(
-          QObject::tr("wrong file format - expected %1 got %2").arg(expected).arg(id).toUtf8().constData());
-  }
+  m_CreationTime = QDateTime(date, time, Qt::UTC);
 }
 
 GamebryoSaveGame::FileWrapper::FileWrapper(GamebryoSaveGame *game,
                                            QString const &expected) :
   m_Game(game),
   m_File(game->m_FileName),
-  m_HasFieldMarkers(false)
+  m_HasFieldMarkers(false),
+  m_Length(2)
 {
   if (!m_File.open(QIODevice::ReadOnly)) {
     throw std::runtime_error(QObject::tr("failed to open %1").arg(game->m_FileName).toUtf8().constData());
@@ -100,6 +100,29 @@ void GamebryoSaveGame::FileWrapper::read(void *buff, std::size_t length)
   int read = m_File.read(static_cast<char *>(buff), length);
   if (read != length) {
     throw std::runtime_error("unexpected end of file");
+  }
+}
+
+void GamebryoSaveGame::FileWrapper::readImage(int scale)
+{
+  unsigned long width;
+  read(width);
+  unsigned long height;
+  read(height);
+  readImage(width, height, scale);
+}
+
+void GamebryoSaveGame::FileWrapper::readImage(unsigned long width, unsigned long height, int scale)
+{
+  QScopedArrayPointer<unsigned char> buffer(new unsigned char[width * height * 3]);
+  read(buffer.data(), width * height * 3);
+  QImage image(buffer.data(), width, height, QImage::Format_RGB888);
+  if (scale) {
+    m_Game->m_Screenshot = image.scaledToWidth(scale);
+  } else {
+    // why do I have to copy here? without the copy, the buffer seems to get deleted after the
+    // temporary vanishes, but Qts implicit sharing should handle that?
+    m_Game->m_Screenshot = image.copy();
   }
 }
 
