@@ -1,13 +1,7 @@
 #ifndef GAMESKYRIM_H
 #define GAMESKYRIM_H
 
-
-#include "skyrimbsainvalidation.h"
-#include "skyrimscriptextender.h"
-#include "skyrimdataarchives.h"
-#include <gamegamebryo.h>
-#include <QFileInfo>
-
+#include "gamegamebryo.h"
 
 class GameSkyrim : public GameGamebryo
 {
@@ -47,10 +41,6 @@ public: // IPlugin interface
   virtual bool isActive() const;
   virtual QList<MOBase::PluginSetting> settings() const;
 
-protected:
-
-  virtual std::map<std::type_index, boost::any> featureList() const override;
-
 private:
 
   virtual QString identifyGamePath() const override;
@@ -59,12 +49,6 @@ private:
   QString localAppFolder() const;
   void copyToProfile(const QString &sourcePath, const QDir &destinationDirectory,
                      const QString &sourceFileName, const QString &destinationFileName = QString()) const;
-
-private:
-
-  std::shared_ptr<ScriptExtender> m_ScriptExtender { nullptr };
-  std::shared_ptr<DataArchives> m_DataArchives { nullptr };
-  std::shared_ptr<BSAInvalidation> m_BSAInvalidation { nullptr };
 
 };
 

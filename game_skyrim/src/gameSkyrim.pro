@@ -15,12 +15,16 @@ DEFINES += GAMESKYRIM_LIBRARY
 SOURCES += gameskyrim.cpp \
     skyrimbsainvalidation.cpp \
     skyrimscriptextender.cpp \
-    skyrimdataarchives.cpp
+    skyrimdataarchives.cpp \
+    skyrimsavegame.cpp \
+    skyrimsavegameinfo.cpp
 
 HEADERS += gameskyrim.h \
     skyrimbsainvalidation.h \
     skyrimscriptextender.h \
-    skyrimdataarchives.h
+    skyrimdataarchives.h \
+    skyrimsavegame.h \
+    skyrimsavegameinfo.h
 
 CONFIG(debug, debug|release) {
   LIBS += -L"$${OUT_PWD}/../gameGamebryo/debug"
@@ -40,4 +44,6 @@ LIBS += -ladvapi32 -lole32 -lgameGamebryo
 
 OTHER_FILES += \
     gameskyrim.json\
-    SConscript
+    SConscript \
+    CMakeLists.txt
+

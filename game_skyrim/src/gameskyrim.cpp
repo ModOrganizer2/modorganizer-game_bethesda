@@ -1,5 +1,10 @@
 #include "gameskyrim.h"
 
+#include "skyrimbsainvalidation.h"
+#include "skyrimscriptextender.h"
+#include "skyrimdataarchives.h"
+#include "skyrimsavegameinfo.h"
+
 #include <scopeguard.h>
 #include <pluginsetting.h>
 #include <executableinfo.h>
@@ -30,6 +35,7 @@ bool GameSkyrim::init(IOrganizer *moInfo)
   m_ScriptExtender = std::shared_ptr<ScriptExtender>(new SkyrimScriptExtender(this));
   m_DataArchives = std::shared_ptr<DataArchives>(new SkyrimDataArchives());
   m_BSAInvalidation = std::shared_ptr<BSAInvalidation>(new SkyrimBSAInvalidation(m_DataArchives, this));
+  m_SaveGameInfo = std::shared_ptr<SaveGameInfo>(new SkyrimSaveGameInfo());
   return true;
 }
 
@@ -151,17 +157,6 @@ QString GameSkyrim::steamAPPId() const
 QStringList GameSkyrim::getPrimaryPlugins() const
 {
   return { "skyrim.esm", "update.esm" };
-}
-
-std::map<std::type_index, boost::any> GameSkyrim::featureList() const
-{
-  static std::map<std::type_index, boost::any> result {
-    { typeid(BSAInvalidation), m_BSAInvalidation.get() },
-    { typeid(ScriptExtender), m_ScriptExtender.get() },
-    { typeid(DataArchives), m_DataArchives.get() }
-  };
-
-  return result;
 }
 
 QString GameSkyrim::getBinaryName() const
