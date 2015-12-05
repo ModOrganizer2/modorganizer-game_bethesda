@@ -48,7 +48,7 @@ GamebryoSaveGame::FileWrapper::FileWrapper(GamebryoSaveGame *game,
   m_Game(game),
   m_File(game->m_FileName),
   m_HasFieldMarkers(false),
-  m_Length(2)
+  m_BZString(false)
 {
   if (!m_File.open(QIODevice::ReadOnly)) {
     throw std::runtime_error(QObject::tr("failed to open %1").arg(game->m_FileName).toUtf8().constData());
@@ -70,15 +70,15 @@ void GamebryoSaveGame::FileWrapper::setHasFieldMarkers(bool state)
   m_HasFieldMarkers = state;
 }
 
-void GamebryoSaveGame::FileWrapper::setStringLength(size_t len)
+void GamebryoSaveGame::FileWrapper::setBZString(bool state)
 {
-  m_Length = len;
+  m_BZString = state;
 }
 
 template <> __declspec(dllexport) void GamebryoSaveGame::FileWrapper::read(QString &value)
 {
   unsigned short length;
-  if (m_Length == 1) {
+  if (m_BZString) {
     unsigned char len;
     read(len);
     length = len;
@@ -88,6 +88,11 @@ template <> __declspec(dllexport) void GamebryoSaveGame::FileWrapper::read(QStri
   std::vector<char> buffer(length);
 
   read(buffer.data(), length);
+
+  if (m_BZString) {
+    length -= 1;
+  }
+
   if (m_HasFieldMarkers) {
     skip<char>();
   }

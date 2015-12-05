@@ -50,10 +50,9 @@ protected:
      **/
     void setHasFieldMarkers(bool);
 
-    /** The length of the string length.
-     * Normally a string has a 2 byte length. Oblivion has a single byte.
+    /** Set bz string mode (1 byte length, null terminated)
      **/
-    void setStringLength(std::size_t len);
+    void setBZString(bool);
 
     template <typename T> void skip(int count = 1)
     {
@@ -95,7 +94,7 @@ protected:
     GamebryoSaveGame *m_Game;
     QFile m_File;
     bool m_HasFieldMarkers;
-    std::size_t m_Length;
+    bool m_BZString;
   };
 
   void setCreationTime(_SYSTEMTIME const &time);
