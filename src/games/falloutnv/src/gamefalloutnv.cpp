@@ -1,5 +1,9 @@
 #include "gameFalloutNV.h"
 
+#include "falloutnvbsainvalidation.h"
+#include "falloutnvdataarchives.h"
+#include "falloutnvsavegameinfo.h"
+#include "falloutnvscriptextender.h"
 #include <scopeguard.h>
 #include <pluginsetting.h>
 #include <executableinfo.h>
@@ -25,6 +29,7 @@ bool GameFalloutNV::init(IOrganizer *moInfo)
   m_ScriptExtender = std::shared_ptr<ScriptExtender>(new FalloutNVScriptExtender(this));
   m_DataArchives = std::shared_ptr<DataArchives>(new FalloutNVDataArchives());
   m_BSAInvalidation = std::shared_ptr<BSAInvalidation>(new FalloutNVBSAInvalidation(m_DataArchives, this));
+  m_SaveGameInfo = std::shared_ptr<SaveGameInfo>(new FalloutNVSaveGameInfo());
   return true;
 }
 
@@ -144,17 +149,6 @@ QString GameFalloutNV::steamAPPId() const
 QStringList GameFalloutNV::getPrimaryPlugins() const
 {
   return { "falloutnv.esm" };
-}
-
-std::map<std::type_index, boost::any> GameFalloutNV::featureList() const
-{
-  static std::map<std::type_index, boost::any> result {
-    { typeid(BSAInvalidation), m_BSAInvalidation.get() },
-    { typeid(ScriptExtender), m_ScriptExtender.get() },
-    { typeid(DataArchives), m_DataArchives.get() }
-  };
-
-  return result;
 }
 
 QString GameFalloutNV::getGameShortName() const
