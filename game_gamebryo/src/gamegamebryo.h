@@ -1,9 +1,17 @@
 #ifndef GAMEGAMEBRYO_H
 #define GAMEGAMEBRYO_H
 
+#include "iplugingame.h"
 
-#include <iplugingame.h>
+class ScriptExtender;
+class DataArchives;
+class SaveGameInfo;
+class BSAInvalidation;
+
+#include <QString>
+
 #include <memory>
+
 #include <ShlObj.h>
 
 
@@ -55,6 +63,18 @@ protected:
   QString getLootPath() const;
   QString selectedVariant() const;
   virtual QString getLauncherName() const;
+
+protected:
+
+  std::map<std::type_index, boost::any> featureList() const;
+
+  //These should be implemented by anything that uses gamebro (I think)
+  //(and if they don't, it'll be a null pointer and won't look implemented,
+  //so that's fine too).
+  std::shared_ptr<ScriptExtender> m_ScriptExtender { nullptr };
+  std::shared_ptr<DataArchives> m_DataArchives { nullptr };
+  std::shared_ptr<BSAInvalidation> m_BSAInvalidation { nullptr };
+  std::shared_ptr<SaveGameInfo> m_SaveGameInfo { nullptr };
 
 private:
 
