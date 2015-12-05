@@ -16,12 +16,16 @@ DEFINES += GAMEOBLIVION_LIBRARY
 SOURCES += gameoblivion.cpp \
     oblivionbsainvalidation.cpp \
     oblivionscriptextender.cpp \
-    obliviondataarchives.cpp
+    obliviondataarchives.cpp \
+    oblivionsavegame.cpp \
+    oblivionsavegameinfo.cpp
 
 HEADERS += gameoblivion.h \
     oblivionbsainvalidation.h \
     oblivionscriptextender.h \
-    obliviondataarchives.h
+    obliviondataarchives.h \
+    oblivionsavegame.h \
+    oblivionsavegameinfo.h
 
 CONFIG(debug, debug|release) {
   LIBS += -L"$${OUT_PWD}/../gameGamebryo/debug"
@@ -41,4 +45,6 @@ LIBS += -ladvapi32 -lole32 -lgameGamebryo
 
 OTHER_FILES += \
     gameoblivion.json\
-    SConscript
+    SConscript \
+    CMakeLists.txt
+
