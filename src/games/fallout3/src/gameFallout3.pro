@@ -16,12 +16,16 @@ DEFINES += GAMEFALLOUTNV_LIBRARY
 SOURCES += gamefallout3.cpp \
     fallout3bsainvalidation.cpp \
     fallout3scriptextender.cpp \
-    fallout3dataarchives.cpp
+    fallout3dataarchives.cpp \
+    fallout3savegame.cpp \
+    fallout3savegameinfo.cpp
 
 HEADERS += gamefallout3.h \
     fallout3bsainvalidation.h \
     fallout3scriptextender.h \
-    fallout3dataarchives.h
+    fallout3dataarchives.h \
+    fallout3savegame.h \
+    fallout3savegameinfo.h
 
 CONFIG(debug, debug|release) {
   LIBS += -L"$${OUT_PWD}/../gameGamebryo/debug"
@@ -41,4 +45,6 @@ LIBS += -ladvapi32 -lole32 -lgameGamebryo
 
 OTHER_FILES += \
     gamefallout3.json\
-    SConscript
+    SConscript \
+    CMakeLists.txt
+
