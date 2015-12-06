@@ -6,6 +6,7 @@
 #include <utility.h>
 #include <memory>
 #include <QStandardPaths>
+#include <QCoreApplication>
 
 
 using namespace MOBase;
@@ -34,17 +35,6 @@ QString GameOblivion::identifyGamePath() const
 QString GameOblivion::gameName() const
 {
   return "Oblivion";
-}
-
-QString GameOblivion::localAppFolder() const
-{
-  QString result = getKnownFolderPath(FOLDERID_LocalAppData, false);
-  if (result.isEmpty()) {
-    // fallback: try the registry
-    result = getSpecialPath("Local AppData");
-  }
-
-  return result;
 }
 
 QString GameOblivion::myGamesFolderName() const
@@ -89,7 +79,7 @@ MOBase::VersionInfo GameOblivion::version() const
 
 bool GameOblivion::isActive() const
 {
-  return true;
+  return qApp->property("managed_game").value<IPluginGame*>() == this;
 }
 
 QList<PluginSetting> GameOblivion::settings() const
