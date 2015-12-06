@@ -80,9 +80,44 @@ bool GameGamebryo::looksValid(QDir const &path) const
   return path.exists(getBinaryName()) && path.exists(getLauncherName());
 }
 
+QString GameGamebryo::getGameVersion() const
+{
+  return getVersion(getBinaryName());
+}
+
 QString GameGamebryo::getLauncherName() const
 {
   return getGameShortName() + "Launcher.exe";
+}
+
+QString GameGamebryo::getVersion(const QString &program) const
+{
+  //This *really* needs to be factored out
+  std::wstring app_name = L"\\\\?\\" +
+      QDir::toNativeSeparators(this->gameDirectory().absoluteFilePath(program)).toStdWString();
+  DWORD handle;
+  DWORD info_len = ::GetFileVersionInfoSizeW(app_name.c_str(), &handle);
+  if (info_len == 0) {
+    qDebug("GetFileVersionInfoSizeW Error %d", ::GetLastError());
+    return "";
+  }
+
+  std::vector<char> buff(info_len);
+  if( ! ::GetFileVersionInfoW(app_name.c_str(), handle, info_len, buff.data())) {
+    qDebug("GetFileVersionInfoW Error %d", ::GetLastError());
+    return "";
+  }
+
+  VS_FIXEDFILEINFO *pFileInfo;
+  UINT buf_len;
+  if ( ! ::VerQueryValueW(buff.data(), L"\\", reinterpret_cast<LPVOID *>(&pFileInfo), &buf_len)) {
+    qDebug("VerQueryValueW Error %d", ::GetLastError());
+    return "";
+  }
+  return QString("%1.%2.%3.%4").arg(HIWORD(pFileInfo->dwFileVersionMS))
+                               .arg(LOWORD(pFileInfo->dwFileVersionMS))
+                               .arg(HIWORD(pFileInfo->dwFileVersionLS))
+                               .arg(LOWORD(pFileInfo->dwFileVersionLS));
 }
 
 std::unique_ptr<BYTE[]> GameGamebryo::getRegValue(HKEY key, LPCWSTR path,
@@ -203,3 +238,31 @@ std::map<std::type_index, boost::any> GameGamebryo::featureList() const
   return result;
 }
 
+/*
+QString GetAppVersion(std::wstring const &app_name)
+{
+  DWORD handle;
+  DWORD info_len = ::GetFileVersionInfoSizeW(app_name.c_str(), &handle);
+  if (info_len == 0) {
+    qDebug("GetFileVersionInfoSizeW Error %d", ::GetLastError());
+    return "";
+  }
+
+  std::vector<char> buff(info_len);
+  if( ! ::GetFileVersionInfoW(app_name.c_str(), handle, info_len, buff.data())) {
+    qDebug("GetFileVersionInfoW Error %d", ::GetLastError());
+    return "";
+  }
+
+  VS_FIXEDFILEINFO *pFileInfo;
+  UINT buf_len;
+  if ( ! ::VerQueryValueW(buff.data(), L"\\", reinterpret_cast<LPVOID *>(&pFileInfo), &buf_len)) {
+    qDebug("VerQueryValueW Error %d", ::GetLastError());
+    return "";
+  }
+  return QString("%1.%2.%3.%4").arg(HIWORD(pFileInfo->dwFileVersionMS))
+                               .arg(LOWORD(pFileInfo->dwFileVersionMS))
+                               .arg(HIWORD(pFileInfo->dwFileVersionLS))
+                               .arg(LOWORD(pFileInfo->dwFileVersionLS));
+}
+*/
