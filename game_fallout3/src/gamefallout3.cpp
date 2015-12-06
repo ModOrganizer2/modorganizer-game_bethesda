@@ -1,10 +1,17 @@
 #include "gameFallout3.h"
+
+#include "fallout3bsainvalidation.h"
+#include "fallout3scriptextender.h"
+#include "fallout3dataarchives.h"
+#include "fallout3savegameinfo.h"
+
 #include <scopeguard.h>
 #include <pluginsetting.h>
-#include <igameinfo.h>
 #include <executableinfo.h>
 #include <utility.h>
+
 #include <memory>
+
 #include <QStandardPaths>
 #include <QDebug>
 #include <QCoreApplication>
@@ -22,9 +29,10 @@ bool GameFallout3::init(IOrganizer *moInfo)
   if (!GameGamebryo::init(moInfo)) {
     return false;
   }
-  m_ScriptExtender = std::shared_ptr<ScriptExtender>(new Fallout3ScriptExtender());
+  m_ScriptExtender = std::shared_ptr<ScriptExtender>(new Fallout3ScriptExtender(this));
   m_DataArchives = std::shared_ptr<DataArchives>(new Fallout3DataArchives());
-  m_BSAInvalidation = std::shared_ptr<BSAInvalidation>(new Fallout3BSAInvalidation(m_DataArchives, moInfo));
+  m_BSAInvalidation = std::shared_ptr<BSAInvalidation>(new Fallout3BSAInvalidation(m_DataArchives, this));
+  m_SaveGameInfo = std::shared_ptr<SaveGameInfo>(new Fallout3SaveGameInfo());
   return true;
 }
 
@@ -43,14 +51,14 @@ QString GameFallout3::myGamesFolderName() const
   return "Fallout3";
 }
 
-QList<ExecutableInfo> GameFallout3::executables()
+QList<ExecutableInfo> GameFallout3::executables() const
 {
   return QList<ExecutableInfo>()
-      << ExecutableInfo("FOSE", findInGameFolder("fose_loader.exe"))
-      << ExecutableInfo("Fallout 3", findInGameFolder("Fallout3.exe"))
+      << ExecutableInfo("FOSE", findInGameFolder(m_ScriptExtender->loaderName()))
+      << ExecutableInfo("Fallout 3", findInGameFolder(getBinaryName()))
       << ExecutableInfo("Fallout Mod Manager", findInGameFolder("fomm/fomm.exe"))
       << ExecutableInfo("Construction Kit", findInGameFolder("geck.exe"))
-      << ExecutableInfo("Fallout Launcher", findInGameFolder("Fallout3Launcher.exe"))
+      << ExecutableInfo("Fallout Launcher", findInGameFolder(getLauncherName()))
       << ExecutableInfo("BOSS", findInGameFolder("BOSS/BOSS.exe"))
       << ExecutableInfo("LOOT", getLootPath());
          ;
@@ -132,29 +140,38 @@ QString GameFallout3::steamAPPId() const
   }
 }
 
-QStringList GameFallout3::getPrimaryPlugins()
+QStringList GameFallout3::getPrimaryPlugins() const
 {
   return { "fallout3.esm" };
-}
-
-QIcon GameFallout3::gameIcon() const
-{
-  return MOBase::iconForExecutable(gameDirectory().absoluteFilePath("Fallout3.exe"));
-}
-
-const std::map<std::type_index, boost::any> &GameFallout3::featureList() const
-{
-  static std::map<std::type_index, boost::any> result {
-    { typeid(BSAInvalidation), m_BSAInvalidation.get() },
-    { typeid(ScriptExtender), m_ScriptExtender.get() },
-    { typeid(DataArchives), m_DataArchives.get() }
-  };
-
-  return result;
 }
 
 
 QStringList GameFallout3::gameVariants() const
 {
   return { "Regular", "Game Of The Year" };
+}
+
+QString GameFallout3::getGameShortName() const
+{
+  return "Fallout3";
+}
+
+QStringList GameFallout3::getIniFiles() const
+{
+  return { "fallout.ini", "falloutprefs.ini" };
+}
+
+QStringList GameFallout3::getDLCPlugins() const
+{
+  return { "ThePitt.esm", "Anchorage.esm", "BrokenSteel.esm", "PointLookout.esm", "Zeta.esm" };
+}
+
+int GameFallout3::getNexusModOrganizerID() const
+{
+  return 16348;
+}
+
+int GameFallout3::getNexusGameID() const
+{
+  return 120;
 }
