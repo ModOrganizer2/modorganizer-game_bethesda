@@ -22,6 +22,8 @@ public:
 
   virtual bool isInstalled() const override;
 
+  virtual QString getExtenderVersion() const override;
+
 protected:
   GameGamebryo const * const m_Game;
 };
