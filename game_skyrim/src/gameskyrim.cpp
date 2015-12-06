@@ -6,6 +6,7 @@
 #include <utility.h>
 #include <memory>
 #include <QStandardPaths>
+#include <QCoreApplication>
 
 
 using namespace MOBase;
@@ -34,17 +35,6 @@ QString GameSkyrim::identifyGamePath() const
 QString GameSkyrim::gameName() const
 {
   return "Skyrim";
-}
-
-QString GameSkyrim::localAppFolder() const
-{
-  QString result = getKnownFolderPath(FOLDERID_LocalAppData, false);
-  if (result.isEmpty()) {
-    // fallback: try the registry
-    result = getSpecialPath("Local AppData");
-  }
-
-  return result;
 }
 
 QString GameSkyrim::myGamesFolderName() const
@@ -89,7 +79,7 @@ MOBase::VersionInfo GameSkyrim::version() const
 
 bool GameSkyrim::isActive() const
 {
-  return true;
+  return qApp->property("managed_game").value<IPluginGame*>() == this;
 }
 
 QList<PluginSetting> GameSkyrim::settings() const
