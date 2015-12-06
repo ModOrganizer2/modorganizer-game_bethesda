@@ -2,10 +2,7 @@
 #define FALLOUT3DATAARCHIVES_H
 
 
-#include <gamebryodataarchives.h>
-#include <iprofile.h>
-#include <QString>
-#include <QStringList>
+#include "gamebryodataarchives.h"
 
 class Fallout3DataArchives : public GamebryoDataArchives
 {

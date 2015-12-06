@@ -1,9 +1,7 @@
 #include "fallout3bsainvalidation.h"
-#include <imoinfo.h>
 
-
-Fallout3BSAInvalidation::Fallout3BSAInvalidation(const std::shared_ptr<DataArchives> &dataArchives, MOBase::IOrganizer *moInfo)
-  : GamebryoBSAInvalidation(dataArchives, "fallout.ini", moInfo)
+Fallout3BSAInvalidation::Fallout3BSAInvalidation(const std::shared_ptr<DataArchives> &dataArchives, MOBase::IPluginGame const *game)
+  : GamebryoBSAInvalidation(dataArchives, "fallout.ini", game)
 {
 }
 
