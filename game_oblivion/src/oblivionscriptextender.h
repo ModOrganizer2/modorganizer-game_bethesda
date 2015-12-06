@@ -1,14 +1,18 @@
 #ifndef OBLIVIONSCRIPTEXTENDER_H
 #define OBLIVIONSCRIPTEXTENDER_H
 
+#include "gamebryoscriptextender.h"
 
-#include <scriptextender.h>
-
-
-class OblivionScriptExtender : public ScriptExtender
+class OblivionScriptExtender : public GamebryoScriptExtender
 {
 public:
+  OblivionScriptExtender(const GameGamebryo *game);
+  ~OblivionScriptExtender();
+
   virtual QString name() const override;
+
+  virtual QStringList saveGameAttachmentExtensions() const override;
+
 };
 
 #endif // OBLIVIONSCRIPTEXTENDER_H
