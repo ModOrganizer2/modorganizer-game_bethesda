@@ -16,12 +16,16 @@ DEFINES += GAMEFALLOUTNV_LIBRARY
 SOURCES += gamefalloutnv.cpp \
     falloutnvbsainvalidation.cpp \
     falloutnvscriptextender.cpp \
-    falloutnvdataarchives.cpp
+    falloutnvdataarchives.cpp \
+    falloutnvsavegame.cpp \
+    falloutnvsavegameinfo.cpp
 
 HEADERS += gamefalloutnv.h \
     falloutnvbsainvalidation.h \
     falloutnvscriptextender.h \
-    falloutnvdataarchives.h
+    falloutnvdataarchives.h \
+    falloutnvsavegame.h \
+    falloutnvsavegameinfo.h
 
 CONFIG(debug, debug|release) {
   LIBS += -L"$${OUT_PWD}/../gameGamebryo/debug"
@@ -41,4 +45,6 @@ LIBS += -ladvapi32 -lole32 -lgameGamebryo
 
 OTHER_FILES += \
     gamefalloutnv.json\
-    SConscript
+    SConscript \
+    CMakeLists.txt
+
