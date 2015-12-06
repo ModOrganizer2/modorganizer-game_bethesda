@@ -7,6 +7,7 @@
 #include <memory>
 #include <QStandardPaths>
 #include <QDebug>
+#include <QCoreApplication>
 
 
 using namespace MOBase;
@@ -35,17 +36,6 @@ QString GameFallout3::identifyGamePath() const
 QString GameFallout3::gameName() const
 {
   return "Fallout 3";
-}
-
-QString GameFallout3::localAppFolder() const
-{
-  QString result = getKnownFolderPath(FOLDERID_LocalAppData, false);
-  if (result.isEmpty()) {
-    // fallback: try the registry
-    result = getSpecialPath("Local AppData");
-  }
-
-  return result;
 }
 
 QString GameFallout3::myGamesFolderName() const
@@ -88,7 +78,7 @@ MOBase::VersionInfo GameFallout3::version() const
 
 bool GameFallout3::isActive() const
 {
-  return true;
+  return qApp->property("managed_game").value<IPluginGame*>() == this;
 }
 
 QList<PluginSetting> GameFallout3::settings() const
