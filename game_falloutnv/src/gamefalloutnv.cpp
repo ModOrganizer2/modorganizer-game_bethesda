@@ -6,6 +6,7 @@
 #include <utility.h>
 #include <memory>
 #include <QStandardPaths>
+#include <QCoreApplication>
 
 
 using namespace MOBase;
@@ -34,17 +35,6 @@ QString GameFalloutNV::identifyGamePath() const
 QString GameFalloutNV::gameName() const
 {
   return "New Vegas";
-}
-
-QString GameFalloutNV::localAppFolder() const
-{
-  QString result = getKnownFolderPath(FOLDERID_LocalAppData, false);
-  if (result.isEmpty()) {
-    // fallback: try the registry
-    result = getSpecialPath("Local AppData");
-  }
-
-  return result;
 }
 
 QString GameFalloutNV::myGamesFolderName() const
@@ -87,7 +77,7 @@ MOBase::VersionInfo GameFalloutNV::version() const
 
 bool GameFalloutNV::isActive() const
 {
-  return true;
+  return qApp->property("managed_game").value<IPluginGame*>() == this;
 }
 
 QList<PluginSetting> GameFalloutNV::settings() const
