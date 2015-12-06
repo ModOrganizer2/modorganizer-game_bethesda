@@ -30,3 +30,8 @@ bool GamebryoScriptExtender::isInstalled() const
 
 }
 
+QString GamebryoScriptExtender::getExtenderVersion() const
+{
+  return m_Game->getVersion(loaderName());
+}
+

@@ -50,6 +50,7 @@ public: // IPluginGame interface
   //getNexusModOrganizerID
   //getNexusGameID
   virtual bool looksValid(QDir const &) const override;
+  virtual QString getGameVersion() const override;
 
 protected:
 
@@ -63,6 +64,8 @@ protected:
   QString getLootPath() const;
   QString selectedVariant() const;
   virtual QString getLauncherName() const;
+  friend class GamebryoScriptExtender;
+  QString getVersion(QString const &program) const;
 
 protected:
 
