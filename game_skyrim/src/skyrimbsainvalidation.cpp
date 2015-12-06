@@ -1,9 +1,7 @@
 #include "skyrimbsainvalidation.h"
-#include <imoinfo.h>
 
-
-SkyrimBSAInvalidation::SkyrimBSAInvalidation(const std::shared_ptr<DataArchives> &dataArchives, MOBase::IOrganizer *moInfo)
-  : GamebryoBSAInvalidation(dataArchives, "skyrim.ini", moInfo)
+SkyrimBSAInvalidation::SkyrimBSAInvalidation(const std::shared_ptr<DataArchives> &dataArchives, MOBase::IPluginGame const *game)
+  : GamebryoBSAInvalidation(dataArchives, "skyrim.ini", game)
 {
 }
 

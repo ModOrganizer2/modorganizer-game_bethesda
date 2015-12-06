@@ -1,11 +1,23 @@
 #include "gameskyrim.h"
+
+#include "skyrimbsainvalidation.h"
+#include "skyrimscriptextender.h"
+#include "skyrimdataarchives.h"
+#include "skyrimsavegameinfo.h"
+
 #include <scopeguard.h>
 #include <pluginsetting.h>
-#include <igameinfo.h>
 #include <executableinfo.h>
 #include <utility.h>
-#include <memory>
+
+#include <QDebug>
 #include <QStandardPaths>
+
+#include <Windows.h>
+
+#include <exception>
+#include <memory>
+#include <vector>
 
 
 using namespace MOBase;
@@ -20,9 +32,10 @@ bool GameSkyrim::init(IOrganizer *moInfo)
   if (!GameGamebryo::init(moInfo)) {
     return false;
   }
-  m_ScriptExtender = std::shared_ptr<ScriptExtender>(new SkyrimScriptExtender());
+  m_ScriptExtender = std::shared_ptr<ScriptExtender>(new SkyrimScriptExtender(this));
   m_DataArchives = std::shared_ptr<DataArchives>(new SkyrimDataArchives());
-  m_BSAInvalidation = std::shared_ptr<BSAInvalidation>(new SkyrimBSAInvalidation(m_DataArchives, moInfo));
+  m_BSAInvalidation = std::shared_ptr<BSAInvalidation>(new SkyrimBSAInvalidation(m_DataArchives, this));
+  m_SaveGameInfo = std::shared_ptr<SaveGameInfo>(new SkyrimSaveGameInfo());
   return true;
 }
 
@@ -54,13 +67,13 @@ QString GameSkyrim::myGamesFolderName() const
 
 
 
-QList<ExecutableInfo> GameSkyrim::executables()
+QList<ExecutableInfo> GameSkyrim::executables() const
 {
   return QList<ExecutableInfo>()
-      << ExecutableInfo("SKSE", findInGameFolder("skse_loader.exe"))
+      << ExecutableInfo("SKSE", findInGameFolder(m_ScriptExtender->loaderName()))
       << ExecutableInfo("SBW", findInGameFolder("SBW.exe"))
-      << ExecutableInfo("Skyrim", findInGameFolder("TESV.exe"))
-      << ExecutableInfo("Skyrim Launcher", findInGameFolder("SkyrimLauncher.exe"))
+      << ExecutableInfo("Skyrim", findInGameFolder(getBinaryName()))
+      << ExecutableInfo("Skyrim Launcher", findInGameFolder(getLauncherName()))
       << ExecutableInfo("BOSS", findInGameFolder("BOSS/BOSS.exe"))
       << ExecutableInfo("LOOT", getLootPath())
       << ExecutableInfo("Creation Kit", findInGameFolder("CreationKit.exe")).withSteamAppId("202480")
@@ -141,23 +154,84 @@ QString GameSkyrim::steamAPPId() const
   return "72850";
 }
 
-QStringList GameSkyrim::getPrimaryPlugins()
+QStringList GameSkyrim::getPrimaryPlugins() const
 {
-  return QStringList({ QString("skyrim.esm"), QString("update.esm") });
+  return { "skyrim.esm", "update.esm" };
 }
 
-QIcon GameSkyrim::gameIcon() const
+QString GameSkyrim::getBinaryName() const
 {
-  return MOBase::iconForExecutable(gameDirectory().absoluteFilePath("TESV.exe"));
+  return "TESV.exe";
 }
 
-const std::map<std::type_index, boost::any> &GameSkyrim::featureList() const
+QString GameSkyrim::getGameShortName() const
 {
-  static std::map<std::type_index, boost::any> result {
-    { typeid(BSAInvalidation), m_BSAInvalidation.get() },
-    { typeid(ScriptExtender), m_ScriptExtender.get() },
-    { typeid(DataArchives), m_DataArchives.get() }
-  };
+  return "Skyrim";
+}
 
-  return result;
+QStringList GameSkyrim::getIniFiles() const
+{
+  return { "skyrim.ini", "skyrimprefs.ini" };
+}
+
+QStringList GameSkyrim::getDLCPlugins() const
+{
+  return { "Dawnguard.esm", "Dragonborn.esm", "HearthFires.esm",
+           "HighResTexturePack01.esp", "HighResTexturePack02.esp", "HighResTexturePack03.esp" };
+}
+
+namespace {
+//Note: This is ripped off from shared/util. And in an upcoming move, the fomod
+//installer requires something similar. I suspect I should abstract this out
+//into gamebryo (or lower level)
+
+VS_FIXEDFILEINFO GetFileVersion(const std::wstring &fileName)
+{
+  DWORD handle = 0UL;
+  DWORD size = ::GetFileVersionInfoSizeW(fileName.c_str(), &handle);
+  if (size == 0) {
+    throw std::runtime_error("failed to determine file version info size");
+  }
+
+  std::vector<char> buffer(size);
+  handle = 0UL;
+  if (!::GetFileVersionInfoW(fileName.c_str(), handle, size, buffer.data())) {
+    throw std::runtime_error("failed to determine file version info");
+  }
+
+  void *versionInfoPtr = nullptr;
+  UINT versionInfoLength = 0;
+  if (!::VerQueryValue(buffer.data(), L"\\", &versionInfoPtr, &versionInfoLength)) {
+    throw std::runtime_error("failed to determine file version");
+  }
+
+  return *static_cast<VS_FIXEDFILEINFO*>(versionInfoPtr);
+}
+
+}
+
+IPluginGame::LoadOrderMechanism GameSkyrim::getLoadOrderMechanism() const
+{
+  try {
+    std::wstring fileName = gameDirectory().absoluteFilePath(getBinaryName()).toStdWString().c_str();
+    VS_FIXEDFILEINFO versionInfo = ::GetFileVersion(fileName);
+    if ((versionInfo.dwFileVersionMS > 0x10004) || // version >= 1.5.x?
+        ((versionInfo.dwFileVersionMS == 0x10004) && (versionInfo.dwFileVersionLS >= 0x1A0000))) { // version >= ?.4.26
+      return LoadOrderMechanism::PluginsTxt;
+    }
+  } catch (const std::exception &e) {
+    qCritical() << "TESV.exe is invalid: " << e.what();
+  }
+  return LoadOrderMechanism::FileTime;
+}
+
+
+int GameSkyrim::getNexusModOrganizerID() const
+{
+  return 1334;
+}
+
+int GameSkyrim::getNexusGameID() const
+{
+  return 110;
 }
