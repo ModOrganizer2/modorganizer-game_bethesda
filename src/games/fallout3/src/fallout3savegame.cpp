@@ -5,23 +5,12 @@ Fallout3SaveGame::Fallout3SaveGame(QString const &fileName) :
 {
   FileWrapper file(this, "FO3SAVEGAME");
 
-  file.skip<char>();
-
-  char ignore = 0x00;
-  while (ignore != 0x7c) {
-    file.read(ignore); // unknown
-  }
-  bool newVegas = false;
-  if (newVegas) {
-    ignore = 0x00;
-    // in new vegas there is another block of uninteresting (?) information
-    file.skip<char>(); // 0x7c
-    while (ignore != 0x7c) {
-      file.read(ignore); // unknown
-    }
-  }
+  file.skip<unsigned long>(); //Save header size
 
   file.setHasFieldMarkers(true);
+
+  file.skip<unsigned long>(); //File version ?
+  file.skip<unsigned char>(); //delimiter
 
   unsigned long width;
   file.read(width);
@@ -47,7 +36,7 @@ Fallout3SaveGame::Fallout3SaveGame(QString const &fileName) :
 
   file.readImage(width, height, 256);
 
-  file.skip<char>(5); // unknown
+  file.skip<char>(5); // unknown (1 byte), plugin size (4 bytes)
 
   //Abstract this
   file.readPlugins();
