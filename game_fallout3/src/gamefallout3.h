@@ -1,13 +1,7 @@
 #ifndef GAMEFALLOUT3_H
 #define GAMEFALLOUT3_H
 
-
-#include "fallout3bsainvalidation.h"
-#include "fallout3scriptextender.h"
-#include "fallout3dataarchives.h"
-#include <gamegamebryo.h>
-#include <QFileInfo>
-
+#include "gamegamebryo.h"
 
 class GameFallout3 : public GameGamebryo
 {
@@ -24,14 +18,18 @@ public:
 
 public: // IPluginGame interface
 
-  virtual QString gameName() const;
-  virtual QList<MOBase::ExecutableInfo> executables();
-  virtual void initializeProfile(const QDir &path, ProfileSettings settings) const;
-  virtual QString savegameExtension() const;
-  virtual QString steamAPPId() const;
-  virtual QStringList getPrimaryPlugins();
-  virtual QIcon gameIcon() const override;
+  virtual QString gameName() const override;
+  virtual QList<MOBase::ExecutableInfo> executables() const override;
+  virtual void initializeProfile(const QDir &path, ProfileSettings settings) const override;
+  virtual QString savegameExtension() const override;
+  virtual QString steamAPPId() const override;
+  virtual QStringList getPrimaryPlugins() const override;
   virtual QStringList gameVariants() const;
+  virtual QString getGameShortName() const override;
+  virtual QStringList getIniFiles() const override;
+  virtual QStringList getDLCPlugins() const override;
+  virtual int getNexusModOrganizerID() const override;
+  virtual int getNexusGameID() const override;
 
 public: // IPlugin interface
 
@@ -42,10 +40,6 @@ public: // IPlugin interface
   virtual bool isActive() const;
   virtual QList<MOBase::PluginSetting> settings() const;
 
-protected:
-
-  virtual const std::map<std::type_index, boost::any> &featureList() const;
-
 private:
 
   virtual QString identifyGamePath() const override;
@@ -53,12 +47,6 @@ private:
 
   void copyToProfile(const QString &sourcePath, const QDir &destinationDirectory,
                      const QString &sourceFileName, const QString &destinationFileName = QString()) const;
-
-private:
-
-  std::shared_ptr<ScriptExtender> m_ScriptExtender { nullptr };
-  std::shared_ptr<DataArchives> m_DataArchives { nullptr };
-  std::shared_ptr<BSAInvalidation> m_BSAInvalidation { nullptr };
 
 };
 
