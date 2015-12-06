@@ -1,10 +1,16 @@
 #include "gameFalloutNV.h"
+
+#include "falloutnvbsainvalidation.h"
+#include "falloutnvdataarchives.h"
+#include "falloutnvsavegameinfo.h"
+#include "falloutnvscriptextender.h"
 #include <scopeguard.h>
 #include <pluginsetting.h>
-#include <igameinfo.h>
 #include <executableinfo.h>
 #include <utility.h>
+
 #include <memory>
+
 #include <QStandardPaths>
 
 
@@ -20,9 +26,10 @@ bool GameFalloutNV::init(IOrganizer *moInfo)
   if (!GameGamebryo::init(moInfo)) {
     return false;
   }
-  m_ScriptExtender = std::shared_ptr<ScriptExtender>(new FalloutNVScriptExtender());
+  m_ScriptExtender = std::shared_ptr<ScriptExtender>(new FalloutNVScriptExtender(this));
   m_DataArchives = std::shared_ptr<DataArchives>(new FalloutNVDataArchives());
-  m_BSAInvalidation = std::shared_ptr<BSAInvalidation>(new FalloutNVBSAInvalidation(m_DataArchives, moInfo));
+  m_BSAInvalidation = std::shared_ptr<BSAInvalidation>(new FalloutNVBSAInvalidation(m_DataArchives, this));
+  m_SaveGameInfo = std::shared_ptr<SaveGameInfo>(new FalloutNVSaveGameInfo());
   return true;
 }
 
@@ -52,14 +59,14 @@ QString GameFalloutNV::myGamesFolderName() const
   return "FalloutNV";
 }
 
-QList<ExecutableInfo> GameFalloutNV::executables()
+QList<ExecutableInfo> GameFalloutNV::executables() const
 {
   return QList<ExecutableInfo>()
-      << ExecutableInfo("NVSE", findInGameFolder("nvse_loader.exe"))
-      << ExecutableInfo("New Vegas", findInGameFolder("FalloutNV.exe"))
+      << ExecutableInfo("NVSE", findInGameFolder(m_ScriptExtender->loaderName()))
+      << ExecutableInfo("New Vegas", findInGameFolder(getBinaryName()))
       << ExecutableInfo("Fallout Mod Manager", findInGameFolder("fomm/fomm.exe"))
       << ExecutableInfo("Construction Kit", findInGameFolder("geck.exe"))
-      << ExecutableInfo("Fallout Launcher", findInGameFolder("FalloutNVLauncher.exe"))
+      << ExecutableInfo("Fallout Launcher", findInGameFolder(getLauncherName()))
       << ExecutableInfo("BOSS", findInGameFolder("BOSS/BOSS.exe"))
       << ExecutableInfo("LOOT", getLootPath())
          ;
@@ -139,23 +146,34 @@ QString GameFalloutNV::steamAPPId() const
   return "22380";
 }
 
-QStringList GameFalloutNV::getPrimaryPlugins()
+QStringList GameFalloutNV::getPrimaryPlugins() const
 {
   return { "falloutnv.esm" };
 }
 
-QIcon GameFalloutNV::gameIcon() const
+QString GameFalloutNV::getGameShortName() const
 {
-  return MOBase::iconForExecutable(gameDirectory().absoluteFilePath("FalloutNV.exe"));
+  return "FalloutNV";
 }
 
-const std::map<std::type_index, boost::any> &GameFalloutNV::featureList() const
+QStringList GameFalloutNV::getIniFiles() const
 {
-  static std::map<std::type_index, boost::any> result {
-    { typeid(BSAInvalidation), m_BSAInvalidation.get() },
-    { typeid(ScriptExtender), m_ScriptExtender.get() },
-    { typeid(DataArchives), m_DataArchives.get() }
-  };
+  return { "fallout.ini", "falloutprefs.ini" };
+}
 
-  return result;
+QStringList GameFalloutNV::getDLCPlugins() const
+{
+  return { "DeadMoney.esm", "HonestHearts.esm", "OldWorldBlues.esm",
+           "LonesomeRoad.esm", "GunRunnersArsenal.esm", "CaravanPack.esm",
+           "ClassicPack.esm", "MercenaryPack.esm", "TribalPack.esm" };
+}
+
+int GameFalloutNV::getNexusModOrganizerID() const
+{
+  return 42572;
+}
+
+int GameFalloutNV::getNexusGameID() const
+{
+  return 130;
 }
