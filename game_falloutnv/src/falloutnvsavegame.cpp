@@ -5,16 +5,15 @@ FalloutNVSaveGame::FalloutNVSaveGame(QString const &fileName) :
 {
   FileWrapper file(this, "FO3SAVEGAME");
 
-  file.skip<char>();
+  file.skip<unsigned long>(); //Save header size
 
-  char ignore = 0x00;
-  while (ignore != 0x7c) {
-    file.read(ignore); // unknown
-  }
-  ignore = 0x00;
-  // in new vegas there is another block of uninteresting (?) information
-  file.skip<char>(); // 0x7c
-  while (ignore != 0x7c) {
+  file.skip<unsigned long>(); //File version?
+  file.skip<unsigned char>(); //Delimiter
+
+  //A huge wodge of text with no length but a delimiter. Given the null bytes
+  //in it I presume it's a fixed length (64 bytes + delim) but I have no
+  //definite spec
+  for (unsigned char ignore = 0; ignore != 0x7c; ) {
     file.read(ignore); // unknown
   }
 
@@ -44,7 +43,7 @@ FalloutNVSaveGame::FalloutNVSaveGame(QString const &fileName) :
 
   file.readImage(width, height, 256);
 
-  file.skip<char>(5); // unknown
+  file.skip<char>(5); // unknown byte, size of plugin data
 
   //Abstract this
   file.readPlugins();
