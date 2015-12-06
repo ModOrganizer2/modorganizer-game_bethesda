@@ -1,20 +1,24 @@
 #include "gamebryobsainvalidation.h"
+
 #include "dummybsa.h"
+#include "iplugingame.h"
+#include "iprofile.h"
 #include <utility.h>
 #include <imoinfo.h>
-#include <igameinfo.h>
 #include <utility.h>
+
 #include <QStringList>
 #include <QDir>
+
 #include <Windows.h>
 
 
 GamebryoBSAInvalidation::GamebryoBSAInvalidation(const std::shared_ptr<DataArchives> &dataArchives
                                                  , const QString &iniFilename
-                                                 , MOBase::IOrganizer *moInfo)
+                                                 , MOBase::IPluginGame const *game)
   : m_DataArchives(dataArchives)
   , m_IniFileName(iniFilename)
-  , m_Organizer(moInfo)
+  , m_Game(game)
 {
 }
 
@@ -39,7 +43,7 @@ void GamebryoBSAInvalidation::deactivate(MOBase::IProfile *profile)
     }
   }
 
-  QString bsaFile = m_Organizer->gameInfo().path() + "/data/" + invalidationBSAName();
+  QString bsaFile = m_Game->dataDirectory().absoluteFilePath(invalidationBSAName());
   if (QFile::exists(bsaFile)) {
     MOBase::shellDeleteQuiet(bsaFile);
   }
@@ -70,7 +74,7 @@ void GamebryoBSAInvalidation::activate(MOBase::IProfile *profile)
   }
 
   // create the dummy bsa if necessary
-  QString bsaFile = m_Organizer->gameInfo().path() + "/data/" + invalidationBSAName();
+  QString bsaFile = m_Game->dataDirectory().absoluteFilePath(invalidationBSAName());
   if (!QFile::exists(bsaFile)) {
     DummyBSA bsa(bsaVersion());
     bsa.write(bsaFile);

@@ -2,8 +2,7 @@
 #define GAMEBRYODATAARCHIVES_H
 
 
-#include <dataarchives.h>
-
+#include "dataarchives.h"
 
 class GamebryoDataArchives : public DataArchives
 {

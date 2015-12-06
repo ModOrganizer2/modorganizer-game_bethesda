@@ -1,9 +1,11 @@
 #include "gamegamebryo.h"
-#include <winreg.h>
-#include <utility.h>
-#include <scopeguard.h>
-#include <QDebug>
 
+#include "utility.h"
+#include "scopeguard.h"
+
+#include <QUrl>
+
+#include <winreg.h>
 
 GameGamebryo::GameGamebryo()
 {
@@ -15,6 +17,16 @@ bool GameGamebryo::init(MOBase::IOrganizer *moInfo)
   m_MyGamesPath = determineMyGamesPath(myGamesFolderName());
   m_Organizer = moInfo;
   return true;
+}
+
+bool GameGamebryo::isInstalled() const
+{
+  return !m_GamePath.isEmpty();
+}
+
+QIcon GameGamebryo::gameIcon() const
+{
+  return MOBase::iconForExecutable(gameDirectory().absoluteFilePath(getBinaryName()));
 }
 
 QDir GameGamebryo::gameDirectory() const
@@ -32,19 +44,45 @@ void GameGamebryo::setGamePath(const QString &path)
   m_GamePath = path;
 }
 
-QDir GameGamebryo::savesDirectory() const
-{
-  return QDir(m_MyGamesPath + "/Saves");
-}
-
 QDir GameGamebryo::documentsDirectory() const
 {
   return m_MyGamesPath;
 }
 
-bool GameGamebryo::isInstalled() const
+QDir GameGamebryo::savesDirectory() const
 {
-  return !m_GamePath.isEmpty();
+  return QDir(m_MyGamesPath + "/Saves");
+}
+
+QStringList GameGamebryo::gameVariants() const
+{
+  return QStringList();
+}
+
+void GameGamebryo::setGameVariant(const QString &variant)
+{
+  m_GameVariant = variant;
+}
+
+QString GameGamebryo::getBinaryName() const
+{
+  return getGameShortName() + ".exe";
+}
+
+MOBase::IPluginGame::LoadOrderMechanism GameGamebryo::getLoadOrderMechanism() const
+{
+  return LoadOrderMechanism::FileTime;
+}
+
+bool GameGamebryo::looksValid(QDir const &path) const
+{
+  //Check for <prog>.exe and <gamename>Launcher.exe for now.
+  return path.exists(getBinaryName()) && path.exists(getLauncherName());
+}
+
+QString GameGamebryo::getLauncherName() const
+{
+  return getGameShortName() + "Launcher.exe";
 }
 
 std::unique_ptr<BYTE[]> GameGamebryo::getRegValue(HKEY key, LPCWSTR path,
@@ -86,7 +124,7 @@ QString GameGamebryo::findInRegistry(HKEY baseKey, LPCWSTR path, LPCWSTR value) 
   }
 }
 
-QFileInfo GameGamebryo::findInGameFolder(const QString &relativePath)
+QFileInfo GameGamebryo::findInGameFolder(const QString &relativePath) const
 {
   return QFileInfo(m_GamePath + "/" + relativePath);
 }
@@ -153,13 +191,15 @@ QString GameGamebryo::getLootPath() const
   return findInRegistry(HKEY_LOCAL_MACHINE, L"Software\\LOOT", L"Installed Path") + "/Loot.exe";
 }
 
-
-QStringList GameGamebryo::gameVariants() const
+std::map<std::type_index, boost::any> GameGamebryo::featureList() const
 {
-  return QStringList();
+  static std::map<std::type_index, boost::any> result {
+    { typeid(BSAInvalidation), m_BSAInvalidation.get() },
+    { typeid(ScriptExtender), m_ScriptExtender.get() },
+    { typeid(DataArchives), m_DataArchives.get() },
+    { typeid(SaveGameInfo), m_SaveGameInfo.get() }
+  };
+
+  return result;
 }
 
-void GameGamebryo::setGameVariant(const QString &variant)
-{
-  m_GameVariant = variant;
-}
