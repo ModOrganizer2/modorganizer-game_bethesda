@@ -105,6 +105,17 @@ QString GameGamebryo::getKnownFolderPath(REFKNOWNFOLDERID folderId, bool useDefa
   }
 }
 
+QString GameGamebryo::localAppFolder() const
+{
+  QString result = getKnownFolderPath(FOLDERID_LocalAppData, false);
+  if (result.isEmpty()) {
+    // fallback: try the registry
+    result = getSpecialPath("Local AppData");
+  }
+
+  return result;
+}
+
 QString GameGamebryo::determineMyGamesPath(const QString &gameName)
 {
   // a) this is the way it should work. get the configured My Documents directory
@@ -172,7 +183,7 @@ MappingType GameGamebryo::mappings() const
 
   for (const QString &profileFile : { "plugins.txt", "loadorder.txt" }) {
     result.push_back({ m_Organizer->profilePath() + "/" + profileFile,
-                       m_MyGamesPath + "/" + profileFile,
+                       localAppFolder() + "/" + gameName().replace(" ", "") + "/" + profileFile,
                        false });
   }
 

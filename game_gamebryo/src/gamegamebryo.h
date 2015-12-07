@@ -44,6 +44,7 @@ protected:
   QFileInfo findInGameFolder(const QString &relativePath);
   QString getKnownFolderPath(REFKNOWNFOLDERID folderId, bool useDefault) const;
   QString getSpecialPath(const QString &name) const;
+  QString localAppFolder() const;
   QString myGamesPath() const;
   //Arguably this shouldn't really be here but every gamebryo program seems to use it
   QString getLootPath() const;

@@ -129,7 +129,7 @@ void DummyBSA::writeHeader(QFile &file)
 
   writeUlong(header, 4, m_Version);
   writeUlong(header, 12, 0x01 | 0x02); // has directories and has files.
-  writeUlong(header, 24, m_FolderName.length() + 1); // empty folder name
+  writeUlong(header, 24, static_cast<unsigned long>(m_FolderName.length()) + 1); // empty folder name
   writeUlong(header, 28, m_TotalFileNameLength);   // single character file name
 
   writeUlong(header, 32, 2); // has dds
@@ -162,7 +162,7 @@ void DummyBSA::writeFileRecord(QFile &file, const std::string &fileName)
   // we'd usually have to sort files by the value generated here
   writeUlonglong(fileRecord,  0, genHash(fileName.c_str()));
   writeUlong(    fileRecord,  8, 0);
-  writeUlong(    fileRecord, 12, 0x44 + (fileName.length() + 1) + 4); // after this record we expect the filename and 4 bytes of file size
+  writeUlong(    fileRecord, 12, 0x44 + static_cast<unsigned long>(fileName.length() + 1) + 4); // after this record we expect the filename and 4 bytes of file size
 
   file.write(reinterpret_cast<char*>(fileRecord), sizeof(fileRecord));
 }
@@ -179,7 +179,7 @@ void DummyBSA::write(const QString &fileName)
   QFile file(fileName);
   file.open(QIODevice::WriteOnly);
 
-  m_TotalFileNameLength = m_FileName.length() + 1;
+  m_TotalFileNameLength = static_cast<unsigned long>(m_FileName.length() + 1);
 
   writeHeader(file);
   writeFolderRecord(file, m_FolderName);
