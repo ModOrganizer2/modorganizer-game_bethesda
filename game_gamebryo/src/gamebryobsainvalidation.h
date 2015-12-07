@@ -7,16 +7,17 @@
 #include <dataarchives.h>
 #include <memory>
 
-
 namespace MOBase {
-  class IOrganizer;
+  class IPluginGame;
 }
 
 class GamebryoBSAInvalidation : public BSAInvalidation
 {
 public:
 
-  GamebryoBSAInvalidation(const std::shared_ptr<DataArchives> &dataArchives, const QString &iniFilename, MOBase::IOrganizer *moInfo);
+  GamebryoBSAInvalidation(const std::shared_ptr<DataArchives> &dataArchives,
+                          const QString &iniFilename,
+                          MOBase::IPluginGame const *game);
 
   virtual bool isInvalidationBSA(const QString &bsaName) override;
   virtual void deactivate(MOBase::IProfile *profile) override;
@@ -31,7 +32,7 @@ private:
 
   std::shared_ptr<DataArchives> m_DataArchives;
   QString m_IniFileName;
-  MOBase::IOrganizer *m_Organizer;
+  MOBase::IPluginGame const *m_Game;
 
 };
 
