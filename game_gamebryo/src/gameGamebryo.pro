@@ -11,16 +11,21 @@ CONFIG += staticlib
 SOURCES += gamegamebryo.cpp \
     dummybsa.cpp \
     gamebryobsainvalidation.cpp \
-    gamebryodataarchives.cpp
+    gamebryodataarchives.cpp \
+    gamebryoscriptextender.cpp \
+    gamebryosavegame.cpp
 
 HEADERS += gamegamebryo.h \
     dummybsa.h \
     gamebryobsainvalidation.h \
-    gamebryodataarchives.h
+    gamebryodataarchives.h \
+    gamebryoscriptextender.h \
+    gamebryosavegame.h
 
 include(../plugin_template.pri)
 
 INCLUDEPATH +=  "$${BOOSTPATH}" "$${PWD}/../gamefeatures"
 
 OTHER_FILES +=\
-    SConscript
+    SConscript \
+    CMakeLists.txt

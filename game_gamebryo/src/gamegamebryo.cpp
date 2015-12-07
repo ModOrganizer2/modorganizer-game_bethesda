@@ -1,9 +1,11 @@
 #include "gamegamebryo.h"
-#include <winreg.h>
-#include <utility.h>
-#include <scopeguard.h>
-#include <QDebug>
 
+#include "utility.h"
+#include "scopeguard.h"
+
+#include <QUrl>
+
+#include <winreg.h>
 
 GameGamebryo::GameGamebryo()
 {
@@ -15,6 +17,16 @@ bool GameGamebryo::init(MOBase::IOrganizer *moInfo)
   m_MyGamesPath = determineMyGamesPath(myGamesFolderName());
   m_Organizer = moInfo;
   return true;
+}
+
+bool GameGamebryo::isInstalled() const
+{
+  return !m_GamePath.isEmpty();
+}
+
+QIcon GameGamebryo::gameIcon() const
+{
+  return MOBase::iconForExecutable(gameDirectory().absoluteFilePath(getBinaryName()));
 }
 
 QDir GameGamebryo::gameDirectory() const
@@ -32,19 +44,80 @@ void GameGamebryo::setGamePath(const QString &path)
   m_GamePath = path;
 }
 
-QDir GameGamebryo::savesDirectory() const
-{
-  return QDir(m_MyGamesPath + "/Saves");
-}
-
 QDir GameGamebryo::documentsDirectory() const
 {
   return m_MyGamesPath;
 }
 
-bool GameGamebryo::isInstalled() const
+QDir GameGamebryo::savesDirectory() const
 {
-  return !m_GamePath.isEmpty();
+  return QDir(m_MyGamesPath + "/Saves");
+}
+
+QStringList GameGamebryo::gameVariants() const
+{
+  return QStringList();
+}
+
+void GameGamebryo::setGameVariant(const QString &variant)
+{
+  m_GameVariant = variant;
+}
+
+QString GameGamebryo::getBinaryName() const
+{
+  return getGameShortName() + ".exe";
+}
+
+MOBase::IPluginGame::LoadOrderMechanism GameGamebryo::getLoadOrderMechanism() const
+{
+  return LoadOrderMechanism::FileTime;
+}
+
+bool GameGamebryo::looksValid(QDir const &path) const
+{
+  //Check for <prog>.exe and <gamename>Launcher.exe for now.
+  return path.exists(getBinaryName()) && path.exists(getLauncherName());
+}
+
+QString GameGamebryo::getGameVersion() const
+{
+  return getVersion(getBinaryName());
+}
+
+QString GameGamebryo::getLauncherName() const
+{
+  return getGameShortName() + "Launcher.exe";
+}
+
+QString GameGamebryo::getVersion(const QString &program) const
+{
+  //This *really* needs to be factored out
+  std::wstring app_name = L"\\\\?\\" +
+      QDir::toNativeSeparators(this->gameDirectory().absoluteFilePath(program)).toStdWString();
+  DWORD handle;
+  DWORD info_len = ::GetFileVersionInfoSizeW(app_name.c_str(), &handle);
+  if (info_len == 0) {
+    qDebug("GetFileVersionInfoSizeW Error %d", ::GetLastError());
+    return "";
+  }
+
+  std::vector<char> buff(info_len);
+  if( ! ::GetFileVersionInfoW(app_name.c_str(), handle, info_len, buff.data())) {
+    qDebug("GetFileVersionInfoW Error %d", ::GetLastError());
+    return "";
+  }
+
+  VS_FIXEDFILEINFO *pFileInfo;
+  UINT buf_len;
+  if ( ! ::VerQueryValueW(buff.data(), L"\\", reinterpret_cast<LPVOID *>(&pFileInfo), &buf_len)) {
+    qDebug("VerQueryValueW Error %d", ::GetLastError());
+    return "";
+  }
+  return QString("%1.%2.%3.%4").arg(HIWORD(pFileInfo->dwFileVersionMS))
+                               .arg(LOWORD(pFileInfo->dwFileVersionMS))
+                               .arg(HIWORD(pFileInfo->dwFileVersionLS))
+                               .arg(LOWORD(pFileInfo->dwFileVersionLS));
 }
 
 std::unique_ptr<BYTE[]> GameGamebryo::getRegValue(HKEY key, LPCWSTR path,
@@ -86,7 +159,7 @@ QString GameGamebryo::findInRegistry(HKEY baseKey, LPCWSTR path, LPCWSTR value) 
   }
 }
 
-QFileInfo GameGamebryo::findInGameFolder(const QString &relativePath)
+QFileInfo GameGamebryo::findInGameFolder(const QString &relativePath) const
 {
   return QFileInfo(m_GamePath + "/" + relativePath);
 }
@@ -164,17 +237,47 @@ QString GameGamebryo::getLootPath() const
   return findInRegistry(HKEY_LOCAL_MACHINE, L"Software\\LOOT", L"Installed Path") + "/Loot.exe";
 }
 
-
-QStringList GameGamebryo::gameVariants() const
+std::map<std::type_index, boost::any> GameGamebryo::featureList() const
 {
-  return QStringList();
+  static std::map<std::type_index, boost::any> result {
+    { typeid(BSAInvalidation), m_BSAInvalidation.get() },
+    { typeid(ScriptExtender), m_ScriptExtender.get() },
+    { typeid(DataArchives), m_DataArchives.get() },
+    { typeid(SaveGameInfo), m_SaveGameInfo.get() }
+  };
+
+  return result;
 }
 
 
-void GameGamebryo::setGameVariant(const QString &variant)
+/*
+QString GetAppVersion(std::wstring const &app_name)
 {
-  m_GameVariant = variant;
+  DWORD handle;
+  DWORD info_len = ::GetFileVersionInfoSizeW(app_name.c_str(), &handle);
+  if (info_len == 0) {
+    qDebug("GetFileVersionInfoSizeW Error %d", ::GetLastError());
+    return "";
+  }
+
+  std::vector<char> buff(info_len);
+  if( ! ::GetFileVersionInfoW(app_name.c_str(), handle, info_len, buff.data())) {
+    qDebug("GetFileVersionInfoW Error %d", ::GetLastError());
+    return "";
+  }
+
+  VS_FIXEDFILEINFO *pFileInfo;
+  UINT buf_len;
+  if ( ! ::VerQueryValueW(buff.data(), L"\\", reinterpret_cast<LPVOID *>(&pFileInfo), &buf_len)) {
+    qDebug("VerQueryValueW Error %d", ::GetLastError());
+    return "";
+  }
+  return QString("%1.%2.%3.%4").arg(HIWORD(pFileInfo->dwFileVersionMS))
+                               .arg(LOWORD(pFileInfo->dwFileVersionMS))
+                               .arg(HIWORD(pFileInfo->dwFileVersionLS))
+                               .arg(LOWORD(pFileInfo->dwFileVersionLS));
 }
+*/
 
 
 MappingType GameGamebryo::mappings() const
