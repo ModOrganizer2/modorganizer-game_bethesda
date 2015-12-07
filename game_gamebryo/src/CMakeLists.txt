@@ -29,12 +29,9 @@ SET(project_path "${default_project_path}" CACHE PATH "path to the other mo proj
 SET(lib_path "${project_path}/../../install/libs")
 SET(plugin_path "${project_path}")
 
-MESSAGE(STATUS ${lib_path})
-MESSAGE(STATUS ${plugin_path})
-MESSAGE(STATUS ${project_path})
 
 INCLUDE_DIRECTORIES(${project_path}/uibase/src
-					${project_path}/game_features/src)
+                    ${project_path}/game_features/src)
 LINK_DIRECTORIES(${lib_path})
 
 

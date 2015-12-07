@@ -2,7 +2,6 @@
 #include "dummybsa.h"
 #include <utility.h>
 #include <imoinfo.h>
-#include <igameinfo.h>
 #include <utility.h>
 #include <QStringList>
 #include <QDir>
