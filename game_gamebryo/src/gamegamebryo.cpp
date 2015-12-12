@@ -1,7 +1,11 @@
 #include "gamegamebryo.h"
 
-#include "utility.h"
+#include "bsainvalidation.h"
+#include "dataarchives.h"
+#include "savegameinfo.h"
+#include "scriptextender.h"
 #include "scopeguard.h"
+#include "utility.h"
 
 #include <QUrl>
 
