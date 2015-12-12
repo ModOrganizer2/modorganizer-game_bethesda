@@ -72,7 +72,7 @@ protected:
       }
     }
 
-    template <> void read(QString &value);
+    void read(QString &value);
 
     void read(void *buff, std::size_t length);
 
