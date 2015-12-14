@@ -4,11 +4,13 @@
 #include "isavegame.h"
 
 #include <QDateTime>
+#include <QFile>
 #include <QImage>
 #include <QString>
 #include <QStringList>
 
-#include <QFile>
+#include <stddef.h>
+#include <stdexcept>
 
 struct _SYSTEMTIME;
 
@@ -72,8 +74,6 @@ protected:
       }
     }
 
-    template <> void read(QString &value);
-
     void read(void *buff, std::size_t length);
 
     /* Reads RGB image from save
@@ -108,5 +108,7 @@ protected:
   QStringList m_Plugins;
   QImage m_Screenshot;
 };
+
+template <> void GamebryoSaveGame::FileWrapper::read<QString>(QString &);
 
 #endif // GAMEBRYOSAVEGAME_H

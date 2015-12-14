@@ -75,7 +75,7 @@ void GamebryoSaveGame::FileWrapper::setBZString(bool state)
   m_BZString = state;
 }
 
-template <> __declspec(dllexport) void GamebryoSaveGame::FileWrapper::read(QString &value)
+template <> void GamebryoSaveGame::FileWrapper::read(QString &value)
 {
   unsigned short length;
   if (m_BZString) {
