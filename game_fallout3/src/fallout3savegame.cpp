@@ -1,7 +1,7 @@
 #include "fallout3savegame.h"
 
-Fallout3SaveGame::Fallout3SaveGame(QString const &fileName) :
-  GamebryoSaveGame(fileName)
+Fallout3SaveGame::Fallout3SaveGame(QString const &fileName, MOBase::IPluginGame const *game) :
+  GamebryoSaveGame(fileName, game)
 {
   FileWrapper file(this, "FO3SAVEGAME");
 
