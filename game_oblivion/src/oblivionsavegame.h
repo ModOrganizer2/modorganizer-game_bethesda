@@ -6,7 +6,7 @@
 class OblivionSaveGame : public GamebryoSaveGame
 {
 public:
-  OblivionSaveGame(QString const &);
+  OblivionSaveGame(QString const &fileName, MOBase::IPluginGame const *game);
 };
 
 #endif // OBLIVIONSAVEGAME_H
