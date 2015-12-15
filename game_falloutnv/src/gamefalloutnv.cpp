@@ -4,15 +4,20 @@
 #include "falloutnvdataarchives.h"
 #include "falloutnvsavegameinfo.h"
 #include "falloutnvscriptextender.h"
-#include <scopeguard.h>
-#include <pluginsetting.h>
-#include <executableinfo.h>
-#include <utility.h>
+
+#include "executableinfo.h"
+#include "pluginsetting.h"
+#include "utility.h"
+#include "versioninfo.h"
+
+#include <QDir>
+#include <QFile>
+#include <QFileInfo>
+#include <QList>
+#include <QString>
+#include <QStringList>
 
 #include <memory>
-
-#include <QStandardPaths>
-
 
 using namespace MOBase;
 
@@ -29,7 +34,7 @@ bool GameFalloutNV::init(IOrganizer *moInfo)
   m_ScriptExtender = std::shared_ptr<ScriptExtender>(new FalloutNVScriptExtender(this));
   m_DataArchives = std::shared_ptr<DataArchives>(new FalloutNVDataArchives());
   m_BSAInvalidation = std::shared_ptr<BSAInvalidation>(new FalloutNVBSAInvalidation(m_DataArchives, this));
-  m_SaveGameInfo = std::shared_ptr<SaveGameInfo>(new FalloutNVSaveGameInfo());
+  m_SaveGameInfo = std::shared_ptr<SaveGameInfo>(new FalloutNVSaveGameInfo(this));
   return true;
 }
 
