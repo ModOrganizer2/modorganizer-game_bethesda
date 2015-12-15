@@ -5,18 +5,22 @@
 #include "skyrimdataarchives.h"
 #include "skyrimsavegameinfo.h"
 
-#include <scopeguard.h>
-#include <pluginsetting.h>
-#include <executableinfo.h>
-#include <utility.h>
+#include "executableinfo.h"
+#include "pluginsetting.h"
+#include "utility.h"
 
 #include <QDebug>
-#include <QStandardPaths>
+#include <QFile>
+#include <QFileInfo>
+
+#include <QtDebug>
 
 #include <Windows.h>
 
 #include <exception>
 #include <memory>
+#include <stdexcept>
+#include <string>
 #include <vector>
 
 
@@ -35,7 +39,7 @@ bool GameSkyrim::init(IOrganizer *moInfo)
   m_ScriptExtender = std::shared_ptr<ScriptExtender>(new SkyrimScriptExtender(this));
   m_DataArchives = std::shared_ptr<DataArchives>(new SkyrimDataArchives());
   m_BSAInvalidation = std::shared_ptr<BSAInvalidation>(new SkyrimBSAInvalidation(m_DataArchives, this));
-  m_SaveGameInfo = std::shared_ptr<SaveGameInfo>(new SkyrimSaveGameInfo());
+  m_SaveGameInfo = std::shared_ptr<SaveGameInfo>(new SkyrimSaveGameInfo(this));
   return true;
 }
 
