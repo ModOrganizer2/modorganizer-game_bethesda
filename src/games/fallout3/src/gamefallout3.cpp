@@ -5,16 +5,20 @@
 #include "fallout3dataarchives.h"
 #include "fallout3savegameinfo.h"
 
-#include <scopeguard.h>
-#include <pluginsetting.h>
-#include <executableinfo.h>
-#include <utility.h>
+#include "executableinfo.h"
+#include "pluginsetting.h"
+#include "versioninfo.h"
+#include "utility.h"
+
+#include <QDir>
+#include <QFile>
+#include <QFileInfo>
+#include <QIODevice>
+#include <QList>
+#include <QString>
+#include <QStringList>
 
 #include <memory>
-
-#include <QStandardPaths>
-#include <QDebug>
-
 
 using namespace MOBase;
 
@@ -31,7 +35,7 @@ bool GameFallout3::init(IOrganizer *moInfo)
   m_ScriptExtender = std::shared_ptr<ScriptExtender>(new Fallout3ScriptExtender(this));
   m_DataArchives = std::shared_ptr<DataArchives>(new Fallout3DataArchives());
   m_BSAInvalidation = std::shared_ptr<BSAInvalidation>(new Fallout3BSAInvalidation(m_DataArchives, this));
-  m_SaveGameInfo = std::shared_ptr<SaveGameInfo>(new Fallout3SaveGameInfo());
+  m_SaveGameInfo = std::shared_ptr<SaveGameInfo>(new Fallout3SaveGameInfo(this));
   return true;
 }
 
