@@ -2,8 +2,13 @@
 
 #include "oblivionsavegame.h"
 
-MOBase::ISaveGame const *OblivionSaveGameInfo::getSaveGameInfo(const QString &file) const
+OblivionSaveGameInfo::OblivionSaveGameInfo(MOBase::IPluginGame const *game) :
+  m_Game(game)
 {
-  return new OblivionSaveGame(file);
+}
+
+MOBase::ISaveGame const *OblivionSaveGameInfo::getSaveGameInfo(QString const &file) const
+{
+  return new OblivionSaveGame(file, m_Game);
 }
 

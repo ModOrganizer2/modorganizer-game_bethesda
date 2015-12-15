@@ -5,13 +5,15 @@
 #include "oblivionsavegameinfo.h"
 #include "oblivionscriptextender.h"
 
-#include <scopeguard.h>
-#include <pluginsetting.h>
-#include <executableinfo.h>
-#include <utility.h>
-#include <memory>
-#include <QStandardPaths>
+#include "pluginsetting.h"
+#include "executableinfo.h"
+#include "utility.h"
 
+#include <QDir>
+#include <QFile>
+#include <QFileInfo>
+
+#include <memory>
 
 using namespace MOBase;
 
@@ -28,7 +30,7 @@ bool GameOblivion::init(IOrganizer *moInfo)
   m_ScriptExtender = std::shared_ptr<ScriptExtender>(new OblivionScriptExtender(this));
   m_DataArchives = std::shared_ptr<DataArchives>(new OblivionDataArchives());
   m_BSAInvalidation = std::shared_ptr<BSAInvalidation>(new OblivionBSAInvalidation(m_DataArchives, this));
-  m_SaveGameInfo = std::shared_ptr<SaveGameInfo>(new OblivionSaveGameInfo());
+  m_SaveGameInfo = std::shared_ptr<SaveGameInfo>(new OblivionSaveGameInfo(this));
   return true;
 }
 

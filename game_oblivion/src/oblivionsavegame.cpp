@@ -2,8 +2,8 @@
 
 #include <Windows.h>
 
-OblivionSaveGame::OblivionSaveGame(const QString &game) :
-  GamebryoSaveGame(game)
+OblivionSaveGame::OblivionSaveGame(QString const &fileName, MOBase::IPluginGame const *game) :
+  GamebryoSaveGame(fileName, game)
 {
   FileWrapper file(this, "TES4SAVEGAME");
   file.setBZString(true);
