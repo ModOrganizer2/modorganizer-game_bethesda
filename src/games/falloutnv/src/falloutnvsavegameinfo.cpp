@@ -2,7 +2,12 @@
 
 #include "falloutnvsavegame.h"
 
-MOBase::ISaveGame const *FalloutNVSaveGameInfo::getSaveGameInfo(const QString &file) const
+FalloutNVSaveGameInfo::FalloutNVSaveGameInfo(MOBase::IPluginGame const *game) :
+  m_Game(game)
 {
-  return new FalloutNVSaveGame(file);
+}
+
+MOBase::ISaveGame const *FalloutNVSaveGameInfo::getSaveGameInfo(QString const &file) const
+{
+  return new FalloutNVSaveGame(file, m_Game);
 }
