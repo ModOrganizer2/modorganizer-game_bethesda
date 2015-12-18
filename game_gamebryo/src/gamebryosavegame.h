@@ -79,10 +79,10 @@ protected:
     /* Reads RGB image from save
      * Assumes picture dimentions come immediately before the save
      */
-    void readImage(int scale = 0);
+    void readImage(int scale = 0, bool alpha = false);
 
     /* Reads RGB image from save */
-    void readImage(unsigned long width, unsigned long height, int scale = 0);
+    void readImage(unsigned long width, unsigned long height, int scale = 0, bool alpha = false);
 
     /* Read the plugin list */
     void readPlugins();
