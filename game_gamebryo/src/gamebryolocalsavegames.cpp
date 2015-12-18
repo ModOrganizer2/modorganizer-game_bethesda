@@ -53,6 +53,7 @@ MappingType GamebryoLocalSavegames::mappings(const QDir &profileSaveDir)
   return {{
            profileSaveDir.absolutePath(),
            m_LocalSavesDir.absolutePath(),
+           true,
            true
     }};
 }
