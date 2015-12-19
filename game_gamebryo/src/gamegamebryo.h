@@ -20,6 +20,9 @@ class GameGamebryo : public MOBase::IPluginGame
   Q_OBJECT
   Q_INTERFACES(MOBase::IPlugin MOBase::IPluginGame)
 
+  friend class GamebryoScriptExtender;
+  friend class GamebryoSaveGameInfo;
+
 public:
 
   GameGamebryo();
@@ -28,6 +31,7 @@ public:
 
 public: // IPluginGame interface
 
+  //getName
   //initializeProfile
   //savegameExtension
   virtual bool isInstalled() const override;
@@ -64,7 +68,6 @@ protected:
   QString getLootPath() const;
   QString selectedVariant() const;
   virtual QString getLauncherName() const;
-  friend class GamebryoScriptExtender;
   QString getVersion(QString const &program) const;
 
 protected:
