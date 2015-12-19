@@ -1,9 +1,14 @@
 #include "falloutnvsavegameinfo.h"
 
 #include "falloutnvsavegame.h"
+#include "gamegamebryo.h"
 
-FalloutNVSaveGameInfo::FalloutNVSaveGameInfo(MOBase::IPluginGame const *game) :
-  m_Game(game)
+FalloutNVSaveGameInfo::FalloutNVSaveGameInfo(GameGamebryo const *game) :
+  GamebryoSaveGameInfo(game)
+{
+}
+
+FalloutNVSaveGameInfo::~FalloutNVSaveGameInfo()
 {
 }
 
