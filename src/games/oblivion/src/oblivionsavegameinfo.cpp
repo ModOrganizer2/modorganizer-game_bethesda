@@ -1,9 +1,14 @@
 #include "oblivionsavegameinfo.h"
 
 #include "oblivionsavegame.h"
+#include "gamegamebryo.h"
 
-OblivionSaveGameInfo::OblivionSaveGameInfo(MOBase::IPluginGame const *game) :
-  m_Game(game)
+OblivionSaveGameInfo::OblivionSaveGameInfo(GameGamebryo const *game) :
+  GamebryoSaveGameInfo(game)
+{
+}
+
+OblivionSaveGameInfo::~OblivionSaveGameInfo()
 {
 }
 
