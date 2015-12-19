@@ -1,9 +1,14 @@
 #include "skyrimsavegameinfo.h"
 
 #include "skyrimsavegame.h"
+#include "gamegamebryo.h"
 
-SkyrimSaveGameInfo::SkyrimSaveGameInfo(MOBase::IPluginGame const *game) :
-  m_Game(game)
+SkyrimSaveGameInfo::SkyrimSaveGameInfo(GameGamebryo const *game) :
+  GamebryoSaveGameInfo(game)
+{
+}
+
+SkyrimSaveGameInfo::~SkyrimSaveGameInfo()
 {
 }
 
