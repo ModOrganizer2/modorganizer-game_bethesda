@@ -1,17 +1,17 @@
 #ifndef FALLOUT3SAVEGAMEINFO_H
 #define FALLOUT3SAVEGAMEINFO_H
 
-#include "savegameinfo.h"
+#include "gamebryosavegameinfo.h"
 
-namespace MOBase { class IPluginGame; }
+class GameGamebryo;
 
-class Fallout3SaveGameInfo : public SaveGameInfo
+class Fallout3SaveGameInfo : public GamebryoSaveGameInfo
 {
 public:
-  Fallout3SaveGameInfo(MOBase::IPluginGame const *game);
+  Fallout3SaveGameInfo(GameGamebryo const *game);
+  ~Fallout3SaveGameInfo();
+
   virtual MOBase::ISaveGame const *getSaveGameInfo(QString const &file) const override;
-private:
-  MOBase::IPluginGame const* m_Game;
 };
 
 #endif // FALLOUT3SAVEGAMEINFO_H
