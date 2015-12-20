@@ -35,7 +35,7 @@ QDateTime GamebryoSaveGame::getCreationTime() const
   return m_CreationTime;
 }
 
-QString GamebryoSaveGame::getIdentifier() const
+QString GamebryoSaveGame::getSaveGroupIdentifier() const
 {
   return m_PCName;
 }
