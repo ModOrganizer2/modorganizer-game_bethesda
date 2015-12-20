@@ -27,7 +27,7 @@ public:
 
   virtual QDateTime getCreationTime() const override;
 
-  virtual QString getIdentifier() const override;
+  virtual QString getSaveGroupIdentifier() const override;
 
   virtual QStringList allFiles() const override;
 
