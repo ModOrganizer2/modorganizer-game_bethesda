@@ -6,10 +6,13 @@ env = qt_env.Clone()
 
 env.EnableQtModules('Widgets')
 
-env.AppendUnique(CPPPATH = [
+env['CPPPATH'] += [
+    '.',            # Why is this necessary?
     os.path.join('..', 'gamefeatures'),
     '${BOOSTPATH}'
-])
+]
+
+env.Uic(env.Glob('*.ui'))
 
 #env.AppendUnique(LIBS = [
 #        'advapi32',

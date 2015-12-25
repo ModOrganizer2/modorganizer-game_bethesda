@@ -16,7 +16,8 @@ SOURCES += gamegamebryo.cpp \
     gamebryodataarchives.cpp \
     gamebryoscriptextender.cpp \
     gamebryosavegame.cpp \
-    gamebryosavegameinfo.cpp
+    gamebryosavegameinfo.cpp \
+    gamebryosavegameinfowidget.cpp
 
 HEADERS += gamegamebryo.h \
     dummybsa.h \
@@ -24,7 +25,8 @@ HEADERS += gamegamebryo.h \
     gamebryodataarchives.h \
     gamebryoscriptextender.h \
     gamebryosavegame.h \
-    gamebryosavegameinfo.h
+    gamebryosavegameinfo.h \
+    gamebryosavegameinfowidget.h
 
 include(../plugin_template.pri)
 
@@ -33,3 +35,6 @@ INCLUDEPATH +=  "$${BOOSTPATH}" "$${PWD}/../gamefeatures"
 OTHER_FILES +=\
     SConscript \
     CMakeLists.txt
+
+FORMS += \
+    gamebryosavegameinfowidget.ui

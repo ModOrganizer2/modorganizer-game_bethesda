@@ -7,9 +7,13 @@
 #include "scopeguard.h"
 #include "utility.h"
 
-#include <QUrl>
+#include <QIcon>
+
+#include <QtDebug>
 
 #include <winreg.h>
+
+#include <vector>
 
 GameGamebryo::GameGamebryo()
 {

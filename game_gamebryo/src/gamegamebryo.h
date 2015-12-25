@@ -22,6 +22,7 @@ class GameGamebryo : public MOBase::IPluginGame
 
   friend class GamebryoScriptExtender;
   friend class GamebryoSaveGameInfo;
+  friend class GamebryoSaveGameInfoWidget;
 
 public:
 

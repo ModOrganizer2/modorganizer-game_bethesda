@@ -1,8 +1,9 @@
-
 #include "gamebryosavegameinfo.h"
 
 #include "gamebryosavegame.h"
+#include "gamebryosavegameinfowidget.h"
 #include "gamegamebryo.h"
+#include "imoinfo.h"
 #include "imodinterface.h"
 #include "iplugingame.h"
 #include "ipluginlist.h"
@@ -74,4 +75,9 @@ GamebryoSaveGameInfo::MissingAssets GamebryoSaveGameInfo::getMissingAssets(QStri
   }
 
   return missingAssets;
+}
+
+MOBase::ISaveGameInfoWidget *GamebryoSaveGameInfo::getSaveGameWidget(QWidget *parent) const
+{
+  return new GamebryoSaveGameInfoWidget(this, parent);
 }
