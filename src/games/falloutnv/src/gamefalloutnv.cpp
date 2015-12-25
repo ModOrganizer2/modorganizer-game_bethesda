@@ -14,8 +14,11 @@
 #include <QFile>
 #include <QFileInfo>
 #include <QList>
+#include <QObject>
 #include <QString>
 #include <QStringList>
+
+#include <winreg.h>
 
 #include <memory>
 
