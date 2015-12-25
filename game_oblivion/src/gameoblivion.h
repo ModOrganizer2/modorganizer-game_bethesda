@@ -3,6 +3,13 @@
 
 #include "gamegamebryo.h"
 
+#include <QObject>
+#include <QString>
+
+#include <QtGlobal>
+
+class QDir;
+
 class GameOblivion : public GameGamebryo
 {
   Q_OBJECT
