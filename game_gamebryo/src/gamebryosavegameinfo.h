@@ -13,7 +13,10 @@ public:
 
   virtual MissingAssets getMissingAssets(QString const &file) const override;
 
+  virtual MOBase::ISaveGameInfoWidget *getSaveGameWidget(QWidget *) const override;
+
 protected:
+  friend class GamebryoSaveGameInfoWidget;
   GameGamebryo const *m_Game;
 };
 
