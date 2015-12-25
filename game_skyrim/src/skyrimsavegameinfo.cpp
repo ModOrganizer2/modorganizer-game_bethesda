@@ -13,8 +13,7 @@ SkyrimSaveGameInfo::~SkyrimSaveGameInfo()
 }
 
 
-MOBase::ISaveGame const *SkyrimSaveGameInfo::getSaveGameInfo(const QString &file) const
+MOBase::ISaveGame const *SkyrimSaveGameInfo::getSaveGameInfo(QString const &file) const
 {
   return new SkyrimSaveGame(file, m_Game);
 }
-
