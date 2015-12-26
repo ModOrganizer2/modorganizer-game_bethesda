@@ -53,17 +53,6 @@ QString GameSkyrim::gameName() const
   return "Skyrim";
 }
 
-QString GameSkyrim::localAppFolder() const
-{
-  QString result = getKnownFolderPath(FOLDERID_LocalAppData, false);
-  if (result.isEmpty()) {
-    // fallback: try the registry
-    result = getSpecialPath("Local AppData");
-  }
-
-  return result;
-}
-
 QString GameSkyrim::myGamesFolderName() const
 {
   return "Skyrim";
