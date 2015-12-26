@@ -10,6 +10,7 @@
 #include "utility.h"
 #include "versioninfo.h"
 
+#include <QCoreApplication>
 #include <QDir>
 #include <QFile>
 #include <QFileInfo>
@@ -91,7 +92,7 @@ MOBase::VersionInfo GameFalloutNV::version() const
 
 bool GameFalloutNV::isActive() const
 {
-  return true;
+  return qApp->property("managed_game").value<IPluginGame*>() == this;
 }
 
 QList<PluginSetting> GameFalloutNV::settings() const
