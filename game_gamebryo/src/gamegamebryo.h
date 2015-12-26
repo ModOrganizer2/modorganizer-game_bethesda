@@ -8,7 +8,10 @@ class DataArchives;
 class SaveGameInfo;
 class BSAInvalidation;
 
+#include <QObject>
 #include <QString>
+class QDir;
+class QFileInfo;
 
 #include <memory>
 
@@ -72,6 +75,17 @@ protected:
   QString getVersion(QString const &program) const;
   QString localAppFolder() const;
 
+  //This function is not terribly well name as it copies exactly where it's told
+  //to, irrespective of whether it's in the profile...
+  static void copyToProfile(const QString &sourcePath,
+                            const QDir &destinationDirectory,
+                            const QString &sourceFileName);
+
+  static void copyToProfile(const QString &sourcePath,
+                            const QDir &destinationDirectory,
+                            const QString &sourceFileName,
+                            const QString &destinationFileName);
+
 protected:
 
   std::map<std::type_index, boost::any> featureList() const;
@@ -88,8 +102,7 @@ private:
 
   QString determineMyGamesPath(const QString &gameName);
 
-  virtual QString myGamesFolderName() const = 0;
-  virtual QString identifyGamePath() const = 0;
+  QString identifyGamePath() const;
 
 private:
 
