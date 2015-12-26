@@ -9,9 +9,12 @@
 #include "executableinfo.h"
 #include "utility.h"
 
+#include <QCoreApplication>
 #include <QDir>
 #include <QFile>
 #include <QFileInfo>
+
+#include <winreg.h>
 
 #include <memory>
 
@@ -86,7 +89,7 @@ MOBase::VersionInfo GameOblivion::version() const
 
 bool GameOblivion::isActive() const
 {
-  return true;
+  return qApp->property("managed_game").value<IPluginGame*>() == this;
 }
 
 QList<PluginSetting> GameOblivion::settings() const
