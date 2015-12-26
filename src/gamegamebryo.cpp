@@ -7,12 +7,17 @@
 #include "scopeguard.h"
 #include "utility.h"
 
+#include <QDir>
 #include <QIcon>
+#include <QFile>
 
 #include <QtDebug>
+#include <QtGlobal>
 
 #include <winreg.h>
+#include <winver.h>
 
+#include <stddef.h>
 #include <vector>
 
 GameGamebryo::GameGamebryo()
@@ -22,7 +27,7 @@ GameGamebryo::GameGamebryo()
 bool GameGamebryo::init(MOBase::IOrganizer *moInfo)
 {
   m_GamePath = identifyGamePath();
-  m_MyGamesPath = determineMyGamesPath(myGamesFolderName());
+  m_MyGamesPath = determineMyGamesPath(getGameShortName());
   m_Organizer = moInfo;
   return true;
 }
@@ -205,6 +210,12 @@ QString GameGamebryo::determineMyGamesPath(const QString &gameName)
   return result + "/My Games/" + gameName;
 }
 
+QString GameGamebryo::identifyGamePath() const
+{
+  QString path = "Software\\Bethesda Softworks\\" + getGameShortName();
+  return findInRegistry(HKEY_LOCAL_MACHINE, path.toStdWString().c_str(), L"Installed Path");
+}
+
 QString GameGamebryo::selectedVariant() const
 {
   return m_GameVariant;
@@ -256,31 +267,18 @@ QString GameGamebryo::localAppFolder() const
   return result;
 }
 
-/*
-QString GetAppVersion(std::wstring const &app_name)
+void GameGamebryo::copyToProfile(const QString &sourcePath, const QDir &destinationDirectory, const QString &sourceFileName)
 {
-  DWORD handle;
-  DWORD info_len = ::GetFileVersionInfoSizeW(app_name.c_str(), &handle);
-  if (info_len == 0) {
-    qDebug("GetFileVersionInfoSizeW Error %d", ::GetLastError());
-    return "";
-  }
-
-  std::vector<char> buff(info_len);
-  if( ! ::GetFileVersionInfoW(app_name.c_str(), handle, info_len, buff.data())) {
-    qDebug("GetFileVersionInfoW Error %d", ::GetLastError());
-    return "";
-  }
-
-  VS_FIXEDFILEINFO *pFileInfo;
-  UINT buf_len;
-  if ( ! ::VerQueryValueW(buff.data(), L"\\", reinterpret_cast<LPVOID *>(&pFileInfo), &buf_len)) {
-    qDebug("VerQueryValueW Error %d", ::GetLastError());
-    return "";
-  }
-  return QString("%1.%2.%3.%4").arg(HIWORD(pFileInfo->dwFileVersionMS))
-                               .arg(LOWORD(pFileInfo->dwFileVersionMS))
-                               .arg(HIWORD(pFileInfo->dwFileVersionLS))
-                               .arg(LOWORD(pFileInfo->dwFileVersionLS));
+  copyToProfile(sourcePath, destinationDirectory, sourceFileName, sourceFileName);
 }
-*/
+
+void GameGamebryo::copyToProfile(const QString &sourcePath, const QDir &destinationDirectory, const QString &sourceFileName, const QString &destinationFileName)
+{
+  QString filePath = destinationDirectory.absoluteFilePath(destinationFileName);
+  if (!QFileInfo(filePath).exists()) {
+    if (!MOBase::shellCopy(sourcePath + "/" + sourceFileName, filePath)) {
+      // if copy file fails, create the file empty
+      QFile(filePath).open(QIODevice::WriteOnly);
+    }
+  }
+}
