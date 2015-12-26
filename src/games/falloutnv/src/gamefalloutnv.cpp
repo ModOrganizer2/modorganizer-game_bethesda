@@ -51,17 +51,6 @@ QString GameFalloutNV::gameName() const
   return "New Vegas";
 }
 
-QString GameFalloutNV::localAppFolder() const
-{
-  QString result = getKnownFolderPath(FOLDERID_LocalAppData, false);
-  if (result.isEmpty()) {
-    // fallback: try the registry
-    result = getSpecialPath("Local AppData");
-  }
-
-  return result;
-}
-
 QString GameFalloutNV::myGamesFolderName() const
 {
   return "FalloutNV";
