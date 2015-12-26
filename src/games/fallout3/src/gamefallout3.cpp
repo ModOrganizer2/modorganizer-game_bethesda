@@ -49,17 +49,6 @@ QString GameFallout3::gameName() const
   return "Fallout 3";
 }
 
-QString GameFallout3::localAppFolder() const
-{
-  QString result = getKnownFolderPath(FOLDERID_LocalAppData, false);
-  if (result.isEmpty()) {
-    // fallback: try the registry
-    result = getSpecialPath("Local AppData");
-  }
-
-  return result;
-}
-
 QString GameFallout3::myGamesFolderName() const
 {
   return "Fallout3";
