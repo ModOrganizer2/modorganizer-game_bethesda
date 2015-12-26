@@ -9,6 +9,7 @@
 #include "pluginsetting.h"
 #include "utility.h"
 
+#include <QCoreApplication>
 #include <QDebug>
 #include <QFile>
 #include <QFileInfo>
@@ -95,7 +96,7 @@ MOBase::VersionInfo GameSkyrim::version() const
 
 bool GameSkyrim::isActive() const
 {
-  return true;
+  return qApp->property("managed_game").value<IPluginGame*>() == this;
 }
 
 QList<PluginSetting> GameSkyrim::settings() const
