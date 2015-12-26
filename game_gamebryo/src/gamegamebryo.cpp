@@ -10,15 +10,105 @@
 #include <QDir>
 #include <QIcon>
 #include <QFile>
+#include <QFileInfo>
 
 #include <QtDebug>
 #include <QtGlobal>
 
+#include <Shlobj.h>
+#include <Windows.h>
 #include <winreg.h>
 #include <winver.h>
 
+#include <string>
 #include <stddef.h>
 #include <vector>
+
+namespace {
+
+std::unique_ptr<BYTE[]> getRegValue(HKEY key, LPCWSTR path, LPCWSTR value,
+                                    DWORD flags, LPDWORD type = nullptr)
+{
+  DWORD size = 0;
+  HKEY subKey;
+  LONG res = ::RegOpenKeyExW(key, path, 0,
+                              KEY_QUERY_VALUE | KEY_WOW64_32KEY, &subKey);
+  if (res != ERROR_SUCCESS) {
+    return std::unique_ptr<BYTE[]>();
+  }
+  res = ::RegGetValueW(subKey, L"", value, flags, type, nullptr, &size);
+  if (res == ERROR_FILE_NOT_FOUND || res == ERROR_UNSUPPORTED_TYPE) {
+    return std::unique_ptr<BYTE[]>();
+  }
+  if (res != ERROR_SUCCESS && res != ERROR_MORE_DATA) {
+    throw MOBase::MyException(QObject::tr("failed to query registry path (preflight): %1").arg(res, 0, 16));
+  }
+
+  std::unique_ptr<BYTE[]> result(new BYTE[size]);
+  res = ::RegGetValueW(subKey, L"", value, flags, type, result.get(), &size);
+
+  if (res != ERROR_SUCCESS) {
+    throw MOBase::MyException(QObject::tr("failed to query registry path (read): %1").arg(res, 0, 16));
+  }
+
+  return result;
+}
+
+QString findInRegistry(HKEY baseKey, LPCWSTR path, LPCWSTR value)
+{
+  std::unique_ptr<BYTE[]> buffer = getRegValue(baseKey, path, value, RRF_RT_REG_SZ | RRF_NOEXPAND);
+
+  return QString::fromUtf16(reinterpret_cast<const ushort*>(buffer.get()));
+}
+
+QString getKnownFolderPath(REFKNOWNFOLDERID folderId, bool useDefault)
+{
+  PWSTR path = nullptr;
+  ON_BLOCK_EXIT([&] () {
+    if (path != nullptr) ::CoTaskMemFree(path);
+  });
+
+  if (::SHGetKnownFolderPath(folderId, useDefault ? KF_FLAG_DEFAULT_PATH : 0, NULL, &path) == S_OK) {
+    return QDir::fromNativeSeparators(QString::fromWCharArray(path));
+  } else {
+    return QString();
+  }
+}
+
+QString getSpecialPath(const QString &name)
+{
+  QString base = findInRegistry(HKEY_CURRENT_USER,
+                                L"Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\User Shell Folders",
+                                name.toStdWString().c_str());
+
+  WCHAR temp[MAX_PATH];
+  if (::ExpandEnvironmentStringsW(base.toStdWString().c_str(), temp, MAX_PATH) != 0) {
+    return QString::fromWCharArray(temp);
+  } else {
+    return base;
+  }
+}
+
+QString determineMyGamesPath(const QString &gameName)
+{
+  // a) this is the way it should work. get the configured My Documents directory
+  QString result = getKnownFolderPath(FOLDERID_Documents, false);
+
+  // b) if there is no <game> directory there, look in the default directory
+  if (result.isEmpty()
+      || !QFileInfo(result + "/My Games/" + gameName).exists()) {
+    result = getKnownFolderPath(FOLDERID_Documents, true);
+  }
+  // c) finally, look in the registry. This is discouraged
+  if (result.isEmpty()
+      || !QFileInfo(result + "/My Games/" + gameName).exists()) {
+    result = getSpecialPath("Personal");
+  }
+
+  return result + "/My Games/" + gameName;
+}
+
+}
 
 GameGamebryo::GameGamebryo()
 {
@@ -103,7 +193,7 @@ QString GameGamebryo::getLauncherName() const
   return getGameShortName() + "Launcher.exe";
 }
 
-QString GameGamebryo::getVersion(const QString &program) const
+QString GameGamebryo::getVersion(QString const &program) const
 {
   //This *really* needs to be factored out
   std::wstring app_name = L"\\\\?\\" +
@@ -133,82 +223,11 @@ QString GameGamebryo::getVersion(const QString &program) const
                                .arg(LOWORD(pFileInfo->dwFileVersionLS));
 }
 
-std::unique_ptr<BYTE[]> GameGamebryo::getRegValue(HKEY key, LPCWSTR path,
-                                                  LPCWSTR value, DWORD flags,
-                                                  LPDWORD type) const
-{
-  DWORD size = 0;
-  HKEY subKey;
-  LONG res = ::RegOpenKeyExW(key, path, 0,
-                              KEY_QUERY_VALUE | KEY_WOW64_32KEY, &subKey);
-  if (res != ERROR_SUCCESS) {
-    return std::unique_ptr<BYTE[]>();
-  }
-  res = ::RegGetValueW(subKey, L"", value, flags, type, nullptr, &size);
-  if ((res == ERROR_FILE_NOT_FOUND) || (res == ERROR_UNSUPPORTED_TYPE)) {
-    return std::unique_ptr<BYTE[]>();
-  } else if ((res != ERROR_SUCCESS) && (res != ERROR_MORE_DATA)) {
-    throw MOBase::MyException(QObject::tr("failed to query registry path (preflight): %1").arg(res, 0, 16));
-  }
-
-  std::unique_ptr<BYTE[]> result(new BYTE[size]);
-  res = ::RegGetValueW(subKey, L"", value, flags, type, result.get(), &size);
-
-  if (res != ERROR_SUCCESS) {
-    throw MOBase::MyException(QObject::tr("failed to query registry path (read): %1").arg(res, 0, 16));
-  }
-
-  return result;
-}
-
-QString GameGamebryo::findInRegistry(HKEY baseKey, LPCWSTR path, LPCWSTR value) const
-{
-  std::unique_ptr<BYTE[]> buffer = getRegValue(baseKey, path, value, RRF_RT_REG_SZ | RRF_NOEXPAND);
-
-  if (buffer.get() != nullptr) {
-    return QString::fromUtf16(reinterpret_cast<const ushort*>(buffer.get()));
-  } else {
-    return QString();
-  }
-}
-
 QFileInfo GameGamebryo::findInGameFolder(const QString &relativePath) const
 {
   return QFileInfo(m_GamePath + "/" + relativePath);
 }
 
-QString GameGamebryo::getKnownFolderPath(REFKNOWNFOLDERID folderId, bool useDefault) const
-{
-  PWSTR path = nullptr;
-  ON_BLOCK_EXIT([&] () {
-    if (path != nullptr) ::CoTaskMemFree(path);
-  });
-
-  if (::SHGetKnownFolderPath(folderId, useDefault ? KF_FLAG_DEFAULT_PATH : 0, NULL, &path) == S_OK) {
-    return QDir::fromNativeSeparators(QString::fromWCharArray(path));
-  } else {
-    return QString();
-  }
-}
-
-QString GameGamebryo::determineMyGamesPath(const QString &gameName)
-{
-  // a) this is the way it should work. get the configured My Documents directory
-  QString result = getKnownFolderPath(FOLDERID_Documents, false);
-
-  // b) if there is no <game> directory there, look in the default directory
-  if (result.isEmpty()
-      || !QFileInfo(result + "/My Games/" + gameName).exists()) {
-    result = getKnownFolderPath(FOLDERID_Documents, true);
-  }
-  // c) finally, look in the registry. This is discouraged
-  if (result.isEmpty()
-      || !QFileInfo(result + "/My Games/" + gameName).exists()) {
-    result = getSpecialPath("Personal");
-  }
-
-  return result + "/My Games/" + gameName;
-}
 
 QString GameGamebryo::identifyGamePath() const
 {
@@ -221,26 +240,12 @@ QString GameGamebryo::selectedVariant() const
   return m_GameVariant;
 }
 
-QString GameGamebryo::getSpecialPath(const QString &name) const
-{
-  QString base = findInRegistry(HKEY_CURRENT_USER,
-                                L"Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\User Shell Folders",
-                                name.toStdWString().c_str());
-
-  WCHAR temp[MAX_PATH];
-  if (::ExpandEnvironmentStringsW(base.toStdWString().c_str(), temp, MAX_PATH) != 0) {
-    return QString::fromWCharArray(temp);
-  } else {
-    return base;
-  }
-}
-
 QString GameGamebryo::myGamesPath() const
 {
   return m_MyGamesPath;
 }
 
-QString GameGamebryo::getLootPath() const
+/*static*/ QString GameGamebryo::getLootPath()
 {
   return findInRegistry(HKEY_LOCAL_MACHINE, L"Software\\LOOT", L"Installed Path") + "/Loot.exe";
 }
@@ -257,7 +262,7 @@ std::map<std::type_index, boost::any> GameGamebryo::featureList() const
   return result;
 }
 
-QString GameGamebryo::localAppFolder() const
+/*static*/QString GameGamebryo::localAppFolder()
 {
   QString result = getKnownFolderPath(FOLDERID_LocalAppData, false);
   if (result.isEmpty()) {
@@ -267,12 +272,17 @@ QString GameGamebryo::localAppFolder() const
   return result;
 }
 
-void GameGamebryo::copyToProfile(const QString &sourcePath, const QDir &destinationDirectory, const QString &sourceFileName)
+/*static*/void GameGamebryo::copyToProfile(QString const &sourcePath,
+                                           QDir const &destinationDirectory,
+                                           QString const &sourceFileName)
 {
   copyToProfile(sourcePath, destinationDirectory, sourceFileName, sourceFileName);
 }
 
-void GameGamebryo::copyToProfile(const QString &sourcePath, const QDir &destinationDirectory, const QString &sourceFileName, const QString &destinationFileName)
+/*static*/void GameGamebryo::copyToProfile(QString const &sourcePath,
+                                           QDir const &destinationDirectory,
+                                           QString const &sourceFileName,
+                                           QString const &destinationFileName)
 {
   QString filePath = destinationDirectory.absoluteFilePath(destinationFileName);
   if (!QFileInfo(filePath).exists()) {

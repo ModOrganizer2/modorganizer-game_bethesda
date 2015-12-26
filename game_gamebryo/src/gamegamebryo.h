@@ -15,9 +15,6 @@ class QFileInfo;
 
 #include <memory>
 
-#include <ShlObj.h>
-
-
 class GameGamebryo : public MOBase::IPluginGame
 {
   Q_OBJECT
@@ -62,18 +59,16 @@ public: // IPluginGame interface
 
 protected:
 
-  std::unique_ptr<BYTE[]> getRegValue(HKEY key, LPCWSTR subKey, LPCWSTR value, DWORD flags, LPDWORD type = nullptr) const;
-  QString findInRegistry(HKEY baseKey, LPCWSTR path, LPCWSTR value) const;
-  QFileInfo findInGameFolder(const QString &relativePath) const;
-  QString getKnownFolderPath(REFKNOWNFOLDERID folderId, bool useDefault) const;
-  QString getSpecialPath(const QString &name) const;
-  QString myGamesPath() const;
-  //Arguably this shouldn't really be here but every gamebryo program seems to use it
-  QString getLootPath() const;
-  QString selectedVariant() const;
   virtual QString getLauncherName() const;
+
+  QFileInfo findInGameFolder(const QString &relativePath) const;
+  QString myGamesPath() const;
+  QString selectedVariant() const;
   QString getVersion(QString const &program) const;
-  QString localAppFolder() const;
+
+  static QString localAppFolder();
+  //Arguably this shouldn't really be here but every gamebryo program seems to use it
+  static QString getLootPath();
 
   //This function is not terribly well name as it copies exactly where it's told
   //to, irrespective of whether it's in the profile...
@@ -90,7 +85,7 @@ protected:
 
   std::map<std::type_index, boost::any> featureList() const;
 
-  //These should be implemented by anything that uses gamebro (I think)
+  //These should be implemented by anything that uses gamebryo (I think)
   //(and if they don't, it'll be a null pointer and won't look implemented,
   //so that's fine too).
   std::shared_ptr<ScriptExtender> m_ScriptExtender { nullptr };
@@ -99,8 +94,6 @@ protected:
   std::shared_ptr<SaveGameInfo> m_SaveGameInfo { nullptr };
 
 private:
-
-  QString determineMyGamesPath(const QString &gameName);
 
   QString identifyGamePath() const;
 
