@@ -9,6 +9,8 @@
 #include "ipluginlist.h"
 
 #include <QDir>
+#include <QString>
+#include <QStringList>
 
 GamebryoSaveGameInfo::GamebryoSaveGameInfo(GameGamebryo const *game) :
   m_Game(game)
@@ -28,36 +30,39 @@ GamebryoSaveGameInfo::MissingAssets GamebryoSaveGameInfo::getMissingAssets(QStri
   MissingAssets missingAssets;
 
   for (QString const &pluginName : save->getPlugins()) {
-    if (organizerCore->pluginList()->state(pluginName) != MOBase::IPluginList::STATE_ACTIVE) {
-      missingAssets[pluginName] = ProvidingModules();
+    switch (organizerCore->pluginList()->state(pluginName)) {
+      case MOBase::IPluginList::STATE_INACTIVE:
+        missingAssets[pluginName] = ProvidingModules { organizerCore->pluginList()->origin(pluginName) };
+        break;
+      case MOBase::IPluginList::STATE_MISSING:
+        missingAssets[pluginName] = ProvidingModules();
+        break;
     }
   }
 
-  // figure out, for each esp/esm, which mod, if any, contains it
+  //Find out any other mods that might contain the esp/esm
   QStringList espFilter( { "*.esp", "*.esm" } );
 
-  // search in data.
-  //FIXME DO not search in data.
-  {
-    QDir dataDir(organizerCore->managedGame()->dataDirectory());
-    QStringList esps = dataDir.entryList(espFilter);
-    for (const QString &esp : esps) {
-      MissingAssets::iterator iter = missingAssets.find(esp);
-      if (iter != missingAssets.end()) {
-        iter->push_back("<data>");
-      }
-    }
-  }
+  QString dataDir(organizerCore->managedGame()->dataDirectory().absolutePath());
 
   //Search normal mods. A note: This will also find mods in data.
-  //FIXME Foreign mods should use the right name.
   for (QString const &mod : organizerCore->modsSortedByProfilePriority()) {
     MOBase::IModInterface *modInfo = organizerCore->getMod(mod);
     QStringList esps = QDir(modInfo->absolutePath()).entryList(espFilter);
     for (QString const &esp : esps) {
       MissingAssets::iterator iter = missingAssets.find(esp);
+      if (modInfo->absolutePath() == dataDir) {
+        //We have to prune esps that reside in the data directory, otherwise
+        //you get all the unmanaged mods listed as potential candidates for
+        //enabling
+        if (modInfo->name() != organizerCore->pluginList()->origin(esp)) {
+          continue;
+        }
+      }
       if (iter != missingAssets.end()) {
-        iter->push_back(modInfo->name());
+        if (!iter->contains(modInfo->name())) {
+          iter->push_back(modInfo->name());
+        }
       }
     }
   }
@@ -69,7 +74,9 @@ GamebryoSaveGameInfo::MissingAssets GamebryoSaveGameInfo::getMissingAssets(QStri
     for (const QString &esp : esps) {
       MissingAssets::iterator iter = missingAssets.find(esp);
       if (iter != missingAssets.end()) {
-        iter->push_back("<overwrite>");
+        if (!iter->contains("<overwrite>")) {
+          iter->push_back("<overwrite>");
+        }
       }
     }
   }
