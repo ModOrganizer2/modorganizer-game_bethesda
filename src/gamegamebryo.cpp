@@ -246,6 +246,16 @@ std::map<std::type_index, boost::any> GameGamebryo::featureList() const
   return result;
 }
 
+QString GameGamebryo::localAppFolder() const
+{
+  QString result = getKnownFolderPath(FOLDERID_LocalAppData, false);
+  if (result.isEmpty()) {
+    // fallback: try the registry
+    result = getSpecialPath("Local AppData");
+  }
+  return result;
+}
+
 /*
 QString GetAppVersion(std::wstring const &app_name)
 {

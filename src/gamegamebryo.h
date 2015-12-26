@@ -70,6 +70,7 @@ protected:
   QString selectedVariant() const;
   virtual QString getLauncherName() const;
   QString getVersion(QString const &program) const;
+  QString localAppFolder() const;
 
 protected:
 
