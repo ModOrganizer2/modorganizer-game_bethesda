@@ -14,8 +14,7 @@ class GamebryoSaveGameInfoWidget : public MOBase::ISaveGameInfoWidget
   Q_OBJECT
 
 public:
-  GamebryoSaveGameInfoWidget(GamebryoSaveGameInfo const *info,
-                             QWidget *parent);
+  GamebryoSaveGameInfoWidget(GamebryoSaveGameInfo const *info, QWidget *parent);
   ~GamebryoSaveGameInfoWidget();
 
   virtual void setSave(QString const &) override;
