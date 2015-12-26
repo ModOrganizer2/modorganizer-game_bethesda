@@ -3,6 +3,8 @@
 
 #include "gamebryoscriptextender.h"
 
+class GameGamebryo;
+
 class OblivionScriptExtender : public GamebryoScriptExtender
 {
 public:
