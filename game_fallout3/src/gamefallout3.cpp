@@ -4,21 +4,27 @@
 #include "fallout3scriptextender.h"
 #include "fallout3dataarchives.h"
 #include "fallout3savegameinfo.h"
+#include "gamegamebryo.h"
 
 #include "executableinfo.h"
 #include "pluginsetting.h"
 #include "versioninfo.h"
 #include "utility.h"
 
+#include <QCoreApplication>
 #include <QDir>
 #include <QFile>
 #include <QFileInfo>
 #include <QIODevice>
 #include <QList>
+#include <QObject>
 #include <QString>
 #include <QStringList>
 
+#include <winreg.h>
+
 #include <memory>
+
 
 using namespace MOBase;
 
@@ -89,7 +95,7 @@ MOBase::VersionInfo GameFallout3::version() const
 
 bool GameFallout3::isActive() const
 {
-  return true;
+  return qApp->property("managed_game").value<IPluginGame*>() == this;
 }
 
 QList<PluginSetting> GameFallout3::settings() const
