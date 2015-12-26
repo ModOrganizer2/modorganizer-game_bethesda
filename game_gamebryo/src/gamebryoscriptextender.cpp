@@ -2,6 +2,9 @@
 
 #include "gamegamebryo.h"
 
+#include <QDir>
+#include <QString>
+
 GamebryoScriptExtender::GamebryoScriptExtender(const GameGamebryo *game) :
   m_Game(game)
 {
