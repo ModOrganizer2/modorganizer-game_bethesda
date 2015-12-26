@@ -1,33 +1,25 @@
-#include "gameFallout3.h"
+#include "gamefallout3.h"
 
 #include "fallout3bsainvalidation.h"
 #include "fallout3scriptextender.h"
 #include "fallout3dataarchives.h"
 #include "fallout3savegameinfo.h"
-#include "gamegamebryo.h"
 
 #include "executableinfo.h"
 #include "pluginsetting.h"
 #include "versioninfo.h"
-#include "utility.h"
 
 #include <QCoreApplication>
 #include <QDir>
-#include <QFile>
 #include <QFileInfo>
-#include <QIODevice>
 #include <QList>
 #include <QObject>
 #include <QString>
 #include <QStringList>
 
-#include <winreg.h>
-
 #include <memory>
 
-
 using namespace MOBase;
-
 
 GameFallout3::GameFallout3()
 {
@@ -45,19 +37,9 @@ bool GameFallout3::init(IOrganizer *moInfo)
   return true;
 }
 
-QString GameFallout3::identifyGamePath() const
-{
-  return findInRegistry(HKEY_LOCAL_MACHINE, L"Software\\Bethesda Softworks\\Fallout3", L"Installed Path");
-}
-
 QString GameFallout3::gameName() const
 {
   return "Fallout 3";
-}
-
-QString GameFallout3::myGamesFolderName() const
-{
-  return "Fallout3";
 }
 
 QList<ExecutableInfo> GameFallout3::executables() const
@@ -69,7 +51,7 @@ QList<ExecutableInfo> GameFallout3::executables() const
       << ExecutableInfo("Construction Kit", findInGameFolder("geck.exe"))
       << ExecutableInfo("Fallout Launcher", findInGameFolder(getLauncherName()))
       << ExecutableInfo("BOSS", findInGameFolder("BOSS/BOSS.exe"))
-      << ExecutableInfo("LOOT", getLootPath());
+      << ExecutableInfo("LOOT", getLootPath())
          ;
 }
 
@@ -101,19 +83,6 @@ bool GameFallout3::isActive() const
 QList<PluginSetting> GameFallout3::settings() const
 {
   return QList<PluginSetting>();
-}
-
-void GameFallout3::copyToProfile(const QString &sourcePath, const QDir &destinationDirectory,
-                               const QString &sourceFileName, const QString &destinationFileName) const
-{
-  QString filePath = destinationDirectory.absoluteFilePath(destinationFileName.isEmpty() ? sourceFileName
-                                                                                         : destinationFileName);
-  if (!QFileInfo(filePath).exists()) {
-    if (!shellCopy(sourcePath + "/" + sourceFileName, filePath)) {
-      // if copy file fails, create the file empty
-      QFile(filePath).open(QIODevice::WriteOnly);
-    }
-  }
 }
 
 void GameFallout3::initializeProfile(const QDir &path, ProfileSettings settings) const
