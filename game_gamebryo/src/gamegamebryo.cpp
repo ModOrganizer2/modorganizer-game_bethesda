@@ -15,6 +15,7 @@
 #include <QtDebug>
 #include <QtGlobal>
 
+#include <Knownfolders.h>
 #include <Shlobj.h>
 #include <Windows.h>
 #include <winreg.h>
