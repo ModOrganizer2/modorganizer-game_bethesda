@@ -26,7 +26,7 @@ bool GameGamebryo::isInstalled() const
 
 QIcon GameGamebryo::gameIcon() const
 {
-  return MOBase::iconForExecutable(gameDirectory().absoluteFilePath(getBinaryName()));
+  return MOBase::iconForExecutable(gameDirectory().absoluteFilePath(binaryName()));
 }
 
 QDir GameGamebryo::gameDirectory() const
@@ -64,12 +64,12 @@ void GameGamebryo::setGameVariant(const QString &variant)
   m_GameVariant = variant;
 }
 
-QString GameGamebryo::getBinaryName() const
+QString GameGamebryo::binaryName() const
 {
-  return getGameShortName() + ".exe";
+  return gameShortName() + ".exe";
 }
 
-MOBase::IPluginGame::LoadOrderMechanism GameGamebryo::getLoadOrderMechanism() const
+MOBase::IPluginGame::LoadOrderMechanism GameGamebryo::loadOrderMechanism() const
 {
   return LoadOrderMechanism::FileTime;
 }
@@ -77,17 +77,17 @@ MOBase::IPluginGame::LoadOrderMechanism GameGamebryo::getLoadOrderMechanism() co
 bool GameGamebryo::looksValid(QDir const &path) const
 {
   //Check for <prog>.exe and <gamename>Launcher.exe for now.
-  return path.exists(getBinaryName()) && path.exists(getLauncherName());
+  return path.exists(binaryName()) && path.exists(getLauncherName());
 }
 
-QString GameGamebryo::getGameVersion() const
+QString GameGamebryo::gameVersion() const
 {
-  return getVersion(getBinaryName());
+  return getVersion(binaryName());
 }
 
 QString GameGamebryo::getLauncherName() const
 {
-  return getGameShortName() + "Launcher.exe";
+  return gameShortName() + "Launcher.exe";
 }
 
 QString GameGamebryo::getVersion(const QString &program) const
