@@ -239,14 +239,13 @@ QString GameGamebryo::getLootPath() const
 
 std::map<std::type_index, boost::any> GameGamebryo::featureList() const
 {
-  static std::map<std::type_index, boost::any> result {
+  return {
     { typeid(BSAInvalidation), m_BSAInvalidation.get() },
     { typeid(ScriptExtender), m_ScriptExtender.get() },
     { typeid(DataArchives), m_DataArchives.get() },
-    { typeid(SaveGameInfo), m_SaveGameInfo.get() }
+    { typeid(SaveGameInfo), m_SaveGameInfo.get() },
+    { typeid(LocalSavegames), m_LocalSavegames.get() }
   };
-
-  return result;
 }
 
 
