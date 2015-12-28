@@ -43,15 +43,15 @@ public: // IPluginGame interface
   //getPrimaryPlugins
   virtual QStringList gameVariants() const override;
   virtual void setGameVariant(const QString &variant) override;
-  virtual QString getBinaryName() const override;
+  virtual QString binaryName() const override;
   //getGameShortName
   //getIniFiles
   //getDLCPlugins
-  virtual LoadOrderMechanism getLoadOrderMechanism() const override;
+  virtual LoadOrderMechanism loadOrderMechanism() const override;
   //getNexusModOrganizerID
   //getNexusGameID
   virtual bool looksValid(QDir const &) const override;
-  virtual QString getGameVersion() const override;
+  virtual QString gameVersion() const override;
 
 public: // IPluginFileMapper interface
 
