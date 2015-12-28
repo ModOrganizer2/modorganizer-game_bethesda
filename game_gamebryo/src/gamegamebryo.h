@@ -7,6 +7,7 @@ class ScriptExtender;
 class DataArchives;
 class SaveGameInfo;
 class BSAInvalidation;
+class LocalSavegames;
 
 #include <QString>
 #include <iplugingame.h>
@@ -83,6 +84,7 @@ protected:
   std::shared_ptr<ScriptExtender> m_ScriptExtender { nullptr };
   std::shared_ptr<DataArchives> m_DataArchives { nullptr };
   std::shared_ptr<BSAInvalidation> m_BSAInvalidation { nullptr };
+  std::shared_ptr<LocalSavegames> m_LocalSavegames { nullptr };
   std::shared_ptr<SaveGameInfo> m_SaveGameInfo { nullptr };
 
 private:
