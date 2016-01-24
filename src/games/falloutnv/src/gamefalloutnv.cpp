@@ -46,7 +46,7 @@ QList<ExecutableInfo> GameFalloutNV::executables() const
 {
   return QList<ExecutableInfo>()
       << ExecutableInfo("NVSE", findInGameFolder(m_ScriptExtender->loaderName()))
-      << ExecutableInfo("New Vegas", findInGameFolder(getBinaryName()))
+      << ExecutableInfo("New Vegas", findInGameFolder(binaryName()))
       << ExecutableInfo("Fallout Mod Manager", findInGameFolder("fomm/fomm.exe"))
       << ExecutableInfo("Construction Kit", findInGameFolder("geck.exe"))
       << ExecutableInfo("Fallout Launcher", findInGameFolder(getLauncherName()))
@@ -114,34 +114,34 @@ QString GameFalloutNV::steamAPPId() const
   return "22380";
 }
 
-QStringList GameFalloutNV::getPrimaryPlugins() const
+QStringList GameFalloutNV::primaryPlugins() const
 {
   return { "falloutnv.esm" };
 }
 
-QString GameFalloutNV::getGameShortName() const
+QString GameFalloutNV::gameShortName() const
 {
   return "FalloutNV";
 }
 
-QStringList GameFalloutNV::getIniFiles() const
+QStringList GameFalloutNV::iniFiles() const
 {
   return { "fallout.ini", "falloutprefs.ini" };
 }
 
-QStringList GameFalloutNV::getDLCPlugins() const
+QStringList GameFalloutNV::DLCPlugins() const
 {
   return { "DeadMoney.esm", "HonestHearts.esm", "OldWorldBlues.esm",
            "LonesomeRoad.esm", "GunRunnersArsenal.esm", "CaravanPack.esm",
            "ClassicPack.esm", "MercenaryPack.esm", "TribalPack.esm" };
 }
 
-int GameFalloutNV::getNexusModOrganizerID() const
+int GameFalloutNV::nexusModOrganizerID() const
 {
   return 42572;
 }
 
-int GameFalloutNV::getNexusGameID() const
+int GameFalloutNV::nexusGameID() const
 {
   return 130;
 }
