@@ -30,7 +30,7 @@ bool GameGamebryo::isInstalled() const
 
 QIcon GameGamebryo::gameIcon() const
 {
-  return MOBase::iconForExecutable(gameDirectory().absoluteFilePath(getBinaryName()));
+  return MOBase::iconForExecutable(gameDirectory().absoluteFilePath(binaryName()));
 }
 
 QDir GameGamebryo::gameDirectory() const
@@ -68,12 +68,12 @@ void GameGamebryo::setGameVariant(const QString &variant)
   m_GameVariant = variant;
 }
 
-QString GameGamebryo::getBinaryName() const
+QString GameGamebryo::binaryName() const
 {
-  return getGameShortName() + ".exe";
+  return gameShortName() + ".exe";
 }
 
-MOBase::IPluginGame::LoadOrderMechanism GameGamebryo::getLoadOrderMechanism() const
+MOBase::IPluginGame::LoadOrderMechanism GameGamebryo::loadOrderMechanism() const
 {
   return LoadOrderMechanism::FileTime;
 }
@@ -81,17 +81,17 @@ MOBase::IPluginGame::LoadOrderMechanism GameGamebryo::getLoadOrderMechanism() co
 bool GameGamebryo::looksValid(QDir const &path) const
 {
   //Check for <prog>.exe and <gamename>Launcher.exe for now.
-  return path.exists(getBinaryName()) && path.exists(getLauncherName());
+  return path.exists(binaryName()) && path.exists(getLauncherName());
 }
 
-QString GameGamebryo::getGameVersion() const
+QString GameGamebryo::gameVersion() const
 {
-  return getVersion(getBinaryName());
+  return getVersion(binaryName());
 }
 
 QString GameGamebryo::getLauncherName() const
 {
-  return getGameShortName() + "Launcher.exe";
+  return gameShortName() + "Launcher.exe";
 }
 
 QString GameGamebryo::getVersion(const QString &program) const
@@ -124,9 +124,21 @@ QString GameGamebryo::getVersion(const QString &program) const
                                .arg(LOWORD(pFileInfo->dwFileVersionLS));
 }
 
+QString GameGamebryo::localAppFolder()
+{
+  QString result = getKnownFolderPath(FOLDERID_LocalAppData, false);
+  if (result.isEmpty()) {
+    // fallback: try the registry
+    result = getSpecialPath("Local AppData");
+  }
+
+  return result;
+}
+
+
 std::unique_ptr<BYTE[]> GameGamebryo::getRegValue(HKEY key, LPCWSTR path,
                                                   LPCWSTR value, DWORD flags,
-                                                  LPDWORD type) const
+                                                  LPDWORD type)
 {
   DWORD size = 0;
   HKEY subKey;
@@ -152,7 +164,7 @@ std::unique_ptr<BYTE[]> GameGamebryo::getRegValue(HKEY key, LPCWSTR path,
   return result;
 }
 
-QString GameGamebryo::findInRegistry(HKEY baseKey, LPCWSTR path, LPCWSTR value) const
+QString GameGamebryo::findInRegistry(HKEY baseKey, LPCWSTR path, LPCWSTR value)
 {
   std::unique_ptr<BYTE[]> buffer = getRegValue(baseKey, path, value, RRF_RT_REG_SZ | RRF_NOEXPAND);
 
@@ -168,7 +180,7 @@ QFileInfo GameGamebryo::findInGameFolder(const QString &relativePath) const
   return QFileInfo(m_GamePath + "/" + relativePath);
 }
 
-QString GameGamebryo::getKnownFolderPath(REFKNOWNFOLDERID folderId, bool useDefault) const
+QString GameGamebryo::getKnownFolderPath(REFKNOWNFOLDERID folderId, bool useDefault)
 {
   PWSTR path = nullptr;
   ON_BLOCK_EXIT([&] () {
@@ -206,7 +218,7 @@ QString GameGamebryo::selectedVariant() const
   return m_GameVariant;
 }
 
-QString GameGamebryo::getSpecialPath(const QString &name) const
+QString GameGamebryo::getSpecialPath(const QString &name)
 {
   QString base = findInRegistry(HKEY_CURRENT_USER,
                                 L"Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\User Shell Folders",
