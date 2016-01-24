@@ -118,7 +118,7 @@ GameGamebryo::GameGamebryo()
 bool GameGamebryo::init(MOBase::IOrganizer *moInfo)
 {
   m_GamePath = identifyGamePath();
-  m_MyGamesPath = determineMyGamesPath(getGameShortName());
+  m_MyGamesPath = determineMyGamesPath(gameShortName());
   m_Organizer = moInfo;
   return true;
 }
@@ -130,7 +130,7 @@ bool GameGamebryo::isInstalled() const
 
 QIcon GameGamebryo::gameIcon() const
 {
-  return MOBase::iconForExecutable(gameDirectory().absoluteFilePath(getBinaryName()));
+  return MOBase::iconForExecutable(gameDirectory().absoluteFilePath(binaryName()));
 }
 
 QDir GameGamebryo::gameDirectory() const
@@ -168,12 +168,12 @@ void GameGamebryo::setGameVariant(const QString &variant)
   m_GameVariant = variant;
 }
 
-QString GameGamebryo::getBinaryName() const
+QString GameGamebryo::binaryName() const
 {
-  return getGameShortName() + ".exe";
+  return gameShortName() + ".exe";
 }
 
-MOBase::IPluginGame::LoadOrderMechanism GameGamebryo::getLoadOrderMechanism() const
+MOBase::IPluginGame::LoadOrderMechanism GameGamebryo::loadOrderMechanism() const
 {
   return LoadOrderMechanism::FileTime;
 }
@@ -181,17 +181,17 @@ MOBase::IPluginGame::LoadOrderMechanism GameGamebryo::getLoadOrderMechanism() co
 bool GameGamebryo::looksValid(QDir const &path) const
 {
   //Check for <prog>.exe and <gamename>Launcher.exe for now.
-  return path.exists(getBinaryName()) && path.exists(getLauncherName());
+  return path.exists(binaryName()) && path.exists(getLauncherName());
 }
 
-QString GameGamebryo::getGameVersion() const
+QString GameGamebryo::gameVersion() const
 {
-  return getVersion(getBinaryName());
+  return getVersion(binaryName());
 }
 
 QString GameGamebryo::getLauncherName() const
 {
-  return getGameShortName() + "Launcher.exe";
+  return gameShortName() + "Launcher.exe";
 }
 
 QString GameGamebryo::getVersion(QString const &program) const
@@ -229,10 +229,9 @@ QFileInfo GameGamebryo::findInGameFolder(const QString &relativePath) const
   return QFileInfo(m_GamePath + "/" + relativePath);
 }
 
-
 QString GameGamebryo::identifyGamePath() const
 {
-  QString path = "Software\\Bethesda Softworks\\" + getGameShortName();
+  QString path = "Software\\Bethesda Softworks\\" + gameShortName();
   return findInRegistry(HKEY_LOCAL_MACHINE, path.toStdWString().c_str(), L"Installed Path");
 }
 
