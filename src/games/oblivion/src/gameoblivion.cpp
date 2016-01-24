@@ -41,7 +41,7 @@ QList<ExecutableInfo> GameOblivion::executables() const
 {
   return QList<ExecutableInfo>()
       << ExecutableInfo("OBSE", findInGameFolder(m_ScriptExtender->loaderName()))
-      << ExecutableInfo("Oblivion", findInGameFolder(getBinaryName()))
+      << ExecutableInfo("Oblivion", findInGameFolder(binaryName()))
       << ExecutableInfo("Oblivion Launcher", findInGameFolder(getLauncherName()))
       << ExecutableInfo("Oblivion Mod Manager", findInGameFolder("OblivionModManager.exe"))
       << ExecutableInfo("BOSS", findInGameFolder("BOSS/BOSS.exe"))
@@ -109,22 +109,22 @@ QString GameOblivion::steamAPPId() const
   return "22330";
 }
 
-QStringList GameOblivion::getPrimaryPlugins() const
+QStringList GameOblivion::primaryPlugins() const
 {
   return { "oblivion.esm", "update.esm" };
 }
 
-QString GameOblivion::getGameShortName() const
+QString GameOblivion::gameShortName() const
 {
   return "Oblivion";
 }
 
-QStringList GameOblivion::getIniFiles() const
+QStringList GameOblivion::iniFiles() const
 {
   return { "oblivion.ini", "oblivionprefs.ini" };
 }
 
-QStringList GameOblivion::getDLCPlugins() const
+QStringList GameOblivion::DLCPlugins() const
 {
   return { "DLCShiveringIsles.esp", "Knights.esp", "DLCFrostcrag.esp",
            "DLCSpellTomes.esp", "DLCMehrunesRazor.esp", "DLCOrrery.esp",
@@ -132,12 +132,12 @@ QStringList GameOblivion::getDLCPlugins() const
 }
 
 
-int GameOblivion::getNexusModOrganizerID() const
+int GameOblivion::nexusModOrganizerID() const
 {
   return 38277;
 }
 
-int GameOblivion::getNexusGameID() const
+int GameOblivion::nexusGameID() const
 {
   return 101;
 }
