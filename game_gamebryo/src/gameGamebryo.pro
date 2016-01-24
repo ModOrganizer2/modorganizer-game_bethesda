@@ -16,6 +16,7 @@ SOURCES += gamegamebryo.cpp \
     gamebryodataarchives.cpp \
     gamebryoscriptextender.cpp \
     gamebryosavegame.cpp \
+    gamebryolocalsavegames.cpp
     gamebryosavegameinfo.cpp \
     gamebryosavegameinfowidget.cpp
 
@@ -25,6 +26,7 @@ HEADERS += gamegamebryo.h \
     gamebryodataarchives.h \
     gamebryoscriptextender.h \
     gamebryosavegame.h \
+    gamebryolocalsavegames.h
     gamebryosavegameinfo.h \
     gamebryosavegameinfowidget.h
 

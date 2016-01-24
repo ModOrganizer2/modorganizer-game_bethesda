@@ -3,10 +3,11 @@
 
 #include "iplugingame.h"
 
-class ScriptExtender;
-class DataArchives;
-class SaveGameInfo;
 class BSAInvalidation;
+class DataArchives;
+class LocalSavegames;
+class SaveGameInfo;
+class ScriptExtender;
 
 #include <QObject>
 #include <QString>
@@ -44,22 +45,22 @@ public: // IPluginGame interface
   virtual QDir savesDirectory() const override;
   //executables
   //steamAPPId
-  //getPrimaryPlugins
+  //primaryPlugins
   virtual QStringList gameVariants() const override;
   virtual void setGameVariant(const QString &variant) override;
-  virtual QString getBinaryName() const override;
-  //getGameShortName
-  //getIniFiles
-  //getDLCPlugins
-  virtual LoadOrderMechanism getLoadOrderMechanism() const override;
-  //getNexusModOrganizerID
-  //getNexusGameID
+  virtual QString binaryName() const override;
+  //gameShortName
+  //iniFiles
+  //DLCPlugins
+  virtual LoadOrderMechanism loadOrderMechanism() const override;
+  //nexusModOrganizerID
+  //nexusGameID
   virtual bool looksValid(QDir const &) const override;
-  virtual QString getGameVersion() const override;
+  virtual QString gameVersion() const override;
 
 protected:
 
-  virtual QString getLauncherName() const;
+  QString getLauncherName() const;
 
   QFileInfo findInGameFolder(const QString &relativePath) const;
   QString myGamesPath() const;
@@ -67,10 +68,11 @@ protected:
   QString getVersion(QString const &program) const;
 
   static QString localAppFolder();
-  //Arguably this shouldn't really be here but every gamebryo program seems to use it
+  //Arguably this shouldn't really be here but every gamebryo program seems to
+  //use it
   static QString getLootPath();
 
-  //This function is not terribly well name as it copies exactly where it's told
+  //This function is not terribly well named as it copies exactly where it's told
   //to, irrespective of whether it's in the profile...
   static void copyToProfile(const QString &sourcePath,
                             const QDir &destinationDirectory,
@@ -92,6 +94,7 @@ protected:
   std::shared_ptr<DataArchives> m_DataArchives { nullptr };
   std::shared_ptr<BSAInvalidation> m_BSAInvalidation { nullptr };
   std::shared_ptr<SaveGameInfo> m_SaveGameInfo { nullptr };
+  std::shared_ptr<LocalSavegames> m_LocalSavegames { nullptr };
 
 private:
 
