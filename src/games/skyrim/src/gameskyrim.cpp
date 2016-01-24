@@ -51,7 +51,7 @@ QList<ExecutableInfo> GameSkyrim::executables() const
   return QList<ExecutableInfo>()
       << ExecutableInfo("SKSE", findInGameFolder(m_ScriptExtender->loaderName()))
       << ExecutableInfo("SBW", findInGameFolder("SBW.exe"))
-      << ExecutableInfo("Skyrim", findInGameFolder(getBinaryName()))
+      << ExecutableInfo("Skyrim", findInGameFolder(binaryName()))
       << ExecutableInfo("Skyrim Launcher", findInGameFolder(getLauncherName()))
       << ExecutableInfo("BOSS", findInGameFolder("BOSS/BOSS.exe"))
       << ExecutableInfo("LOOT", getLootPath())
@@ -118,27 +118,27 @@ QString GameSkyrim::steamAPPId() const
   return "72850";
 }
 
-QStringList GameSkyrim::getPrimaryPlugins() const
+QStringList GameSkyrim::primaryPlugins() const
 {
   return { "skyrim.esm", "update.esm" };
 }
 
-QString GameSkyrim::getBinaryName() const
+QString GameSkyrim::binaryName() const
 {
   return "TESV.exe";
 }
 
-QString GameSkyrim::getGameShortName() const
+QString GameSkyrim::gameShortName() const
 {
   return "Skyrim";
 }
 
-QStringList GameSkyrim::getIniFiles() const
+QStringList GameSkyrim::iniFiles() const
 {
   return { "skyrim.ini", "skyrimprefs.ini" };
 }
 
-QStringList GameSkyrim::getDLCPlugins() const
+QStringList GameSkyrim::DLCPlugins() const
 {
   return { "Dawnguard.esm", "Dragonborn.esm", "HearthFires.esm",
            "HighResTexturePack01.esp", "HighResTexturePack02.esp", "HighResTexturePack03.esp" };
@@ -174,10 +174,10 @@ VS_FIXEDFILEINFO GetFileVersion(const std::wstring &fileName)
 
 }
 
-IPluginGame::LoadOrderMechanism GameSkyrim::getLoadOrderMechanism() const
+IPluginGame::LoadOrderMechanism GameSkyrim::loadOrderMechanism() const
 {
   try {
-    std::wstring fileName = gameDirectory().absoluteFilePath(getBinaryName()).toStdWString().c_str();
+    std::wstring fileName = gameDirectory().absoluteFilePath(binaryName()).toStdWString().c_str();
     VS_FIXEDFILEINFO versionInfo = ::GetFileVersion(fileName);
     if ((versionInfo.dwFileVersionMS > 0x10004) || // version >= 1.5.x?
         ((versionInfo.dwFileVersionMS == 0x10004) && (versionInfo.dwFileVersionLS >= 0x1A0000))) { // version >= ?.4.26
@@ -190,12 +190,12 @@ IPluginGame::LoadOrderMechanism GameSkyrim::getLoadOrderMechanism() const
 }
 
 
-int GameSkyrim::getNexusModOrganizerID() const
+int GameSkyrim::nexusModOrganizerID() const
 {
   return 1334;
 }
 
-int GameSkyrim::getNexusGameID() const
+int GameSkyrim::nexusGameID() const
 {
   return 110;
 }
