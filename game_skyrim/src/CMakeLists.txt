@@ -1,4 +1,4 @@
-CMAKE_MINIMUM_REQUIRED (VERSION 2.8)
+CMAKE_MINIMUM_REQUIRED (VERSION 1.8)
 
 CMAKE_POLICY(SET CMP0020 NEW)
 
@@ -34,13 +34,15 @@ INCLUDE_DIRECTORIES(${project_path}/uibase/src
 LINK_DIRECTORIES(${project_path}/uibase/build/src
                  ${lib_path})
 
+ADD_DEFINITIONS(-DUNICODE -D_UNICODE)
 
 ADD_LIBRARY(${PROJ_NAME} SHARED ${${PROJ_NAME}_HDRS} ${${PROJ_NAME}_SRCS} ${${PROJ_NAME}_UIHDRS})
 TARGET_LINK_LIBRARIES(${PROJ_NAME}
                       Qt5::Widgets
                       ${Boost_LIBRARIES}
                       uibase
-                      gameGamebryo)
+                      gameGamebryo
+                      version)
 
 SET_TARGET_PROPERTIES(${PROJ_NAME} PROPERTIES COMPILE_FLAGS /GL)
 SET_TARGET_PROPERTIES(${PROJ_NAME} PROPERTIES LINK_FLAGS_RELWITHDEBINFO "/LTCG /LARGEADDRESSAWARE /OPT:REF /OPT:ICF")
