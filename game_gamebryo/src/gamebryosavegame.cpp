@@ -123,10 +123,13 @@ void GamebryoSaveGame::FileWrapper::readImage(unsigned long width, unsigned long
   read(buffer.data(), width * height * 3);
   QImage image(buffer.data(), width, height, QImage::Format_RGB888);
   if (scale) {
+    // NB Note that scaling rather messes up oblivion so we can't use this as
+    // the default
     m_Game->m_Screenshot = image.scaledToWidth(scale);
   } else {
-    // why do I have to copy here? without the copy, the buffer seems to get deleted after the
-    // temporary vanishes, but Qts implicit sharing should handle that?
+    // why do I have to copy here? without the copy, the buffer seems to get
+    // deleted after the temporary vanishes, but shouldn't Qts implicit sharing
+    // handle that?
     m_Game->m_Screenshot = image.copy();
   }
 }
