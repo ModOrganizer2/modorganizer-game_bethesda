@@ -55,7 +55,7 @@ QList<ExecutableInfo> GameFallout3::executables() const
 {
   return QList<ExecutableInfo>()
       << ExecutableInfo("FOSE", findInGameFolder(m_ScriptExtender->loaderName()))
-      << ExecutableInfo("Fallout 3", findInGameFolder(getBinaryName()))
+      << ExecutableInfo("Fallout 3", findInGameFolder(binaryName()))
       << ExecutableInfo("Fallout Mod Manager", findInGameFolder("fomm/fomm.exe"))
       << ExecutableInfo("Construction Kit", findInGameFolder("geck.exe"))
       << ExecutableInfo("Fallout Launcher", findInGameFolder(getLauncherName()))
@@ -140,7 +140,7 @@ QString GameFallout3::steamAPPId() const
   }
 }
 
-QStringList GameFallout3::getPrimaryPlugins() const
+QStringList GameFallout3::primaryPlugins() const
 {
   return { "fallout3.esm" };
 }
@@ -151,27 +151,27 @@ QStringList GameFallout3::gameVariants() const
   return { "Regular", "Game Of The Year" };
 }
 
-QString GameFallout3::getGameShortName() const
+QString GameFallout3::gameShortName() const
 {
   return "Fallout3";
 }
 
-QStringList GameFallout3::getIniFiles() const
+QStringList GameFallout3::iniFiles() const
 {
   return { "fallout.ini", "falloutprefs.ini" };
 }
 
-QStringList GameFallout3::getDLCPlugins() const
+QStringList GameFallout3::DLCPlugins() const
 {
   return { "ThePitt.esm", "Anchorage.esm", "BrokenSteel.esm", "PointLookout.esm", "Zeta.esm" };
 }
 
-int GameFallout3::getNexusModOrganizerID() const
+int GameFallout3::nexusModOrganizerID() const
 {
   return 16348;
 }
 
-int GameFallout3::getNexusGameID() const
+int GameFallout3::nexusGameID() const
 {
   return 120;
 }
