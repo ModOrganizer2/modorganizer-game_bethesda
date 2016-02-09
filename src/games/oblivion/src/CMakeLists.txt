@@ -40,7 +40,8 @@ TARGET_LINK_LIBRARIES(${PROJ_NAME}
                       Qt5::Widgets
                       ${Boost_LIBRARIES}
                       uibase
-                      gameGamebryo)
+                      gameGamebryo
+                      version)
 
 SET_TARGET_PROPERTIES(${PROJ_NAME} PROPERTIES COMPILE_FLAGS /GL)
 SET_TARGET_PROPERTIES(${PROJ_NAME} PROPERTIES LINK_FLAGS_RELWITHDEBINFO "/LTCG /LARGEADDRESSAWARE /OPT:REF /OPT:ICF")
