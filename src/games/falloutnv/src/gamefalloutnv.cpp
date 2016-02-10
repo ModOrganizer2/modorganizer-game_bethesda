@@ -1,22 +1,25 @@
-#include "gameFalloutNV.h"
+#include "gamefalloutnv.h"
 
 #include "falloutnvbsainvalidation.h"
 #include "falloutnvdataarchives.h"
 #include "falloutnvsavegameinfo.h"
 #include "falloutnvscriptextender.h"
-#include <scopeguard.h>
-#include <pluginsetting.h>
-#include <executableinfo.h>
-#include <utility.h>
+
+#include "executableinfo.h"
+#include "pluginsetting.h"
+#include "versioninfo.h"
+
+#include <QCoreApplication>
+#include <QDir>
+#include <QFileInfo>
+#include <QList>
+#include <QObject>
+#include <QString>
+#include <QStringList>
 
 #include <memory>
 
-#include <QStandardPaths>
-#include <QCoreApplication>
-
-
 using namespace MOBase;
-
 
 GameFalloutNV::GameFalloutNV()
 {
@@ -30,23 +33,13 @@ bool GameFalloutNV::init(IOrganizer *moInfo)
   m_ScriptExtender = std::shared_ptr<ScriptExtender>(new FalloutNVScriptExtender(this));
   m_DataArchives = std::shared_ptr<DataArchives>(new FalloutNVDataArchives());
   m_BSAInvalidation = std::shared_ptr<BSAInvalidation>(new FalloutNVBSAInvalidation(m_DataArchives, this));
-  m_SaveGameInfo = std::shared_ptr<SaveGameInfo>(new FalloutNVSaveGameInfo());
+  m_SaveGameInfo = std::shared_ptr<SaveGameInfo>(new FalloutNVSaveGameInfo(this));
   return true;
-}
-
-QString GameFalloutNV::identifyGamePath() const
-{
-  return findInRegistry(HKEY_LOCAL_MACHINE, L"Software\\Bethesda Softworks\\FalloutNV", L"Installed Path");
 }
 
 QString GameFalloutNV::gameName() const
 {
   return "New Vegas";
-}
-
-QString GameFalloutNV::myGamesFolderName() const
-{
-  return "FalloutNV";
 }
 
 QList<ExecutableInfo> GameFalloutNV::executables() const
@@ -90,21 +83,6 @@ bool GameFalloutNV::isActive() const
 QList<PluginSetting> GameFalloutNV::settings() const
 {
   return QList<PluginSetting>();
-}
-
-
-
-void GameFalloutNV::copyToProfile(const QString &sourcePath, const QDir &destinationDirectory,
-                               const QString &sourceFileName, const QString &destinationFileName) const
-{
-  QString filePath = destinationDirectory.absoluteFilePath(destinationFileName.isEmpty() ? sourceFileName
-                                                                                         : destinationFileName);
-  if (!QFileInfo(filePath).exists()) {
-    if (!shellCopy(sourcePath + "/" + sourceFileName, filePath)) {
-      // if copy file fails, create the file empty
-      QFile(filePath).open(QIODevice::WriteOnly);
-    }
-  }
 }
 
 void GameFalloutNV::initializeProfile(const QDir &path, ProfileSettings settings) const
