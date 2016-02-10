@@ -3,6 +3,9 @@
 
 #include "gamegamebryo.h"
 
+#include <QObject>
+#include <QtGlobal>
+
 class GameFallout3 : public GameGamebryo
 {
   Q_OBJECT
@@ -37,14 +40,6 @@ public: // IPlugin interface
   virtual MOBase::VersionInfo version() const;
   virtual bool isActive() const;
   virtual QList<MOBase::PluginSetting> settings() const;
-
-private:
-
-  virtual QString identifyGamePath() const override;
-  virtual QString myGamesFolderName() const override;
-
-  void copyToProfile(const QString &sourcePath, const QDir &destinationDirectory,
-                     const QString &sourceFileName, const QString &destinationFileName = QString()) const;
 
 };
 
