@@ -1,9 +1,19 @@
 #include "skyrimsavegameinfo.h"
 
 #include "skyrimsavegame.h"
+#include "gamegamebryo.h"
 
-MOBase::ISaveGame const *SkyrimSaveGameInfo::getSaveGameInfo(const QString &file) const
+SkyrimSaveGameInfo::SkyrimSaveGameInfo(GameGamebryo const *game) :
+  GamebryoSaveGameInfo(game)
 {
-  return new SkyrimSaveGame(file);
 }
 
+SkyrimSaveGameInfo::~SkyrimSaveGameInfo()
+{
+}
+
+
+MOBase::ISaveGame const *SkyrimSaveGameInfo::getSaveGameInfo(QString const &file) const
+{
+  return new SkyrimSaveGame(file, m_Game);
+}

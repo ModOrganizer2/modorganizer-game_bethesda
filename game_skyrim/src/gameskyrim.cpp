@@ -5,24 +5,25 @@
 #include "skyrimdataarchives.h"
 #include "skyrimsavegameinfo.h"
 
-#include <scopeguard.h>
-#include <pluginsetting.h>
-#include <executableinfo.h>
-#include <utility.h>
+#include "executableinfo.h"
+#include "pluginsetting.h"
 
-#include <QDebug>
-#include <QStandardPaths>
 #include <QCoreApplication>
+#include <QDebug>
+#include <QFileInfo>
+
+#include <QtDebug>
 
 #include <Windows.h>
+#include <winver.h>
 
 #include <exception>
 #include <memory>
+#include <stdexcept>
+#include <string>
 #include <vector>
 
-
 using namespace MOBase;
-
 
 GameSkyrim::GameSkyrim()
 {
@@ -36,26 +37,14 @@ bool GameSkyrim::init(IOrganizer *moInfo)
   m_ScriptExtender = std::shared_ptr<ScriptExtender>(new SkyrimScriptExtender(this));
   m_DataArchives = std::shared_ptr<DataArchives>(new SkyrimDataArchives());
   m_BSAInvalidation = std::shared_ptr<BSAInvalidation>(new SkyrimBSAInvalidation(m_DataArchives, this));
-  m_SaveGameInfo = std::shared_ptr<SaveGameInfo>(new SkyrimSaveGameInfo());
+  m_SaveGameInfo = std::shared_ptr<SaveGameInfo>(new SkyrimSaveGameInfo(this));
   return true;
-}
-
-QString GameSkyrim::identifyGamePath() const
-{
-  return findInRegistry(HKEY_LOCAL_MACHINE, L"Software\\Bethesda Softworks\\Skyrim", L"Installed Path");
 }
 
 QString GameSkyrim::gameName() const
 {
   return "Skyrim";
 }
-
-QString GameSkyrim::myGamesFolderName() const
-{
-  return "Skyrim";
-}
-
-
 
 QList<ExecutableInfo> GameSkyrim::executables() const
 {
@@ -98,21 +87,6 @@ bool GameSkyrim::isActive() const
 QList<PluginSetting> GameSkyrim::settings() const
 {
   return QList<PluginSetting>();
-}
-
-
-
-void GameSkyrim::copyToProfile(const QString &sourcePath, const QDir &destinationDirectory,
-                               const QString &sourceFileName, const QString &destinationFileName) const
-{
-  QString filePath = destinationDirectory.absoluteFilePath(destinationFileName.isEmpty() ? sourceFileName
-                                                                                         : destinationFileName);
-  if (!QFileInfo(filePath).exists()) {
-    if (!shellCopy(sourcePath + "/" + sourceFileName, filePath)) {
-      // if copy file fails, create the file empty
-      QFile(filePath).open(QIODevice::WriteOnly);
-    }
-  }
 }
 
 void GameSkyrim::initializeProfile(const QDir &path, ProfileSettings settings) const
