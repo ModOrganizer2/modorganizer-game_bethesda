@@ -1,12 +1,17 @@
 #ifndef FALLOUTNVSAVEGAMEINFO_H
 #define FALLOUTNVSAVEGAMEINFO_H
 
-#include "savegameinfo.h"
+#include "gamebryosavegameinfo.h"
 
-class FalloutNVSaveGameInfo : public SaveGameInfo
+class GameGamebryo;
+
+class FalloutNVSaveGameInfo : public GamebryoSaveGameInfo
 {
 public:
-  virtual MOBase::ISaveGame const *getSaveGameInfo(QString const &file) const override;
-};
+  FalloutNVSaveGameInfo(GameGamebryo const *game);
+  ~FalloutNVSaveGameInfo();
 
+  virtual MOBase::ISaveGame const *getSaveGameInfo(QString const &file) const override;
+
+};
 #endif // FALLOUTNVSAVEGAMEINFO_H

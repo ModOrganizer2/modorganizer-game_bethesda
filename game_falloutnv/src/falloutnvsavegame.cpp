@@ -1,7 +1,7 @@
 #include "falloutnvsavegame.h"
 
-FalloutNVSaveGame::FalloutNVSaveGame(QString const &fileName) :
-  GamebryoSaveGame(fileName)
+FalloutNVSaveGame::FalloutNVSaveGame(QString const &fileName, MOBase::IPluginGame const *game) :
+  GamebryoSaveGame(fileName, game)
 {
   FileWrapper file(this, "FO3SAVEGAME");
 
@@ -11,7 +11,7 @@ FalloutNVSaveGame::FalloutNVSaveGame(QString const &fileName) :
   file.skip<unsigned char>(); //Delimiter
 
   //A huge wodge of text with no length but a delimiter. Given the null bytes
-  //in it I presume it's a fixed length (64 bytes + delim) but I have no
+  //in it I presume it's fixed length (64 bytes + delim) but I have no
   //definite spec
   for (unsigned char ignore = 0; ignore != 0x7c; ) {
     file.read(ignore); // unknown
@@ -48,4 +48,3 @@ FalloutNVSaveGame::FalloutNVSaveGame(QString const &fileName) :
   //Abstract this
   file.readPlugins();
 }
-
