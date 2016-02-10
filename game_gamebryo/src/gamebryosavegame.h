@@ -14,10 +14,12 @@
 
 struct _SYSTEMTIME;
 
+namespace MOBase { class IPluginGame; }
+
 class GamebryoSaveGame : public MOBase::ISaveGame
 {
 public:
-  GamebryoSaveGame(QString const &file);
+  GamebryoSaveGame(QString const &file, MOBase::IPluginGame const *game);
 
   virtual ~GamebryoSaveGame();
 
@@ -25,7 +27,9 @@ public:
 
   virtual QDateTime getCreationTime() const override;
 
-  virtual QString getIdentifier() const override;
+  virtual QString getSaveGroupIdentifier() const override;
+
+  virtual QStringList allFiles() const override;
 
   //Simple getters
   QString getPCName() const { return m_PCName; }
@@ -107,6 +111,7 @@ protected:
   QDateTime m_CreationTime;
   QStringList m_Plugins;
   QImage m_Screenshot;
+  MOBase::IPluginGame const *m_Game;
 };
 
 template <> void GamebryoSaveGame::FileWrapper::read<QString>(QString &);
