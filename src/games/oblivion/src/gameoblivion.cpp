@@ -5,17 +5,16 @@
 #include "oblivionsavegameinfo.h"
 #include "oblivionscriptextender.h"
 
-#include <scopeguard.h>
-#include <pluginsetting.h>
-#include <executableinfo.h>
-#include <utility.h>
-#include <memory>
-#include <QStandardPaths>
-#include <QCoreApplication>
+#include "pluginsetting.h"
+#include "executableinfo.h"
 
+#include <QCoreApplication>
+#include <QDir>
+#include <QFileInfo>
+
+#include <memory>
 
 using namespace MOBase;
-
 
 GameOblivion::GameOblivion()
 {
@@ -29,26 +28,14 @@ bool GameOblivion::init(IOrganizer *moInfo)
   m_ScriptExtender = std::shared_ptr<ScriptExtender>(new OblivionScriptExtender(this));
   m_DataArchives = std::shared_ptr<DataArchives>(new OblivionDataArchives());
   m_BSAInvalidation = std::shared_ptr<BSAInvalidation>(new OblivionBSAInvalidation(m_DataArchives, this));
-  m_SaveGameInfo = std::shared_ptr<SaveGameInfo>(new OblivionSaveGameInfo());
+  m_SaveGameInfo = std::shared_ptr<SaveGameInfo>(new OblivionSaveGameInfo(this));
   return true;
-}
-
-QString GameOblivion::identifyGamePath() const
-{
-  return findInRegistry(HKEY_LOCAL_MACHINE, L"Software\\Bethesda Softworks\\Oblivion", L"Installed Path");
 }
 
 QString GameOblivion::gameName() const
 {
   return "Oblivion";
 }
-
-QString GameOblivion::myGamesFolderName() const
-{
-  return "Oblivion";
-}
-
-
 
 QList<ExecutableInfo> GameOblivion::executables() const
 {
@@ -91,21 +78,6 @@ bool GameOblivion::isActive() const
 QList<PluginSetting> GameOblivion::settings() const
 {
   return QList<PluginSetting>();
-}
-
-
-
-void GameOblivion::copyToProfile(const QString &sourcePath, const QDir &destinationDirectory,
-                               const QString &sourceFileName, const QString &destinationFileName) const
-{
-  QString filePath = destinationDirectory.absoluteFilePath(destinationFileName.isEmpty() ? sourceFileName
-                                                                                         : destinationFileName);
-  if (!QFileInfo(filePath).exists()) {
-    if (!shellCopy(sourcePath + "/" + sourceFileName, filePath)) {
-      // if copy file fails, create the file empty
-      QFile(filePath).open(QIODevice::WriteOnly);
-    }
-  }
 }
 
 void GameOblivion::initializeProfile(const QDir &path, ProfileSettings settings) const

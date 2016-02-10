@@ -1,12 +1,17 @@
 #ifndef OBLIVIONSAVEGAMEINFO_H
 #define OBLIVIONSAVEGAMEINFO_H
 
-#include "savegameinfo.h"
+#include "gamebryosavegameinfo.h"
 
-class OblivionSaveGameInfo : public SaveGameInfo
+class GameGamebryo;
+
+class OblivionSaveGameInfo : public GamebryoSaveGameInfo
 {
 public:
-  virtual MOBase::ISaveGame const *getSaveGameInfo(QString const &file) const override;
-};
+  OblivionSaveGameInfo(GameGamebryo const *game);
+  ~OblivionSaveGameInfo();
 
+  virtual MOBase::ISaveGame const *getSaveGameInfo(QString const &file) const override;
+
+};
 #endif // OBLIVIONSAVEGAMEINFO_H
