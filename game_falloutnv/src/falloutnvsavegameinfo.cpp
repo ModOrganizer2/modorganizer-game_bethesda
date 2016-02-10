@@ -1,8 +1,18 @@
 #include "falloutnvsavegameinfo.h"
 
 #include "falloutnvsavegame.h"
+#include "gamegamebryo.h"
 
-MOBase::ISaveGame const *FalloutNVSaveGameInfo::getSaveGameInfo(const QString &file) const
+FalloutNVSaveGameInfo::FalloutNVSaveGameInfo(GameGamebryo const *game) :
+  GamebryoSaveGameInfo(game)
 {
-  return new FalloutNVSaveGame(file);
+}
+
+FalloutNVSaveGameInfo::~FalloutNVSaveGameInfo()
+{
+}
+
+MOBase::ISaveGame const *FalloutNVSaveGameInfo::getSaveGameInfo(QString const &file) const
+{
+  return new FalloutNVSaveGame(file, m_Game);
 }
