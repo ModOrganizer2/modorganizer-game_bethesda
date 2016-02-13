@@ -17,9 +17,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
 
-#include <gamebryolocalsavegames.h>
+#include "gamebryolocalsavegames.h"
 #include <iprofile.h>
+#include <QtDebug>
 #include <windows.h>
+#include <stddef.h>
+#include <string>
 
 
 static const QString LocalSavesDummy = "__MO_Saves";
@@ -48,7 +51,7 @@ void GamebryoLocalSavegames::prepareProfile(MOBase::IProfile *profile)
 }
 
 
-MappingType GamebryoLocalSavegames::mappings(const QDir &profileSaveDir)
+MappingType GamebryoLocalSavegames::mappings(const QDir &profileSaveDir) const
 {
   return {{
            profileSaveDir.absolutePath(),
