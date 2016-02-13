@@ -23,6 +23,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
 #include <localsavegames.h>
 
+#include <QDir>
+#include <QString>
 
 class GamebryoLocalSavegames : public LocalSavegames
 {
@@ -30,8 +32,8 @@ class GamebryoLocalSavegames : public LocalSavegames
 public:
   GamebryoLocalSavegames(const QDir &myGamesDir, const QString &iniFileName);
 
+  virtual MappingType mappings(const QDir &profileSaveDir) const override;
   virtual void prepareProfile(MOBase::IProfile *profile) override;
-  virtual MappingType mappings(const QDir &profileSaveDir) override;
 
 private:
 

@@ -1,16 +1,23 @@
 #include "gamebryosavegame.h"
 
+#include "iplugingame.h"
+#include "scriptextender.h"
+
+#include <QDate>
 #include <QFile>
 #include <QFileInfo>
+#include <QScopedArrayPointer>
+#include <QTime>
 
-#include "Windows.h"
+#include <Windows.h>
 
 #include <stdexcept>
 #include <vector>
 
-GamebryoSaveGame::GamebryoSaveGame(QString const &file) :
+GamebryoSaveGame::GamebryoSaveGame(QString const &file, MOBase::IPluginGame const *game) :
   m_FileName(file),
-  m_CreationTime(QFileInfo(file).lastModified())
+  m_CreationTime(QFileInfo(file).lastModified()),
+  m_Game(game)
 {
 }
 
@@ -28,9 +35,26 @@ QDateTime GamebryoSaveGame::getCreationTime() const
   return m_CreationTime;
 }
 
-QString GamebryoSaveGame::getIdentifier() const
+QString GamebryoSaveGame::getSaveGroupIdentifier() const
 {
   return m_PCName;
+}
+
+QStringList GamebryoSaveGame::allFiles() const
+{
+  //This returns all valid files associated with this game
+  QStringList res = { m_FileName };
+  ScriptExtender const *e = m_Game->feature<ScriptExtender>();
+  if (e != nullptr) {
+    QFileInfo file(m_FileName);
+    for (QString const &ext : e->saveGameAttachmentExtensions()) {
+      QFileInfo name(file.absoluteDir().absoluteFilePath(file.completeBaseName() + "." + ext));
+      if (name.exists()) {
+        res.push_back(name.absoluteFilePath());
+      }
+    }
+  }
+  return res;
 }
 
 void GamebryoSaveGame::setCreationTime(_SYSTEMTIME const &ctime)
@@ -127,8 +151,9 @@ void GamebryoSaveGame::FileWrapper::readImage(unsigned long width, unsigned long
   if (scale != 0) {
     m_Game->m_Screenshot = image.scaledToWidth(scale);
   } else {
-    // why do I have to copy here? without the copy, the buffer seems to get deleted after the
-    // temporary vanishes, but Qts implicit sharing should handle that?
+    // why do I have to copy here? without the copy, the buffer seems to get
+    // deleted after the temporary vanishes, but shouldn't Qts implicit sharing
+    // handle that?
     m_Game->m_Screenshot = image.copy();
   }
 }
