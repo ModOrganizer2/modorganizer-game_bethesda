@@ -257,7 +257,8 @@ std::map<std::type_index, boost::any> GameGamebryo::featureList() const
     { typeid(ScriptExtender), m_ScriptExtender.get() },
     { typeid(DataArchives), m_DataArchives.get() },
     { typeid(SaveGameInfo), m_SaveGameInfo.get() },
-    { typeid(LocalSavegames), m_LocalSavegames.get() }
+    { typeid(LocalSavegames), m_LocalSavegames.get() },
+    { typeid(GamePlugins), m_GamePlugins.get() }
   };
 }
 

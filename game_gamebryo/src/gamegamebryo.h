@@ -10,6 +10,7 @@ class SaveGameInfo;
 class BSAInvalidation;
 class LocalSavegames;
 class ScriptExtender;
+class GamePlugins;
 
 #include <QObject>
 #include <QString>
@@ -71,8 +72,6 @@ protected:
   QString getLauncherName() const;
 
   QFileInfo findInGameFolder(const QString &relativePath) const;
-  static QString getKnownFolderPath(REFKNOWNFOLDERID folderId, bool useDefault);
-  static QString getSpecialPath(const QString &name);
   QString myGamesPath() const;
   QString selectedVariant() const;
   QString getVersion(QString const &program) const;
@@ -105,6 +104,7 @@ protected:
   std::shared_ptr<BSAInvalidation> m_BSAInvalidation { nullptr };
   std::shared_ptr<SaveGameInfo> m_SaveGameInfo { nullptr };
   std::shared_ptr<LocalSavegames> m_LocalSavegames { nullptr };
+  std::shared_ptr<GamePlugins> m_GamePlugins { nullptr };
 
 private:
 
