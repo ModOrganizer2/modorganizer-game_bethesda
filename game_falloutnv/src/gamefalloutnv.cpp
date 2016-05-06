@@ -8,6 +8,8 @@
 #include "executableinfo.h"
 #include "pluginsetting.h"
 #include "versioninfo.h"
+#include <gamebryolocalsavegames.h>
+#include <gamebryogameplugins.h>
 
 #include <QCoreApplication>
 #include <QDir>
@@ -34,6 +36,8 @@ bool GameFalloutNV::init(IOrganizer *moInfo)
   m_DataArchives = std::shared_ptr<DataArchives>(new FalloutNVDataArchives());
   m_BSAInvalidation = std::shared_ptr<BSAInvalidation>(new FalloutNVBSAInvalidation(m_DataArchives, this));
   m_SaveGameInfo = std::shared_ptr<SaveGameInfo>(new FalloutNVSaveGameInfo(this));
+  m_LocalSavegames.reset(new GamebryoLocalSavegames(myGamesPath(), "fallout.ini"));
+  m_GamePlugins = std::shared_ptr<GamePlugins>(new GamebryoGamePlugins(this));
   return true;
 }
 
