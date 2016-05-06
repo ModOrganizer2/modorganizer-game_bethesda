@@ -8,6 +8,9 @@
 #include "executableinfo.h"
 #include "pluginsetting.h"
 
+#include <gamebryolocalsavegames.h>
+#include <gamebryogameplugins.h>
+
 #include <QCoreApplication>
 #include <QDebug>
 #include <QFileInfo>
@@ -38,6 +41,8 @@ bool GameSkyrim::init(IOrganizer *moInfo)
   m_DataArchives = std::shared_ptr<DataArchives>(new SkyrimDataArchives());
   m_BSAInvalidation = std::shared_ptr<BSAInvalidation>(new SkyrimBSAInvalidation(m_DataArchives, this));
   m_SaveGameInfo = std::shared_ptr<SaveGameInfo>(new SkyrimSaveGameInfo(this));
+  m_LocalSavegames.reset(new GamebryoLocalSavegames(myGamesPath(), "skyrim.ini"));
+  m_GamePlugins = std::shared_ptr<GamePlugins>(new GamebryoGamePlugins(moInfo));
   return true;
 }
 
