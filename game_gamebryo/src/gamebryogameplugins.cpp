@@ -147,7 +147,7 @@ bool GamebryoGamePlugins::readLoadOrderList(MOBase::IPluginList *pluginList,
       }
 
       if (modName.size() > 0) {
-        if (!pluginNames.contains(modName)) {
+        if (!pluginNames.contains(modName, Qt::CaseInsensitive)) {
           pluginNames.append(modName);
         }
       }
