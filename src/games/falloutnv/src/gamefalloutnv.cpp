@@ -37,7 +37,7 @@ bool GameFalloutNV::init(IOrganizer *moInfo)
   m_BSAInvalidation = std::shared_ptr<BSAInvalidation>(new FalloutNVBSAInvalidation(m_DataArchives, this));
   m_SaveGameInfo = std::shared_ptr<SaveGameInfo>(new FalloutNVSaveGameInfo(this));
   m_LocalSavegames.reset(new GamebryoLocalSavegames(myGamesPath(), "fallout.ini"));
-  m_GamePlugins = std::shared_ptr<GamePlugins>(new GamebryoGamePlugins(this));
+  m_GamePlugins = std::shared_ptr<GamePlugins>(new GamebryoGamePlugins(moInfo));
   return true;
 }
 
