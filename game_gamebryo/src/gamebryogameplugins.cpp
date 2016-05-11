@@ -42,14 +42,18 @@ void GamebryoGamePlugins::readPluginLists(MOBase::IPluginList *pluginList) {
   QString pluginsPath = organizer()->profile()->absolutePath() + "/plugins.txt";
 
   bool loadOrderIsNew = !m_LastRead.isValid() ||
-                        QFileInfo(loadOrderPath).lastModified() > m_LastRead;
-  if (loadOrderIsNew) {
+      QFileInfo(loadOrderPath).lastModified() > m_LastRead;
+  bool pluginsIsNew = !m_LastRead.isValid() ||
+      QFileInfo(pluginsPath).lastModified() > m_LastRead;
+
+  if (loadOrderIsNew || !pluginsIsNew) {
+    // read both files if they are both new or both older than the last read
     readLoadOrderList(pluginList, loadOrderPath);
     readPluginList(pluginList, pluginsPath, false);
-  } else if (QFileInfo(pluginsPath).lastModified() > m_LastRead) {
-    // humm, it appears an outside source changed the plugins.txt but not the
-    // loadorder.txt. In this case we have to use plugins.txt as the base for
-    // the load order
+  } else {
+    // if the plugin list is new but the load order isn't, this probably means
+    // an external tool that handles only the plugins.txt has been run in the
+    // meantime. We have to use plugins.txt for the load order as well.
     readPluginList(pluginList, pluginsPath, true);
   }
 
