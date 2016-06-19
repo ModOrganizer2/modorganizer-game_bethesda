@@ -13,7 +13,7 @@
 #include <Windows.h>
 
 
-GamebryoBSAInvalidation::GamebryoBSAInvalidation(const std::shared_ptr<DataArchives> &dataArchives
+GamebryoBSAInvalidation::GamebryoBSAInvalidation(DataArchives *dataArchives
                                                  , const QString &iniFilename
                                                  , MOBase::IPluginGame const *game)
   : m_DataArchives(dataArchives)
