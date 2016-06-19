@@ -10,6 +10,7 @@
 
 #include <gamebryolocalsavegames.h>
 #include <gamebryogameplugins.h>
+#include <gamebryounmanagedmods.h>
 
 #include <QCoreApplication>
 #include <QDebug>
@@ -37,12 +38,13 @@ bool GameSkyrim::init(IOrganizer *moInfo)
   if (!GameGamebryo::init(moInfo)) {
     return false;
   }
-  m_ScriptExtender = std::shared_ptr<ScriptExtender>(new SkyrimScriptExtender(this));
-  m_DataArchives = std::shared_ptr<DataArchives>(new SkyrimDataArchives());
-  m_BSAInvalidation = std::shared_ptr<BSAInvalidation>(new SkyrimBSAInvalidation(m_DataArchives, this));
-  m_SaveGameInfo = std::shared_ptr<SaveGameInfo>(new SkyrimSaveGameInfo(this));
-  m_LocalSavegames.reset(new GamebryoLocalSavegames(myGamesPath(), "skyrim.ini"));
-  m_GamePlugins = std::shared_ptr<GamePlugins>(new GamebryoGamePlugins(moInfo));
+  registerFeature<ScriptExtender>(new SkyrimScriptExtender(this));
+  registerFeature<DataArchives>(new SkyrimDataArchives());
+  registerFeature<BSAInvalidation>(new SkyrimBSAInvalidation(feature<DataArchives>(), this));
+  registerFeature<SaveGameInfo>(new SkyrimSaveGameInfo(this));
+  registerFeature<LocalSavegames>(new GamebryoLocalSavegames(myGamesPath(), "skyrim.ini"));
+  registerFeature<GamePlugins>(new GamebryoGamePlugins(moInfo));
+  registerFeature<UnmanagedMods>(new GamebryoUnmangedMods(this));
   return true;
 }
 
@@ -54,7 +56,7 @@ QString GameSkyrim::gameName() const
 QList<ExecutableInfo> GameSkyrim::executables() const
 {
   return QList<ExecutableInfo>()
-      << ExecutableInfo("SKSE", findInGameFolder(m_ScriptExtender->loaderName()))
+      << ExecutableInfo("SKSE", findInGameFolder(feature<ScriptExtender>()->loaderName()))
       << ExecutableInfo("SBW", findInGameFolder("SBW.exe"))
       << ExecutableInfo("Skyrim", findInGameFolder(binaryName()))
       << ExecutableInfo("Skyrim Launcher", findInGameFolder(getLauncherName()))
