@@ -10,6 +10,7 @@
 #include "versioninfo.h"
 #include <gamebryolocalsavegames.h>
 #include <gamebryogameplugins.h>
+#include <gamebryounmanagedmods.h>
 
 #include <QCoreApplication>
 #include <QDir>
@@ -32,12 +33,13 @@ bool GameFalloutNV::init(IOrganizer *moInfo)
   if (!GameGamebryo::init(moInfo)) {
     return false;
   }
-  m_ScriptExtender = std::shared_ptr<ScriptExtender>(new FalloutNVScriptExtender(this));
-  m_DataArchives = std::shared_ptr<DataArchives>(new FalloutNVDataArchives());
-  m_BSAInvalidation = std::shared_ptr<BSAInvalidation>(new FalloutNVBSAInvalidation(m_DataArchives, this));
-  m_SaveGameInfo = std::shared_ptr<SaveGameInfo>(new FalloutNVSaveGameInfo(this));
-  m_LocalSavegames.reset(new GamebryoLocalSavegames(myGamesPath(), "fallout.ini"));
-  m_GamePlugins = std::shared_ptr<GamePlugins>(new GamebryoGamePlugins(moInfo));
+  registerFeature<ScriptExtender>(new FalloutNVScriptExtender(this));
+  registerFeature<DataArchives>(new FalloutNVDataArchives());
+  registerFeature<BSAInvalidation>(new FalloutNVBSAInvalidation(feature<DataArchives>(), this));
+  registerFeature<SaveGameInfo>(new FalloutNVSaveGameInfo(this));
+  registerFeature<LocalSavegames>(new GamebryoLocalSavegames(myGamesPath(), "fallout.ini"));
+  registerFeature<GamePlugins>(new GamebryoGamePlugins(moInfo));
+  registerFeature<UnmanagedMods>(new GamebryoUnmangedMods(this));
   return true;
 }
 
@@ -49,7 +51,7 @@ QString GameFalloutNV::gameName() const
 QList<ExecutableInfo> GameFalloutNV::executables() const
 {
   return QList<ExecutableInfo>()
-      << ExecutableInfo("NVSE", findInGameFolder(m_ScriptExtender->loaderName()))
+      << ExecutableInfo("NVSE", findInGameFolder(feature<ScriptExtender>()->loaderName()))
       << ExecutableInfo("New Vegas", findInGameFolder(binaryName()))
       << ExecutableInfo("Fallout Mod Manager", findInGameFolder("fomm/fomm.exe"))
       << ExecutableInfo("Construction Kit", findInGameFolder("geck.exe"))
