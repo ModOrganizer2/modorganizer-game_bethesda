@@ -9,6 +9,7 @@
 #include "executableinfo.h"
 #include <gamebryolocalsavegames.h>
 #include <gamebryogameplugins.h>
+#include <gamebryounmanagedmods.h>
 
 #include <QCoreApplication>
 #include <QDir>
@@ -27,12 +28,13 @@ bool GameOblivion::init(IOrganizer *moInfo)
   if (!GameGamebryo::init(moInfo)) {
     return false;
   }
-  m_ScriptExtender = std::shared_ptr<ScriptExtender>(new OblivionScriptExtender(this));
-  m_DataArchives = std::shared_ptr<DataArchives>(new OblivionDataArchives());
-  m_BSAInvalidation = std::shared_ptr<BSAInvalidation>(new OblivionBSAInvalidation(m_DataArchives, this));
-  m_SaveGameInfo = std::shared_ptr<SaveGameInfo>(new OblivionSaveGameInfo(this));
-  m_LocalSavegames.reset(new GamebryoLocalSavegames(myGamesPath(), "oblivion.ini"));
-  m_GamePlugins = std::shared_ptr<GamePlugins>(new GamebryoGamePlugins(moInfo));
+  registerFeature<ScriptExtender>(new OblivionScriptExtender(this));
+  registerFeature<DataArchives>(new OblivionDataArchives());
+  registerFeature<BSAInvalidation>(new OblivionBSAInvalidation(feature<DataArchives>(), this));
+  registerFeature<SaveGameInfo>(new OblivionSaveGameInfo(this));
+  registerFeature<LocalSavegames>(new GamebryoLocalSavegames(myGamesPath(), "oblivion.ini"));
+  registerFeature<GamePlugins>(new GamebryoGamePlugins(moInfo));
+  registerFeature<UnmanagedMods>(new GamebryoUnmangedMods(this));
   return true;
 }
 
@@ -44,7 +46,7 @@ QString GameOblivion::gameName() const
 QList<ExecutableInfo> GameOblivion::executables() const
 {
   return QList<ExecutableInfo>()
-      << ExecutableInfo("OBSE", findInGameFolder(m_ScriptExtender->loaderName()))
+      << ExecutableInfo("OBSE", findInGameFolder(feature<ScriptExtender>()->loaderName()))
       << ExecutableInfo("Oblivion", findInGameFolder(binaryName()))
       << ExecutableInfo("Oblivion Launcher", findInGameFolder(getLauncherName()))
       << ExecutableInfo("Oblivion Mod Manager", findInGameFolder("OblivionModManager.exe"))
