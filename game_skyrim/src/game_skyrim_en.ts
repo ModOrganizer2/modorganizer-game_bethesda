@@ -4,7 +4,7 @@
 <context>
     <name>GameSkyrim</name>
     <message>
-        <location filename="gameskyrim.cpp" line="79"/>
+        <location filename="gameskyrim.cpp" line="81"/>
         <source>Adds support for the game Skyrim</source>
         <translation type="unfinished"></translation>
     </message>
