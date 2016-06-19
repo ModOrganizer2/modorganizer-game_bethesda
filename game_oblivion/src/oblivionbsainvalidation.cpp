@@ -1,7 +1,7 @@
 #include "oblivionbsainvalidation.h"
 
 
-OblivionBSAInvalidation::OblivionBSAInvalidation(const std::shared_ptr<DataArchives> &dataArchives, MOBase::IPluginGame const *game)
+OblivionBSAInvalidation::OblivionBSAInvalidation(DataArchives *dataArchives, MOBase::IPluginGame const *game)
   : GamebryoBSAInvalidation(dataArchives, "oblivion.ini", game)
 {
 }
