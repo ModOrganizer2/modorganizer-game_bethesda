@@ -252,14 +252,7 @@ QString GameGamebryo::myGamesPath() const
 
 std::map<std::type_index, boost::any> GameGamebryo::featureList() const
 {
-  return {
-    { typeid(BSAInvalidation), m_BSAInvalidation.get() },
-    { typeid(ScriptExtender), m_ScriptExtender.get() },
-    { typeid(DataArchives), m_DataArchives.get() },
-    { typeid(SaveGameInfo), m_SaveGameInfo.get() },
-    { typeid(LocalSavegames), m_LocalSavegames.get() },
-    { typeid(GamePlugins), m_GamePlugins.get() }
-  };
+  return m_FeatureList;
 }
 
 QString GameGamebryo::localAppFolder()
@@ -272,18 +265,17 @@ QString GameGamebryo::localAppFolder()
   return result;
 }
 
-/*static*/void GameGamebryo::copyToProfile(QString const &sourcePath,
-                                           QDir const &destinationDirectory,
-                                           QString const &sourceFileName)
-{
-  copyToProfile(sourcePath, destinationDirectory, sourceFileName, sourceFileName);
+void GameGamebryo::copyToProfile(QString const &sourcePath,
+                                 QDir const &destinationDirectory,
+                                 QString const &sourceFileName) {
+  copyToProfile(sourcePath, destinationDirectory, sourceFileName,
+                sourceFileName);
 }
 
-/*static*/void GameGamebryo::copyToProfile(QString const &sourcePath,
-                                           QDir const &destinationDirectory,
-                                           QString const &sourceFileName,
-                                           QString const &destinationFileName)
-{
+void GameGamebryo::copyToProfile(QString const &sourcePath,
+                                 QDir const &destinationDirectory,
+                                 QString const &sourceFileName,
+                                 QString const &destinationFileName) {
   QString filePath = destinationDirectory.absoluteFilePath(destinationFileName);
   if (!QFileInfo(filePath).exists()) {
     if (!MOBase::shellCopy(sourcePath + "/" + sourceFileName, filePath)) {
