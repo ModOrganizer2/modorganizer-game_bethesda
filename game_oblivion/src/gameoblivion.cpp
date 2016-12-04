@@ -125,6 +125,12 @@ QString GameOblivion::gameShortName() const
   return "Oblivion";
 }
 
+QString GameOblivion::gameNexusName() const
+{
+  return "Oblivion";
+}
+
+
 QStringList GameOblivion::iniFiles() const
 {
   return { "oblivion.ini", "oblivionprefs.ini" };
