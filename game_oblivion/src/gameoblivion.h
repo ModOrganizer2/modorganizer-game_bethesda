@@ -26,6 +26,7 @@ public: // IPluginGame interface
   virtual QString steamAPPId() const override;
   virtual QStringList primaryPlugins() const override;
   virtual QString gameShortName() const override;
+  virtual QString gameNexusName() const override;
   virtual QStringList iniFiles() const override;
   virtual QStringList DLCPlugins() const override;
   virtual int nexusModOrganizerID() const override;
