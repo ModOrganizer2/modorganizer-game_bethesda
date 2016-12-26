@@ -10,6 +10,7 @@
 #include <QTime>
 
 #include <Windows.h>
+#include <lz4.h>
 
 #include <stdexcept>
 #include <vector>
@@ -158,13 +159,55 @@ void GamebryoSaveGame::FileWrapper::readImage(unsigned long width, unsigned long
   }
 }
 
-void GamebryoSaveGame::FileWrapper::readPlugins()
+void GamebryoSaveGame::FileWrapper::readPlugins(int bytesToIgnore)
 {
-  unsigned char count;
-  read(count);
-  for (std::size_t i = 0; i < count; ++i) {
-    QString name;
-    read(name);
-    m_Game->m_Plugins.push_back(name);
+  if(compressionType==0){
+    if(bytesToIgnore>0)//Just to make certain
+      skip<char>(bytesToIgnore);
+    unsigned char count;
+		read(count);
+    m_Game->m_Plugins.reserve(count);
+		for (std::size_t i = 0; i < count; ++i) {
+			QString name;
+			read(name);
+			m_Game->m_Plugins.push_back(name);
+		}
+  }else if(compressionType==1){
+		m_Game->m_Plugins.push_back("Please create an issue on the MO github labeled \"Found zlib Compressed\" with your savefile attached");
+  }else if(compressionType==2){
+		unsigned long maxUncompressedSize;
+		read(maxUncompressedSize);
+		unsigned long compressedSize;
+		read(compressedSize);
+		char* compressed=new char[compressedSize];
+		read(compressed,compressedSize);
+		
+		//Using this maxPluginSize (2 byte limit on the length in bytes of the plugin names, with those same 2 bytes added in
+    //and there is a maximum of 255 or so plugins possible with an extra 5 bytes from the empty space.)
+    //to decrease the amount of data that has to be read in each savefile. Total is 16711940 (it wouldn't let me write it out in
+    //an equation
+    
+		//unsigned long uncompressedSize=(65537)*255+5‬;
+		unsigned long uncompressedSize=16711940;
+		char * decompressed=new char[uncompressedSize];
+		LZ4_decompress_safe_partial(compressed,decompressed,compressedSize,uncompressedSize,maxUncompressedSize);
+		delete[] compressed;
+	
+		QDataStream data(QByteArray(decompressed,uncompressedSize));
+		delete[] decompressed;
+		data.skipRawData(bytesToIgnore);
+		
+		//unsigned long loc=7;
+		//unsigned char count=decompressed[loc++];
+		unsigned char count;
+		read(data,count);
+		//data.read(reinterpret_cast<char*>(&count),sizeof(count));
+		m_Game->m_Plugins.reserve(count);
+    for(std::size_t i=0;i<count;++i){
+      QString name;
+      read(data,name);
+      m_Game->m_Plugins.push_back(name);
+    }
+    
   }
 }
