@@ -158,10 +158,33 @@ void GamebryoSaveGame::FileWrapper::readImage(unsigned long width, unsigned long
     m_Game->m_Screenshot = image.copy();
   }
 }
+void readQDataStream(QDataStream &data, void *buff, std::size_t length){
+	int read = data.readRawData(static_cast<char *>(buff), static_cast<int>(length));
+  if (read != length) {
+    throw std::runtime_error("unexpected end of file");
+  }
+}
+template <typename T> void readQDataStream(QDataStream &data,T &value){
+	int read  = data.readRawData(reinterpret_cast<char*>(&value),sizeof(T));
+	if (read != sizeof(T)) {
+    throw std::runtime_error("unexpected end of file");
+  }
+}
 
+template <> void readQDataStream(QDataStream &data, QString &value)
+{
+  unsigned short length;
+  readQDataStream(data,length);
+
+  std::vector<char> buffer(length);
+
+  readQDataStream(data, buffer.data(), length);
+
+  value = QString::fromLatin1(buffer.data(), length);
+}
 void GamebryoSaveGame::FileWrapper::readPlugins(int bytesToIgnore)
 {
-  if(compressionType==0){
+  if(m_Game->compressionType==0){
     if(bytesToIgnore>0)//Just to make certain
       skip<char>(bytesToIgnore);
     unsigned char count;
@@ -172,9 +195,9 @@ void GamebryoSaveGame::FileWrapper::readPlugins(int bytesToIgnore)
 			read(name);
 			m_Game->m_Plugins.push_back(name);
 		}
-  }else if(compressionType==1){
+  }else if(m_Game->compressionType==1){
 		m_Game->m_Plugins.push_back("Please create an issue on the MO github labeled \"Found zlib Compressed\" with your savefile attached");
-  }else if(compressionType==2){
+  }else if(m_Game->compressionType==2){
 		unsigned long maxUncompressedSize;
 		read(maxUncompressedSize);
 		unsigned long compressedSize;
@@ -187,8 +210,8 @@ void GamebryoSaveGame::FileWrapper::readPlugins(int bytesToIgnore)
     //to decrease the amount of data that has to be read in each savefile. Total is 16711940 (it wouldn't let me write it out in
     //an equation
     
-		//unsigned long uncompressedSize=(65537)*255+5‬;
-		unsigned long uncompressedSize=16711940;
+		//unsigned long uncompressedSize=(65537)*255+bytesToIgnore‬;
+		unsigned long uncompressedSize=16711935+bytesToIgnore;
 		char * decompressed=new char[uncompressedSize];
 		LZ4_decompress_safe_partial(compressed,decompressed,compressedSize,uncompressedSize,maxUncompressedSize);
 		delete[] compressed;
@@ -200,12 +223,12 @@ void GamebryoSaveGame::FileWrapper::readPlugins(int bytesToIgnore)
 		//unsigned long loc=7;
 		//unsigned char count=decompressed[loc++];
 		unsigned char count;
-		read(data,count);
+		readQDataStream(data,count);
 		//data.read(reinterpret_cast<char*>(&count),sizeof(count));
 		m_Game->m_Plugins.reserve(count);
     for(std::size_t i=0;i<count;++i){
       QString name;
-      read(data,name);
+      readQDataStream(data,name);
       m_Game->m_Plugins.push_back(name);
     }
     
