@@ -115,6 +115,7 @@ protected:
   unsigned short compressionType;
 };
 
+
 template <> void GamebryoSaveGame::FileWrapper::read<QString>(QString &);
 
 #endif // GAMEBRYOSAVEGAME_H

@@ -31,8 +31,8 @@ SET(plugin_path "${project_path}")
 
 
 INCLUDE_DIRECTORIES(${project_path}/uibase/src
-                    ${project_path}/game_features/src)
-					${project_path}/../lz4/include)
+                    ${project_path}/game_features/src
+                    ${project_path}/../lz4/include)
 LINK_DIRECTORIES(${lib_path}
                  ${project_path}/../lz4/dll)
 
