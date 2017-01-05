@@ -132,7 +132,7 @@ QString GameFalloutNV::gameShortName() const
 
 QString GameFalloutNV::gameNexusName() const
 {
-  return "FalloutNV";
+  return "newvegas";
 }
 
 QStringList GameFalloutNV::iniFiles() const
