@@ -45,17 +45,44 @@ void Fallout4GamePlugins::writePluginList(const IPluginList *pluginList,
               return pluginList->priority(lhs) < pluginList->priority(rhs);
             });
 
+  QStringList PrimaryPlugins = organizer()->managedGame()->primaryPlugins();
+
+  for (auto f : OFFICIAL_FILES) {
+	  if (!PrimaryPlugins.contains(f, Qt::CaseInsensitive)) {
+		  PrimaryPlugins.append(f);
+	  }
+  }
+
+  //TODO: do not write plugins in OFFICIAL_FILES container
   for (const QString &pluginName : plugins) {
-    if (pluginList->state(pluginName) == IPluginList::STATE_ACTIVE) {
-      if (!textCodec->canEncode(pluginName)) {
-        invalidFileNames = true;
-        qCritical("invalid plugin name %s", qPrintable(pluginName));
-      } else {
-        file->write("*");
-        file->write(textCodec->fromUnicode(pluginName));
+	if (!PrimaryPlugins.contains(pluginName,Qt::CaseInsensitive)) {
+      if (pluginList->state(pluginName) == IPluginList::STATE_ACTIVE) {
+        if (!textCodec->canEncode(pluginName)) {
+          invalidFileNames = true;
+          qCritical("invalid plugin name %s", qPrintable(pluginName));
+        }
+        else
+        { 
+          file->write("*");
+          file->write(textCodec->fromUnicode(pluginName));
+        
+        }
+        file->write("\r\n");
+        ++writtenCount;
       }
-      file->write("\r\n");
-      ++writtenCount;
+	  else
+	  {
+        if (!textCodec->canEncode(pluginName)) {
+          invalidFileNames = true;
+          qCritical("invalid plugin name %s", qPrintable(pluginName));
+        }
+        else
+        { 
+          file->write(textCodec->fromUnicode(pluginName));
+        }
+        file->write("\r\n");
+        ++writtenCount;
+	  }
     }
   }
 
@@ -76,10 +103,18 @@ bool Fallout4GamePlugins::readPluginList(MOBase::IPluginList *pluginList,
                                          bool useLoadOrder)
 {
   QStringList plugins = pluginList->pluginNames();
+  QStringList loadOrder = organizer()->managedGame()->primaryPlugins();
 
-  for (const QString &pluginName : OFFICIAL_FILES) {
+  for (auto f : OFFICIAL_FILES) {
+	  if (!loadOrder.contains(f, Qt::CaseInsensitive)) {
+		  loadOrder.append(f);
+	  }
+  }
+
+  for (const QString &pluginName : loadOrder) {
     if (pluginList->state(pluginName) != IPluginList::STATE_MISSING) {
       pluginList->setState(pluginName, IPluginList::STATE_ACTIVE);
+	  plugins.removeAll(pluginName);
     }
   }
 
@@ -97,7 +132,6 @@ bool Fallout4GamePlugins::readPluginList(MOBase::IPluginList *pluginList,
     return false;
   }
 
-  QStringList loadOrder = organizer()->managedGame()->primaryPlugins();
   while (!file.atEnd()) {
     QByteArray line = file.readLine();
     QString pluginName;
@@ -105,15 +139,26 @@ bool Fallout4GamePlugins::readPluginList(MOBase::IPluginList *pluginList,
       pluginName = localCodec()->toUnicode(line.trimmed().constData());
     }
     if (pluginName.startsWith('*')) {
-      pluginName.remove(0, 1);
+		      pluginName.remove(0, 1);
+			  if (pluginName.size() > 0) {
+				  pluginList->setState(pluginName, IPluginList::STATE_ACTIVE);
+				  plugins.removeAll(pluginName);
+				  if (!loadOrder.contains(pluginName, Qt::CaseInsensitive)) {
+					  loadOrder.append(pluginName);
+				  }
+			  }
     }
-    if (pluginName.size() > 0) {
-      pluginList->setState(pluginName, IPluginList::STATE_ACTIVE);
-      plugins.removeAll(pluginName);
-      if (!loadOrder.contains(pluginName, Qt::CaseInsensitive)) {
-        loadOrder.append(pluginName);
-      }
-    }
+	else
+	{
+		if (pluginName.size() > 0) {
+			pluginList->setState(pluginName, IPluginList::STATE_INACTIVE);
+			plugins.removeAll(pluginName);
+			if (!loadOrder.contains(pluginName, Qt::CaseInsensitive)) {
+				loadOrder.append(pluginName);
+			}
+		}
+	}
+
   }
 
   file.close();
