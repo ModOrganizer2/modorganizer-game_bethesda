@@ -37,6 +37,7 @@ public:
   QString getPCLocation() const { return m_PCLocation; }
   unsigned long getSaveNumber() const { return m_SaveNumber; }
   QStringList const &getPlugins() const { return m_Plugins; }
+  QStringList const &getLightPlugins() const { return m_LightPlugins; }
   QImage const &getScreenshot() const { return m_Screenshot; }
 
 protected:
@@ -88,10 +89,22 @@ protected:
     /* Reads RGB image from save */
     void readImage(unsigned long width, unsigned long height, int scale = 0, bool alpha = false);
 
-    /* Read the plugin list */
+	/* uncompress the begining of the compressed block */
+	bool openCompressedData(int bytesToIgnore = 0);
+
+	/* frees the uncompressed block */
+	void closeCompressedData();
+
+	/* Read the save game version in the compressed block */
+	unsigned char readSaveGameVersion(int bytesToIgnore=0);
+
+	/* Read the plugin list */
     void readPlugins(int bytesToIgnore=0);
 
-    /* Set the creation time from a system date */
+	/* Read the light plugin list */
+	void readLightPlugins(int bytesToIgnore = 0);
+
+	/* Set the creation time from a system date */
     void setCreationTime(::_SYSTEMTIME const &);
 
   private:
@@ -99,6 +112,7 @@ protected:
     QFile m_File;
     bool m_HasFieldMarkers;
     bool m_BZString;
+	QDataStream* m_Data;
   };
 
   void setCreationTime(_SYSTEMTIME const &time);
@@ -110,6 +124,7 @@ protected:
   unsigned long m_SaveNumber;
   QDateTime m_CreationTime;
   QStringList m_Plugins;
+  QStringList m_LightPlugins;
   QImage m_Screenshot;
   MOBase::IPluginGame const *m_Game;
   unsigned short compressionType;
