@@ -40,8 +40,8 @@ GamebryoSaveGameInfo::MissingAssets GamebryoSaveGameInfo::getMissingAssets(QStri
     }
   }
 
-  //Find out any other mods that might contain the esp/esm
-  QStringList espFilter( { "*.esp", "*.esm" } );
+  //Find out any other mods that might contain the esp/esm/esl
+  QStringList espFilter( { "*.esp", "*.esm", "*.esl"} );
 
   QString dataDir(organizerCore->managedGame()->dataDirectory().absolutePath());
 
