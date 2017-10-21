@@ -17,7 +17,7 @@ QStringList GamebryoUnmangedMods::mods(bool onlyOfficial) const {
   QStringList mainPlugins = m_Game->primaryPlugins();
 
   QDir dataDir(m_Game->dataDirectory());
-  for (const QString &fileName : dataDir.entryList({"*.esp", "*.esm"})) {
+  for (const QString &fileName : dataDir.entryList({"*.esp", "*.esm", "*.esl"})) {
     if (!mainPlugins.contains(fileName, Qt::CaseInsensitive) &&
         (!onlyOfficial || dlcPlugins.contains(fileName, Qt::CaseInsensitive))) {
       QFileInfo file(fileName);
