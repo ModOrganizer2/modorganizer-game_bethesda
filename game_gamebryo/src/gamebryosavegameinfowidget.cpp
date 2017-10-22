@@ -97,6 +97,22 @@ void GamebryoSaveGameInfoWidget::setSave(QString const &file)
     pluginLabel->setFont(contentFont);
     layout->addWidget(pluginLabel);
   }
+  for (QString const &pluginName : save->getLightPlugins()) {
+	  if (pluginList->state(pluginName) == MOBase::IPluginList::STATE_ACTIVE) {
+		  continue;
+	  }
+
+	  ++count;
+
+	  if (count > 10) {
+		  break;
+	  }
+
+	  QLabel *pluginLabel = new QLabel(pluginName);
+	  pluginLabel->setIndent(10);
+	  pluginLabel->setFont(contentFont);
+	  layout->addWidget(pluginLabel);
+  }
   if (count > 10) {
     QLabel *dotDotLabel = new QLabel("...");
     dotDotLabel->setIndent(10);
