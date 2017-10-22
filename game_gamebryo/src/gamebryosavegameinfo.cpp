@@ -40,8 +40,19 @@ GamebryoSaveGameInfo::MissingAssets GamebryoSaveGameInfo::getMissingAssets(QStri
     }
   }
 
+  for (QString const &pluginName : save->getLightPlugins()) {
+	  switch (organizerCore->pluginList()->state(pluginName)) {
+	  case MOBase::IPluginList::STATE_INACTIVE:
+		  missingAssets[pluginName] = ProvidingModules{ organizerCore->pluginList()->origin(pluginName) };
+		  break;
+	  case MOBase::IPluginList::STATE_MISSING:
+		  missingAssets[pluginName] = ProvidingModules();
+		  break;
+	  }
+  }
+
   //Find out any other mods that might contain the esp/esm
-  QStringList espFilter( { "*.esp", "*.esm" } );
+  QStringList espFilter( { "*.esp", "*.esl", "*.esm" } );
 
   QString dataDir(organizerCore->managedGame()->dataDirectory().absolutePath());
 
