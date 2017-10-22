@@ -13,7 +13,7 @@ Splash by %1</source>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="fallout4gameplugins.cpp" line="62"/>
+        <location filename="fallout4gameplugins.cpp" line="90"/>
         <source>Some of your plugins have invalid names! These plugins can not be loaded by the game. Please see mo_interface.log for a list of affected plugins and rename them.</source>
         <translation type="unfinished"></translation>
     </message>
