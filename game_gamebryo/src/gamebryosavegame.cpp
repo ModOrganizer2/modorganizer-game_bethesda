@@ -182,14 +182,94 @@ template <> void readQDataStream(QDataStream &data, QString &value)
 
   value = QString::fromLatin1(buffer.data(), length);
 }
+
+void GamebryoSaveGame::FileWrapper::closeCompressedData()
+{
+	if (m_Game->compressionType == 0) {
+	}
+	else if (m_Game->compressionType == 1) {
+		m_Game->m_Plugins.push_back("Please create an issue on the MO github labeled \"Found zlib Compressed\" with your savefile attached");
+	}
+	else if (m_Game->compressionType == 2) {
+		delete[] m_Data;
+	}
+	else
+		m_Game->m_Plugins.push_back("Please create an issue on the MO github labeled \"Found unknown Compressed\" with your savefile attached");
+}
+
+bool GamebryoSaveGame::FileWrapper::openCompressedData(int bytesToIgnore)
+{
+	if (m_Game->compressionType == 0) {
+		if (bytesToIgnore>0)//Just to make certain
+			skip<char>(bytesToIgnore);
+		return false;
+	}
+	else if (m_Game->compressionType == 1) {
+		m_Game->m_Plugins.push_back("Please create an issue on the MO github labeled \"Found zlib Compressed\" with your savefile attached");
+		return false;
+	}
+	else if (m_Game->compressionType == 2) {
+		unsigned long maxUncompressedSize;
+		read(maxUncompressedSize);
+		unsigned long compressedSize;
+		read(compressedSize);
+		char* compressed = new char[compressedSize];
+		read(compressed, compressedSize);
+
+		//unsigned long uncompressedSize=(65537)*255+bytesToIgnore‬;
+		unsigned long uncompressedSize = 16711935 + bytesToIgnore;
+		char * decompressed = new char[uncompressedSize];
+		LZ4_decompress_safe_partial(compressed, decompressed, compressedSize, uncompressedSize, maxUncompressedSize);
+		delete[] compressed;
+
+		m_Data = new QDataStream(QByteArray(decompressed, uncompressedSize));
+		m_Data->skipRawData(bytesToIgnore);
+
+		return true;
+
+	}
+	else {
+		m_Game->m_Plugins.push_back("Please create an issue on the MO github labeled \"Found unknown Compressed\" with your savefile attached");
+		return false;
+	}
+}
+
+unsigned char GamebryoSaveGame::FileWrapper::readSaveGameVersion(int bytesToIgnore)
+{
+	if (m_Game->compressionType == 0) {
+		if (bytesToIgnore>0)//Just to make certain
+			skip<char>(bytesToIgnore);
+		unsigned char version;
+		read(version);
+		return version;
+	}
+	else if (m_Game->compressionType == 1) {
+		m_Game->m_Plugins.push_back("Please create an issue on the MO github labeled \"Found zlib Compressed\" with your savefile attached");
+		return 0;
+	}
+	else if (m_Game->compressionType == 2) {
+		// decompression already done by readSaveGameVersion
+		m_Data->skipRawData(bytesToIgnore);
+
+		unsigned char version;
+		readQDataStream(*m_Data, version);
+		return version;
+
+	}
+	else {
+		m_Game->m_Plugins.push_back("Please create an issue on the MO github labeled \"Found unknown Compressed\" with your savefile attached");
+		return 0;
+	}
+}
+
 void GamebryoSaveGame::FileWrapper::readPlugins(int bytesToIgnore)
 {
   if(m_Game->compressionType==0){
     if(bytesToIgnore>0)//Just to make certain
-      skip<char>(bytesToIgnore);
-    unsigned char count;
+		skip<char>(bytesToIgnore);
+		unsigned char count;
 		read(count);
-    m_Game->m_Plugins.reserve(count);
+		m_Game->m_Plugins.reserve(count);
 		for (std::size_t i = 0; i < count; ++i) {
 			QString name;
 			read(name);
@@ -198,39 +278,47 @@ void GamebryoSaveGame::FileWrapper::readPlugins(int bytesToIgnore)
   }else if(m_Game->compressionType==1){
 		m_Game->m_Plugins.push_back("Please create an issue on the MO github labeled \"Found zlib Compressed\" with your savefile attached");
   }else if(m_Game->compressionType==2){
-		unsigned long maxUncompressedSize;
-		read(maxUncompressedSize);
-		unsigned long compressedSize;
-		read(compressedSize);
-		char* compressed=new char[compressedSize];
-		read(compressed,compressedSize);
+		m_Data->skipRawData(bytesToIgnore);
 		
-		//Using this maxPluginSize (2 byte limit on the length in bytes of the plugin names, with those same 2 bytes added in
-    //and there is a maximum of 255 or so plugins possible with an extra 5 bytes from the empty space.)
-    //to decrease the amount of data that has to be read in each savefile. Total is 16711940 (it wouldn't let me write it out in
-    //an equation
-    
-		//unsigned long uncompressedSize=(65537)*255+bytesToIgnore‬;
-		unsigned long uncompressedSize=16711935+bytesToIgnore;
-		char * decompressed=new char[uncompressedSize];
-		LZ4_decompress_safe_partial(compressed,decompressed,compressedSize,uncompressedSize,maxUncompressedSize);
-		delete[] compressed;
-	
-		QDataStream data(QByteArray(decompressed,uncompressedSize));
-		delete[] decompressed;
-		data.skipRawData(bytesToIgnore);
-		
-		//unsigned long loc=7;
-		//unsigned char count=decompressed[loc++];
 		unsigned char count;
-		readQDataStream(data,count);
-		//data.read(reinterpret_cast<char*>(&count),sizeof(count));
+		readQDataStream(*m_Data,count);
 		m_Game->m_Plugins.reserve(count);
-    for(std::size_t i=0;i<count;++i){
-      QString name;
-      readQDataStream(data,name);
-      m_Game->m_Plugins.push_back(name);
-    }
-    
+		for(std::size_t i=0;i<count;++i){
+		  QString name;
+		  readQDataStream(*m_Data,name);
+		  m_Game->m_Plugins.push_back(name);
+		}
   }
+}
+
+void GamebryoSaveGame::FileWrapper::readLightPlugins(int bytesToIgnore)
+{
+	if (m_Game->compressionType == 0) {
+		if (bytesToIgnore>0)//Just to make certain
+			skip<char>(bytesToIgnore);
+		uint16_t count;
+		read(count);
+		m_Game->m_LightPlugins.reserve(count);
+		for (std::size_t i = 0; i < count; ++i) {
+			QString name;
+			read(name);
+			m_Game->m_LightPlugins.push_back(name);
+		}
+	}
+	else if (m_Game->compressionType == 1) {
+		m_Game->m_Plugins.push_back("Please create an issue on the MO github labeled \"Found zlib Compressed\" with your savefile attached");
+	}
+	else if (m_Game->compressionType == 2) {
+		m_Data->skipRawData(bytesToIgnore);
+
+		uint16_t count;
+		readQDataStream(*m_Data, count);
+		m_Game->m_LightPlugins.reserve(count);
+		for (std::size_t i = 0; i<count; ++i) {
+			QString name;
+			readQDataStream(*m_Data, name);
+			m_Game->m_LightPlugins.push_back(name);
+		}
+
+	}
 }
