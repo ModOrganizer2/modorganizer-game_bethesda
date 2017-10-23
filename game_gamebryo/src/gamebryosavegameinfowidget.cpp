@@ -88,7 +88,7 @@ void GamebryoSaveGameInfoWidget::setSave(QString const &file)
 
     ++count;
 
-    if (count > 10) {
+    if (count > 7) {
       break;
     }
 
@@ -97,14 +97,35 @@ void GamebryoSaveGameInfoWidget::setSave(QString const &file)
     pluginLabel->setFont(contentFont);
     layout->addWidget(pluginLabel);
   }
+  if (count > 10) {
+    QLabel *dotDotLabel = new QLabel("...");
+    dotDotLabel->setIndent(10);
+    dotDotLabel->setFont(contentFont);
+    layout->addWidget(dotDotLabel);
+  }
+  if (count == 0) {
+    QLabel *dotDotLabel = new QLabel(tr("None"));
+    dotDotLabel->setIndent(10);
+    dotDotLabel->setFont(contentFont);
+    layout->addWidget(dotDotLabel);
+  }
+  QLabel *headerEsl = new QLabel(tr("Missing ESLs"));
+  QFont headerEslFont = headerEsl->font();
+  QFont contentEslFont = headerEslFont;
+  headerEslFont.setItalic(true);
+  contentEslFont.setBold(true);
+  contentEslFont.setPointSize(7);
+  headerEsl->setFont(headerEslFont);
+  layout->addWidget(headerEsl);
+  int countEsl = 0;
   for (QString const &pluginName : save->getLightPlugins()) {
 	  if (pluginList->state(pluginName) == MOBase::IPluginList::STATE_ACTIVE) {
 		  continue;
 	  }
 
-	  ++count;
+	  ++countEsl;
 
-	  if (count > 10) {
+	  if (countEsl > 7) {
 		  break;
 	  }
 
@@ -113,13 +134,13 @@ void GamebryoSaveGameInfoWidget::setSave(QString const &file)
 	  pluginLabel->setFont(contentFont);
 	  layout->addWidget(pluginLabel);
   }
-  if (count > 10) {
+  if (countEsl > 7) {
     QLabel *dotDotLabel = new QLabel("...");
     dotDotLabel->setIndent(10);
     dotDotLabel->setFont(contentFont);
     layout->addWidget(dotDotLabel);
   }
-  if (count == 0) {
+  if (countEsl == 0) {
     QLabel *dotDotLabel = new QLabel(tr("None"));
     dotDotLabel->setIndent(10);
     dotDotLabel->setFont(contentFont);
