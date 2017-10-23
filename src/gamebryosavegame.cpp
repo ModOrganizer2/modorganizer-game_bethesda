@@ -191,7 +191,7 @@ void GamebryoSaveGame::FileWrapper::closeCompressedData()
 		m_Game->m_Plugins.push_back("Please create an issue on the MO github labeled \"Found zlib Compressed\" with your savefile attached");
 	}
 	else if (m_Game->compressionType == 2) {
-		delete[] m_Data;
+		delete m_Data;
 	}
 	else
 		m_Game->m_Plugins.push_back("Please create an issue on the MO github labeled \"Found unknown Compressed\" with your savefile attached");
