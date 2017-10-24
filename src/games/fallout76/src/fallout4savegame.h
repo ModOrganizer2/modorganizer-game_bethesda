@@ -8,7 +8,7 @@ namespace MOBase { class IPluginGame; }
 class Fallout4SaveGame : public GamebryoSaveGame
 {
 public:
-  Fallout4SaveGame(QString const &fileName, MOBase::IPluginGame const *game);
+  Fallout4SaveGame(QString const &fileName, MOBase::IPluginGame const *game, bool const lightEnabled = true);
 };
 
 #endif // FALLOUT4SAVEGAME_H
