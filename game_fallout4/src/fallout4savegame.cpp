@@ -37,12 +37,12 @@ Fallout4SaveGame::Fallout4SaveGame(QString const &fileName, MOBase::IPluginGame 
 
   file.readImage(384, true);
 
-  file.skip<unsigned char>(); // form version
-  unsigned char gameVersion;
-  file.read(gameVersion);     // game version
-  file.skip<unsigned long>(); // plugin info size
+  file.skip<uint8_t>(); // form version
+  QString gameVersion;
+  file.read(gameVersion);          // game version
+  file.skip<uint32_t>(); // plugin info size
 
   file.readPlugins();
-  if (headerVersion >= 15)
+  if (headerVersion > 15)
 	file.readLightPlugins();
 }
