@@ -2,8 +2,8 @@
 
 #include <Windows.h>
 
-Fallout4SaveGame::Fallout4SaveGame(QString const &fileName, MOBase::IPluginGame const *game) :
-  GamebryoSaveGame(fileName, game)
+Fallout4SaveGame::Fallout4SaveGame(QString const &fileName, MOBase::IPluginGame const *game, bool const lightEnabled) :
+  GamebryoSaveGame(fileName, game, lightEnabled)
 {
   FileWrapper file(this, "FO4_SAVEGAME");
   file.skip<unsigned long>(); // header size
