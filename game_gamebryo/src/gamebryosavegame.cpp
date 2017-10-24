@@ -15,10 +15,11 @@
 #include <stdexcept>
 #include <vector>
 
-GamebryoSaveGame::GamebryoSaveGame(QString const &file, MOBase::IPluginGame const *game) :
+GamebryoSaveGame::GamebryoSaveGame(QString const &file, MOBase::IPluginGame const *game, bool const lightEnabled) :
   m_FileName(file),
   m_CreationTime(QFileInfo(file).lastModified()),
-  m_Game(game)
+  m_Game(game),
+  m_LightEnabled(lightEnabled)
 {
 }
 

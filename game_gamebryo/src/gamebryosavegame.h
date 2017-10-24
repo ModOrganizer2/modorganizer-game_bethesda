@@ -19,7 +19,7 @@ namespace MOBase { class IPluginGame; }
 class GamebryoSaveGame : public MOBase::ISaveGame
 {
 public:
-  GamebryoSaveGame(QString const &file, MOBase::IPluginGame const *game);
+  GamebryoSaveGame(QString const &file, MOBase::IPluginGame const *game, bool const lightEnabled = false);
 
   virtual ~GamebryoSaveGame();
 
@@ -39,6 +39,7 @@ public:
   QStringList const &getPlugins() const { return m_Plugins; }
   QStringList const &getLightPlugins() const { return m_LightPlugins; }
   QImage const &getScreenshot() const { return m_Screenshot; }
+  bool const &isLightEnabled() const { return m_LightEnabled; }
 
 protected:
 
@@ -128,6 +129,7 @@ protected:
   QImage m_Screenshot;
   MOBase::IPluginGame const *m_Game;
   unsigned short compressionType;
+  bool m_LightEnabled;
 };
 
 
