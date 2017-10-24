@@ -108,6 +108,7 @@ void GameFallout4::initializeProfile(const QDir &path, ProfileSettings settings)
     }
 
     copyToProfile(myGamesPath(), path, "fallout4prefs.ini");
+	copyToProfile(myGamesPath(), path, "fallout4custom.ini");
   }
 }
 
@@ -150,7 +151,7 @@ QString GameFallout4::gameNexusName() const
 
 QStringList GameFallout4::iniFiles() const
 {
-    return { "fallout4.ini", "fallout4prefs.ini" };
+    return { "fallout4.ini", "fallout4prefs.ini", "fallout4custom.ini" };
 }
 
 QStringList GameFallout4::DLCPlugins() const
