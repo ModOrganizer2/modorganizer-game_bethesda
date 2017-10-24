@@ -15,10 +15,11 @@
 #include <stdexcept>
 #include <vector>
 
-GamebryoSaveGame::GamebryoSaveGame(QString const &file, MOBase::IPluginGame const *game) :
+GamebryoSaveGame::GamebryoSaveGame(QString const &file, MOBase::IPluginGame const *game, bool const lightEnabled) :
   m_FileName(file),
   m_CreationTime(QFileInfo(file).lastModified()),
-  m_Game(game)
+  m_Game(game),
+  m_LightEnabled(lightEnabled)
 {
 }
 
@@ -191,7 +192,7 @@ void GamebryoSaveGame::FileWrapper::closeCompressedData()
 		m_Game->m_Plugins.push_back("Please create an issue on the MO github labeled \"Found zlib Compressed\" with your savefile attached");
 	}
 	else if (m_Game->compressionType == 2) {
-		delete[] m_Data;
+		delete m_Data;
 	}
 	else
 		m_Game->m_Plugins.push_back("Please create an issue on the MO github labeled \"Found unknown Compressed\" with your savefile attached");
