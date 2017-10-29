@@ -8,9 +8,14 @@ Fallout3ScriptExtender::Fallout3ScriptExtender(GameGamebryo const *game) :
 {
 }
 
-QString Fallout3ScriptExtender::name() const
+QString Fallout3ScriptExtender::BinaryName() const
 {
-  return "fose";
+  return "fose_loader.exe";
+}
+
+QString Fallout3ScriptExtender::PluginPath() const
+{
+  return "fose/plugins";
 }
 
 QStringList Fallout3ScriptExtender::saveGameAttachmentExtensions() const
