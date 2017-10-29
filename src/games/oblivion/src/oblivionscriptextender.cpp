@@ -12,12 +12,17 @@ OblivionScriptExtender::~OblivionScriptExtender()
 {
 }
 
-QString OblivionScriptExtender::name() const
+QString OblivionScriptExtender::BinaryName() const
 {
-  return "obse";
+  return "obse_loader.exe";
+}
+
+QString OblivionScriptExtender::PluginPath() const
+{
+  return "obse/plugins";
 }
 
 QStringList OblivionScriptExtender::saveGameAttachmentExtensions() const
 {
-  return { name() };
+  return { "obse" };
 }
