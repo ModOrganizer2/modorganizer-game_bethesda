@@ -10,7 +10,7 @@ SkyrimScriptExtender::SkyrimScriptExtender(GameGamebryo const *game) :
 
 QString SkyrimScriptExtender::BinaryName() const
 {
-  return "skse";
+  return "skse_loader.exe";
 }
 
 QString SkyrimScriptExtender::PluginPath() const
