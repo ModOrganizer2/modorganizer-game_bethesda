@@ -8,12 +8,17 @@ SkyrimScriptExtender::SkyrimScriptExtender(GameGamebryo const *game) :
 {
 }
 
-QString SkyrimScriptExtender::name() const
+QString SkyrimScriptExtender::BinaryName() const
 {
   return "skse";
 }
 
+QString SkyrimScriptExtender::PluginPath() const
+{
+  return "skse/plugins";
+}
+
 QStringList SkyrimScriptExtender::saveGameAttachmentExtensions() const
 {
-  return { name() };
+  return { "skse" };
 }
