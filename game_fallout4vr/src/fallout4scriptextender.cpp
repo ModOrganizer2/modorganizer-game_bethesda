@@ -8,9 +8,14 @@ Fallout4ScriptExtender::Fallout4ScriptExtender(GameGamebryo const *game) :
 {
 }
 
-QString Fallout4ScriptExtender::name() const
+QString Fallout4ScriptExtender::BinaryName() const
 {
-  return "f4se";
+  return "f4se_loader.exe";
+}
+
+QString Fallout4ScriptExtender::PluginPath() const
+{
+  return "f4se/plugins";
 }
 
 QStringList Fallout4ScriptExtender::saveGameAttachmentExtensions() const
