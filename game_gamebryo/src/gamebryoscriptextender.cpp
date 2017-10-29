@@ -16,7 +16,7 @@ GamebryoScriptExtender::~GamebryoScriptExtender()
 
 QString GamebryoScriptExtender::loaderName() const
 {
-  return name() + "_loader.exe";
+  return BinaryName();
 }
 
 QString GamebryoScriptExtender::loaderPath() const
