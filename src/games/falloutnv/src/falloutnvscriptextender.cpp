@@ -8,9 +8,14 @@ FalloutNVScriptExtender::FalloutNVScriptExtender(GameGamebryo const *game) :
 {
 }
 
-QString FalloutNVScriptExtender::name() const
+QString FalloutNVScriptExtender::BinaryName() const
 {
-  return "nvse";
+  return "nvse_loader.exe";
+}
+
+QString FalloutNVScriptExtender::PluginPath() const
+{
+  return "nvse/plugins";
 }
 
 QStringList FalloutNVScriptExtender::saveGameAttachmentExtensions() const
