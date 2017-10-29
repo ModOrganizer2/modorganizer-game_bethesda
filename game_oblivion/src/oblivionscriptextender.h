@@ -11,7 +11,8 @@ public:
   OblivionScriptExtender(const GameGamebryo *game);
   ~OblivionScriptExtender();
 
-  virtual QString name() const override;
+  virtual QString BinaryName() const override;
+  virtual QString PluginPath() const override;
 
   virtual QStringList saveGameAttachmentExtensions() const override;
 
