@@ -97,7 +97,11 @@ protected:
 	void closeCompressedData();
 
 	/* Read the save game version in the compressed block */
-	unsigned char readSaveGameVersion(int bytesToIgnore=0);
+	uint8_t readChar(int bytesToIgnore=0);
+
+	uint16_t readShort(int bytesToIgnore = 0);
+
+	uint32_t readInt(int bytesToIgnore = 0);
 
 	/* Read the plugin list */
     void readPlugins(int bytesToIgnore=0);
@@ -128,7 +132,7 @@ protected:
   QStringList m_LightPlugins;
   QImage m_Screenshot;
   MOBase::IPluginGame const *m_Game;
-  unsigned short compressionType;
+  unsigned short compressionType = 0;
   bool m_LightEnabled;
 };
 
