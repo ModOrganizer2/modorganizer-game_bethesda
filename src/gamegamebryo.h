@@ -19,7 +19,7 @@ class UnmanagedMods;
 #include <ipluginfilemapper.h>
 #include <memory>
 #include <ShlObj.h>
-
+#include <dbghelp.h>
 
 class GameGamebryo : public MOBase::IPluginGame,
                      public MOBase::IPluginFileMapper
@@ -76,6 +76,7 @@ protected:
   QString myGamesPath() const;
   QString selectedVariant() const;
   QString getVersion(QString const &program) const;
+  WORD getArch(QString const &program) const;
 
   static QString localAppFolder();
   //Arguably this shouldn't really be here but every gamebryo program seems to

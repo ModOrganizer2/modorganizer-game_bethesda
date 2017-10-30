@@ -235,12 +235,12 @@ bool GamebryoSaveGame::FileWrapper::openCompressedData(int bytesToIgnore)
 	}
 }
 
-unsigned char GamebryoSaveGame::FileWrapper::readSaveGameVersion(int bytesToIgnore)
+uint8_t GamebryoSaveGame::FileWrapper::readChar(int bytesToIgnore)
 {
 	if (m_Game->compressionType == 0) {
 		if (bytesToIgnore>0)//Just to make certain
 			skip<char>(bytesToIgnore);
-		unsigned char version;
+		uint8_t version;
 		read(version);
 		return version;
 	}
@@ -252,10 +252,64 @@ unsigned char GamebryoSaveGame::FileWrapper::readSaveGameVersion(int bytesToIgno
 		// decompression already done by readSaveGameVersion
 		m_Data->skipRawData(bytesToIgnore);
 
-		unsigned char version;
+		uint8_t version;
 		readQDataStream(*m_Data, version);
 		return version;
 
+	}
+	else {
+		m_Game->m_Plugins.push_back("Please create an issue on the MO github labeled \"Found unknown Compressed\" with your savefile attached");
+		return 0;
+	}
+}
+
+uint16_t GamebryoSaveGame::FileWrapper::readShort(int bytesToIgnore)
+{
+	if (m_Game->compressionType == 0) {
+		if (bytesToIgnore>0)//Just to make certain
+			skip<char>(bytesToIgnore);
+		uint16_t size;
+		read(size);
+		return size;
+	}
+	else if (m_Game->compressionType == 1) {
+		m_Game->m_Plugins.push_back("Please create an issue on the MO github labeled \"Found zlib Compressed\" with your savefile attached");
+		return 0;
+	}
+	else if (m_Game->compressionType == 2) {
+		// decompression already done by readSaveGameVersion
+		m_Data->skipRawData(bytesToIgnore);
+
+		uint16_t size;
+		readQDataStream(*m_Data, size);
+		return size;
+	}
+	else {
+		m_Game->m_Plugins.push_back("Please create an issue on the MO github labeled \"Found unknown Compressed\" with your savefile attached");
+		return 0;
+	}
+}
+
+uint32_t GamebryoSaveGame::FileWrapper::readInt(int bytesToIgnore)
+{
+	if (m_Game->compressionType == 0) {
+		if (bytesToIgnore>0)//Just to make certain
+			skip<char>(bytesToIgnore);
+		uint32_t size;
+		read(size);
+		return size;
+	}
+	else if (m_Game->compressionType == 1) {
+		m_Game->m_Plugins.push_back("Please create an issue on the MO github labeled \"Found zlib Compressed\" with your savefile attached");
+		return 0;
+	}
+	else if (m_Game->compressionType == 2) {
+		// decompression already done by readSaveGameVersion
+		m_Data->skipRawData(bytesToIgnore);
+
+		uint32_t size;
+		readQDataStream(*m_Data, size);
+		return size;
 	}
 	else {
 		m_Game->m_Plugins.push_back("Please create an issue on the MO github labeled \"Found unknown Compressed\" with your savefile attached");
@@ -268,14 +322,14 @@ void GamebryoSaveGame::FileWrapper::readPlugins(int bytesToIgnore)
   if(m_Game->compressionType==0){
     if(bytesToIgnore>0)//Just to make certain
 		skip<char>(bytesToIgnore);
-		unsigned char count;
-		read(count);
-		m_Game->m_Plugins.reserve(count);
-		for (std::size_t i = 0; i < count; ++i) {
-			QString name;
-			read(name);
-			m_Game->m_Plugins.push_back(name);
-		}
+    uint8_t count;
+    read(count);
+	m_Game->m_Plugins.reserve(count);
+    for (std::size_t i = 0; i < count; ++i) {
+        QString name;
+        read(name);
+        m_Game->m_Plugins.push_back(name);
+    }
   }else if(m_Game->compressionType==1){
 		m_Game->m_Plugins.push_back("Please create an issue on the MO github labeled \"Found zlib Compressed\" with your savefile attached");
   }else if(m_Game->compressionType==2){
