@@ -268,14 +268,14 @@ void GamebryoSaveGame::FileWrapper::readPlugins(int bytesToIgnore)
   if(m_Game->compressionType==0){
     if(bytesToIgnore>0)//Just to make certain
 		skip<char>(bytesToIgnore);
-		unsigned char count;
-		read(count);
-		m_Game->m_Plugins.reserve(count);
-		for (std::size_t i = 0; i < count; ++i) {
-			QString name;
-			read(name);
-			m_Game->m_Plugins.push_back(name);
-		}
+    uint8_t count;
+    read(count);
+	m_Game->m_Plugins.reserve(count);
+    for (std::size_t i = 0; i < count; ++i) {
+        QString name;
+        read(name);
+        m_Game->m_Plugins.push_back(name);
+    }
   }else if(m_Game->compressionType==1){
 		m_Game->m_Plugins.push_back("Please create an issue on the MO github labeled \"Found zlib Compressed\" with your savefile attached");
   }else if(m_Game->compressionType==2){
