@@ -64,6 +64,9 @@ void GamebryoSaveGameInfoWidget::setSave(QString const &file) {
         }
         ui->gameFrame->layout()->setSizeConstraint(QLayout::SetFixedSize);
     }
+	
+	// Resize box to new content
+	this->resize(0, 0);
 
     QLayout *layout = ui->gameFrame->layout();
     QLabel *header = new QLabel(tr("Missing ESPs"));
