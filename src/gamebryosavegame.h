@@ -128,7 +128,7 @@ protected:
   QStringList m_LightPlugins;
   QImage m_Screenshot;
   MOBase::IPluginGame const *m_Game;
-  unsigned short compressionType;
+  unsigned short compressionType = 0;
   bool m_LightEnabled;
 };
 
