@@ -36,7 +36,7 @@ Fallout4SaveGame::Fallout4SaveGame(QString const &fileName, MOBase::IPluginGame 
 
   file.readImage(384, true);
 
-  uint8_t saveGameVersion = file.readSaveGameVersion();
+  uint8_t saveGameVersion = file.readChar();
   file.read(ignore);     // game version
   file.skip<uint32_t>(); // plugin info size
 
