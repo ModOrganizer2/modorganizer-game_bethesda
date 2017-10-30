@@ -224,6 +224,42 @@ QString GameGamebryo::getVersion(QString const &program) const
                                .arg(LOWORD(pFileInfo->dwFileVersionLS));
 }
 
+WORD GameGamebryo::getArch(QString const &program) const
+{
+	WORD arch = 0;
+	//This *really* needs to be factored out
+	LPCSTR app_name = ("\\\\?\\" +
+		QDir::toNativeSeparators(this->gameDirectory().absoluteFilePath(program)).toStdString()).c_str();
+
+	WIN32_FIND_DATA FindFileData;
+	HANDLE hFind = ::FindFirstFile(app_name, &FindFileData);
+
+	//exit if the binary was not found
+	if (hFind == INVALID_HANDLE_VALUE) return arch;
+
+	HANDLE hFile = CreateFile(app_name, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_READONLY, NULL);
+	if (hFile == INVALID_HANDLE_VALUE) goto cleanup;
+
+	HANDLE hMapping = CreateFileMapping(hFile, NULL, PAGE_READONLY | SEC_IMAGE, 0, 0, program.toStdString().c_str());
+	if (hMapping == INVALID_HANDLE_VALUE) goto cleanup;
+
+	LPVOID addrHeader = MapViewOfFile(hMapping, FILE_MAP_READ, 0, 0, 0);
+	if (addrHeader == NULL) goto cleanup; //couldn't memory map the file
+
+	PIMAGE_NT_HEADERS peHdr = ImageNtHeader(addrHeader);
+	if (peHdr == NULL) goto cleanup; //couldn't read the header
+
+	arch = peHdr->FileHeader.Machine;
+
+cleanup: //release all of our handles
+	FindClose(hFind);
+	if (hFile != INVALID_HANDLE_VALUE)
+		CloseHandle(hFile);
+	if (hMapping != INVALID_HANDLE_VALUE)
+		CloseHandle(hMapping);
+	return arch;
+}
+
 QFileInfo GameGamebryo::findInGameFolder(const QString &relativePath) const
 {
   return QFileInfo(m_GamePath + "/" + relativePath);

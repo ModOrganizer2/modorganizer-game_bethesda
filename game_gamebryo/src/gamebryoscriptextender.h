@@ -20,6 +20,8 @@ public:
 
   virtual QString getExtenderVersion() const override;
 
+  virtual WORD getArch() const override;
+
 protected:
   GameGamebryo const * const m_Game;
 };

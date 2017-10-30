@@ -38,3 +38,8 @@ QString GamebryoScriptExtender::getExtenderVersion() const
   return m_Game->getVersion(loaderName());
 }
 
+WORD GamebryoScriptExtender::getArch() const
+{
+	return m_Game->getArch(loaderName());
+}
+
