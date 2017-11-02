@@ -210,24 +210,20 @@ bool GamebryoSaveGame::FileWrapper::openCompressedData(int bytesToIgnore)
 		return false;
 	}
 	else if (m_Game->compressionType == 2) {
-		unsigned long maxUncompressedSize;
-		read(maxUncompressedSize);
-		unsigned long compressedSize;
+		uint32_t uncompressedSize;
+		read(uncompressedSize);
+		uint32_t compressedSize;
 		read(compressedSize);
 		char* compressed = new char[compressedSize];
 		read(compressed, compressedSize);
-
-		//unsigned long uncompressedSize=(65537)*255+bytesToIgnore‬;
-		unsigned long uncompressedSize = 16711935 + bytesToIgnore;
 		char * decompressed = new char[uncompressedSize];
-		LZ4_decompress_safe_partial(compressed, decompressed, compressedSize, uncompressedSize, maxUncompressedSize);
+		LZ4_decompress_safe_partial(compressed, decompressed, compressedSize, uncompressedSize, uncompressedSize);
 		delete[] compressed;
 
 		m_Data = new QDataStream(QByteArray(decompressed, uncompressedSize));
 		m_Data->skipRawData(bytesToIgnore);
 
 		return true;
-
 	}
 	else {
 		m_Game->m_Plugins.push_back("Please create an issue on the MO github labeled \"Found unknown Compressed\" with your savefile attached");
