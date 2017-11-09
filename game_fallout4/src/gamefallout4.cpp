@@ -123,7 +123,8 @@ QString GameFallout4::steamAPPId() const
 }
 
 QStringList GameFallout4::primaryPlugins() const {
-  return {"fallout4.esm", "dlcrobot.esm", "dlcworkshop01.esm", "dlccoast.esm", "dlcworkshop02.esm", "dlcworkshop03.esm", "dlcnukaworld.esm",
+  return {"fallout4.esm", "dlcrobot.esm", "dlcworkshop01.esm", "dlccoast.esm", "dlcworkshop02.esm",
+          "dlcworkshop03.esm", "dlcnukaworld.esm", "dlcultrahighresolution.esm",
           "ccbgsfo4001-pipboy(black).esl", "ccbgsfo4002-pipboy(blue).esl", "ccbgsfo4003-pipboy(camo01).esl",
           "ccbgsfo4004-pipboy(camo02).esl", "ccbgsfo4006-pipboy(chrome).esl", "ccbgsfo4012-pipboy(red).esl",
           "ccbgsfo4014-pipboy(white).esl", "ccbgsfo4016-prey.esl", "ccbgsfo4017-mauler.esl", "ccbgsfo4018-gaussrifleprototype.esl",
@@ -156,9 +157,9 @@ QStringList GameFallout4::iniFiles() const
 
 QStringList GameFallout4::DLCPlugins() const
 {
-  return {"dlcrobot.esm", "dlcworkshop01.esm", "dlccoast.esm", "dlcworkshop02.esm", "dlcworkshop03.esm", "dlcnukaworld.esm",
-          "ccbgsfo4001-pipboy(black).esl", "ccbgsfo4002-pipboy(blue).esl", "ccbgsfo4003-pipboy(camo01).esl",
-          "ccbgsfo4004-pipboy(camo02).esl", "ccbgsfo4006-pipboy(chrome).esl", "ccbgsfo4012-pipboy(red).esl",
+  return {"dlcrobot.esm", "dlcworkshop01.esm", "dlccoast.esm", "dlcworkshop02.esm", "dlcworkshop03.esm",
+	      "dlcnukaworld.esm", "dlcultrahighresolution.esm", "ccbgsfo4001-pipboy(black).esl", "ccbgsfo4002-pipboy(blue).esl",
+          "ccbgsfo4003-pipboy(camo01).esl", "ccbgsfo4004-pipboy(camo02).esl", "ccbgsfo4006-pipboy(chrome).esl", "ccbgsfo4012-pipboy(red).esl",
           "ccbgsfo4014-pipboy(white).esl", "ccbgsfo4016-prey.esl", "ccbgsfo4017-mauler.esl", "ccbgsfo4018-gaussrifleprototype.esl",
           "ccbgsfo4019-chinesestealtharmor.esl", "ccbgsfo4020-powerarmorskin(black).esl", "ccbgsfo4022-powerarmorskin(camo01).esl",
           "ccbgsfo4023-powerarmorskin(camo02).esl", "ccbgsfo4025-powerarmorskin(chrome).esl", "ccbgsfo4038-horsearmor.esl",
