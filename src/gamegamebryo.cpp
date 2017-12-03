@@ -173,6 +173,11 @@ QString GameGamebryo::binaryName() const
   return gameShortName() + ".exe";
 }
 
+QStringList GameGamebryo::CCPlugins() const
+{
+  return {};
+}
+
 MOBase::IPluginGame::LoadOrderMechanism GameGamebryo::loadOrderMechanism() const
 {
   return LoadOrderMechanism::FileTime;
