@@ -58,6 +58,7 @@ public: // IPluginGame interface
   //gameShortName
   //iniFiles
   //DLCPlugins
+  virtual QStringList CCPlugins() const override;
   virtual LoadOrderMechanism loadOrderMechanism() const override;
   //nexusModOrganizerID
   //nexusGameID
