@@ -31,6 +31,7 @@ static const QString LocalSavesDummy = "__MO_Saves";
 GamebryoLocalSavegames::GamebryoLocalSavegames(const QDir &myGamesDir,
                                                const QString &iniFileName)
   : m_LocalSavesDir(myGamesDir.absoluteFilePath(LocalSavesDummy))
+  , m_LocalGameDir(myGamesDir.absolutePath())
   , m_IniFileName(iniFileName)
 {}
 
@@ -39,7 +40,11 @@ void GamebryoLocalSavegames::prepareProfile(MOBase::IProfile *profile)
 {
   bool enable = profile->localSavesEnabled();
   qDebug("enable local saves: %d", enable);
-  QString iniFilePath = profile->absolutePath() + "/" + m_IniFileName;
+  QString basePath
+          = profile->localSettingsEnabled()
+            ? profile->absolutePath()
+            : m_LocalGameDir.absolutePath();
+  QString iniFilePath = basePath + "/" + m_IniFileName;
   WritePrivateProfileStringW(L"General", L"bUseMyGamesDirectory",
                              enable ? L"0" : L"1",
                              iniFilePath.toStdWString().c_str());
