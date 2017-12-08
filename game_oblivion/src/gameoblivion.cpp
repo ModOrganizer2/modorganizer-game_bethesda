@@ -110,6 +110,11 @@ QString GameOblivion::savegameExtension() const
   return "ess";
 }
 
+QString GameOblivion::savegameSEExtension() const
+{
+  return "obse";
+}
+
 QString GameOblivion::steamAPPId() const
 {
   return "22330";
