@@ -122,6 +122,11 @@ QString GameFallout4::savegameExtension() const
   return "fos";
 }
 
+QString GameFallout4::savegameSEExtension() const
+{
+  return "f4se";
+}
+
 QString GameFallout4::steamAPPId() const
 {
   return "377160";
