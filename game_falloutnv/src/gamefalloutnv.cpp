@@ -115,6 +115,11 @@ QString GameFalloutNV::savegameExtension() const
   return "fos";
 }
 
+QString GameFalloutNV::savegameSEExtension() const
+{
+  return "nvse";
+}
+
 QString GameFalloutNV::steamAPPId() const
 {
   return "22380";
