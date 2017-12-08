@@ -31,6 +31,7 @@ static const QString LocalSavesDummy = "__MO_Saves";
 GamebryoLocalSavegames::GamebryoLocalSavegames(const QDir &myGamesDir,
                                                const QString &iniFileName)
   : m_LocalSavesDir(myGamesDir.absoluteFilePath(LocalSavesDummy))
+  , m_LocalGameDir(myGamesDir.absolutePath())
   , m_IniFileName(iniFileName)
 {}
 
@@ -39,14 +40,50 @@ void GamebryoLocalSavegames::prepareProfile(MOBase::IProfile *profile)
 {
   bool enable = profile->localSavesEnabled();
   qDebug("enable local saves: %d", enable);
-  QString iniFilePath = profile->absolutePath() + "/" + m_IniFileName;
-  WritePrivateProfileStringW(L"General", L"bUseMyGamesDirectory",
-                             enable ? L"0" : L"1",
-                             iniFilePath.toStdWString().c_str());
+  QString basePath
+          = profile->localSettingsEnabled()
+            ? profile->absolutePath()
+            : m_LocalGameDir.absolutePath();
+  QString iniFilePath = basePath + "/" + m_IniFileName;
+
+  WCHAR oldPath[MAX_PATH];
+  WCHAR oldMyGames[1];
+  GetPrivateProfileStringW(L"General", L"SLocalSavePath", NULL, oldPath, MAX_PATH, iniFilePath.toStdWString().c_str());
+  GetPrivateProfileStringW(L"General", L"bUseMyGamesDirectory", NULL, oldMyGames, 1, iniFilePath.toStdWString().c_str());
+  if (enable && wcscmp(oldPath, L"") != 0 && wcscmp(oldPath, (LocalSavesDummy + "\\").toStdWString().c_str()) == 0) {
+    WritePrivateProfileStringW(L"General", L"SLocalSavePath", oldPath, QString(profile->absolutePath() + "/" + "savepath.ini").toStdWString().c_str());
+    if (wcscmp(oldMyGames, L"") != 0) {
+      WritePrivateProfileStringW(L"General", L"bUseMyGamesDirectory", oldMyGames, QString(profile->absolutePath() + "/" + "savepath.ini").toStdWString().c_str());
+    }
+  }
+  bool saved = false;
+  bool savedDir = false;
+  WCHAR savedPath[MAX_PATH];
+  WCHAR savedMyGames[1];
+  if (!enable) {
+    if (QFile::exists(QString(profile->absolutePath() + "/" + "savepath.ini"))) {
+      saved = true;
+      GetPrivateProfileStringW(L"General", L"SLocalSavePath", NULL, savedPath, MAX_PATH, iniFilePath.toStdWString().c_str());
+      GetPrivateProfileStringW(L"General", L"bUseMyGamesDirectory", NULL, savedMyGames, 1, iniFilePath.toStdWString().c_str());
+      if (wcscmp(oldMyGames, L"") != 0) {
+        savedDir = true;
+      }
+      QFile::remove(QString(profile->absolutePath() + "/" + "savepath.ini"));
+    }
+  } else {
+    QDir saves = QDir(m_LocalGameDir.absolutePath() + "/" + LocalSavesDummy);
+    if (!saves.exists()) {
+      saves.mkdir(".");
+    }
+  }
 
   WritePrivateProfileStringW(L"General", L"SLocalSavePath",
                              enable ? (LocalSavesDummy + "\\").toStdWString().c_str()
-                                    : NULL,
+                                    : (saved ? savedPath : NULL),
+                             iniFilePath.toStdWString().c_str());
+
+  WritePrivateProfileStringW(L"General", L"bUseMyGamesDirectory",
+                             enable ? NULL : (savedDir ? savedMyGames : NULL),
                              iniFilePath.toStdWString().c_str());
 }
 
