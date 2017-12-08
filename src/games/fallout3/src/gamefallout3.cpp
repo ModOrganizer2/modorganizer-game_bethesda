@@ -115,6 +115,11 @@ QString GameFallout3::savegameExtension() const
   return "fos";
 }
 
+QString GameFallout3::savegameSEExtension() const
+{
+  return "";
+}
+
 QString GameFallout3::steamAPPId() const
 {
   if (selectedVariant() == "Game Of The Year") {
