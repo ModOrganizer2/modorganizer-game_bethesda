@@ -38,6 +38,7 @@ public:
 private:
 
   QDir m_LocalSavesDir;
+  QDir m_LocalGameDir;
   QString m_IniFileName;
 
 };
