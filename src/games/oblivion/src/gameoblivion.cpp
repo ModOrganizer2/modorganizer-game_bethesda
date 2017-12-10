@@ -51,7 +51,7 @@ QList<ExecutableInfo> GameOblivion::executables() const
       << ExecutableInfo("Oblivion Launcher", findInGameFolder(getLauncherName()))
       << ExecutableInfo("Oblivion Mod Manager", findInGameFolder("OblivionModManager.exe"))
       << ExecutableInfo("BOSS", findInGameFolder("BOSS/BOSS.exe"))
-      << ExecutableInfo("LOOT", getLootPath())
+      << ExecutableInfo("LOOT", getLootPath()).withArgument("--game=\"Oblivion\"")
       << ExecutableInfo("Construction Set", findInGameFolder("TESConstructionSet.exe"))
   ;
 }
