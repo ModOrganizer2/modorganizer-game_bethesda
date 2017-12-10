@@ -62,7 +62,7 @@ QList<ExecutableInfo> GameFallout4::executables() const
       << ExecutableInfo("Fallout 4", findInGameFolder(binaryName()))
       << ExecutableInfo("Fallout Launcher", findInGameFolder(getLauncherName()))
       << ExecutableInfo("Creation Kit", findInGameFolder("CreationKit.exe"))
-      << ExecutableInfo("LOOT", getLootPath())
+      << ExecutableInfo("LOOT", getLootPath()).withArgument("--game=\"Fallout4\"")
          ;
 }
 
