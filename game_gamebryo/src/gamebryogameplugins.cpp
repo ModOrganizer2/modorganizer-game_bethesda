@@ -3,6 +3,7 @@
 #include <report.h>
 #include <ipluginlist.h>
 #include <iplugingame.h>
+#include <imodinterface.h>
 #include <scopeguard.h>
 
 #include <QDir>
@@ -42,6 +43,7 @@ void GamebryoGamePlugins::readPluginLists(MOBase::IPluginList *pluginList) {
   QString pluginsPath = organizer()->profile()->absolutePath() + "/plugins.txt";
 
   bool loadOrderIsNew = !m_LastRead.isValid() ||
+      !QFileInfo(loadOrderPath).exists() ||
       QFileInfo(loadOrderPath).lastModified() > m_LastRead;
   bool pluginsIsNew = !m_LastRead.isValid() ||
       QFileInfo(pluginsPath).lastModified() > m_LastRead;
@@ -128,13 +130,21 @@ bool GamebryoGamePlugins::readLoadOrderList(MOBase::IPluginList *pluginList,
   if (!file.open(QIODevice::ReadOnly)) {
     // no load order stored, determine by date
     pluginNames = pluginList->pluginNames();
-    QDir dataDirectory = organizer()->managedGame()->dataDirectory();
-    std::sort(
-        pluginNames.begin(), pluginNames.end(),
-        [&dataDirectory](const QString &lhs, const QString &rhs) {
-          return QFileInfo(dataDirectory.absoluteFilePath(lhs)).lastModified() >
-                 QFileInfo(dataDirectory.absoluteFilePath(rhs)).lastModified();
-        });
+
+    std::sort(pluginNames.begin(), pluginNames.end(), [&](const QString &lhs, const QString &rhs) {
+      MOBase::IModInterface *lhm = organizer()->getMod(pluginList->origin(lhs));
+      MOBase::IModInterface *rhm = organizer()->getMod(pluginList->origin(rhs));
+      QDir lhd = organizer()->managedGame()->dataDirectory();
+      QDir rhd = organizer()->managedGame()->dataDirectory();
+      if (lhm != nullptr)
+        lhd = lhm->absolutePath();
+      if (rhm != nullptr)
+        rhd = rhm->absolutePath();
+      QString lhp = lhd.absoluteFilePath(lhs);
+      QString rhp = rhd.absoluteFilePath(rhs);
+      return QFileInfo(lhp).lastModified() <
+        QFileInfo(rhp).lastModified();
+    });
   } else {
     ON_BLOCK_EXIT([&file]() { file.close(); });
 
