@@ -332,7 +332,7 @@ MappingType GameGamebryo::mappings() const
 
   for (const QString &profileFile : { "plugins.txt", "loadorder.txt" }) {
     result.push_back({ m_Organizer->profilePath() + "/" + profileFile,
-                       localAppFolder() + "/" + gameName().replace(" ", "") + "/" + profileFile,
+                       localAppFolder() + "/" + gameShortName() + "/" + profileFile,
                        false });
   }
 
