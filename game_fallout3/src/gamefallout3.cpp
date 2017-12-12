@@ -170,3 +170,8 @@ int GameFallout3::nexusGameID() const
 {
   return 120;
 }
+
+QString GameFallout3::getLauncherName() const
+{
+  return "FalloutLauncher.exe";
+}
