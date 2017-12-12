@@ -65,14 +65,13 @@ public: // IPluginGame interface
   //nexusGameID
   virtual bool looksValid(QDir const &) const override;
   virtual QString gameVersion() const override;
+  virtual QString getLauncherName() const override;
 
 public: // IPluginFileMapper interface
 
   virtual MappingType mappings() const;
 
 protected:
-
-  QString getLauncherName() const;
 
   QFileInfo findInGameFolder(const QString &relativePath) const;
   QString myGamesPath() const;
