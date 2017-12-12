@@ -29,6 +29,7 @@ public: // IPluginGame interface
   virtual QStringList gameVariants() const;
   virtual QString gameShortName() const override;
   virtual QString gameNexusName() const override;
+  virtual QString getLauncherName() const override;
   virtual QStringList iniFiles() const override;
   virtual QStringList DLCPlugins() const override;
   virtual int nexusModOrganizerID() const override;
@@ -42,6 +43,8 @@ public: // IPlugin interface
   virtual MOBase::VersionInfo version() const;
   virtual bool isActive() const;
   virtual QList<MOBase::PluginSetting> settings() const;
+
+protected:
 
 };
 
