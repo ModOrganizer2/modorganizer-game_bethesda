@@ -11,6 +11,7 @@ public:
   Fallout4UnmangedMods(const GameGamebryo *game);
   ~Fallout4UnmangedMods();
 
+  virtual QStringList mods(bool onlyOfficial) const override;
   virtual QStringList secondaryFiles(const QString &modName) const override;
   virtual QString displayName(const QString &modName) const override;
 };
