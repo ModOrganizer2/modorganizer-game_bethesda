@@ -81,7 +81,7 @@ void GamebryoBSAInvalidation::activate(MOBase::IProfile *profile)
   }
 
   // set the remaining ini settings required
-  QString iniFile = QDir(profile->absolutePath()).absoluteFilePath(m_IniFileName);
+  QString iniFile = profile->localSettingsEnabled() ? QDir(profile->absolutePath()).absoluteFilePath(m_IniFileName) : m_Game->documentsDirectory().absoluteFilePath(m_IniFileName);
 
   ::SetFileAttributesW(iniFile.toStdWString().c_str(), FILE_ATTRIBUTE_NORMAL);
 
