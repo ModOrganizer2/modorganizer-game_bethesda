@@ -34,7 +34,7 @@ bool GameFallout3::init(IOrganizer *moInfo)
     return false;
   }
   registerFeature<ScriptExtender>(new Fallout3ScriptExtender(this));
-  registerFeature<DataArchives>(new Fallout3DataArchives());
+  registerFeature<DataArchives>(new Fallout3DataArchives(myGamesPath()));
   registerFeature<BSAInvalidation>(new Fallout3BSAInvalidation(feature<DataArchives>(), this));
   registerFeature<SaveGameInfo>(new Fallout3SaveGameInfo(this));
   registerFeature<LocalSavegames>(new GamebryoLocalSavegames(myGamesPath(), "fallout.ini"));
