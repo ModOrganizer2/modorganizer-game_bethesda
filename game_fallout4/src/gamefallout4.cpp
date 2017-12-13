@@ -41,7 +41,7 @@ bool GameFallout4::init(IOrganizer *moInfo)
   }
 
   registerFeature<ScriptExtender>(new Fallout4ScriptExtender(this));
-  registerFeature<DataArchives>(new Fallout4DataArchives());
+  registerFeature<DataArchives>(new Fallout4DataArchives(myGamesPath()));
   registerFeature<LocalSavegames>(new GamebryoLocalSavegames(myGamesPath(), "Fallout4.ini"));
   registerFeature<SaveGameInfo>(new Fallout4SaveGameInfo(this));
   registerFeature<GamePlugins>(new Fallout4GamePlugins(moInfo));
