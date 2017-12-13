@@ -6,9 +6,14 @@
 namespace MOBase { class IProfile; }
 
 #include <QStringList>
+#include <QDir>
 
 class Fallout4DataArchives : public GamebryoDataArchives
 {
+
+public:
+
+  Fallout4DataArchives(const QDir &myGamesDir);
 
 public:
 
