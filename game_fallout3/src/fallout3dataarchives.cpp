@@ -3,8 +3,10 @@
 #include "iprofile.h"
 #include <utility.h>
 
-#include <QDir>
-
+Fallout3DataArchives::Fallout3DataArchives(const QDir &myGamesDir) :
+  GamebryoDataArchives(myGamesDir)
+{
+}
 
 QStringList Fallout3DataArchives::vanillaArchives() const
 {
@@ -21,7 +23,7 @@ QStringList Fallout3DataArchives::archives(const MOBase::IProfile *profile) cons
 {
   QStringList result;
 
-  QString iniFile = QDir(profile->absolutePath()).absoluteFilePath("fallout3.ini");
+  QString iniFile = profile->localSettingsEnabled() ? QDir(profile->absolutePath()).absoluteFilePath("fallout.ini") : m_LocalGameDir.absoluteFilePath("fallout.ini");
   result.append(getArchivesFromKey(iniFile, "SArchiveList"));
 
   return result;
@@ -31,6 +33,6 @@ void Fallout3DataArchives::writeArchiveList(MOBase::IProfile *profile, const QSt
 {
   QString list = before.join(", ");
 
-  QString iniFile = QDir(profile->absolutePath()).absoluteFilePath("fallout3.ini");
+  QString iniFile = profile->localSettingsEnabled() ? QDir(profile->absolutePath()).absoluteFilePath("fallout.ini") : m_LocalGameDir.absoluteFilePath("fallout.ini");
   setArchivesToKey(iniFile, "SArchiveList", list);
 }
