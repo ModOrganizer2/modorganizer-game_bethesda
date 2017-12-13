@@ -8,6 +8,7 @@
 #include <QDir>
 #include <QTextCodec>
 #include <QStringList>
+#include <QSet>
 
 
 using MOBase::IPluginGame;
@@ -15,10 +16,6 @@ using MOBase::IPluginList;
 using MOBase::IOrganizer;
 using MOBase::SafeWriteFile;
 using MOBase::reportError;
-
-static const std::set<QString> OFFICIAL_FILES{
-    "Fallout4.esm", "DLCRobot.esm", "DLCworkshop01.esm", "DLCCoast.esm",
-    "DLCworkshop02.esm", "DLCworkshop03.esm", "DLCNukaWorld.esm"};
 
 Fallout4GamePlugins::Fallout4GamePlugins(IOrganizer *organizer)
   : GamebryoGamePlugins(organizer)
@@ -46,30 +43,26 @@ void Fallout4GamePlugins::writePluginList(const IPluginList *pluginList,
             });
 
   QStringList PrimaryPlugins = organizer()->managedGame()->primaryPlugins();
-
-  for (auto f : OFFICIAL_FILES) {
-	  if (!PrimaryPlugins.contains(f, Qt::CaseInsensitive)) {
-		  PrimaryPlugins.append(f);
-	  }
-  }
+  QSet<QString> ManagedMods = PrimaryPlugins.toSet().subtract(organizer()->managedGame()->DLCPlugins().toSet());
+  PrimaryPlugins.append(ManagedMods.toList());
 
   //TODO: do not write plugins in OFFICIAL_FILES container
   for (const QString &pluginName : plugins) {
 	if (!PrimaryPlugins.contains(pluginName,Qt::CaseInsensitive)) {
-      if (pluginList->state(pluginName) == IPluginList::STATE_ACTIVE) {
-        if (!textCodec->canEncode(pluginName)) {
-          invalidFileNames = true;
-          qCritical("invalid plugin name %s", qPrintable(pluginName));
-        }
-        else
-        { 
-          file->write("*");
-          file->write(textCodec->fromUnicode(pluginName));
-        
-        }
-        file->write("\r\n");
-        ++writtenCount;
+    if (pluginList->state(pluginName) == IPluginList::STATE_ACTIVE) {
+      if (!textCodec->canEncode(pluginName)) {
+        invalidFileNames = true;
+        qCritical("invalid plugin name %s", qPrintable(pluginName));
       }
+      else
+      {
+        file->write("*");
+        file->write(textCodec->fromUnicode(pluginName));
+
+      }
+      file->write("\r\n");
+      ++writtenCount;
+    }
 	  else
 	  {
         if (!textCodec->canEncode(pluginName)) {
@@ -103,18 +96,12 @@ bool Fallout4GamePlugins::readPluginList(MOBase::IPluginList *pluginList,
                                          bool useLoadOrder)
 {
   QStringList plugins = pluginList->pluginNames();
-  QStringList loadOrder = organizer()->managedGame()->primaryPlugins();
-
-  for (auto f : OFFICIAL_FILES) {
-	  if (!loadOrder.contains(f, Qt::CaseInsensitive)) {
-		  loadOrder.append(f);
-	  }
-  }
+  QStringList primaryPlugins = organizer()->managedGame()->primaryPlugins();
+  QStringList loadOrder(primaryPlugins);
 
   for (const QString &pluginName : loadOrder) {
     if (pluginList->state(pluginName) != IPluginList::STATE_MISSING) {
       pluginList->setState(pluginName, IPluginList::STATE_ACTIVE);
-	  plugins.removeAll(pluginName);
     }
   }
 
@@ -138,27 +125,33 @@ bool Fallout4GamePlugins::readPluginList(MOBase::IPluginList *pluginList,
     if ((line.size() > 0) && (line.at(0) != '#')) {
       pluginName = localCodec()->toUnicode(line.trimmed().constData());
     }
-    if (pluginName.startsWith('*')) {
-		      pluginName.remove(0, 1);
-			  if (pluginName.size() > 0) {
-				  pluginList->setState(pluginName, IPluginList::STATE_ACTIVE);
-				  plugins.removeAll(pluginName);
-				  if (!loadOrder.contains(pluginName, Qt::CaseInsensitive)) {
-					  loadOrder.append(pluginName);
-				  }
-			  }
-    }
-	else
-	{
-		if (pluginName.size() > 0) {
-			pluginList->setState(pluginName, IPluginList::STATE_INACTIVE);
-			plugins.removeAll(pluginName);
-			if (!loadOrder.contains(pluginName, Qt::CaseInsensitive)) {
-				loadOrder.append(pluginName);
+	if (!primaryPlugins.contains(pluginName, Qt::CaseInsensitive)) {
+		if (pluginName.startsWith('*')) {
+			pluginName.remove(0, 1);
+			if (pluginName.size() > 0) {
+				pluginList->setState(pluginName, IPluginList::STATE_ACTIVE);
+				plugins.removeAll(pluginName);
+				if (!loadOrder.contains(pluginName, Qt::CaseInsensitive)) {
+					loadOrder.append(pluginName);
+				}
+			}
+		}
+		else
+		{
+			if (pluginName.size() > 0) {
+				pluginList->setState(pluginName, IPluginList::STATE_INACTIVE);
+				plugins.removeAll(pluginName);
+				if (!loadOrder.contains(pluginName, Qt::CaseInsensitive)) {
+					loadOrder.append(pluginName);
+				}
 			}
 		}
 	}
-
+	else
+	{
+		pluginName.remove(0, 1);
+		plugins.removeAll(pluginName);
+	}
   }
 
   file.close();
