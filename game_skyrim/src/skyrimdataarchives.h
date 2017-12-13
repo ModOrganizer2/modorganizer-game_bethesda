@@ -6,9 +6,13 @@
 #include <iprofile.h>
 #include <QString>
 #include <QStringList>
+#include <QDir>
 
 class SkyrimDataArchives : public GamebryoDataArchives
 {
+
+public:
+  SkyrimDataArchives(const QDir &myGamesDir);
 
 public:
 

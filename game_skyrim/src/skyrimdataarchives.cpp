@@ -1,7 +1,10 @@
 #include "skyrimdataarchives.h"
 #include <utility.h>
-#include <QDir>
 
+SkyrimDataArchives::SkyrimDataArchives(const QDir &myGamesDir) :
+  GamebryoDataArchives(myGamesDir)
+{
+}
 
 QStringList SkyrimDataArchives::vanillaArchives() const
 {
@@ -24,7 +27,7 @@ QStringList SkyrimDataArchives::archives(const MOBase::IProfile *profile) const
 {
   QStringList result;
 
-  QString iniFile = QDir(profile->absolutePath()).absoluteFilePath("skyrim.ini");
+  QString iniFile = profile->localSettingsEnabled() ? QDir(profile->absolutePath()).absoluteFilePath("skyrim.ini") : m_LocalGameDir.absoluteFilePath("skyrim.ini");
   result.append(getArchivesFromKey(iniFile, "SResourceArchiveList"));
   result.append(getArchivesFromKey(iniFile, "SResourceArchiveList2"));
 
@@ -35,7 +38,7 @@ void SkyrimDataArchives::writeArchiveList(MOBase::IProfile *profile, const QStri
 {
   QString list = before.join(", ");
 
-  QString iniFile = QDir(profile->absolutePath()).absoluteFilePath("skyrim.ini");
+  QString iniFile = profile->localSettingsEnabled() ? QDir(profile->absolutePath()).absoluteFilePath("skyrim.ini") : m_LocalGameDir.absoluteFilePath("skyrim.ini");
   if (list.length() > 255) {
     int splitIdx = list.lastIndexOf(",", 256);
     setArchivesToKey(iniFile, "SResourceArchiveList", list.mid(0, splitIdx));
