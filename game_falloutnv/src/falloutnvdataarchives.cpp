@@ -1,7 +1,10 @@
 #include "falloutnvdataarchives.h"
 #include <utility.h>
-#include <QDir>
 
+FalloutNVDataArchives::FalloutNVDataArchives(const QDir &myGamesDir) :
+  GamebryoDataArchives(myGamesDir)
+{
+}
 
 QStringList FalloutNVDataArchives::vanillaArchives() const
 {
@@ -13,12 +16,11 @@ QStringList FalloutNVDataArchives::vanillaArchives() const
          , "Fallout - Misc.bsa" };
 }
 
-
 QStringList FalloutNVDataArchives::archives(const MOBase::IProfile *profile) const
 {
   QStringList result;
 
-  QString iniFile = QDir(profile->absolutePath()).absoluteFilePath("falloutnv.ini");
+  QString iniFile = profile->localSettingsEnabled() ? QDir(profile->absolutePath()).absoluteFilePath("fallout.ini") : m_LocalGameDir.absoluteFilePath("fallout.ini");
   result.append(getArchivesFromKey(iniFile, "SArchiveList"));
 
   return result;
@@ -28,6 +30,6 @@ void FalloutNVDataArchives::writeArchiveList(MOBase::IProfile *profile, const QS
 {
   QString list = before.join(", ");
 
-  QString iniFile = QDir(profile->absolutePath()).absoluteFilePath("falloutnv.ini");
+  QString iniFile = profile->localSettingsEnabled() ? QDir(profile->absolutePath()).absoluteFilePath("fallout.ini") : m_LocalGameDir.absoluteFilePath("fallout.ini");
   setArchivesToKey(iniFile, "SArchiveList", list);
 }
