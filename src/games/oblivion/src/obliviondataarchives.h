@@ -6,9 +6,13 @@
 #include <iprofile.h>
 #include <QString>
 #include <QStringList>
+#include <QDir>
 
 class OblivionDataArchives : public GamebryoDataArchives
 {
+
+public:
+  OblivionDataArchives(const QDir &myGamesDir);
 
 public:
 

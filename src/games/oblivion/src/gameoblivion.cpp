@@ -29,7 +29,7 @@ bool GameOblivion::init(IOrganizer *moInfo)
     return false;
   }
   registerFeature<ScriptExtender>(new OblivionScriptExtender(this));
-  registerFeature<DataArchives>(new OblivionDataArchives());
+  registerFeature<DataArchives>(new OblivionDataArchives(myGamesPath()));
   registerFeature<BSAInvalidation>(new OblivionBSAInvalidation(feature<DataArchives>(), this));
   registerFeature<SaveGameInfo>(new OblivionSaveGameInfo(this));
   registerFeature<LocalSavegames>(new GamebryoLocalSavegames(myGamesPath(), "oblivion.ini"));
