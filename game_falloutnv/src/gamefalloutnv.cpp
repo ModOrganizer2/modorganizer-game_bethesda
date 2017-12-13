@@ -34,7 +34,7 @@ bool GameFalloutNV::init(IOrganizer *moInfo)
     return false;
   }
   registerFeature<ScriptExtender>(new FalloutNVScriptExtender(this));
-  registerFeature<DataArchives>(new FalloutNVDataArchives());
+  registerFeature<DataArchives>(new FalloutNVDataArchives(myGamesPath()));
   registerFeature<BSAInvalidation>(new FalloutNVBSAInvalidation(feature<DataArchives>(), this));
   registerFeature<SaveGameInfo>(new FalloutNVSaveGameInfo(this));
   registerFeature<LocalSavegames>(new GamebryoLocalSavegames(myGamesPath(), "fallout.ini"));
