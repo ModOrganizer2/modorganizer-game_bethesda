@@ -1,7 +1,10 @@
 #include "obliviondataarchives.h"
 #include <utility.h>
-#include <QDir>
 
+OblivionDataArchives::OblivionDataArchives(const QDir &myGamesDir) :
+  GamebryoDataArchives(myGamesDir)
+{
+}
 
 QStringList OblivionDataArchives::vanillaArchives() const
 {
@@ -14,12 +17,11 @@ QStringList OblivionDataArchives::vanillaArchives() const
   };
 }
 
-
 QStringList OblivionDataArchives::archives(const MOBase::IProfile *profile) const
 {
   QStringList result;
 
-  QString iniFile = QDir(profile->absolutePath()).absoluteFilePath("oblivion.ini");
+  QString iniFile = profile->localSettingsEnabled() ? QDir(profile->absolutePath()).absoluteFilePath("oblivion.ini") : m_LocalGameDir.absoluteFilePath("oblivion.ini");
   result.append(getArchivesFromKey(iniFile, "SResourceArchiveList"));
   result.append(getArchivesFromKey(iniFile, "SResourceArchiveList2"));
 
@@ -30,7 +32,7 @@ void OblivionDataArchives::writeArchiveList(MOBase::IProfile *profile, const QSt
 {
   QString list = before.join(", ");
 
-  QString iniFile = QDir(profile->absolutePath()).absoluteFilePath("oblivion.ini");
+  QString iniFile = profile->localSettingsEnabled() ? QDir(profile->absolutePath()).absoluteFilePath("oblivion.ini") : m_LocalGameDir.absoluteFilePath("oblivion.ini");
   if (list.length() > 255) {
     int splitIdx = list.lastIndexOf(",", 256);
     setArchivesToKey(iniFile, "SResourceArchiveList", list.mid(0, splitIdx));
