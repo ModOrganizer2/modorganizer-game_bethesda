@@ -39,7 +39,7 @@ bool GameSkyrim::init(IOrganizer *moInfo)
     return false;
   }
   registerFeature<ScriptExtender>(new SkyrimScriptExtender(this));
-  registerFeature<DataArchives>(new SkyrimDataArchives());
+  registerFeature<DataArchives>(new SkyrimDataArchives(myGamesPath()));
   registerFeature<BSAInvalidation>(new SkyrimBSAInvalidation(feature<DataArchives>(), this));
   registerFeature<SaveGameInfo>(new SkyrimSaveGameInfo(this));
   registerFeature<LocalSavegames>(new GamebryoLocalSavegames(myGamesPath(), "skyrim.ini"));
