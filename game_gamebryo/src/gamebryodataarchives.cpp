@@ -1,8 +1,11 @@
 #include "gamebryodataarchives.h"
-#include <QDir>
 #include <Windows.h>
 #include <utility.h>
 
+
+GamebryoDataArchives::GamebryoDataArchives(const QDir &myGamesDir):
+  m_LocalGameDir(myGamesDir.absolutePath())
+{}
 
 QStringList GamebryoDataArchives::getArchivesFromKey(const QString &iniFile, const QString &key) const
 {
