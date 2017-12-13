@@ -134,7 +134,7 @@ QString GameFallout4::steamAPPId() const
 
 QStringList GameFallout4::primaryPlugins() const {
   QStringList plugins = {"fallout4.esm", "dlcrobot.esm", "dlcworkshop01.esm", "dlccoast.esm", "dlcworkshop02.esm",
-          "dlcworkshop03.esm", "dlcnukaworld.esm", "dlcultrahighresolution.esm"};
+          "dlcworkshop03.esm", "dlcnukaworld.esm"};
 
   plugins.append(CCPlugins());
 
