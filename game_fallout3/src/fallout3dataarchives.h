@@ -3,9 +3,13 @@
 
 
 #include "gamebryodataarchives.h"
+#include <QDir>
 
 class Fallout3DataArchives : public GamebryoDataArchives
 {
+
+public:
+  Fallout3DataArchives(const QDir &myGamesDir);
 
 public:
 
