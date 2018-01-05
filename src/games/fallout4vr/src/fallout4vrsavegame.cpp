@@ -1,8 +1,8 @@
-#include "fallout4savegame.h"
+#include "fallout4vrsavegame.h"
 
 #include <Windows.h>
 
-Fallout4SaveGame::Fallout4SaveGame(QString const &fileName, MOBase::IPluginGame const *game, bool const lightEnabled) :
+Fallout4VRSaveGame::Fallout4VRSaveGame(QString const &fileName, MOBase::IPluginGame const *game, bool const lightEnabled) :
   GamebryoSaveGame(fileName, game, lightEnabled)
 {
   FileWrapper file(this, "FO4_SAVEGAME");

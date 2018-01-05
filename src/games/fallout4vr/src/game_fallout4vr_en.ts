@@ -2,10 +2,10 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="en_US">
 <context>
-    <name>GameFallout4</name>
+    <name>GameFallout4VR</name>
     <message>
-        <location filename="gamefallout4.cpp" line="76"/>
-        <source>Adds support for the game Fallout 4.
+        <location filename="gamefallout4vr.cpp" line="81"/>
+        <source>Adds support for the game Fallout 4 VR.
 Splash by %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -13,7 +13,7 @@ Splash by %1</source>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="fallout4gameplugins.cpp" line="90"/>
+        <location filename="fallout4vrgameplugins.cpp" line="83"/>
         <source>Some of your plugins have invalid names! These plugins can not be loaded by the game. Please see mo_interface.log for a list of affected plugins and rename them.</source>
         <translation type="unfinished"></translation>
     </message>
