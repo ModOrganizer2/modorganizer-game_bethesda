@@ -1,4 +1,4 @@
-#include "fallout4gameplugins.h"
+#include "fallout4vrgameplugins.h"
 #include <safewritefile.h>
 #include <report.h>
 #include <ipluginlist.h>
@@ -17,12 +17,12 @@ using MOBase::IOrganizer;
 using MOBase::SafeWriteFile;
 using MOBase::reportError;
 
-Fallout4GamePlugins::Fallout4GamePlugins(IOrganizer *organizer)
+Fallout4VRGamePlugins::Fallout4VRGamePlugins(IOrganizer *organizer)
   : GamebryoGamePlugins(organizer)
 {
 }
 
-void Fallout4GamePlugins::writePluginList(const IPluginList *pluginList,
+void Fallout4VRGamePlugins::writePluginList(const IPluginList *pluginList,
                                           const QString &filePath) {
   SafeWriteFile file(filePath);
 
@@ -91,7 +91,7 @@ void Fallout4GamePlugins::writePluginList(const IPluginList *pluginList,
   }
 }
 
-bool Fallout4GamePlugins::readPluginList(MOBase::IPluginList *pluginList,
+bool Fallout4VRGamePlugins::readPluginList(MOBase::IPluginList *pluginList,
                                          const QString &filePath,
                                          bool useLoadOrder)
 {

@@ -1,14 +1,14 @@
-#ifndef FALLOUT4SCRIPTEXTENDER_H
-#define FALLOUT4SCRIPTEXTENDER_H
+#ifndef FALLOUT4VRSCRIPTEXTENDER_H
+#define FALLOUT4VRSCRIPTEXTENDER_H
 
 #include "gamebryoscriptextender.h"
 
 class GameGamebryo;
 
-class Fallout4ScriptExtender : public GamebryoScriptExtender
+class Fallout4VRScriptExtender : public GamebryoScriptExtender
 {
 public:
-  Fallout4ScriptExtender(GameGamebryo const *game);
+  Fallout4VRScriptExtender(GameGamebryo const *game);
 
   virtual QString BinaryName() const override;
   virtual QString PluginPath() const override;

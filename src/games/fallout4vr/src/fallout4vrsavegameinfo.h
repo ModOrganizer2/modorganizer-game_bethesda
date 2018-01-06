@@ -5,11 +5,11 @@
 
 class GameGamebryo;
 
-class Fallout4SaveGameInfo : public GamebryoSaveGameInfo
+class Fallout4VRSaveGameInfo : public GamebryoSaveGameInfo
 {
 public:
-  Fallout4SaveGameInfo(GameGamebryo const *game);
-  ~Fallout4SaveGameInfo();
+  Fallout4VRSaveGameInfo(GameGamebryo const *game);
+  ~Fallout4VRSaveGameInfo();
 
   virtual MOBase::ISaveGame const *getSaveGameInfo(QString const &file) const override;
 };
