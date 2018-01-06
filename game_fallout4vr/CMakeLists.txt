@@ -1,6 +1,6 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 
-SET(PROJ_NAME game_fallout4)
+SET(PROJ_NAME game_fallout4vr)
 
 PROJECT(${PROJ_NAME})
 
