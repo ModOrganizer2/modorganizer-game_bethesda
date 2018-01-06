@@ -216,3 +216,8 @@ int GameFallout4VR::nexusGameID() const
 {
   return 1151;
 }
+
+QString GameFallout4VR::getLauncherName() const
+{
+  return binaryName(); // Fallout 4 VR has no Launcher, so we just return the name of the game binary
+}
