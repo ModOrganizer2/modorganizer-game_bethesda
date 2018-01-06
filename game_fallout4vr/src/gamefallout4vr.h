@@ -48,6 +48,10 @@ public: // IPlugin interface
   virtual bool isActive() const override;
   virtual QList<MOBase::PluginSetting> settings() const override;
 
+private:
+
+  QString identifyGamePathVR() const;
+
 };
 
 #endif // GAMEFallout4VR_H
