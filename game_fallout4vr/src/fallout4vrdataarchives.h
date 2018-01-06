@@ -1,5 +1,5 @@
-#ifndef FALLOUT4DATAARCHIVES_H
-#define FALLOUT4DATAARCHIVES_H
+#ifndef FALLOUT4VRDATAARCHIVES_H
+#define FALLOUT4VRDATAARCHIVES_H
 
 #include "gamebryodataarchives.h"
 
@@ -8,12 +8,12 @@ namespace MOBase { class IProfile; }
 #include <QStringList>
 #include <QDir>
 
-class Fallout4DataArchives : public GamebryoDataArchives
+class Fallout4VRDataArchives : public GamebryoDataArchives
 {
 
 public:
 
-  Fallout4DataArchives(const QDir &myGamesDir);
+  Fallout4VRDataArchives(const QDir &myGamesDir);
 
 public:
 
@@ -26,4 +26,4 @@ private:
 
 };
 
-#endif // FALLOUT4DATAARCHIVES_H
+#endif // Fallout4VRDataArchives_H

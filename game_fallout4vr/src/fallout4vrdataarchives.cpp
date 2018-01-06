@@ -1,13 +1,13 @@
-#include "fallout4dataarchives.h"
+#include "fallout4vrdataarchives.h"
 
 #include "iprofile.h"
 #include <utility.h>
 
-Fallout4DataArchives::Fallout4DataArchives(const QDir &myGamesDir) :
+Fallout4VRDataArchives::Fallout4VRDataArchives(const QDir &myGamesDir) :
   GamebryoDataArchives(myGamesDir)
 {}
 
-QStringList Fallout4DataArchives::vanillaArchives() const
+QStringList Fallout4VRDataArchives::vanillaArchives() const
 {
   return { "Fallout4 - Textures1.ba2"
          , "Fallout4 - Textures2.ba2"
@@ -27,11 +27,14 @@ QStringList Fallout4DataArchives::vanillaArchives() const
          , "Fallout4 - Materials.ba2"
          , "Fallout4 - Shaders.ba2"
          , "Fallout4 - Startup.ba2"
-         , "Fallout4 - Misc.ba2" };
+         , "Fallout4 - Misc.ba2"
+         , "Fallout4_VR - Main.ba2"
+         , "Fallout4_VR - Shaders.ba2"
+         , "Fallout4_VR - Textures.ba2" };
 }
 
 
-QStringList Fallout4DataArchives::archives(const MOBase::IProfile *profile) const
+QStringList Fallout4VRDataArchives::archives(const MOBase::IProfile *profile) const
 {
   QStringList result;
 
@@ -42,7 +45,7 @@ QStringList Fallout4DataArchives::archives(const MOBase::IProfile *profile) cons
   return result;
 }
 
-void Fallout4DataArchives::writeArchiveList(MOBase::IProfile *profile, const QStringList &before)
+void Fallout4VRDataArchives::writeArchiveList(MOBase::IProfile *profile, const QStringList &before)
 {
   QString list = before.join(", ");
 

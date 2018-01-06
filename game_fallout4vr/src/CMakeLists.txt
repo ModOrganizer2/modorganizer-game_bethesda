@@ -7,7 +7,7 @@ FILE(GLOB ${PROJ_NAME}_HDRS *.h)
 FILE(GLOB ${PROJ_NAME}_FORMS *.ui)
 
 SET(${PROJ_NAME}_QRCS
-    fallout4.qrc
+    fallout4vr.qrc
     )
 
 SET(CMAKE_INCLUDE_CURRENT_DIR ON)

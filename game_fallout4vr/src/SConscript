@@ -3,11 +3,11 @@ Import('qt_env')
 env = qt_env.Clone()
 
 # Shouldn't this be GAMEFALLOUT3_LIBRARY
-env.AppendUnique(CPPDEFINES = [ 'GAMEFALLOUT4_LIBRARY' ])
+env.AppendUnique(CPPDEFINES = [ 'GAMEFALLOUT4VR_LIBRARY' ])
 
 env.RequiresGamebryo()
 
-lib = env.SharedLibrary('gameFallout4', env.Glob('*.cpp'))
+lib = env.SharedLibrary('gameFallout4vr', env.Glob('*.cpp'))
 env.InstallModule(lib)
 
 res = env['QT_USED_MODULES']

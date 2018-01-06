@@ -1,5 +1,5 @@
-#ifndef FALLOUT4GAMEPLUGINS_H
-#define FALLOUT4GAMEPLUGINS_H
+#ifndef FALLOUT4VRGAMEPLUGINS_H
+#define FALLOUT4VRGAMEPLUGINS_H
 
 
 #include <gamebryogameplugins.h>
@@ -8,10 +8,10 @@
 #include <map>
 
 
-class Fallout4GamePlugins : public GamebryoGamePlugins
+class Fallout4VRGamePlugins : public GamebryoGamePlugins
 {
 public:
-  Fallout4GamePlugins(MOBase::IOrganizer *organizer);
+  Fallout4VRGamePlugins(MOBase::IOrganizer *organizer);
 
 protected:
   virtual void writePluginList(const MOBase::IPluginList *pluginList,
@@ -24,4 +24,4 @@ private:
   std::map<QString, QByteArray> m_LastSaveHash;
 };
 
-#endif // FALLOUT4GAMEPLUGINS_H
+#endif // FALLOUT4VRGAMEPLUGINS_H
