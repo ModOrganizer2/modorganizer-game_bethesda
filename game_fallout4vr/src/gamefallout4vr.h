@@ -1,5 +1,5 @@
-#ifndef GAMEFALLOUT4_H
-#define GAMEFALLOUT4_H
+#ifndef GAMEFALLOUT4VR_H
+#define GAMEFALLOUT4VR_H
 
 
 #include "gamegamebryo.h"
@@ -7,15 +7,15 @@
 #include <QObject>
 #include <QtGlobal>
 
-class GameFallout4 : public GameGamebryo
+class GameFallout4VR : public GameGamebryo
 {
   Q_OBJECT
 
-  Q_PLUGIN_METADATA(IID "org.tannin.GameFallout4" FILE "gamefallout4.json")
+  Q_PLUGIN_METADATA(IID "org.tannin.GameFallout4VR" FILE "gamefallout4vr.json")
 
 public:
 
-  GameFallout4();
+  GameFallout4VR();
 
   virtual bool init(MOBase::IOrganizer *moInfo) override;
 
@@ -49,4 +49,4 @@ public: // IPlugin interface
 
 };
 
-#endif // GAMEFallout4_H
+#endif // GAMEFallout4VR_H
