@@ -30,6 +30,47 @@
 
 using namespace MOBase;
 
+
+// Need to duplicate code from gamegamebryo.cpp here since it's otherwise unaccessible.
+namespace {
+
+std::unique_ptr<BYTE[]> getRegValue(HKEY key, LPCWSTR path, LPCWSTR value,
+                                    DWORD flags, LPDWORD type = nullptr)
+{
+  DWORD size = 0;
+  HKEY subKey;
+  LONG res = ::RegOpenKeyExW(key, path, 0,
+                              KEY_QUERY_VALUE | KEY_WOW64_32KEY, &subKey);
+  if (res != ERROR_SUCCESS) {
+    return std::unique_ptr<BYTE[]>();
+  }
+  res = ::RegGetValueW(subKey, L"", value, flags, type, nullptr, &size);
+  if (res == ERROR_FILE_NOT_FOUND || res == ERROR_UNSUPPORTED_TYPE) {
+    return std::unique_ptr<BYTE[]>();
+  }
+  if (res != ERROR_SUCCESS && res != ERROR_MORE_DATA) {
+    throw MOBase::MyException(QObject::tr("failed to query registry path (preflight): %1").arg(res, 0, 16));
+  }
+
+  std::unique_ptr<BYTE[]> result(new BYTE[size]);
+  res = ::RegGetValueW(subKey, L"", value, flags, type, result.get(), &size);
+
+  if (res != ERROR_SUCCESS) {
+    throw MOBase::MyException(QObject::tr("failed to query registry path (read): %1").arg(res, 0, 16));
+  }
+
+  return result;
+}
+
+QString findInRegistry(HKEY baseKey, LPCWSTR path, LPCWSTR value)
+{
+  std::unique_ptr<BYTE[]> buffer = getRegValue(baseKey, path, value, RRF_RT_REG_SZ | RRF_NOEXPAND);
+
+  return QString::fromUtf16(reinterpret_cast<const ushort*>(buffer.get()));
+}
+
+}
+
 GameFallout4VR::GameFallout4VR()
 {
 }
@@ -39,6 +80,11 @@ bool GameFallout4VR::init(IOrganizer *moInfo)
   if (!GameGamebryo::init(moInfo)) {
     return false;
   }
+
+  // GameGamebryo::init() searches for the wrong registry key when setting the game path,
+  // and we cannot just override it because the corresponding code is in a private non-virtual function.
+  // So we need to set the correct path AFTER we have called GameGamebryo::init().
+  setGamePath(identifyGamePathVR());
 
   registerFeature<ScriptExtender>(new Fallout4VRScriptExtender(this));
   registerFeature<DataArchives>(new Fallout4VRDataArchives(myGamesPath()));
@@ -215,4 +261,16 @@ int GameFallout4VR::nexusModOrganizerID() const
 int GameFallout4VR::nexusGameID() const
 {
   return 1151;
+}
+
+QString GameFallout4VR::getLauncherName() const
+{
+  return binaryName(); // Fallout 4 VR has no Launcher, so we just return the name of the game binary
+}
+
+QString GameFallout4VR::identifyGamePathVR() const
+{
+  // In every other Bethesda game they use gameShortName() as registry key, but for Fallout 4 VR they use gameName()
+  QString path = "Software\\Bethesda Softworks\\" + gameName();
+  return findInRegistry(HKEY_LOCAL_MACHINE, path.toStdWString().c_str(), L"Installed Path");
 }

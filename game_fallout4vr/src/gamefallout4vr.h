@@ -37,6 +37,7 @@ public: // IPluginGame interface
   virtual LoadOrderMechanism loadOrderMechanism() const override;
   virtual int nexusModOrganizerID() const override;
   virtual int nexusGameID() const override;
+  virtual QString getLauncherName() const override;
 
 public: // IPlugin interface
 
@@ -46,6 +47,10 @@ public: // IPlugin interface
   virtual MOBase::VersionInfo version() const override;
   virtual bool isActive() const override;
   virtual QList<MOBase::PluginSetting> settings() const override;
+
+private:
+
+  QString identifyGamePathVR() const;
 
 };
 
