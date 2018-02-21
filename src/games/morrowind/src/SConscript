@@ -1,0 +1,15 @@
+Import('qt_env')
+
+env = qt_env.Clone()
+
+env.AppendUnique(CPPDEFINES = [ 'GAMEMORROWIND_LIBRARY' ])
+
+env.RequiresGamebryo()
+
+env.AppendUnique(LIBS = [ 'Version' ])
+
+lib = env.SharedLibrary('gameMorrowind', env.Glob('*.cpp'))
+env.InstallModule(lib)
+
+res = env['QT_USED_MODULES']
+Return('res')
