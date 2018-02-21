@@ -10,11 +10,11 @@ TEMPLATE = lib
 
 CONFIG += plugins
 CONFIG += dll
-DEFINES += GAMESKYRIM_LIBRARY
+DEFINES += GAMEMORROWIND_LIBRARY
 
-SOURCES += gamemorrowind.cpp \
+SOURCES += gamemorrowind.cpp 
 
-HEADERS += gamemorrowind.h \
+HEADERS += gamemorrowind.h 
 
 CONFIG(debug, debug|release) {
   LIBS += -L"$${OUT_PWD}/../gameGamebryo/debug"
