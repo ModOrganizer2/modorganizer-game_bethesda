@@ -60,7 +60,12 @@ QDir GameMorrowind::dataDirectory() const
 
 QDir GameMorrowind::documentsDirectory() const
 {
-  return gameDirectory();
+  return gameDirectory().absolutePath();
+}
+
+QDir GameMorrowind::savesDirectory() const
+{
+  return gameDirectory().absoluteFilePath("Saves");
 }
 
 QList<ExecutableInfo> GameMorrowind::executables() const
