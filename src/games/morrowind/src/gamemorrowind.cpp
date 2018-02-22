@@ -133,6 +133,11 @@ QString GameMorrowind::savegameExtension() const
   return "ess";
 }
 
+QString GameMorrowind::savegameSEExtension() const
+{
+  return "mwse";
+}
+
 QString GameMorrowind::steamAPPId() const
 {
   return "22320";
