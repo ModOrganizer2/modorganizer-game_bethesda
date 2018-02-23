@@ -1,15 +1,15 @@
 #include "gamemorrowind.h"
 
-//#include "skyrimbsainvalidation.h"
-//#include "skyrimscriptextender.h"
-//#include "skyrimdataarchives.h"
-//#include "skyrimsavegameinfo.h"
+#include "morrowindbsainvalidation.h"
+#include "morrowindscriptextender.h"
+#include "morrowinddataarchives.h"
+#include "morrowindsavegameinfo.h"
+#include "morrowindgameplugins.h"
 
 #include "executableinfo.h"
 #include "pluginsetting.h"
 
 #include <gamebryolocalsavegames.h>
-#include <gamebryogameplugins.h>
 #include <gamebryounmanagedmods.h>
 
 #include <QCoreApplication>
@@ -38,13 +38,13 @@ bool GameMorrowind::init(IOrganizer *moInfo)
   if (!GameGamebryo::init(moInfo)) {
     return false;
   }
-  //registerFeature<ScriptExtender>(new SkyrimScriptExtender(this));
-  //registerFeature<DataArchives>(new SkyrimDataArchives(myGamesPath()));
-  //registerFeature<BSAInvalidation>(new SkyrimBSAInvalidation(feature<DataArchives>(), this));
-  //registerFeature<SaveGameInfo>(new SkyrimSaveGameInfo(this));
-  //registerFeature<LocalSavegames>(new GamebryoLocalSavegames(myGamesPath(), "skyrim.ini"));
-  //registerFeature<GamePlugins>(new GamebryoGamePlugins(moInfo));
-  //registerFeature<UnmanagedMods>(new GamebryoUnmangedMods(this));
+  registerFeature<ScriptExtender>(new MorrowindScriptExtender(this));
+  registerFeature<DataArchives>(new MorrowindDataArchives(myGamesPath()));
+  registerFeature<BSAInvalidation>(new MorrowindBSAInvalidation(feature<DataArchives>(), this));
+  registerFeature<SaveGameInfo>(new MorrowindSaveGameInfo(this));
+  registerFeature<LocalSavegames>(new GamebryoLocalSavegames(gameDirectory().absolutePath(), "morrowind.ini"));
+  registerFeature<GamePlugins>(new MorrowindGamePlugins(moInfo));
+  registerFeature<UnmanagedMods>(new GamebryoUnmangedMods(this));
   return true;
 }
 
@@ -53,31 +53,33 @@ QString GameMorrowind::gameName() const
   return "Morrowind";
 }
 
+QString GameMorrowind::getLauncherName() const
+{
+  return "Morrowind Launcher.exe";
+}
+
 QDir GameMorrowind::dataDirectory() const
 {
   return gameDirectory().absoluteFilePath("Data Files");
 }
 
-QDir GameMorrowind::documentsDirectory() const
-{
-  return gameDirectory().absolutePath();
-}
-
 QDir GameMorrowind::savesDirectory() const
 {
-  return gameDirectory().absoluteFilePath("Saves");
+  return QDir(gameDirectory().absoluteFilePath("Saves"));
+}
+
+QDir GameMorrowind::documentsDirectory() const
+{
+  return gameDirectory();
 }
 
 QList<ExecutableInfo> GameMorrowind::executables() const
 {
   return QList<ExecutableInfo>()
-  //    << ExecutableInfo("SKSE", findInGameFolder(feature<ScriptExtender>()->loaderName()))
-  //    << ExecutableInfo("SBW", findInGameFolder("SBW.exe"))
+  //    << ExecutableInfo("MWSE", findInGameFolder(feature<ScriptExtender>()->loaderName()))
       << ExecutableInfo("Morrowind", findInGameFolder(binaryName()))
       << ExecutableInfo("Morrowind Launcher", findInGameFolder(getLauncherName()))
-  //    << ExecutableInfo("BOSS", findInGameFolder("BOSS/BOSS.exe"))
-  //    << ExecutableInfo("LOOT", getLootPath()).withArgument("--game=\"Skyrim\"")
-  //    << ExecutableInfo("Creation Kit", findInGameFolder("CreationKit.exe")).withSteamAppId("202480")
+	  << ExecutableInfo("MGE XE", findInGameFolder("MGEXEgui.exe"))
   ;
 }
 
@@ -98,7 +100,7 @@ QString GameMorrowind::description() const
 
 MOBase::VersionInfo GameMorrowind::version() const
 {
-  return VersionInfo(1, 0, 0, VersionInfo::RELEASE_FINAL);
+  return VersionInfo(0, 1, 0, VersionInfo::RELEASE_FINAL);
 }
 
 bool GameMorrowind::isActive() const
@@ -120,7 +122,7 @@ void GameMorrowind::initializeProfile(const QDir &path, ProfileSettings settings
 
   if (settings.testFlag(IPluginGame::CONFIGURATION)) {
     if (settings.testFlag(IPluginGame::PREFER_DEFAULTS)
-        || !QFileInfo(myGamesPath() + "/Morrowind.ini").exists()) {
+        || !QFileInfo(myGamesPath() + "/morrowind.ini").exists()) {
       copyToProfile(gameDirectory().absolutePath(), path, "Morrowind.ini");
     } else {
       copyToProfile(myGamesPath(), path, "Morrowind.ini");
@@ -148,14 +150,14 @@ QStringList GameMorrowind::primaryPlugins() const
   return { "Morrowind.esm" };
 }
 
+QString GameMorrowind::binaryName() const
+{
+  return "Morrowind.exe";
+}
+
 QString GameMorrowind::gameShortName() const
 {
   return "Morrowind";
-}
-
-QString GameMorrowind::getLauncherName() const
-{
-  return "Morrowind Launcher.exe";
 }
 
 QString GameMorrowind::gameNexusName() const
@@ -166,7 +168,7 @@ QString GameMorrowind::gameNexusName() const
 
 QStringList GameMorrowind::iniFiles() const
 {
-  return { "Morrowind.ini" };
+  return { "morrowind.ini" };
 }
 
 QStringList GameMorrowind::DLCPlugins() const
@@ -202,21 +204,6 @@ VS_FIXEDFILEINFO GetFileVersion(const std::wstring &fileName)
   return *static_cast<VS_FIXEDFILEINFO*>(versionInfoPtr);
 }
 
-}
-
-IPluginGame::LoadOrderMechanism GameMorrowind::loadOrderMechanism() const
-{
-  try {
-    std::wstring fileName = gameDirectory().absoluteFilePath(binaryName()).toStdWString().c_str();
-    VS_FIXEDFILEINFO versionInfo = ::GetFileVersion(fileName);
-    if ((versionInfo.dwFileVersionMS > 0x10004) || // version >= 1.5.x?
-        ((versionInfo.dwFileVersionMS == 0x10004) && (versionInfo.dwFileVersionLS >= 0x1A0000))) { // version >= ?.4.26
-      return LoadOrderMechanism::PluginsTxt;
-    }
-  } catch (const std::exception &e) {
-    qCritical() << "Morrowind.exe is invalid: " << e.what();
-  }
-  return LoadOrderMechanism::FileTime;
 }
 
 
