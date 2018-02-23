@@ -69,6 +69,9 @@ void MorrowindGamePlugins::writePluginList(const MOBase::IPluginList *pluginList
 void MorrowindGamePlugins::writeList(const IPluginList *pluginList,
                                     const QString &filePath, bool loadOrder) {
   QTextCodec *textCodec = loadOrder ? utf8Codec() : localCodec();
+  
+  ::WritePrivateProfileSectionW(L"Game Files", NULL, filePath.toStdWString().c_str());
+  
   bool invalidFileNames = false;
   int writtenCount = 0;
   
