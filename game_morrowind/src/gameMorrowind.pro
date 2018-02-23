@@ -12,9 +12,19 @@ CONFIG += plugins
 CONFIG += dll
 DEFINES += GAMEMORROWIND_LIBRARY
 
-SOURCES += gamemorrowind.cpp 
+SOURCES += gamemorrowind.cpp \
+    morrowindbsainvalidation.cpp \
+    morrowindscriptextender.cpp \
+    morrowinddataarchives.cpp \
+    morrowindsavegame.cpp \
+    morrowindsavegameinfo.cpp
 
-HEADERS += gamemorrowind.h 
+HEADERS += gamemorrowind.h \
+    morrowindbsainvalidation.h \
+    morrowindscriptextender.h \
+    morrowinddataarchives.h \
+    morrowindsavegame.h \
+    morrowindsavegameinfo.h
 
 CONFIG(debug, debug|release) {
   LIBS += -L"$${OUT_PWD}/../gameGamebryo/debug"
