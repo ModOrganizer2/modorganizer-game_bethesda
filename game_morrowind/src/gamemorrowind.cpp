@@ -39,7 +39,7 @@ bool GameMorrowind::init(IOrganizer *moInfo)
     return false;
   }
   registerFeature<ScriptExtender>(new MorrowindScriptExtender(this));
-  registerFeature<DataArchives>(new MorrowindDataArchives(myGamesPath()));
+  registerFeature<DataArchives>(new MorrowindDataArchives(gameDirectory().absolutePath()));
   registerFeature<BSAInvalidation>(new MorrowindBSAInvalidation(feature<DataArchives>(), this));
   registerFeature<SaveGameInfo>(new MorrowindSaveGameInfo(this));
   registerFeature<LocalSavegames>(new GamebryoLocalSavegames(gameDirectory().absolutePath(), "morrowind.ini"));
