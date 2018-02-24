@@ -42,28 +42,25 @@ MorrowindSaveGame::MorrowindSaveGame(QString const &fileName, MOBase::IPluginGam
   //file.skip<unsigned char>(8445); //Globals
   
   //Globals, Scripts, Regions
-  std::vector<char> buffer(4);
-  file.read(buffer.data(), 4);
-  while(QString::fromLatin1(buffer.data(), 4)=="GLOB"||QString::fromLatin1(buffer.data(), 4)=="SCPT"||QString::fromLatin1(buffer.data(), 4)=="REGN")
+  std::vector<char> buff(4);
+  file.read(buff.data(), 4);
+  while(QString::fromLatin1(buff.data(), 4)=="GLOB"||QString::fromLatin1(buff.data(), 4)=="SCPT"||QString::fromLatin1(buff.data(), 4)=="REGN")
   {
     uint8_t len;
 	file.read(len);
 	file.skip<unsigned char>(11+len);
-	std::vector<char> buffer(4);
-	file.read(buffer.data(), 4);
+	file.read(buff.data(), 4);
   }
   
   file.skip<unsigned long>(4);
   
-  std::vector<char> buffer(4);
-  file.read(buffer.data(), 4);
-  while(QString::fromLatin1(buffer.data(), 4)=="NAME"||QString::fromLatin1(buffer.data(), 4)=="FNAME"||QString::fromLatin1(buffer.data(), 4)=="RNAM"||QString::fromLatin1(buffer.data(), 4)=="CNAM"||QString::fromLatin1(buffer.data(), 4)=="ANAM"||QString::fromLatin1(buffer.data(), 4)=="BNAM"||QString::fromLatin1(buffer.data(), 4)=="KNAM")
+  file.read(buff.data(), 4);
+  while(QString::fromLatin1(buff.data(), 4)=="NAME"||QString::fromLatin1(buff.data(), 4)=="FNAME"||QString::fromLatin1(buff.data(), 4)=="RNAM"||QString::fromLatin1(buff.data(), 4)=="CNAM"||QString::fromLatin1(buff.data(), 4)=="ANAM"||QString::fromLatin1(buff.data(), 4)=="BNAM"||QString::fromLatin1(buff.data(), 4)=="KNAM")
   {
     uint8_t len;
 	file.read(len);
 	file.skip<unsigned char>(11+len);
-	std::vector<char> buffer(4);
-	file.read(buffer.data(), 4);
+	file.read(buff.data(), 4);
   }
   
   file.skip<unsigned char>(7);
@@ -72,5 +69,5 @@ MorrowindSaveGame::MorrowindSaveGame(QString const &fileName, MOBase::IPluginGam
   //file.read(m_PCName);
   //m_PCName="Placeholder";
   
-  m_SaveNumber=fileName.chop(4).right(4).toInt();
+  m_SaveNumber=fileName.chopped(4).right(4).toInt();
 }
