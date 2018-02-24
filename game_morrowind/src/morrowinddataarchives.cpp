@@ -11,28 +11,51 @@ QStringList MorrowindDataArchives::vanillaArchives() const
   return  { "Morrowind.bsa" };
 }
 
+QStringList MorrowindDataArchives::getArchives(const QString &iniFile) const
+{
+  wchar_t buffer[256];
+  QStringList result;
+  std::wstring iniFileW = QDir::toNativeSeparators(iniFile).toStdWString();
+
+  errno = 0;
+
+  QString key = "Archive ";
+  int i=0;
+  if (::GetPrivateProfileStringW(L"Archives", key.toStdWString().c_str(),
+                                 L"", buffer, 256, iniFileW.c_str()) != 0) {
+    result.append(QString::fromStdWString(buffer).trimmed());
+	i++;
+  }
+
+  return result;
+}
+
+void MorrowindDataArchives::setArchives(const QString &iniFile, const QStringList &list)
+{
+  ::WritePrivateProfileSectionW(L"Archives", NULL, filePath.toStdWString().c_str());
+  
+  QString key = "Archive ";
+  int writtenCount = 0;
+  foreach(const QString &value, list) {
+    if (!::WritePrivateProfileStringW(L"Archive", (key+QString::number(writtenCount)).toStdWString().c_str(), value.toStdWString().c_str(), iniFile.toStdWString().c_str())) {
+      throw MOBase::MyException(QObject::tr("failed to set archive key (errorcode %1)").arg(errno));
+    }
+	++writtenCount;
+  }
+}
 
 QStringList MorrowindDataArchives::archives(const MOBase::IProfile *profile) const
 {
   QStringList result;
 
   QString iniFile = profile->localSettingsEnabled() ? QDir(profile->absolutePath()).absoluteFilePath("morrowind.ini") : m_LocalGameDir.absoluteFilePath("morrowind.ini");
-  result.append(getArchivesFromKey(iniFile, "SResourceArchiveList"));
-  result.append(getArchivesFromKey(iniFile, "SResourceArchiveList2"));
+  result.append(getArchives(iniFile));
 
   return result;
 }
 
 void MorrowindDataArchives::writeArchiveList(MOBase::IProfile *profile, const QStringList &before)
 {
-  QString list = before.join(", ");
-
   QString iniFile = profile->localSettingsEnabled() ? QDir(profile->absolutePath()).absoluteFilePath("morrowind.ini") : m_LocalGameDir.absoluteFilePath("morrowind.ini");
-  if (list.length() > 255) {
-    int splitIdx = list.lastIndexOf(",", 256);
-    setArchivesToKey(iniFile, "SResourceArchiveList", list.mid(0, splitIdx));
-    setArchivesToKey(iniFile, "SResourceArchiveList2", list.mid(splitIdx + 2));
-  } else {
-    setArchivesToKey(iniFile, "SResourceArchiveList", list);
-  }
+  setArchives(iniFile, before);
 }
