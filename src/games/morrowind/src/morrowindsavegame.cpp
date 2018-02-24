@@ -37,7 +37,12 @@ MorrowindSaveGame::MorrowindSaveGame(QString const &fileName, MOBase::IPluginGam
   
   m_PCName=QString::fromLatin1(buffer.data(), 32);
   
-  file.skip<unsigned long>(8); //Record SCRD
+  //definitively have to use another method to access the player level
+  //it is stored in the fifth byte of the NPDT subrecord of the first NPC_ record
+  
+  m_PCLevel=1; //Placeholder
+  
+  /*file.skip<unsigned long>(8); //Record SCRD
   file.skip<unsigned long>(16385); //Record SCRS
   //file.skip<unsigned char>(8445); //Globals
   
@@ -64,10 +69,7 @@ MorrowindSaveGame::MorrowindSaveGame(QString const &fileName, MOBase::IPluginGam
   }
   
   file.skip<unsigned char>(7);
-  file.read(m_PCLevel);
-  
-  //file.read(m_PCName);
-  //m_PCName="Placeholder";
+  file.read(m_PCLevel); */
   
   m_SaveNumber=fileName.chopped(4).right(4).toInt();
 }
