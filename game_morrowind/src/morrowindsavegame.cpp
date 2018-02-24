@@ -37,47 +37,40 @@ MorrowindSaveGame::MorrowindSaveGame(QString const &fileName, MOBase::IPluginGam
   
   m_PCName=QString::fromLatin1(buffer.data(), 32);
   
+  file.skip<unsigned long>(8); //Record SCRD
+  file.skip<unsigned long>(16385); //Record SCRS
+  //file.skip<unsigned char>(8445); //Globals
+  
+  //Globals, Scripts, Regions
+  std::vector<char> buffer(4);
+  file.read(buffer.data(), 4);
+  while(QString::fromLatin1(buffer.data(), 4)=="GLOB"||QString::fromLatin1(buffer.data(), 4)=="SCPT"||QString::fromLatin1(buffer.data(), 4)=="REGN")
+  {
+    uint8_t len;
+	file.read(len);
+	file.skip<unsigned char>(11+len);
+	std::vector<char> buffer(4);
+	file.read(buffer.data(), 4);
+  }
+  
+  file.skip<unsigned long>(4);
+  
+  std::vector<char> buffer(4);
+  file.read(buffer.data(), 4);
+  while(QString::fromLatin1(buffer.data(), 4)=="NAME"||QString::fromLatin1(buffer.data(), 4)=="FNAME"||QString::fromLatin1(buffer.data(), 4)=="RNAM"||QString::fromLatin1(buffer.data(), 4)=="CNAM"||QString::fromLatin1(buffer.data(), 4)=="ANAM"||QString::fromLatin1(buffer.data(), 4)=="BNAM"||QString::fromLatin1(buffer.data(), 4)=="KNAM")
+  {
+    uint8_t len;
+	file.read(len);
+	file.skip<unsigned char>(11+len);
+	std::vector<char> buffer(4);
+	file.read(buffer.data(), 4);
+  }
+  
+  file.skip<unsigned char>(7);
+  file.read(m_PCLevel);
+  
   //file.read(m_PCName);
   //m_PCName="Placeholder";
   
-  // Placeholder values
-  m_PCLevel=0;
-  m_SaveNumber=0;
-  
-  /*file.skip()
-  file.read(m_SaveNumber);
-
-  file.read(m_PCName);
-
-  unsigned long temp;
-  file.read(temp);
-  m_PCLevel = static_cast<unsigned short>(temp);
-
-  file.read(m_PCLocation);
-
-  QString timeOfDay;
-  file.read(timeOfDay);
-
-  QString race;
-  file.read(race); // race name (i.e. BretonRace)
-
-  file.skip<unsigned short>(); // Player gender (0 = male)
-  file.skip<float>(2); // experience gathered, experience required
-
-  FILETIME ftime;
-  file.read(ftime);
-  //A file time is a 64-bit value that represents the number of 100-nanosecond
-  //intervals that have elapsed since 12:00 A.M. January 1, 1601 Coordinated Universal Time (UTC).
-  //So we need to convert that to something useful
-  SYSTEMTIME ctime;
-  ::FileTimeToSystemTime(&ftime, &ctime);
-
-  setCreationTime(ctime);
-
-  file.readImage();
-
-  file.skip<unsigned char>(); // form version
-  file.skip<unsigned long>(); // plugin info size
-
-  file.readPlugins(); */
+  m_SaveNumber=fileName.chop(4).right(4).toInt();
 }
