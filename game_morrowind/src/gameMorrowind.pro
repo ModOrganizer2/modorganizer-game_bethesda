@@ -17,14 +17,16 @@ SOURCES += gamemorrowind.cpp \
     morrowindscriptextender.cpp \
     morrowinddataarchives.cpp \
     morrowindsavegame.cpp \
-    morrowindsavegameinfo.cpp
+    morrowindsavegameinfo.cpp \
+	morrowindgameplugins.cpp
 
 HEADERS += gamemorrowind.h \
     morrowindbsainvalidation.h \
     morrowindscriptextender.h \
     morrowinddataarchives.h \
     morrowindsavegame.h \
-    morrowindsavegameinfo.h
+    morrowindsavegameinfo.h \
+	morrowindgameplugins.h
 
 CONFIG(debug, debug|release) {
   LIBS += -L"$${OUT_PWD}/../gameGamebryo/debug"
