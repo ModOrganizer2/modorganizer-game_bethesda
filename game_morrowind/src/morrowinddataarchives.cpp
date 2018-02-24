@@ -32,7 +32,7 @@ QStringList MorrowindDataArchives::getArchives(const QString &iniFile) const
 
 void MorrowindDataArchives::setArchives(const QString &iniFile, const QStringList &list)
 {
-  ::WritePrivateProfileSectionW(L"Archives", NULL, filePath.toStdWString().c_str());
+  ::WritePrivateProfileSectionW(L"Archives", NULL, iniFile.toStdWString().c_str());
   
   QString key = "Archive ";
   int writtenCount = 0;
