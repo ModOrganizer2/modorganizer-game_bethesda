@@ -21,8 +21,8 @@ public:
 
 protected:
 
-  QStringList getArchives(const QString &iniFile) const
-  void setArchives(const QString &iniFile, const QStringList &list)
+  QStringList getArchives(const QString &iniFile) const;
+  void setArchives(const QString &iniFile, const QStringList &list);
   
 private:
 
