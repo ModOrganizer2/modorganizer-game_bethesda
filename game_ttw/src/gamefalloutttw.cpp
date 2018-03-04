@@ -107,8 +107,8 @@ void GameFalloutTTW::initializeProfile(const QDir &path, ProfileSettings setting
     }
 
     copyToProfile(myGamesPath(), path, "falloutprefs.ini");
-	copyToProfile(myGamesPath(), path, "falloutcustom.ini");
-	copyToProfile(myGamesPath(), path, "custom.ini");
+    copyToProfile(myGamesPath(), path, "falloutcustom.ini");
+    copyToProfile(myGamesPath(), path, "custom.ini");
   }
 }
 
@@ -130,11 +130,11 @@ QString GameFalloutTTW::steamAPPId() const
 QStringList GameFalloutTTW::primaryPlugins() const
 {
   return { "falloutnv.esm", "deadmoney.esm", "honesthearts.esm", 
-		   "oldworldblues.esm", "lonesomeroad.esm", "gunrunnersarsenal.esm",
+           "oldworldblues.esm", "lonesomeroad.esm", "gunrunnersarsenal.esm",
            "caravanpack.esm", "classicpack.esm", "mercenarypack.esm", 
-		   "tribalpack.esm", "fallout3.esm", "anchorage.esm", "thepitt.esm",
-		   "brokensteel.esm", "pointlookout.esm", "zeta.esm",
-		   "taleoftwowastelands.esm" };
+           "tribalpack.esm", "fallout3.esm", "anchorage.esm", "thepitt.esm",
+           "brokensteel.esm", "pointlookout.esm", "zeta.esm",
+           "taleoftwowastelands.esm" };
 }
 
 QString GameFalloutTTW::gameShortName() const
@@ -157,9 +157,9 @@ QStringList GameFalloutTTW::DLCPlugins() const
   return { "DeadMoney.esm", "HonestHearts.esm", "OldWorldBlues.esm",
            "LonesomeRoad.esm", "GunRunnersArsenal.esm", "CaravanPack.esm",
            "ClassicPack.esm", "MercenaryPack.esm", "TribalPack.esm", 
-		   "Fallout3.esm", "Anchorage.esm", "ThePitt.esm",
-		   "BrokenSteel.esm", "PointLookout.esm", "Zeta.esm",
-		   "TaleOfTwoWastelands.esm"};
+           "Fallout3.esm", "Anchorage.esm", "ThePitt.esm",
+           "BrokenSteel.esm", "PointLookout.esm", "Zeta.esm",
+           "TaleOfTwoWastelands.esm"};
 }
 
 int GameFalloutTTW::nexusModOrganizerID() const
