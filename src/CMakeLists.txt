@@ -29,23 +29,33 @@ SET(project_path "${default_project_path}" CACHE PATH "path to the other mo proj
 SET(lib_path "${project_path}/../../install/libs")
 SET(plugin_path "${project_path}")
 
-MESSAGE(STATUS ${lib_path})
-MESSAGE(STATUS ${plugin_path})
-MESSAGE(STATUS ${project_path})
 
 INCLUDE_DIRECTORIES(${project_path}/uibase/src
-					${project_path}/game_features/src)
-LINK_DIRECTORIES(${lib_path})
-
+                    ${project_path}/game_features/src
+                    ${project_path}/../lz4/include)
+LINK_DIRECTORIES(${lib_path}
+                 ${project_path}/../lz4/dll)
 
 ADD_LIBRARY(${PROJ_NAME} STATIC ${${PROJ_NAME}_HDRS} ${${PROJ_NAME}_SRCS} ${${PROJ_NAME}_UIHDRS})
 TARGET_LINK_LIBRARIES(${PROJ_NAME}
                       Qt5::Widgets
                       ${Boost_LIBRARIES}
-                      uibase)
+                      uibase
+					  liblz4
+                      Version)
 
-SET_TARGET_PROPERTIES(${PROJ_NAME} PROPERTIES COMPILE_FLAGS /GL)
-SET_TARGET_PROPERTIES(${PROJ_NAME} PROPERTIES LINK_FLAGS_RELWITHDEBINFO "/LTCG /LARGEADDRESSAWARE /OPT:REF /OPT:ICF")
+IF(MSVC)
+  SET_TARGET_PROPERTIES(${PROJ_NAME} PROPERTIES LINK_FLAGS "/LARGEADDRESSAWARE")
+ELSE(MSVC)
+  SET_TARGET_PROPERTIES(${PROJ_NAME} PROPERTIES LINK_FLAGS "-std=c++11")
+ENDIF(MSVC)
+
+IF (NOT "${OPTIMIZE_COMPILE_FLAGS}" STREQUAL "")
+  SET_TARGET_PROPERTIES(${PROJ_NAME} PROPERTIES COMPILE_FLAGS_RELWITHDEBINFO ${OPTIMIZE_COMPILE_FLAGS})
+ENDIF()
+IF (NOT "${OPTIMIZE_LINK_FLAGS}" STREQUAL "")
+  SET_TARGET_PROPERTIES(${PROJ_NAME} PROPERTIES LINK_FLAGS_RELWITHDEBINFO ${OPTIMIZE_LINK_FLAGS})
+ENDIF()
 
 QT5_USE_MODULES(${PROJ_NAME} Widgets)
 

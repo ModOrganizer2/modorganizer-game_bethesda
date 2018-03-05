@@ -173,6 +173,11 @@ QString GameGamebryo::binaryName() const
   return gameShortName() + ".exe";
 }
 
+QStringList GameGamebryo::CCPlugins() const
+{
+  return {};
+}
+
 MOBase::IPluginGame::LoadOrderMechanism GameGamebryo::loadOrderMechanism() const
 {
   return LoadOrderMechanism::FileTime;
@@ -224,6 +229,42 @@ QString GameGamebryo::getVersion(QString const &program) const
                                .arg(LOWORD(pFileInfo->dwFileVersionLS));
 }
 
+WORD GameGamebryo::getArch(QString const &program) const
+{
+	WORD arch = 0;
+	//This *really* needs to be factored out
+	LPCSTR app_name = ("\\\\?\\" +
+		QDir::toNativeSeparators(this->gameDirectory().absoluteFilePath(program)).toStdString()).c_str();
+
+	WIN32_FIND_DATA FindFileData;
+	HANDLE hFind = ::FindFirstFile(app_name, &FindFileData);
+
+	//exit if the binary was not found
+	if (hFind == INVALID_HANDLE_VALUE) return arch;
+
+	HANDLE hFile = CreateFile(app_name, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_READONLY, NULL);
+	if (hFile == INVALID_HANDLE_VALUE) goto cleanup;
+
+	HANDLE hMapping = CreateFileMapping(hFile, NULL, PAGE_READONLY | SEC_IMAGE, 0, 0, program.toStdString().c_str());
+	if (hMapping == INVALID_HANDLE_VALUE) goto cleanup;
+
+	LPVOID addrHeader = MapViewOfFile(hMapping, FILE_MAP_READ, 0, 0, 0);
+	if (addrHeader == NULL) goto cleanup; //couldn't memory map the file
+
+	PIMAGE_NT_HEADERS peHdr = ImageNtHeader(addrHeader);
+	if (peHdr == NULL) goto cleanup; //couldn't read the header
+
+	arch = peHdr->FileHeader.Machine;
+
+cleanup: //release all of our handles
+	FindClose(hFind);
+	if (hFile != INVALID_HANDLE_VALUE)
+		CloseHandle(hFile);
+	if (hMapping != INVALID_HANDLE_VALUE)
+		CloseHandle(hMapping);
+	return arch;
+}
+
 QFileInfo GameGamebryo::findInGameFolder(const QString &relativePath) const
 {
   return QFileInfo(m_GamePath + "/" + relativePath);
@@ -252,17 +293,10 @@ QString GameGamebryo::myGamesPath() const
 
 std::map<std::type_index, boost::any> GameGamebryo::featureList() const
 {
-  static std::map<std::type_index, boost::any> result {
-    { typeid(BSAInvalidation), m_BSAInvalidation.get() },
-    { typeid(ScriptExtender), m_ScriptExtender.get() },
-    { typeid(DataArchives), m_DataArchives.get() },
-    { typeid(SaveGameInfo), m_SaveGameInfo.get() }
-  };
-
-  return result;
+  return m_FeatureList;
 }
 
-/*static*/QString GameGamebryo::localAppFolder()
+QString GameGamebryo::localAppFolder()
 {
   QString result = getKnownFolderPath(FOLDERID_LocalAppData, false);
   if (result.isEmpty()) {
@@ -272,18 +306,17 @@ std::map<std::type_index, boost::any> GameGamebryo::featureList() const
   return result;
 }
 
-/*static*/void GameGamebryo::copyToProfile(QString const &sourcePath,
-                                           QDir const &destinationDirectory,
-                                           QString const &sourceFileName)
-{
-  copyToProfile(sourcePath, destinationDirectory, sourceFileName, sourceFileName);
+void GameGamebryo::copyToProfile(QString const &sourcePath,
+                                 QDir const &destinationDirectory,
+                                 QString const &sourceFileName) {
+  copyToProfile(sourcePath, destinationDirectory, sourceFileName,
+                sourceFileName);
 }
 
-/*static*/void GameGamebryo::copyToProfile(QString const &sourcePath,
-                                           QDir const &destinationDirectory,
-                                           QString const &sourceFileName,
-                                           QString const &destinationFileName)
-{
+void GameGamebryo::copyToProfile(QString const &sourcePath,
+                                 QDir const &destinationDirectory,
+                                 QString const &sourceFileName,
+                                 QString const &destinationFileName) {
   QString filePath = destinationDirectory.absoluteFilePath(destinationFileName);
   if (!QFileInfo(filePath).exists()) {
     if (!MOBase::shellCopy(sourcePath + "/" + sourceFileName, filePath)) {
@@ -291,4 +324,17 @@ std::map<std::type_index, boost::any> GameGamebryo::featureList() const
       QFile(filePath).open(QIODevice::WriteOnly);
     }
   }
+}
+
+MappingType GameGamebryo::mappings() const
+{
+  MappingType result;
+
+  for (const QString &profileFile : { "plugins.txt", "loadorder.txt" }) {
+    result.push_back({ m_Organizer->profilePath() + "/" + profileFile,
+                       localAppFolder() + "/" + gameShortName() + "/" + profileFile,
+                       false });
+  }
+
+  return result;
 }

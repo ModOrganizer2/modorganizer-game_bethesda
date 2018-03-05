@@ -19,7 +19,7 @@ namespace MOBase { class IPluginGame; }
 class GamebryoSaveGame : public MOBase::ISaveGame
 {
 public:
-  GamebryoSaveGame(QString const &file, MOBase::IPluginGame const *game);
+  GamebryoSaveGame(QString const &file, MOBase::IPluginGame const *game, bool const lightEnabled = false);
 
   virtual ~GamebryoSaveGame();
 
@@ -37,7 +37,9 @@ public:
   QString getPCLocation() const { return m_PCLocation; }
   unsigned long getSaveNumber() const { return m_SaveNumber; }
   QStringList const &getPlugins() const { return m_Plugins; }
+  QStringList const &getLightPlugins() const { return m_LightPlugins; }
   QImage const &getScreenshot() const { return m_Screenshot; }
+  bool const &isLightEnabled() const { return m_LightEnabled; }
 
 protected:
 
@@ -83,15 +85,31 @@ protected:
     /* Reads RGB image from save
      * Assumes picture dimentions come immediately before the save
      */
-    void readImage(int scale = 0);
+    void readImage(int scale = 0, bool alpha = false);
 
     /* Reads RGB image from save */
-    void readImage(unsigned long width, unsigned long height, int scale = 0);
+    void readImage(unsigned long width, unsigned long height, int scale = 0, bool alpha = false);
 
-    /* Read the plugin list */
-    void readPlugins();
+	/* uncompress the begining of the compressed block */
+	bool openCompressedData(int bytesToIgnore = 0);
 
-    /* Set the creation time from a system date */
+	/* frees the uncompressed block */
+	void closeCompressedData();
+
+	/* Read the save game version in the compressed block */
+	uint8_t readChar(int bytesToIgnore=0);
+
+	uint16_t readShort(int bytesToIgnore = 0);
+
+	uint32_t readInt(int bytesToIgnore = 0);
+
+	/* Read the plugin list */
+    void readPlugins(int bytesToIgnore=0);
+
+	/* Read the light plugin list */
+	void readLightPlugins(int bytesToIgnore = 0);
+
+	/* Set the creation time from a system date */
     void setCreationTime(::_SYSTEMTIME const &);
 
   private:
@@ -99,6 +117,7 @@ protected:
     QFile m_File;
     bool m_HasFieldMarkers;
     bool m_BZString;
+	QDataStream* m_Data;
   };
 
   void setCreationTime(_SYSTEMTIME const &time);
@@ -110,9 +129,13 @@ protected:
   unsigned long m_SaveNumber;
   QDateTime m_CreationTime;
   QStringList m_Plugins;
+  QStringList m_LightPlugins;
   QImage m_Screenshot;
   MOBase::IPluginGame const *m_Game;
+  uint16_t compressionType = 0;
+  bool m_LightEnabled;
 };
+
 
 template <> void GamebryoSaveGame::FileWrapper::read<QString>(QString &);
 
