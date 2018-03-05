@@ -13,7 +13,7 @@
 #include <Windows.h>
 
 
-GamebryoBSAInvalidation::GamebryoBSAInvalidation(const std::shared_ptr<DataArchives> &dataArchives
+GamebryoBSAInvalidation::GamebryoBSAInvalidation(DataArchives *dataArchives
                                                  , const QString &iniFilename
                                                  , MOBase::IPluginGame const *game)
   : m_DataArchives(dataArchives)
@@ -48,7 +48,7 @@ void GamebryoBSAInvalidation::deactivate(MOBase::IProfile *profile)
     MOBase::shellDeleteQuiet(bsaFile);
   }
 
-  QString iniFile = QDir(profile->absolutePath()).absoluteFilePath(m_IniFileName);
+  QString iniFile = profile->localSettingsEnabled() ? QDir(profile->absolutePath()).absoluteFilePath(m_IniFileName) : m_Game->documentsDirectory().absoluteFilePath(m_IniFileName);
 
   ::SetFileAttributesW(iniFile.toStdWString().c_str(), FILE_ATTRIBUTE_NORMAL);
 
@@ -81,7 +81,7 @@ void GamebryoBSAInvalidation::activate(MOBase::IProfile *profile)
   }
 
   // set the remaining ini settings required
-  QString iniFile = QDir(profile->absolutePath()).absoluteFilePath(m_IniFileName);
+  QString iniFile = profile->localSettingsEnabled() ? QDir(profile->absolutePath()).absoluteFilePath(m_IniFileName) : m_Game->documentsDirectory().absoluteFilePath(m_IniFileName);
 
   ::SetFileAttributesW(iniFile.toStdWString().c_str(), FILE_ATTRIBUTE_NORMAL);
 

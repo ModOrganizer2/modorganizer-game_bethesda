@@ -15,7 +15,7 @@ class GamebryoBSAInvalidation : public BSAInvalidation
 {
 public:
 
-  GamebryoBSAInvalidation(const std::shared_ptr<DataArchives> &dataArchives,
+  GamebryoBSAInvalidation(DataArchives *dataArchives,
                           const QString &iniFilename,
                           MOBase::IPluginGame const *game);
 
@@ -30,7 +30,7 @@ private:
 
 private:
 
-  std::shared_ptr<DataArchives> m_DataArchives;
+  DataArchives *m_DataArchives;
   QString m_IniFileName;
   MOBase::IPluginGame const *m_Game;
 

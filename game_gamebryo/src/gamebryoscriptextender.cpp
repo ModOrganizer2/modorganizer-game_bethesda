@@ -16,7 +16,7 @@ GamebryoScriptExtender::~GamebryoScriptExtender()
 
 QString GamebryoScriptExtender::loaderName() const
 {
-  return name() + "_loader.exe";
+  return BinaryName();
 }
 
 QString GamebryoScriptExtender::loaderPath() const
@@ -36,5 +36,10 @@ bool GamebryoScriptExtender::isInstalled() const
 QString GamebryoScriptExtender::getExtenderVersion() const
 {
   return m_Game->getVersion(loaderName());
+}
+
+WORD GamebryoScriptExtender::getArch() const
+{
+	return m_Game->getArch(loaderName());
 }
 
