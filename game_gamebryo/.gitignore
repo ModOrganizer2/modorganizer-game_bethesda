@@ -1,4 +1,8 @@
-std*.log
-build
 CMakeLists.txt.user
 edit
+build
+std*.log
+build
+vsbuild
+vs_stderr.log
+vs_stdout.log

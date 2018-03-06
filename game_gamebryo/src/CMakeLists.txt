@@ -32,9 +32,9 @@ SET(plugin_path "${project_path}")
 
 INCLUDE_DIRECTORIES(${project_path}/uibase/src
                     ${project_path}/game_features/src
-                    ${project_path}/../lz4/include)
+                    ${LZ4_ROOT}/include)
 LINK_DIRECTORIES(${lib_path}
-                 ${project_path}/../lz4/dll)
+                 ${LZ4_ROOT}/dll)
 
 ADD_LIBRARY(${PROJ_NAME} STATIC ${${PROJ_NAME}_HDRS} ${${PROJ_NAME}_SRCS} ${${PROJ_NAME}_UIHDRS})
 TARGET_LINK_LIBRARIES(${PROJ_NAME}
