@@ -1,6 +1,6 @@
 #include "gamefalloutttw.h"
 
-#include "falloutttwbsaittwalidation.h"
+#include "falloutttwbsainvalidation.h"
 #include "falloutttwdataarchives.h"
 #include "falloutttwsavegameinfo.h"
 #include "falloutttwscriptextender.h"
@@ -35,7 +35,7 @@ bool GameFalloutTTW::init(IOrganizer *moInfo)
   }
   registerFeature<ScriptExtender>(new FalloutTTWScriptExtender(this));
   registerFeature<DataArchives>(new FalloutTTWDataArchives(myGamesPath()));
-  registerFeature<BSAIttwalidation>(new FalloutTTWBSAIttwalidation(feature<DataArchives>(), this));
+  registerFeature<BSAInvalidation>(new FalloutTTWBSAInvalidation(feature<DataArchives>(), this));
   registerFeature<SaveGameInfo>(new FalloutTTWSaveGameInfo(this));
   registerFeature<LocalSavegames>(new GamebryoLocalSavegames(myGamesPath(), "fallout.ini"));
   registerFeature<GamePlugins>(new GamebryoGamePlugins(moInfo));
@@ -45,14 +45,14 @@ bool GameFalloutTTW::init(IOrganizer *moInfo)
 
 QString GameFalloutTTW::gameName() const
 {
-  return "New Vegas";
+  return "TTW";
 }
 
 QList<ExecutableInfo> GameFalloutTTW::executables() const
 {
   return QList<ExecutableInfo>()
       << ExecutableInfo("NVSE", findInGameFolder(feature<ScriptExtender>()->loaderName()))
-      << ExecutableInfo("New Vegas", findInGameFolder(binaryName()))
+      << ExecutableInfo("Tale of Two Wastelands", findInGameFolder(binaryName()))
       << ExecutableInfo("Fallout Mod Manager", findInGameFolder("fomm/fomm.exe"))
       << ExecutableInfo("Construction Kit", findInGameFolder("geck.exe"))
       << ExecutableInfo("Fallout Launcher", findInGameFolder(getLauncherName()))
@@ -68,7 +68,7 @@ QString GameFalloutTTW::name() const
 
 QString GameFalloutTTW::author() const
 {
-  return "Tannin";
+  return "SuperSandro2000";
 }
 
 QString GameFalloutTTW::description() const
@@ -119,7 +119,7 @@ QString GameFalloutTTW::savegameExtension() const
 
 QString GameFalloutTTW::savegameSEExtension() const
 {
-  return "ttwse";
+  return "nvse";
 }
 
 QString GameFalloutTTW::steamAPPId() const
@@ -129,17 +129,16 @@ QString GameFalloutTTW::steamAPPId() const
 
 QStringList GameFalloutTTW::primaryPlugins() const
 {
-  return { "falloutnv.esm", "deadmoney.esm", "honesthearts.esm", 
+  return { "falloutnv.esm", "deadmoney.esm", "honesthearts.esm",
            "oldworldblues.esm", "lonesomeroad.esm", "gunrunnersarsenal.esm",
-           "caravanpack.esm", "classicpack.esm", "mercenarypack.esm", 
-           "tribalpack.esm", "fallout3.esm", "anchorage.esm", "thepitt.esm",
-           "brokensteel.esm", "pointlookout.esm", "zeta.esm",
-           "taleoftwowastelands.esm" };
+           "fallout3.esm", "anchorage.esm", "thepitt.esm", "brokensteel.esm",
+		   "pointlookout.esm", "zeta.esm", "caravanpack.esm", "classicpack.esm",
+		   "mercenarypack.esm", "tribalpack.esm", "taleoftwowastelands.esm" };
 }
 
 QString GameFalloutTTW::gameShortName() const
 {
-  return "FalloutTTW";
+  return "FalloutNV";
 }
 
 QString GameFalloutTTW::gameNexusName() const
@@ -154,12 +153,12 @@ QStringList GameFalloutTTW::iniFiles() const
 
 QStringList GameFalloutTTW::DLCPlugins() const
 {
-  return { "DeadMoney.esm", "HonestHearts.esm", "OldWorldBlues.esm",
-           "LonesomeRoad.esm", "GunRunnersArsenal.esm", "CaravanPack.esm",
-           "ClassicPack.esm", "MercenaryPack.esm", "TribalPack.esm", 
-           "Fallout3.esm", "Anchorage.esm", "ThePitt.esm",
-           "BrokenSteel.esm", "PointLookout.esm", "Zeta.esm",
-           "TaleOfTwoWastelands.esm"};
+  return { "FalloutNV.esm", "DeadMoney.esm", "HonestHearts.esm",
+           "OldWorldBlues.esm", "LonesomeRoad.esm", "GunRunnersArsenal.esm",
+		   "CaravanPack.esm", "ClassicPack.esm", "MercenaryPack.esm",
+		   "TribalPack.esm", "Fallout3.esm", "Anchorage.esm",
+		   "ThePitt.esm", "BrokenSteel.esm", "PointLookout.esm",
+		   "Zeta.esm", "TaleOfTwoWastelands.esm"};
 }
 
 int GameFalloutTTW::nexusModOrganizerID() const

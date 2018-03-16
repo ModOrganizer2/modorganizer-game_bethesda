@@ -2,3 +2,5 @@ std*.log
 build
 CMakeLists.txt.user
 edit
+build
+vsbuild

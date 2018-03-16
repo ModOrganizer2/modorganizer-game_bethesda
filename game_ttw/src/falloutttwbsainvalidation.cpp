@@ -1,11 +1,11 @@
-#include "falloutnvbsainvalidation.h"
+#include "falloutttwbsainvalidation.h"
 
-FalloutTTWBSAInvalidation::FalloutNVBSAInvalidation(DataArchives *dataArchives, MOBase::IPluginGame const *game)
+FalloutTTWBSAInvalidation::FalloutTTWBSAInvalidation(DataArchives *dataArchives, MOBase::IPluginGame const *game)
   : GamebryoBSAInvalidation(dataArchives, "fallout.ini", game)
 {
 }
 
-QString FalloutNVBSAInvalidation::invalidationBSAName() const
+QString FalloutTTWBSAInvalidation::invalidationBSAName() const
 {
   return "Fallout - Invalidation.bsa";
 }
