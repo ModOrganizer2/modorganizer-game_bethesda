@@ -31,6 +31,8 @@ public:
 
   virtual QStringList allFiles() const override;
 
+  virtual bool hasScriptExtenderFile() const override;
+
   //Simple getters
   QString getPCName() const { return m_PCName; }
   unsigned short getPCLevel() const { return m_PCLevel; }
