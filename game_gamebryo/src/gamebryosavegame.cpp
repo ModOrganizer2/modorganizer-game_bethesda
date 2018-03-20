@@ -55,8 +55,20 @@ QStringList GamebryoSaveGame::allFiles() const
         res.push_back(name.absoluteFilePath());
       }
     }
+
+    QFileInfo SEfile(file.absolutePath() + "/" + file.completeBaseName() + "." + m_Game->savegameSEExtension());
+    if (SEfile.exists()) {
+        res.push_back(SEfile.absoluteFilePath());
+    }
   }
   return res;
+}
+
+bool GamebryoSaveGame::hasScriptExtenderFile() const
+{
+    QFileInfo file(m_FileName);
+    QFileInfo SEfile(file.absolutePath() + "/" + file.completeBaseName() + "." + m_Game->savegameSEExtension());
+    return SEfile.exists();
 }
 
 void GamebryoSaveGame::setCreationTime(_SYSTEMTIME const &ctime)

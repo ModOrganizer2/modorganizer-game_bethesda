@@ -69,6 +69,12 @@ void GamebryoSaveGameInfoWidget::setSave(QString const &file) {
 	this->resize(0, 0);
 
     QLayout *layout = ui->gameFrame->layout();
+    if (m_Info->hasScriptExtenderSave(file)) {
+        QLabel *scriptExtender = new QLabel(tr("Has Script Extender Data"));
+        QFont headerFont = scriptExtender->font();
+        headerFont.setBold(true);
+        layout->addWidget(scriptExtender);
+    }
     QLabel *header = new QLabel(tr("Missing ESPs"));
     QFont headerFont = header->font();
     QFont contentFont = headerFont;
