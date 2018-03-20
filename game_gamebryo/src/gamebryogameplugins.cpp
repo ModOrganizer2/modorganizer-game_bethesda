@@ -51,12 +51,10 @@ void GamebryoGamePlugins::readPluginLists(MOBase::IPluginList *pluginList) {
   if (loadOrderIsNew || !pluginsIsNew) {
     // read both files if they are both new or both older than the last read
     readLoadOrderList(pluginList, loadOrderPath);
-    readPluginList(pluginList, pluginsPath, false);
+    readPluginList(pluginList, false);
   } else {
-    // if the plugin list is new but the load order isn't, this probably means
-    // an external tool that handles only the plugins.txt has been run in the
-    // meantime. We have to use plugins.txt for the load order as well.
-    readPluginList(pluginList, pluginsPath, true);
+    // If the plugins is new but not loadorder, we must reparse the load order from the plugin files
+    readPluginList(pluginList, true);
   }
 
   m_LastRead = QDateTime::currentDateTime();
@@ -125,96 +123,116 @@ void GamebryoGamePlugins::writeList(const IPluginList *pluginList,
 
 bool GamebryoGamePlugins::readLoadOrderList(MOBase::IPluginList *pluginList,
                                             const QString &filePath) {
-  QStringList pluginNames = organizer()->managedGame()->primaryPlugins();
-  QFile file(filePath);
-  if (!file.open(QIODevice::ReadOnly)) {
-    // no load order stored, determine by date
-    pluginNames = pluginList->pluginNames();
+    QFile file(filePath);
+    if (!file.open(QIODevice::ReadOnly)) {
+        readPluginList(pluginList, true);
+    } else {
+        QStringList plugins = organizer()->managedGame()->primaryPlugins();
 
-    std::sort(pluginNames.begin(), pluginNames.end(), [&](const QString &lhs, const QString &rhs) {
-      MOBase::IModInterface *lhm = organizer()->getMod(pluginList->origin(lhs));
-      MOBase::IModInterface *rhm = organizer()->getMod(pluginList->origin(rhs));
-      QDir lhd = organizer()->managedGame()->dataDirectory();
-      QDir rhd = organizer()->managedGame()->dataDirectory();
-      if (lhm != nullptr)
-        lhd = lhm->absolutePath();
-      if (rhm != nullptr)
-        rhd = rhm->absolutePath();
-      QString lhp = lhd.absoluteFilePath(lhs);
-      QString rhp = rhd.absoluteFilePath(rhs);
-      return QFileInfo(lhp).lastModified() <
-        QFileInfo(rhp).lastModified();
-    });
-  } else {
-    ON_BLOCK_EXIT([&file]() { file.close(); });
+        ON_BLOCK_EXIT([&file]() { file.close(); });
 
-    if (file.size() == 0) {
-      // MO stores at least a header in the file. if it's completely empty the
-      // file is broken
-      return false;
-    }
-    while (!file.atEnd()) {
-      QByteArray line = file.readLine().trimmed();
-      QString modName;
-      if ((line.size() > 0) && (line.at(0) != '#')) {
-        modName = QString::fromUtf8(line.constData()).toLower();
-      }
-
-      if (modName.size() > 0) {
-        if (!pluginNames.contains(modName, Qt::CaseInsensitive)) {
-          pluginNames.append(modName);
+        if (file.size() == 0) {
+            // MO stores at least a header in the file. if it's completely empty the
+            // file is broken
+            return false;
         }
-      }
-    }
-  }
-  pluginList->setLoadOrder(pluginNames);
+        while (!file.atEnd()) {
+            QByteArray line = file.readLine().trimmed();
+            QString modName;
+            if ((line.size() > 0) && (line.at(0) != '#')) {
+                modName = QString::fromUtf8(line.constData()).toLower();
+            }
 
-  return true;
+            if (modName.size() > 0) {
+                if (!plugins.contains(modName, Qt::CaseInsensitive)) {
+                    plugins.append(modName);
+                }
+            }
+        }
+
+        pluginList->setLoadOrder(plugins);
+    }
+
+    return true;
 }
 
 bool GamebryoGamePlugins::readPluginList(MOBase::IPluginList *pluginList,
-                                         const QString &filePath,
                                          bool useLoadOrder) {
+  QStringList primary = organizer()->managedGame()->primaryPlugins();
+  for (const QString &pluginName : primary) {
+      if (pluginList->state(pluginName) != IPluginList::STATE_MISSING) {
+          pluginList->setState(pluginName, IPluginList::STATE_ACTIVE);
+      }
+  }
   QStringList plugins = pluginList->pluginNames();
-
-  QFile file(filePath);
-  if (!file.open(QIODevice::ReadOnly)) {
-    return false;
-  }
-  ON_BLOCK_EXIT([&]() {
-    qDebug("close %s", qPrintable(filePath));
-    file.close();
-  });
-
-  if (file.size() == 0) {
-    // MO stores at least a header in the file. if it's completely empty the
-    // file is broken
-    return false;
-  }
-
-  QStringList loadOrder;
-  while (!file.atEnd()) {
-    QByteArray line = file.readLine();
-    QString pluginName;
-    if ((line.size() > 0) && (line.at(0) != '#')) {
-      pluginName = m_LocalCodec->toUnicode(line.trimmed().constData());
-    }
-    if (pluginName.size() > 0) {
-      pluginList->setState(pluginName, IPluginList::STATE_ACTIVE);
-      plugins.removeAll(pluginName);
-      loadOrder.append(pluginName);
-    }
-  }
-
-  file.close();
-
-  // we removed each plugin found in the file, so what's left are inactive mods
-  for (const QString &pluginName : plugins) {
-    pluginList->setState(pluginName, IPluginList::STATE_INACTIVE);
+  // Do not sort the primary plugins. Their load order should be locked as defined in "primaryPlugins".
+  for (QString plugin : plugins) {
+      if (primary.contains(plugin, Qt::CaseInsensitive))
+          plugins.removeAll(plugin);
   }
 
   if (useLoadOrder) {
-    pluginList->setLoadOrder(loadOrder);
+      // Always use filetime loadorder to get the actual load order
+      std::sort(plugins.begin(), plugins.end(), [&](const QString &lhs, const QString &rhs) {
+          MOBase::IModInterface *lhm = organizer()->getMod(pluginList->origin(lhs));
+          MOBase::IModInterface *rhm = organizer()->getMod(pluginList->origin(rhs));
+          QDir lhd = organizer()->managedGame()->dataDirectory();
+          QDir rhd = organizer()->managedGame()->dataDirectory();
+          if (lhm != nullptr)
+              lhd = lhm->absolutePath();
+          if (rhm != nullptr)
+              rhd = rhm->absolutePath();
+          QString lhp = lhd.absoluteFilePath(lhs);
+          QString rhp = rhd.absoluteFilePath(rhs);
+          return QFileInfo(lhp).lastModified() <
+              QFileInfo(rhp).lastModified();
+      });
+
+      // Add the primary plugins to the beginning of the load order
+      pluginList->setLoadOrder(primary + plugins);
+  }
+
+  // Determine plugin active state by the plugins.txt file.
+  bool pluginsTxtExists = true;
+  QString filePath = organizer()->profile()->absolutePath() + "/plugins.txt";
+  QFile file(filePath);
+  if (!file.open(QIODevice::ReadOnly)) {
+      pluginsTxtExists = false;
+  }
+  ON_BLOCK_EXIT([&]() {
+      qDebug("close %s", qPrintable(filePath));
+      file.close();
+  });
+
+  if (file.size() == 0) {
+      // MO stores at least a header in the file. if it's completely empty the
+      // file is broken
+      pluginsTxtExists = false;
+  }
+
+  if (pluginsTxtExists) {
+      while (!file.atEnd()) {
+          QByteArray line = file.readLine();
+          QString pluginName;
+          if ((line.size() > 0) && (line.at(0) != '#')) {
+              pluginName = m_LocalCodec->toUnicode(line.trimmed().constData());
+          }
+          if (pluginName.size() > 0) {
+              pluginList->setState(pluginName, IPluginList::STATE_ACTIVE);
+              plugins.removeAll(pluginName);
+          }
+      }
+
+      file.close();
+
+      // we removed each plugin found in the file, so what's left are inactive mods
+      for (const QString &pluginName : plugins) {
+          pluginList->setState(pluginName, IPluginList::STATE_INACTIVE);
+      }
+  } else {
+      for (const QString &pluginName : plugins) {
+          pluginList->setState(pluginName, IPluginList::STATE_INACTIVE);
+      }
   }
 
   return true;
