@@ -13,13 +13,18 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="morrowindgameplugins.cpp" line="89"/>
+        <location filename="morrowindgameplugins.cpp" line="92"/>
         <source>failed to set game file key (errorcode %1)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="morrowindgameplugins.cpp" line="97"/>
+        <location filename="morrowindgameplugins.cpp" line="100"/>
         <source>Some of your plugins have invalid names! These plugins can not be loaded by the game. Please see mo_interface.log for a list of affected plugins and rename them.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="morrowinddataarchives.cpp" line="41"/>
+        <source>failed to set archive key (errorcode %1)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
