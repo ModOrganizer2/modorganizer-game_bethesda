@@ -6,12 +6,16 @@ FILE(GLOB ${PROJ_NAME}_SRCS *.cpp)
 FILE(GLOB ${PROJ_NAME}_HDRS *.h)
 FILE(GLOB ${PROJ_NAME}_FORMS *.ui)
 
+SET(${PROJ_NAME}_QRCS
+    morrowind.qrc
+    )
 
 SET(CMAKE_INCLUDE_CURRENT_DIR ON)
 SET(CMAKE_AUTOMOC ON)
 SET(CMAKE_AUTOUIC ON)
 FIND_PACKAGE(Qt5Widgets REQUIRED)
 QT5_WRAP_UI(${PROJ_NAME}_UIHDRS ${${PROJ_NAME}_FORMS})
+QT5_ADD_RESOURCES(${PROJ_NAME}_RCCPPS ${${PROJ_NAME}_QRCS})
 FIND_PACKAGE(Qt5LinguistTools)
 QT5_CREATE_TRANSLATION(${PROJ_NAME}_translations_qm ${CMAKE_SOURCE_DIR}/src ${CMAKE_SOURCE_DIR}/src/${PROJ_NAME}_en.ts)
 
@@ -39,14 +43,14 @@ LINK_DIRECTORIES(${project_path}/uibase/build/src
 
 ADD_DEFINITIONS(-DUNICODE -D_UNICODE)
 
-ADD_LIBRARY(${PROJ_NAME} SHARED ${${PROJ_NAME}_HDRS} ${${PROJ_NAME}_SRCS} ${${PROJ_NAME}_UIHDRS} ${${PROJ_NAME}_translations_qm})
+ADD_LIBRARY(${PROJ_NAME} SHARED ${${PROJ_NAME}_HDRS} ${${PROJ_NAME}_SRCS} ${${PROJ_NAME}_UIHDRS} ${${PROJ_NAME}_RCCPPS} ${${PROJ_NAME}_translations_qm})
 TARGET_LINK_LIBRARIES(${PROJ_NAME}
                       Qt5::Widgets
                       ${Boost_LIBRARIES}
-					  DbgHelp
+                      DbgHelp
                       uibase
                       game_gamebryo
-					  liblz4
+                      liblz4
                       version)
 
 IF(MSVC)
@@ -63,6 +67,7 @@ IF (NOT "${OPTIMIZE_LINK_FLAGS}" STREQUAL "")
 ENDIF()
 
 QT5_USE_MODULES(${PROJ_NAME} Widgets)
+
 
 ###############
 ## Installation

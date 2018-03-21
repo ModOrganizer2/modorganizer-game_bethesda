@@ -95,12 +95,13 @@ QString GameMorrowind::author() const
 
 QString GameMorrowind::description() const
 {
-  return tr("Adds support for the game Morrowind");
+  return tr("Adds support for the game Morrowind.\n"
+            "Splash by %1").arg("AnyOldName");
 }
 
 MOBase::VersionInfo GameMorrowind::version() const
 {
-  return VersionInfo(0, 1, 0, VersionInfo::RELEASE_FINAL);
+  return VersionInfo(0, 2, 0, VersionInfo::RELEASE_FINAL);
 }
 
 bool GameMorrowind::isActive() const
