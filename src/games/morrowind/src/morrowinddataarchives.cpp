@@ -21,7 +21,7 @@ QStringList MorrowindDataArchives::getArchives(const QString &iniFile) const
 
   QString key = "Archive ";
   int i=0;
-  if (::GetPrivateProfileStringW(L"Archives", key.toStdWString().c_str(),
+  while (::GetPrivateProfileStringW(L"Archives", (key+QString::number(i)).toStdWString().c_str(),
                                  L"", buffer, 256, iniFileW.c_str()) != 0) {
     result.append(QString::fromStdWString(buffer).trimmed());
 	i++;
