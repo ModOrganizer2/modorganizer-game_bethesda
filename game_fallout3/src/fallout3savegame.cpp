@@ -39,6 +39,7 @@ Fallout3SaveGame::Fallout3SaveGame(QString const &fileName, MOBase::IPluginGame 
 
   file.skip<char>(5); // unknown (1 byte), plugin size (4 bytes)
 
+  file.setPluginString(GamebryoSaveGame::StringType::TYPE_BSTRING);
   file.readPlugins();
 }
 
