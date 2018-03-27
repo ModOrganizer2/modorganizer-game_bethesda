@@ -119,7 +119,7 @@ template <> void GamebryoSaveGame::FileWrapper::read(QString &value)
   if (m_PluginString == StringType::TYPE_BSTRING || m_PluginString == StringType::TYPE_BZSTRING) {
     unsigned char len;
     read(len);
-    length = len;
+    length = m_PluginString == StringType::TYPE_BZSTRING ? len + 1 : len;
   } else {
     read(length);
   }
@@ -128,18 +128,20 @@ template <> void GamebryoSaveGame::FileWrapper::read(QString &value)
 	  skip<char>();
   }
 
-  std::vector<char> buffer(m_PluginString == StringType::TYPE_BSTRING ? length+1 : length);
+  char *buffer = new char[length];
 
-  read(buffer.data(), length);
-
-  if (m_PluginString == StringType::TYPE_BSTRING)
-	  buffer[buffer.size()] = '\0';
+  read(buffer, m_PluginString == StringType::TYPE_BZSTRING ? length-1 : length);
+  
+  if (m_PluginString == StringType::TYPE_BZSTRING)
+	buffer[length-1] = '\0';
 
   if (m_HasFieldMarkers) {
     skip<char>();
   }
 
-  value = QString::fromLatin1(buffer.data(), length);
+  value = QString::fromLatin1(buffer, length);
+
+  delete buffer;
 }
 
 void GamebryoSaveGame::FileWrapper::read(void *buff, std::size_t length)
