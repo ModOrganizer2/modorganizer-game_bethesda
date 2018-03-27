@@ -6,7 +6,7 @@ OblivionSaveGame::OblivionSaveGame(QString const &fileName, MOBase::IPluginGame 
   GamebryoSaveGame(fileName, game)
 {
   FileWrapper file(this, "TES4SAVEGAME");
-  file.setBZString(true);
+  file.setPluginString(GamebryoSaveGame::StringType::TYPE_BSTRING);
 
   file.skip<unsigned char>(); //Major version
   file.skip<unsigned char>(); //Minor version
