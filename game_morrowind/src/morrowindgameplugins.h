@@ -15,7 +15,7 @@ public:
 protected:
   virtual void writePluginList(const MOBase::IPluginList *pluginList,
                                const QString &filePath);
-  virtual bool readPluginList(MOBase::IPluginList *pluginList, const QString &filePath, bool useLoadOrder);
+  virtual bool readPluginList(MOBase::IPluginList *pluginList, bool useLoadOrder);
   
 private:
   virtual void writeList(const MOBase::IPluginList *pluginList, const QString &filePath,
