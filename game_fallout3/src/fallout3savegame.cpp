@@ -8,6 +8,7 @@ Fallout3SaveGame::Fallout3SaveGame(QString const &fileName, MOBase::IPluginGame 
   file.skip<unsigned long>(); //Save header size
 
   file.setHasFieldMarkers(true);
+  file.setPluginString(GamebryoSaveGame::StringType::TYPE_BZSTRING);
 
   file.skip<unsigned long>(); //File version ?
   file.skip<unsigned char>(); //delimiter
