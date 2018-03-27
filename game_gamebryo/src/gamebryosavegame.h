@@ -43,6 +43,13 @@ public:
   QImage const &getScreenshot() const { return m_Screenshot; }
   bool const &isLightEnabled() const { return m_LightEnabled; }
 
+  enum StringType
+  {
+	  TYPE_BZSTRING,
+	  TYPE_BSTRING,
+	  TYPE_WSTRING
+  };
+
 protected:
 
   friend class FileWrapper;
@@ -62,7 +69,7 @@ protected:
 
     /** Set bz string mode (1 byte length, null terminated)
      **/
-    void setBZString(bool);
+    void setPluginString(StringType);
 
     template <typename T> void skip(int count = 1)
     {
@@ -81,6 +88,13 @@ protected:
         skip<char>();
       }
     }
+
+	void seek(unsigned long pos)
+	{
+		if (!m_File.seek(pos - m_File.pos())) {
+			throw std::runtime_error("unexpected end of file");
+		}
+	}
 
     void read(void *buff, std::size_t length);
 
@@ -118,7 +132,7 @@ protected:
     GamebryoSaveGame *m_Game;
     QFile m_File;
     bool m_HasFieldMarkers;
-    bool m_BZString;
+	StringType m_PluginString;
 	QDataStream* m_Data;
   };
 
@@ -134,7 +148,7 @@ protected:
   QStringList m_LightPlugins;
   QImage m_Screenshot;
   MOBase::IPluginGame const *m_Game;
-  uint16_t compressionType = 0;
+  uint16_t m_CompressionType = 0;
   bool m_LightEnabled;
 };
 
