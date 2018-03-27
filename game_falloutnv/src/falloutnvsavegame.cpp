@@ -18,6 +18,7 @@ FalloutNVSaveGame::FalloutNVSaveGame(QString const &fileName, MOBase::IPluginGam
   }
 
   file.setHasFieldMarkers(true);
+  file.setPluginString(GamebryoSaveGame::StringType::TYPE_BZSTRING);
 
   unsigned long width;
   file.read(width);
