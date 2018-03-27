@@ -47,5 +47,6 @@ FalloutNVSaveGame::FalloutNVSaveGame(QString const &fileName, MOBase::IPluginGam
   file.skip<char>(5); // unknown byte, size of plugin data
 
   //Abstract this
+  file.setPluginString(GamebryoSaveGame::StringType::TYPE_BSTRING);
   file.readPlugins();
 }
