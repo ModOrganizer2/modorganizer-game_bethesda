@@ -39,5 +39,6 @@ OblivionSaveGame::OblivionSaveGame(QString const &fileName, MOBase::IPluginGame 
 
   file.readImage();
 
+  //file.setPluginString(GamebryoSaveGame::StringType::TYPE_BSTRING);
   file.readPlugins();
 }
