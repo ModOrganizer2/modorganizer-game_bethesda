@@ -61,19 +61,8 @@ MorrowindSaveGame::MorrowindSaveGame(QString const &fileName, MOBase::IPluginGam
   // Start of screenshot
   file.skip<unsigned char>(4); // SCRS
   file.skip<uint32_t>(); // Size of screenshot always 65536 (128x128x4) RGBA8888
-  file.readImage(128, 128, 0, 1);
-
-  //Color correction, I am unable to get it to work in a more efficient way
-  this->m_Screenshot=this->m_Screenshot.rgbSwapped();
-  unsigned int rgb;
-
-  for(int y=0;y<this->m_Screenshot.height();y++){
-    for(int x=0;x<this->m_Screenshot.width();x++){
-      rgb=this->m_Screenshot.pixel(x,y);
-      this->m_Screenshot.setPixel(x,y,qRgba(qRed(rgb),qGreen(rgb),qBlue(rgb),255));
-    }
-  }
-  this->m_Screenshot=this->m_Screenshot.scaled(252,192);
+  readImageBGRA(file, 128, 128, 0, 1);
+  this->m_Screenshot = this->m_Screenshot.scaled(252,192);
 
   //definitively have to use another method to access the player level
   //it is stored in the fifth byte of the NPDT subrecord of the first NPC_ record
@@ -117,4 +106,28 @@ MorrowindSaveGame::MorrowindSaveGame(QString const &fileName, MOBase::IPluginGam
   std::experimental::filesystem::path realFile(fileName.toStdWString());
   QString realFileName = QString::fromStdWString(realFile.filename().wstring());
   m_SaveNumber = realFileName.mid(4, 5).remove(QRegExp("0+$")).toInt();
+}
+
+void MorrowindSaveGame::readImageBGRA(GamebryoSaveGame::FileWrapper &file, unsigned long width, unsigned long height, int scale = 0, bool alpha = false)
+{
+  QImage image(width, height, QImage::Format_RGBA8888);
+  for (unsigned long h = 0; h < width; h++) {
+    for (unsigned long w = 0; w < width; w++) {
+      uint8_t blue;
+      file.read(blue);
+      uint8_t green;
+      file.read(green);
+      uint8_t red;
+      file.read(red);
+      uint8_t alpha;
+      file.read(alpha);
+      alpha = 255 - alpha;
+      QColor color(red, green, blue, alpha);
+      image.setPixel(w, h, color.rgba());
+    }
+  }
+  if (scale != 0)
+    m_Screenshot = image.copy().scaledToWidth(scale);
+  else
+    m_Screenshot = image.copy();
 }
