@@ -45,6 +45,7 @@ bool GameMorrowind::init(IOrganizer *moInfo)
   registerFeature<LocalSavegames>(new GamebryoLocalSavegames(gameDirectory().absolutePath(), "morrowind.ini"));
   registerFeature<GamePlugins>(new MorrowindGamePlugins(moInfo));
   registerFeature<UnmanagedMods>(new GamebryoUnmangedMods(this));
+  m_Organizer = moInfo;
   return true;
 }
 

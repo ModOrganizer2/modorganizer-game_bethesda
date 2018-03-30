@@ -10,8 +10,11 @@ class GameMorrowind : public GameGamebryo
 {
   Q_OBJECT
 #if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
-  Q_PLUGIN_METADATA(IID "com.schilduin.GameMorrowind" FILE "gamemorrowind.json")
+    Q_PLUGIN_METADATA(IID "com.schilduin.GameMorrowind" FILE "gamemorrowind.json")
 #endif
+
+  friend class MorrowindSaveGameInfo;
+  friend class MorrowindSaveGameInfoWidget;
 
 public:
 
@@ -48,6 +51,12 @@ public: // IPlugin interface
   virtual MOBase::VersionInfo version() const;
   virtual bool isActive() const;
   virtual QList<MOBase::PluginSetting> settings() const;
+
+private:
+
+  MOBase::IOrganizer *m_Organizer;
 };
+
+
 
 #endif // GAMEMORROWIND_H
