@@ -21,6 +21,9 @@ protected:
   float m_PCCurrentHealth;
   float m_PCCMaxHealth;
   float m_GameDays;
+
+protected:
+  void readImageBGRA(GamebryoSaveGame::FileWrapper &file, unsigned long width, unsigned long height, int scale, bool alpha);
 };
 
 #endif // MORROWINDSAVEGAME_H
