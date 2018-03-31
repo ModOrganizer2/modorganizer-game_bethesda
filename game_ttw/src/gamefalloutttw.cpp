@@ -148,17 +148,12 @@ QString GameFalloutTTW::gameNexusName() const
 
 QStringList GameFalloutTTW::iniFiles() const
 {
-  return { "fallout.ini", "falloutprefs.ini", "falloutcustom.ini",  "custom.ini"};
+  return { "fallout.ini", "falloutprefs.ini", "falloutcustom.ini",  "custom.ini" };
 }
 
 QStringList GameFalloutTTW::DLCPlugins() const
 {
-  return { "FalloutNV.esm", "DeadMoney.esm", "HonestHearts.esm",
-           "OldWorldBlues.esm", "LonesomeRoad.esm", "GunRunnersArsenal.esm",
-		   "CaravanPack.esm", "ClassicPack.esm", "MercenaryPack.esm",
-		   "TribalPack.esm", "Fallout3.esm", "Anchorage.esm",
-		   "ThePitt.esm", "BrokenSteel.esm", "PointLookout.esm",
-		   "Zeta.esm", "TaleOfTwoWastelands.esm"};
+  return {};
 }
 
 int GameFalloutTTW::nexusModOrganizerID() const
