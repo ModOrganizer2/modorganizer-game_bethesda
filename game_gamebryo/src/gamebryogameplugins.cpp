@@ -132,9 +132,8 @@ bool GamebryoGamePlugins::readLoadOrderList(MOBase::IPluginList *pluginList,
         ON_BLOCK_EXIT([&file]() { file.close(); });
 
         if (file.size() == 0) {
-            // MO stores at least a header in the file. if it's completely empty the
-            // file is broken
-            return false;
+          readPluginList(pluginList, true);
+          return true;
         }
         while (!file.atEnd()) {
             QByteArray line = file.readLine().trimmed();
@@ -165,8 +164,9 @@ bool GamebryoGamePlugins::readPluginList(MOBase::IPluginList *pluginList,
       }
   }
   QStringList plugins = pluginList->pluginNames();
+  QStringList pluginsClone(plugins);
   // Do not sort the primary plugins. Their load order should be locked as defined in "primaryPlugins".
-  for (QString plugin : plugins) {
+  for (QString plugin : pluginsClone) {
       if (primary.contains(plugin, Qt::CaseInsensitive))
           plugins.removeAll(plugin);
   }
