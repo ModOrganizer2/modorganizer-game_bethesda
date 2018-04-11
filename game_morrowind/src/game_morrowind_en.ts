@@ -4,7 +4,7 @@
 <context>
     <name>GameMorrowind</name>
     <message>
-        <location filename="gamemorrowind.cpp" line="98"/>
+        <location filename="gamemorrowind.cpp" line="99"/>
         <source>Adds support for the game Morrowind.
 Splash by %1</source>
         <oldsource>Adds support for the game Morrowind</oldsource>
@@ -14,49 +14,43 @@ Splash by %1</source>
 <context>
     <name>MorrowindSaveGameInfoWidget</name>
     <message>
-        <location filename="morrowindsavegameinfowidget.ui" line="39"/>
+        <location filename="morrowindsavegameinfowidget.ui" line="53"/>
         <source>Save #</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="morrowindsavegameinfowidget.ui" line="51"/>
+        <location filename="morrowindsavegameinfowidget.ui" line="78"/>
         <source>Character</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="morrowindsavegameinfowidget.ui" line="63"/>
+        <location filename="morrowindsavegameinfowidget.ui" line="103"/>
         <source>Level</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="morrowindsavegameinfowidget.ui" line="75"/>
+        <location filename="morrowindsavegameinfowidget.ui" line="128"/>
+        <source>Health</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="morrowindsavegameinfowidget.ui" line="153"/>
         <source>Location</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="morrowindsavegameinfowidget.ui" line="87"/>
+        <location filename="morrowindsavegameinfowidget.ui" line="178"/>
         <source>Date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="morrowindsavegameinfowidget.cpp" line="73"/>
-        <source>Has Script Extender Data</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="morrowindsavegameinfowidget.cpp" line="78"/>
+        <location filename="morrowindsavegameinfowidget.cpp" line="74"/>
         <source>Missing ESPs</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="morrowindsavegameinfowidget.cpp" line="111"/>
-        <location filename="morrowindsavegameinfowidget.cpp" line="149"/>
+        <location filename="morrowindsavegameinfowidget.cpp" line="107"/>
         <source>None</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="morrowindsavegameinfowidget.cpp" line="117"/>
-        <source>Missing ESLs</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
