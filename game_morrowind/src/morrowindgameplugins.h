@@ -13,9 +13,8 @@ public:
   virtual void readPluginLists(MOBase::IPluginList *pluginList) override;
   
 protected:
-  virtual void writePluginList(const MOBase::IPluginList *pluginList,
-                               const QString &filePath);
-  virtual bool readPluginList(MOBase::IPluginList *pluginList, bool useLoadOrder);
+  virtual void writePluginList(const MOBase::IPluginList *pluginList, const QString &filePath) override;
+  virtual bool readPluginList(MOBase::IPluginList *pluginList, bool useLoadOrder) override;
   
 private:
   virtual void writeList(const MOBase::IPluginList *pluginList, const QString &filePath,
