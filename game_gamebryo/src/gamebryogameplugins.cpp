@@ -171,26 +171,21 @@ bool GamebryoGamePlugins::readPluginList(MOBase::IPluginList *pluginList,
           plugins.removeAll(plugin);
   }
 
-  if (useLoadOrder) {
-      // Always use filetime loadorder to get the actual load order
-      std::sort(plugins.begin(), plugins.end(), [&](const QString &lhs, const QString &rhs) {
-          MOBase::IModInterface *lhm = organizer()->getMod(pluginList->origin(lhs));
-          MOBase::IModInterface *rhm = organizer()->getMod(pluginList->origin(rhs));
-          QDir lhd = organizer()->managedGame()->dataDirectory();
-          QDir rhd = organizer()->managedGame()->dataDirectory();
-          if (lhm != nullptr)
-              lhd = lhm->absolutePath();
-          if (rhm != nullptr)
-              rhd = rhm->absolutePath();
-          QString lhp = lhd.absoluteFilePath(lhs);
-          QString rhp = rhd.absoluteFilePath(rhs);
-          return QFileInfo(lhp).lastModified() <
-              QFileInfo(rhp).lastModified();
-      });
-
-      // Add the primary plugins to the beginning of the load order
-      pluginList->setLoadOrder(primary + plugins);
-  }
+  // Always use filetime loadorder to get the actual load order
+  std::sort(plugins.begin(), plugins.end(), [&](const QString &lhs, const QString &rhs) {
+      MOBase::IModInterface *lhm = organizer()->getMod(pluginList->origin(lhs));
+      MOBase::IModInterface *rhm = organizer()->getMod(pluginList->origin(rhs));
+      QDir lhd = organizer()->managedGame()->dataDirectory();
+      QDir rhd = organizer()->managedGame()->dataDirectory();
+      if (lhm != nullptr)
+          lhd = lhm->absolutePath();
+      if (rhm != nullptr)
+          rhd = rhm->absolutePath();
+      QString lhp = lhd.absoluteFilePath(lhs);
+      QString rhp = rhd.absoluteFilePath(rhs);
+      return QFileInfo(lhp).lastModified() <
+          QFileInfo(rhp).lastModified();
+  });
 
   // Determine plugin active state by the plugins.txt file.
   bool pluginsTxtExists = true;
@@ -210,6 +205,8 @@ bool GamebryoGamePlugins::readPluginList(MOBase::IPluginList *pluginList,
       pluginsTxtExists = false;
   }
 
+  QStringList activePlugins;
+  QStringList inactivePlugins;
   if (pluginsTxtExists) {
       while (!file.atEnd()) {
           QByteArray line = file.readLine();
@@ -219,14 +216,19 @@ bool GamebryoGamePlugins::readPluginList(MOBase::IPluginList *pluginList,
           }
           if (pluginName.size() > 0) {
               pluginList->setState(pluginName, IPluginList::STATE_ACTIVE);
-              plugins.removeAll(pluginName);
+              activePlugins.push_back(pluginName);
           }
       }
 
-      file.close();
-
       // we removed each plugin found in the file, so what's left are inactive mods
-      for (const QString &pluginName : plugins) {
+      for (const QString &pluginName : activePlugins) {
+        if (!activePlugins.contains(pluginName)) {
+          inactivePlugins.push_back(pluginName);
+          plugins.removeAll(pluginName);
+        }
+      }
+
+      for (const QString &pluginName : inactivePlugins) {
           pluginList->setState(pluginName, IPluginList::STATE_INACTIVE);
       }
   } else {
@@ -234,6 +236,9 @@ bool GamebryoGamePlugins::readPluginList(MOBase::IPluginList *pluginList,
           pluginList->setState(pluginName, IPluginList::STATE_INACTIVE);
       }
   }
+
+  if (useLoadOrder)
+      pluginList->setLoadOrder(primary + plugins + inactivePlugins);
 
   return true;
 }
