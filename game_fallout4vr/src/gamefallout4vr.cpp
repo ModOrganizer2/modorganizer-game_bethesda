@@ -108,7 +108,7 @@ QList<ExecutableInfo> GameFallout4VR::executables() const
       << ExecutableInfo("Fallout 4 VR", findInGameFolder(binaryName()))
       //<< ExecutableInfo("Fallout Launcher", findInGameFolder(getLauncherName())) // Fallout 4 VR does not have a launcher
       << ExecutableInfo("Creation Kit", findInGameFolder("CreationKit.exe"))
-      << ExecutableInfo("LOOT", getLootPath()).withArgument("--game=\"Fallout4\"")
+      << ExecutableInfo("LOOT", getLootPath()).withArgument("--game=\"Fallout4VR\"")
          ;
 }
 
