@@ -220,17 +220,15 @@ bool GamebryoGamePlugins::readPluginList(MOBase::IPluginList *pluginList,
           }
       }
 
-      // we removed each plugin found in the file, so what's left are inactive mods
-      for (const QString &pluginName : activePlugins) {
-        if (!activePlugins.contains(pluginName)) {
+      for (const QString &pluginName : plugins)
+        if (!activePlugins.contains(pluginName))
           inactivePlugins.push_back(pluginName);
-          plugins.removeAll(pluginName);
-        }
-      }
 
-      for (const QString &pluginName : inactivePlugins) {
-          pluginList->setState(pluginName, IPluginList::STATE_INACTIVE);
-      }
+      for (const QString &pluginName : inactivePlugins)
+        plugins.removeAll(pluginName);
+
+      for (const QString &pluginName : inactivePlugins)
+        pluginList->setState(pluginName, IPluginList::STATE_INACTIVE);
   } else {
       for (const QString &pluginName : plugins) {
           pluginList->setState(pluginName, IPluginList::STATE_INACTIVE);
