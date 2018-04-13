@@ -99,3 +99,9 @@ MOBase::ISaveGameInfoWidget *GamebryoSaveGameInfo::getSaveGameWidget(QWidget *pa
 {
   return new GamebryoSaveGameInfoWidget(this, parent);
 }
+
+bool GamebryoSaveGameInfo::hasScriptExtenderSave(QString const &file) const
+{
+    GamebryoSaveGame const *save = dynamic_cast<GamebryoSaveGame const *>(getSaveGameInfo(file));
+    return save->hasScriptExtenderFile();
+}
