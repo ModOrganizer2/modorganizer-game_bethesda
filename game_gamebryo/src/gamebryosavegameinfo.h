@@ -15,6 +15,8 @@ public:
 
   virtual MOBase::ISaveGameInfoWidget *getSaveGameWidget(QWidget *) const override;
 
+  virtual bool hasScriptExtenderSave(QString const &file) const override;
+
 protected:
   friend class GamebryoSaveGameInfoWidget;
   GameGamebryo const *m_Game;
