@@ -143,9 +143,9 @@ QStringList GameOblivion::iniFiles() const
 
 QStringList GameOblivion::DLCPlugins() const
 {
-  return { "DLCShiveringIsles.esp", "Knights.esp", "DLCFrostcrag.esp",
+  return { "DLCBattlehornCastle.esp", "DLCShiveringIsles.esp", "Knights.esp", "DLCFrostcrag.esp",
            "DLCSpellTomes.esp", "DLCMehrunesRazor.esp", "DLCOrrery.esp",
-           "DLCThievesDen.esp", "DLCVileLair.esp", "DLCHorseArmor.esp" };
+           "DLCThievesDen.esp", "DLCVileLair.esp", "DLCHorseArmor.esp"  };
 }
 
 
