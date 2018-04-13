@@ -50,12 +50,10 @@ void MorrowindGamePlugins::readPluginLists(MOBase::IPluginList *pluginList) {
   if (loadOrderIsNew || !pluginsIsNew) {
     // read both files if they are both new or both older than the last read
     readLoadOrderList(pluginList, loadOrderPath);
-    readPluginList(pluginList, pluginsPath, false);
+    readPluginList(pluginList, false);
   } else {
-    // if the plugin list is new but the load order isn't, this probably means
-    // an external tool that handles only the plugins.txt has been run in the
-    // meantime. We have to use plugins.txt for the load order as well.
-    readPluginList(pluginList, pluginsPath, true);
+    // If the plugins is new but not loadorder, we must reparse the load order from the plugin files
+    readPluginList(pluginList, true);
   }
 
   m_LastRead = QDateTime::currentDateTime();
@@ -109,34 +107,70 @@ void MorrowindGamePlugins::writeList(const IPluginList *pluginList,
   }
 }
 
-bool MorrowindGamePlugins::readPluginList(MOBase::IPluginList *pluginList, const QString &filePath, bool useLoadOrder) {
+bool MorrowindGamePlugins::readPluginList(MOBase::IPluginList *pluginList,
+                                          bool useLoadOrder) {
+  QStringList primary = organizer()->managedGame()->primaryPlugins();
+  for (const QString &pluginName : primary) {
+    if (pluginList->state(pluginName) != IPluginList::STATE_MISSING) {
+      pluginList->setState(pluginName, IPluginList::STATE_ACTIVE);
+    }
+  }
   QStringList plugins = pluginList->pluginNames();
+  // Do not sort the primary plugins. Their load order should be locked as defined in "primaryPlugins".
+  for (QString plugin : plugins) {
+    if (primary.contains(plugin, Qt::CaseInsensitive))
+      plugins.removeAll(plugin);
+  }
+
+  // Always use filetime loadorder to get the actual load order
+  std::sort(plugins.begin(), plugins.end(), [&](const QString &lhs, const QString &rhs) {
+    MOBase::IModInterface *lhm = organizer()->getMod(pluginList->origin(lhs));
+    MOBase::IModInterface *rhm = organizer()->getMod(pluginList->origin(rhs));
+    QDir lhd = organizer()->managedGame()->dataDirectory();
+    QDir rhd = organizer()->managedGame()->dataDirectory();
+    if (lhm != nullptr)
+      lhd = lhm->absolutePath();
+    if (rhm != nullptr)
+      rhd = rhm->absolutePath();
+    QString lhp = lhd.absoluteFilePath(lhs);
+    QString rhp = rhd.absoluteFilePath(rhs);
+    return QFileInfo(lhp).lastModified() <
+      QFileInfo(rhp).lastModified();
+  });
+
+  QString filePath = organizer()->profile()->absolutePath() + "/Morrowind.ini";
   wchar_t buffer[256];
   QStringList result;
   std::wstring iniFileW = QDir::toNativeSeparators(filePath).toStdWString();
-  
+
   errno = 0;
 
-  QStringList loadOrder;
+  QStringList activePlugins;
+  QStringList inactivePlugins;
   QString key = "GameFile";
-  int i=0;
-  while (::GetPrivateProfileStringW(L"Game Files", (key+QString::number(i)).toStdWString().c_str(),
-                                 L"", buffer, 256, iniFileW.c_str()) != 0) {
-	QString pluginName;
-    pluginName=QString::fromStdWString(buffer).trimmed();
-	pluginList->setState(pluginName, IPluginList::STATE_ACTIVE);
+  int i = 0;
+  while (::GetPrivateProfileStringW(L"Game Files", (key + QString::number(i)).toStdWString().c_str(),
+    L"", buffer, 256, iniFileW.c_str()) != 0) {
+    QString pluginName;
+    pluginName = QString::fromStdWString(buffer).trimmed();
+    pluginList->setState(pluginName, IPluginList::STATE_ACTIVE);
+    activePlugins.push_back(pluginName);
+    i++;
+  }
+
+  // we removed each plugin found in the file, so what's left are inactive mods
+  for (const QString &pluginName : plugins)
+    if (!activePlugins.contains(pluginName))
+      inactivePlugins.push_back(pluginName);
+
+  for (const QString &pluginName : inactivePlugins)
     plugins.removeAll(pluginName);
-    loadOrder.append(pluginName);
-	i++;
-  }
 
-  for (const QString &pluginName : plugins) {
+  for (const QString &pluginName : inactivePlugins)
     pluginList->setState(pluginName, IPluginList::STATE_INACTIVE);
-  }
 
-  if (useLoadOrder) {
-    pluginList->setLoadOrder(loadOrder);
-  }
+  if (useLoadOrder)
+    pluginList->setLoadOrder(primary + plugins + inactivePlugins);
 
   return true;
 }

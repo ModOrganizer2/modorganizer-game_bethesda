@@ -45,6 +45,7 @@ bool GameMorrowind::init(IOrganizer *moInfo)
   registerFeature<LocalSavegames>(new GamebryoLocalSavegames(gameDirectory().absolutePath(), "morrowind.ini"));
   registerFeature<GamePlugins>(new MorrowindGamePlugins(moInfo));
   registerFeature<UnmanagedMods>(new GamebryoUnmangedMods(this));
+  m_Organizer = moInfo;
   return true;
 }
 
@@ -95,12 +96,13 @@ QString GameMorrowind::author() const
 
 QString GameMorrowind::description() const
 {
-  return tr("Adds support for the game Morrowind");
+  return tr("Adds support for the game Morrowind.\n"
+            "Splash by %1").arg("AnyOldName");
 }
 
 MOBase::VersionInfo GameMorrowind::version() const
 {
-  return VersionInfo(0, 1, 0, VersionInfo::RELEASE_FINAL);
+  return VersionInfo(0, 2, 0, VersionInfo::RELEASE_FINAL);
 }
 
 bool GameMorrowind::isActive() const
@@ -147,7 +149,7 @@ QString GameMorrowind::steamAPPId() const
 
 QStringList GameMorrowind::primaryPlugins() const
 {
-  return { "Morrowind.esm" };
+  return { "morrowind.esm" };
 }
 
 QString GameMorrowind::binaryName() const
