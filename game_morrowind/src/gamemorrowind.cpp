@@ -97,7 +97,7 @@ QString GameMorrowind::author() const
 QString GameMorrowind::description() const
 {
   return tr("Adds support for the game Morrowind.\n"
-            "Splash by %1").arg("AnyOldName");
+            "Splash by %1").arg("AnyOldName3");
 }
 
 MOBase::VersionInfo GameMorrowind::version() const
