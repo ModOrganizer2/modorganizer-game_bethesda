@@ -173,6 +173,11 @@ QString GameGamebryo::binaryName() const
   return gameShortName() + ".exe";
 }
 
+QStringList GameGamebryo::validShortNames() const
+{
+  return {};
+}
+
 QStringList GameGamebryo::CCPlugins() const
 {
   return {};
