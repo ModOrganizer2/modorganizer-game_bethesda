@@ -138,7 +138,12 @@ QStringList GameFalloutTTW::primaryPlugins() const
 
 QString GameFalloutTTW::gameShortName() const
 {
-  return "FalloutNV";
+  return "TTW";
+}
+
+QStringList GameFalloutTTW::validShortNames() const
+{
+  return { "Fallout3", "FalloutNV" };
 }
 
 QString GameFalloutTTW::gameNexusName() const
