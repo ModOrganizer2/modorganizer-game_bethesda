@@ -169,7 +169,7 @@ bool GameSkyrimVR::init(IOrganizer *moInfo)
 
     registerFeature<ScriptExtender>(new SkyrimVRScriptExtender(this));
     registerFeature<DataArchives>(new SkyrimVRDataArchives(myGamesPath()));
-    registerFeature<LocalSavegames>(new GamebryoLocalSavegames(myGamesPath(), "SkyrimPrefs.ini"));
+    registerFeature<LocalSavegames>(new GamebryoLocalSavegames(myGamesPath(), "SkyrimVR.ini"));
     registerFeature<SaveGameInfo>(new SkyrimVRSaveGameInfo(this));
     registerFeature<GamePlugins>(new SkyrimVRGamePlugins(moInfo));
     registerFeature<UnmanagedMods>(new SkyrimVRUnmangedMods(this));
@@ -237,7 +237,14 @@ void GameSkyrimVR::initializeProfile(const QDir &path, ProfileSettings settings)
     }
 
     if (settings.testFlag(IPluginGame::CONFIGURATION)) {
-        copyToProfile(myGamesPath(), path, "skyrimprefs.ini");
+      if (settings.testFlag(IPluginGame::PREFER_DEFAULTS)
+        || !QFileInfo(myGamesPath() + "/skyrimvr.ini").exists()) {
+        copyToProfile(gameDirectory().absolutePath(), path, "skyrim.ini", "skyrimvr.ini");
+      } else {
+        copyToProfile(myGamesPath(), path, "skyrimvr.ini");
+      }
+
+      copyToProfile(myGamesPath(), path, "skyrimprefs.ini");
     }
 }
 
@@ -271,7 +278,12 @@ QStringList GameSkyrimVR::gameVariants() const
 
 QString GameSkyrimVR::gameShortName() const
 {
-    return "SkyrimSE";
+    return "SkyrimVR";
+}
+
+QStringList GameSkyrimVR::validShortNames() const
+{
+    return { "Skyrim", "SkyrimSE" };
 }
 
 QString GameSkyrimVR::gameNexusName() const
@@ -282,7 +294,7 @@ QString GameSkyrimVR::gameNexusName() const
 
 QStringList GameSkyrimVR::iniFiles() const
 {
-    return{ "skyrimprefs.ini" };
+  return{ "skyrimvr.ini", "skyrimprefs.ini" };
 }
 
 QStringList GameSkyrimVR::DLCPlugins() const
