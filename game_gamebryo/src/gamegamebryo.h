@@ -57,6 +57,7 @@ public: // IPluginGame interface
   virtual void setGameVariant(const QString &variant) override;
   virtual QString binaryName() const override;
   //gameShortName
+  virtual QStringList validShortNames() const override;
   //iniFiles
   //DLCPlugins
   virtual QStringList CCPlugins() const override;
