@@ -205,6 +205,11 @@ QString GameFallout4VR::gameShortName() const
   return "Fallout4VR";
 }
 
+QStringList GameFallout4VR::validShortNames() const
+{
+  return { "Fallout4" };
+}
+
 QString GameFallout4VR::gameNexusName() const
 {
   return "Fallout4";
