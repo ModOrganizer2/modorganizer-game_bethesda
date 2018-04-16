@@ -225,9 +225,6 @@ bool GamebryoGamePlugins::readPluginList(MOBase::IPluginList *pluginList,
           inactivePlugins.push_back(pluginName);
 
       for (const QString &pluginName : inactivePlugins)
-        plugins.removeAll(pluginName);
-
-      for (const QString &pluginName : inactivePlugins)
         pluginList->setState(pluginName, IPluginList::STATE_INACTIVE);
   } else {
       for (const QString &pluginName : plugins) {
@@ -236,7 +233,7 @@ bool GamebryoGamePlugins::readPluginList(MOBase::IPluginList *pluginList,
   }
 
   if (useLoadOrder)
-      pluginList->setLoadOrder(primary + plugins + inactivePlugins);
+      pluginList->setLoadOrder(primary + plugins);
 
   return true;
 }
