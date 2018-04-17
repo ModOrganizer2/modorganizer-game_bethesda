@@ -47,9 +47,9 @@ public: // IPlugin interface
   virtual bool isActive() const;
   virtual QList<MOBase::PluginSetting> settings() const;
 
-private:
+protected:
 
-  QString identifyGamePath() const;
+  virtual QString identifyGamePath() const override;
 
 };
 
