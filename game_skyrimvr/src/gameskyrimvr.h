@@ -36,7 +36,6 @@ public: // IPluginGame interface
     virtual int nexusModOrganizerID() const override;
     virtual int nexusGameID() const override;
     virtual QString getLauncherName() const override;
-	virtual QString GameSkyrimVR::binaryName() const;
 
     virtual bool isInstalled() const override;
     virtual void setGamePath(const QString &path) override;
@@ -51,19 +50,14 @@ public: // IPlugin interface
     virtual QList<MOBase::PluginSetting> settings() const override;
 
 public: // IPluginFileMapper
-    virtual MappingType mappings() const;
+    virtual MappingType mappings() const override;
 
 protected:
     QDir documentsDirectory() const;
     QDir savesDirectory() const;
     QFileInfo findInGameFolder(const QString &relativePath) const;
     QString myGamesPath() const;
-
-private:
-    MOBase::IOrganizer *m_Organizer;
-    QString identifyGamePath() const;
-    QString m_GamePath;
-    QString m_MyGamesPath;
+    virtual QString identifyGamePath() const override;
 };
 
 #endif // _GAMESKYRIMVR_H

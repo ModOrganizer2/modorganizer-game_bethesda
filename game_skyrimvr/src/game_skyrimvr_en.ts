@@ -4,7 +4,7 @@
 <context>
     <name>GameSkyrimVR</name>
     <message>
-        <location filename="gameskyrimvr.cpp" line="214"/>
+        <location filename="gameskyrimvr.cpp" line="116"/>
         <source>Adds support for the game Skyrim VR.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -61,14 +61,12 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../../game_gamebryo/src/gamegamebryo.cpp" line="45"/>
-        <location filename="gameskyrimvr.cpp" line="48"/>
+        <location filename="../../game_gamebryo/src/gamegamebryo.cpp" line="276"/>
         <source>failed to query registry path (preflight): %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../game_gamebryo/src/gamegamebryo.cpp" line="52"/>
-        <location filename="gameskyrimvr.cpp" line="55"/>
+        <location filename="../../game_gamebryo/src/gamegamebryo.cpp" line="283"/>
         <source>failed to query registry path (read): %1</source>
         <translation type="unfinished"></translation>
     </message>
