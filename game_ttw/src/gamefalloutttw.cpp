@@ -7,7 +7,6 @@
 
 #include "executableinfo.h"
 #include "pluginsetting.h"
-#include "iplugingame.h"
 #include "versioninfo.h"
 #include <gamebryolocalsavegames.h>
 #include <gamebryogameplugins.h>
@@ -23,48 +22,6 @@
 
 #include <memory>
 
-#include "utility.h"
-#include <windows.h>
-#include <winreg.h>
-#include "scopeguard.h"
-
-namespace {
-  std::unique_ptr<BYTE[]> getRegValue(HKEY key, LPCWSTR path, LPCWSTR value,
-    DWORD flags, LPDWORD type = nullptr)
-  {
-    DWORD size = 0;
-    HKEY subKey;
-    LONG res = ::RegOpenKeyExW(key, path, 0,
-      KEY_QUERY_VALUE | KEY_WOW64_32KEY, &subKey);
-    if (res != ERROR_SUCCESS) {
-      return std::unique_ptr<BYTE[]>();
-    }
-    res = ::RegGetValueW(subKey, L"", value, flags, type, nullptr, &size);
-    if (res == ERROR_FILE_NOT_FOUND || res == ERROR_UNSUPPORTED_TYPE) {
-      return std::unique_ptr<BYTE[]>();
-    }
-    if (res != ERROR_SUCCESS && res != ERROR_MORE_DATA) {
-      throw MOBase::MyException(QObject::tr("failed to query registry path (preflight): %1").arg(res, 0, 16));
-    }
-
-    std::unique_ptr<BYTE[]> result(new BYTE[size]);
-    res = ::RegGetValueW(subKey, L"", value, flags, type, result.get(), &size);
-
-    if (res != ERROR_SUCCESS) {
-      throw MOBase::MyException(QObject::tr("failed to query registry path (read): %1").arg(res, 0, 16));
-    }
-
-    return result;
-  }
-
-  QString findInRegistry(HKEY baseKey, LPCWSTR path, LPCWSTR value)
-  {
-    std::unique_ptr<BYTE[]> buffer = getRegValue(baseKey, path, value, RRF_RT_REG_SZ | RRF_NOEXPAND);
-
-    return QString::fromUtf16(reinterpret_cast<const ushort*>(buffer.get()));
-  }
-}
-
 using namespace MOBase;
 
 GameFalloutTTW::GameFalloutTTW()
@@ -76,6 +33,8 @@ bool GameFalloutTTW::init(IOrganizer *moInfo)
   if (!GameGamebryo::init(moInfo)) {
     return false;
   }
+  m_GamePath = identifyGamePath();
+  m_MyGamesPath = determineMyGamesPath("FalloutNV");
   registerFeature<ScriptExtender>(new FalloutTTWScriptExtender(this));
   registerFeature<DataArchives>(new FalloutTTWDataArchives(myGamesPath()));
   registerFeature<BSAInvalidation>(new FalloutTTWBSAInvalidation(feature<DataArchives>(), this));
