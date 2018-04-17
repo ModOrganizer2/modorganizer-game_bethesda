@@ -7,7 +7,6 @@
 #include "fallout4unmanagedmods.h"
 
 #include <pluginsetting.h>
-#include "iplugingame.h"
 #include <executableinfo.h>
 #include <gamebryolocalsavegames.h>
 #include <gamebryogameplugins.h>
@@ -23,9 +22,6 @@
 
 #include <memory>
 
-#include "utility.h"
-#include <windows.h>
-#include <winreg.h>
 #include "scopeguard.h"
 
 using namespace MOBase;
