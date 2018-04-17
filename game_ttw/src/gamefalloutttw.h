@@ -28,6 +28,7 @@ public: // IPluginGame interface
   virtual QString savegameSEExtension() const override;
   virtual QString steamAPPId() const override;
   virtual QStringList primaryPlugins() const override;
+  virtual QString binaryName() const override;
   virtual QString gameShortName() const override;
   virtual QStringList validShortNames() const override;
   virtual QString gameNexusName() const override;
@@ -35,6 +36,7 @@ public: // IPluginGame interface
   virtual QStringList DLCPlugins() const override;
   virtual int nexusModOrganizerID() const override;
   virtual int nexusGameID() const override;
+  virtual QString getLauncherName() const override;
 
 public: // IPlugin interface
 
@@ -44,6 +46,10 @@ public: // IPlugin interface
   virtual MOBase::VersionInfo version() const;
   virtual bool isActive() const;
   virtual QList<MOBase::PluginSetting> settings() const;
+
+private:
+
+  QString identifyGamePath() const;
 
 };
 
