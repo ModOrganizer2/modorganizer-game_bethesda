@@ -168,6 +168,11 @@ QStringList GameFalloutTTW::DLCPlugins() const
   return {};
 }
 
+MOBase::IPluginGame::SortMechanism GameFalloutTTW::sortMechanism() const
+{
+  return SortMechanism::NONE;
+}
+
 int GameFalloutTTW::nexusModOrganizerID() const
 {
   return 42572;
