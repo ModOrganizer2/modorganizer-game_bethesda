@@ -33,6 +33,7 @@ public: // IPluginGame interface
     virtual QStringList DLCPlugins() const override;
     virtual QStringList CCPlugins() const override;
     virtual LoadOrderMechanism loadOrderMechanism() const override;
+    virtual SortMechanism sortMechanism() const override;
     virtual int nexusModOrganizerID() const override;
     virtual int nexusGameID() const override;
     virtual QString getLauncherName() const override;
