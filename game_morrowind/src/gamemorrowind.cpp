@@ -178,6 +178,11 @@ QStringList GameMorrowind::DLCPlugins() const
   return { "Tribunal.esm", "Bloodmoon.esm" };
 }
 
+MOBase::IPluginGame::SortMechanism GameMorrowind::sortMechanism() const
+{
+  return SortMechanism::NONE;
+}
+
 namespace {
 //Note: This is ripped off from shared/util. And in an upcoming move, the fomod
 //installer requires something similar. I suspect I should abstract this out
