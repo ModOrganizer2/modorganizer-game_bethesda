@@ -102,6 +102,11 @@ MOBase::IPluginGame::LoadOrderMechanism GameGamebryo::loadOrderMechanism() const
   return LoadOrderMechanism::FileTime;
 }
 
+MOBase::IPluginGame::SortMechanism GameGamebryo::sortMechanism() const
+{
+  return SortMechanism::LOOT;
+}
+
 bool GameGamebryo::looksValid(QDir const &path) const
 {
   //Check for <prog>.exe and <gamename>Launcher.exe for now.

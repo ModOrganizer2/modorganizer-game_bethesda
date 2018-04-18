@@ -62,6 +62,7 @@ public: // IPluginGame interface
   //DLCPlugins
   virtual QStringList CCPlugins() const override;
   virtual LoadOrderMechanism loadOrderMechanism() const override;
+  virtual SortMechanism sortMechanism() const override;
   //nexusModOrganizerID
   //nexusGameID
   virtual bool looksValid(QDir const &) const override;
