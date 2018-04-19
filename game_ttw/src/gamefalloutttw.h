@@ -41,12 +41,16 @@ public: // IPluginGame interface
 
 public: // IPlugin interface
 
-  virtual QString name() const;
-  virtual QString author() const;
-  virtual QString description() const;
-  virtual MOBase::VersionInfo version() const;
-  virtual bool isActive() const;
-  virtual QList<MOBase::PluginSetting> settings() const;
+  virtual QString name() const override;
+  virtual QString author() const override;
+  virtual QString description() const override;
+  virtual MOBase::VersionInfo version() const override;
+  virtual bool isActive() const override;
+  virtual QList<MOBase::PluginSetting> settings() const override;
+
+public: // IPluginFileMapper interface
+
+  virtual MappingType mappings() const override;
 
 protected:
 
