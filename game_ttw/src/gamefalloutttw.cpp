@@ -193,3 +193,16 @@ QString GameFalloutTTW::identifyGamePath() const
   QString path = "Software\\Bethesda Softworks\\FalloutNV";
   return findInRegistry(HKEY_LOCAL_MACHINE, path.toStdWString().c_str(), L"Installed Path");
 }
+
+MappingType GameFalloutTTW::mappings() const
+{
+  MappingType result;
+
+  for (const QString &profileFile : { "plugins.txt", "loadorder.txt" }) {
+    result.push_back({ m_Organizer->profilePath() + "/" + profileFile,
+      localAppFolder() + "/FalloutNV/" + profileFile,
+      false });
+  }
+
+  return result;
+}
