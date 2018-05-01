@@ -61,12 +61,12 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../../game_gamebryo/src/gamegamebryo.cpp" line="276"/>
+        <location filename="../../game_gamebryo/src/gamegamebryo.cpp" line="281"/>
         <source>failed to query registry path (preflight): %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../game_gamebryo/src/gamegamebryo.cpp" line="283"/>
+        <location filename="../../game_gamebryo/src/gamegamebryo.cpp" line="288"/>
         <source>failed to query registry path (read): %1</source>
         <translation type="unfinished"></translation>
     </message>
