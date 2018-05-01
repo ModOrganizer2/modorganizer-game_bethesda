@@ -128,9 +128,10 @@ template <> void GamebryoSaveGame::FileWrapper::read(QString &value)
     skip<char>();
   }
 
-  char *buffer = new char[length];
+  QByteArray buffer;
+  buffer.resize(length);
 
-  read(buffer, m_PluginString == StringType::TYPE_BZSTRING ? length - 1 : length);
+  read(buffer.data(), m_PluginString == StringType::TYPE_BZSTRING ? length - 1 : length);
 
   if (m_PluginString == StringType::TYPE_BZSTRING)
     buffer[length - 1] = '\0';
@@ -139,9 +140,7 @@ template <> void GamebryoSaveGame::FileWrapper::read(QString &value)
     skip<char>();
   }
 
-  value = QString::fromLatin1(buffer, length);
-
-  delete buffer;
+  value = QString::fromUtf8(buffer.constData());
 }
 
 void GamebryoSaveGame::FileWrapper::read(void *buff, std::size_t length)
