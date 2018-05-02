@@ -197,7 +197,7 @@ IPluginGame::LoadOrderMechanism GameFallout4::loadOrderMechanism() const
 
 int GameFallout4::nexusModOrganizerID() const
 {
-  return 0; //...
+  return 28715;
 }
 
 int GameFallout4::nexusGameID() const
