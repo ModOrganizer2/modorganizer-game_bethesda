@@ -148,6 +148,11 @@ QString GameFalloutTTW::gameShortName() const
   return "TTW";
 }
 
+QStringList GameFalloutTTW::primarySources() const
+{
+  return { "FalloutNV" };
+}
+
 QStringList GameFalloutTTW::validShortNames() const
 {
   return { "FalloutNV", "Fallout3" };
