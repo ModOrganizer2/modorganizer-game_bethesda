@@ -183,6 +183,11 @@ QString GameSkyrimVR::gameShortName() const
     return "SkyrimVR";
 }
 
+QStringList GameSkyrimVR::primarySources() const
+{
+    return { "SkyrimSE" };
+}
+
 QStringList GameSkyrimVR::validShortNames() const
 {
     return { "Skyrim", "SkyrimSE" };
