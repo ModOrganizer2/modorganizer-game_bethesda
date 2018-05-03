@@ -22,6 +22,29 @@ SkyrimGamePlugins::SkyrimGamePlugins(IOrganizer *organizer)
     m_LocalCodec = QTextCodec::codecForName("Windows-1252");
 }
 
+void SkyrimGamePlugins::readPluginLists(MOBase::IPluginList *pluginList) {
+  QString loadOrderPath =
+    organizer()->profile()->absolutePath() + "/loadorder.txt";
+  QString pluginsPath = organizer()->profile()->absolutePath() + "/plugins.txt";
+
+  bool loadOrderIsNew = !m_LastRead.isValid() ||
+    !QFileInfo(loadOrderPath).exists() ||
+    QFileInfo(loadOrderPath).lastModified() > m_LastRead;
+  bool pluginsIsNew = !m_LastRead.isValid() ||
+    QFileInfo(pluginsPath).lastModified() > m_LastRead;
+
+  if (pluginsIsNew && !loadOrderIsNew) {
+    // If the plugins is new but not loadorder, we must reparse the load order from the plugin files
+    readPluginList(pluginList, true);
+  } else {
+    // read both files if they are both new or both older than the last read
+    readLoadOrderList(pluginList, loadOrderPath);
+    readPluginList(pluginList, false);
+  }
+
+  m_LastRead = QDateTime::currentDateTime();
+}
+
 bool SkyrimGamePlugins::readPluginList(MOBase::IPluginList *pluginList,
     bool useLoadOrder)
 {
