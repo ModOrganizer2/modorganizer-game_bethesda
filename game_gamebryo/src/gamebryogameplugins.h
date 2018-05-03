@@ -28,6 +28,10 @@ protected:
                                  const QString &filePath);
   virtual bool readPluginList(MOBase::IPluginList *pluginList, bool useLoadOrder);
 
+protected:
+
+  QDateTime m_LastRead;
+
 private:
   void writeList(const MOBase::IPluginList *pluginList, const QString &filePath,
                  bool loadOrder);
@@ -37,7 +41,6 @@ private:
   QTextCodec *m_Utf8Codec;
   QTextCodec *m_LocalCodec;
 
-  QDateTime m_LastRead;
   std::map<QString, QByteArray> m_LastSaveHash;
 };
 
