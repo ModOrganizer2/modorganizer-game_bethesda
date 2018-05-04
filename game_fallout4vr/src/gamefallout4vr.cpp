@@ -1,7 +1,6 @@
 #include "gameFallout4vr.h"
 
 #include "fallout4vrdataarchives.h"
-#include "fallout4vrscriptextender.h"
 #include "fallout4vrsavegameinfo.h"
 #include "fallout4vrgameplugins.h"
 #include "fallout4vrunmanagedmods.h"
@@ -38,7 +37,6 @@ bool GameFallout4VR::init(IOrganizer *moInfo)
 
   m_GamePath = identifyGamePath();
 
-  registerFeature<ScriptExtender>(new Fallout4VRScriptExtender(this));
   registerFeature<DataArchives>(new Fallout4VRDataArchives(myGamesPath()));
   registerFeature<LocalSavegames>(new GamebryoLocalSavegames(myGamesPath(), "fallout4custom.ini"));
   registerFeature<SaveGameInfo>(new Fallout4VRSaveGameInfo(this));
@@ -56,9 +54,7 @@ QString GameFallout4VR::gameName() const
 QList<ExecutableInfo> GameFallout4VR::executables() const
 {
   return QList<ExecutableInfo>()
-      << ExecutableInfo("F4SE", findInGameFolder(feature<ScriptExtender>()->loaderName()))
       << ExecutableInfo("Fallout 4 VR", findInGameFolder(binaryName()))
-      //<< ExecutableInfo("Fallout Launcher", findInGameFolder(getLauncherName())) // Fallout 4 VR does not have a launcher
       << ExecutableInfo("Creation Kit", findInGameFolder("CreationKit.exe"))
       << ExecutableInfo("LOOT", getLootPath()).withArgument("--game=\"Fallout4VR\"")
          ;
@@ -66,12 +62,12 @@ QList<ExecutableInfo> GameFallout4VR::executables() const
 
 QString GameFallout4VR::name() const
 {
-  return "Fallout4VR Support Plugin";
+  return "Fallout 4 VR Support Plugin";
 }
 
 QString GameFallout4VR::author() const
 {
-  return "Tannin";
+  return "MO2 Contibutors";
 }
 
 QString GameFallout4VR::description() const
@@ -82,7 +78,7 @@ QString GameFallout4VR::description() const
 
 MOBase::VersionInfo GameFallout4VR::version() const
 {
-  return VersionInfo(0, 3, 0, VersionInfo::RELEASE_BETA);
+  return VersionInfo(0, 4, 0, VersionInfo::RELEASE_CANDIDATE);
 }
 
 bool GameFallout4VR::isActive() const
@@ -103,11 +99,6 @@ void GameFallout4VR::initializeProfile(const QDir &path, ProfileSettings setting
   }
 
   if (settings.testFlag(IPluginGame::CONFIGURATION)) {
-    /* 
-       There is a fallout4.ini in the game installation directory, but it never get copied to "My Games/Fallout4VR".
-       The only files in the MyGames directory are fallout4custom.ini, fallout4prefs.ini and fallout4vrcustom.ini.
-       All settings you would expect in the fallout4.ini can be put into the fallout4custom.ini.
-    */
     if (settings.testFlag(IPluginGame::PREFER_DEFAULTS)
         || !QFileInfo(myGamesPath() + "/fallout4.ini").exists()) {
       copyToProfile(gameDirectory().absolutePath(), path, "fallout4.ini");
@@ -136,9 +127,6 @@ QString GameFallout4VR::steamAPPId() const
 }
 
 QStringList GameFallout4VR::primaryPlugins() const {
-  /*QStringList plugins = {"fallout4.esm", "fallout4_vr.esm", "dlcrobot.esm", "dlcworkshop01.esm", "dlccoast.esm", "dlcworkshop02.esm",
-          "dlcworkshop03.esm", "dlcnukaworld.esm"};*/
-  // Fallout 4 VR does not support the DLCs, so we need to tread them as unmanaged plugins.
   QStringList plugins = {"fallout4.esm", "fallout4_vr.esm"};
 
   plugins.append(CCPlugins());
@@ -226,7 +214,6 @@ QString GameFallout4VR::getLauncherName() const
 
 QString GameFallout4VR::identifyGamePath() const
 {
-  // In every other Bethesda game they use gameShortName() as registry key, but for Fallout 4 VR they use gameName()
   QString path = "Software\\Bethesda Softworks\\" + gameName();
   return findInRegistry(HKEY_LOCAL_MACHINE, path.toStdWString().c_str(), L"Installed Path");
 }
