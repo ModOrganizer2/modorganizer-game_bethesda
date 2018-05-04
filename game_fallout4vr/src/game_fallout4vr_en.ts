@@ -4,7 +4,7 @@
 <context>
     <name>GameFallout4VR</name>
     <message>
-        <location filename="gamefallout4vr.cpp" line="79"/>
+        <location filename="gamefallout4vr.cpp" line="75"/>
         <source>Adds support for the game Fallout 4 VR.
 Splash by %1</source>
         <translation type="unfinished"></translation>
@@ -68,12 +68,12 @@ Splash by %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../game_gamebryo/src/gamegamebryo.cpp" line="281"/>
+        <location filename="../../game_gamebryo/src/gamegamebryo.cpp" line="286"/>
         <source>failed to query registry path (preflight): %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../game_gamebryo/src/gamegamebryo.cpp" line="288"/>
+        <location filename="../../game_gamebryo/src/gamegamebryo.cpp" line="293"/>
         <source>failed to query registry path (read): %1</source>
         <translation type="unfinished"></translation>
     </message>
