@@ -91,12 +91,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../game_gamebryo/src/gamegamebryo.cpp" line="281"/>
+        <location filename="../../game_gamebryo/src/gamegamebryo.cpp" line="286"/>
         <source>failed to query registry path (preflight): %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../game_gamebryo/src/gamegamebryo.cpp" line="288"/>
+        <location filename="../../game_gamebryo/src/gamegamebryo.cpp" line="293"/>
         <source>failed to query registry path (read): %1</source>
         <translation type="unfinished"></translation>
     </message>
