@@ -1,7 +1,6 @@
 #include "gamemorrowind.h"
 
 #include "morrowindbsainvalidation.h"
-#include "morrowindscriptextender.h"
 #include "morrowinddataarchives.h"
 #include "morrowindsavegameinfo.h"
 #include "morrowindgameplugins.h"
@@ -38,7 +37,6 @@ bool GameMorrowind::init(IOrganizer *moInfo)
   if (!GameGamebryo::init(moInfo)) {
     return false;
   }
-  registerFeature<ScriptExtender>(new MorrowindScriptExtender(this));
   registerFeature<DataArchives>(new MorrowindDataArchives(gameDirectory().absolutePath()));
   registerFeature<BSAInvalidation>(new MorrowindBSAInvalidation(feature<DataArchives>(), this));
   registerFeature<SaveGameInfo>(new MorrowindSaveGameInfo(this));
@@ -77,10 +75,9 @@ QDir GameMorrowind::documentsDirectory() const
 QList<ExecutableInfo> GameMorrowind::executables() const
 {
   return QList<ExecutableInfo>()
-  //    << ExecutableInfo("MWSE", findInGameFolder(feature<ScriptExtender>()->loaderName()))
-      << ExecutableInfo("Morrowind", findInGameFolder(binaryName()))
-      << ExecutableInfo("Morrowind Launcher", findInGameFolder(getLauncherName()))
-	  << ExecutableInfo("MGE XE", findInGameFolder("MGEXEgui.exe"))
+    << ExecutableInfo("Morrowind", findInGameFolder(binaryName()))
+    << ExecutableInfo("Morrowind Launcher", findInGameFolder(getLauncherName()))
+    << ExecutableInfo("MGE XE", findInGameFolder("MGEXEgui.exe"))
   ;
 }
 
