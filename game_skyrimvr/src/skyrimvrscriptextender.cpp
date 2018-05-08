@@ -10,7 +10,7 @@ SkyrimVRScriptExtender::SkyrimVRScriptExtender(GameGamebryo const *game) :
 
 QString SkyrimVRScriptExtender::BinaryName() const
 {
-  return "skse64_loader.exe";
+  return "sksevr_loader.exe";
 }
 
 QString SkyrimVRScriptExtender::PluginPath() const
