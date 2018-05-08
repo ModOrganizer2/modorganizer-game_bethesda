@@ -57,10 +57,13 @@ public: // IPluginGame interface
   virtual void setGameVariant(const QString &variant) override;
   virtual QString binaryName() const override;
   //gameShortName
+  virtual QStringList primarySources() const override;
+  virtual QStringList validShortNames() const override;
   //iniFiles
   //DLCPlugins
   virtual QStringList CCPlugins() const override;
   virtual LoadOrderMechanism loadOrderMechanism() const override;
+  virtual SortMechanism sortMechanism() const override;
   //nexusModOrganizerID
   //nexusGameID
   virtual bool looksValid(QDir const &) const override;
@@ -95,6 +98,18 @@ protected:
                             const QString &sourceFileName,
                             const QString &destinationFileName);
 
+  virtual QString identifyGamePath() const;
+
+  static std::unique_ptr<BYTE[]> getRegValue(HKEY key, LPCWSTR path, LPCWSTR value, DWORD flags, LPDWORD type);
+
+  static QString findInRegistry(HKEY baseKey, LPCWSTR path, LPCWSTR value);
+
+  static QString getKnownFolderPath(REFKNOWNFOLDERID folderId, bool useDefault);
+
+  static QString getSpecialPath(const QString &name);
+
+  static QString determineMyGamesPath(const QString &gameName);
+
 protected:
 
   std::map<std::type_index, boost::any> featureList() const;
@@ -116,17 +131,11 @@ protected:
     m_FeatureList[std::type_index(typeid(T))] = type;
   }
 
-private:
-
-  QString identifyGamePath() const;
-
-private:
+protected:
 
   QString m_GamePath;
   QString m_MyGamesPath;
-
   QString m_GameVariant;
-
   MOBase::IOrganizer *m_Organizer;
 
   std::map<std::type_index, boost::any> m_FeatureList;
