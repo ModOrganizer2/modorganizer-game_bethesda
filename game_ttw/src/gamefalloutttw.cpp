@@ -33,6 +33,8 @@ bool GameFalloutTTW::init(IOrganizer *moInfo)
   if (!GameGamebryo::init(moInfo)) {
     return false;
   }
+  m_GamePath = identifyGamePath();
+  m_MyGamesPath = determineMyGamesPath("FalloutNV");
   registerFeature<ScriptExtender>(new FalloutTTWScriptExtender(this));
   registerFeature<DataArchives>(new FalloutTTWDataArchives(myGamesPath()));
   registerFeature<BSAInvalidation>(new FalloutTTWBSAInvalidation(feature<DataArchives>(), this));
@@ -136,9 +138,24 @@ QStringList GameFalloutTTW::primaryPlugins() const
 		   "mercenarypack.esm", "tribalpack.esm", "taleoftwowastelands.esm" };
 }
 
+QString GameFalloutTTW::binaryName() const
+{
+  return "FalloutNV.exe";
+}
+
 QString GameFalloutTTW::gameShortName() const
 {
-  return "FalloutNV";
+  return "TTW";
+}
+
+QStringList GameFalloutTTW::primarySources() const
+{
+  return { "FalloutNV" };
+}
+
+QStringList GameFalloutTTW::validShortNames() const
+{
+  return { "FalloutNV", "Fallout3" };
 }
 
 QString GameFalloutTTW::gameNexusName() const
@@ -156,6 +173,11 @@ QStringList GameFalloutTTW::DLCPlugins() const
   return {};
 }
 
+MOBase::IPluginGame::SortMechanism GameFalloutTTW::sortMechanism() const
+{
+  return SortMechanism::NONE;
+}
+
 int GameFalloutTTW::nexusModOrganizerID() const
 {
   return 42572;
@@ -164,4 +186,28 @@ int GameFalloutTTW::nexusModOrganizerID() const
 int GameFalloutTTW::nexusGameID() const
 {
   return 130;
+}
+
+QString GameFalloutTTW::getLauncherName() const
+{
+  return "FalloutNVLauncher.exe";
+}
+
+QString GameFalloutTTW::identifyGamePath() const
+{
+  QString path = "Software\\Bethesda Softworks\\FalloutNV";
+  return findInRegistry(HKEY_LOCAL_MACHINE, path.toStdWString().c_str(), L"Installed Path");
+}
+
+MappingType GameFalloutTTW::mappings() const
+{
+  MappingType result;
+
+  for (const QString &profileFile : { "plugins.txt", "loadorder.txt" }) {
+    result.push_back({ m_Organizer->profilePath() + "/" + profileFile,
+      localAppFolder() + "/FalloutNV/" + profileFile,
+      false });
+  }
+
+  return result;
 }
