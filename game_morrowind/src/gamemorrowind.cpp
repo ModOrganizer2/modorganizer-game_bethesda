@@ -1,7 +1,6 @@
 #include "gamemorrowind.h"
 
 #include "morrowindbsainvalidation.h"
-#include "morrowindscriptextender.h"
 #include "morrowinddataarchives.h"
 #include "morrowindsavegameinfo.h"
 #include "morrowindgameplugins.h"
@@ -38,7 +37,6 @@ bool GameMorrowind::init(IOrganizer *moInfo)
   if (!GameGamebryo::init(moInfo)) {
     return false;
   }
-  registerFeature<ScriptExtender>(new MorrowindScriptExtender(this));
   registerFeature<DataArchives>(new MorrowindDataArchives(gameDirectory().absolutePath()));
   registerFeature<BSAInvalidation>(new MorrowindBSAInvalidation(feature<DataArchives>(), this));
   registerFeature<SaveGameInfo>(new MorrowindSaveGameInfo(this));
@@ -77,10 +75,10 @@ QDir GameMorrowind::documentsDirectory() const
 QList<ExecutableInfo> GameMorrowind::executables() const
 {
   return QList<ExecutableInfo>()
-  //    << ExecutableInfo("MWSE", findInGameFolder(feature<ScriptExtender>()->loaderName()))
-      << ExecutableInfo("Morrowind", findInGameFolder(binaryName()))
-      << ExecutableInfo("Morrowind Launcher", findInGameFolder(getLauncherName()))
-	  << ExecutableInfo("MGE XE", findInGameFolder("MGEXEgui.exe"))
+    << ExecutableInfo("MWSE (Launcher Method)", findInGameFolder("MWSE Launcher.exe"))
+    << ExecutableInfo("Morrowind", findInGameFolder(binaryName()))
+    << ExecutableInfo("Morrowind Launcher", findInGameFolder(getLauncherName()))
+    << ExecutableInfo("MGE XE", findInGameFolder("MGEXEgui.exe"))
   ;
 }
 
@@ -97,7 +95,7 @@ QString GameMorrowind::author() const
 QString GameMorrowind::description() const
 {
   return tr("Adds support for the game Morrowind.\n"
-            "Splash by %1").arg("AnyOldName");
+            "Splash by %1").arg("AnyOldName3");
 }
 
 MOBase::VersionInfo GameMorrowind::version() const
@@ -176,6 +174,11 @@ QStringList GameMorrowind::iniFiles() const
 QStringList GameMorrowind::DLCPlugins() const
 {
   return { "Tribunal.esm", "Bloodmoon.esm" };
+}
+
+MOBase::IPluginGame::SortMechanism GameMorrowind::sortMechanism() const
+{
+  return SortMechanism::NONE;
 }
 
 namespace {

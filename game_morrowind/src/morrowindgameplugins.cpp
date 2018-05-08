@@ -164,13 +164,10 @@ bool MorrowindGamePlugins::readPluginList(MOBase::IPluginList *pluginList,
       inactivePlugins.push_back(pluginName);
 
   for (const QString &pluginName : inactivePlugins)
-    plugins.removeAll(pluginName);
-
-  for (const QString &pluginName : inactivePlugins)
     pluginList->setState(pluginName, IPluginList::STATE_INACTIVE);
 
   if (useLoadOrder)
-    pluginList->setLoadOrder(primary + plugins + inactivePlugins);
+    pluginList->setLoadOrder(primary + plugins);
 
   return true;
 }
