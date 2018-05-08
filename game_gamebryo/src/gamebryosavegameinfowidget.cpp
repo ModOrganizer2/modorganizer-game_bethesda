@@ -44,7 +44,7 @@ GamebryoSaveGameInfoWidget::~GamebryoSaveGameInfoWidget() {
 }
 
 void GamebryoSaveGameInfoWidget::setSave(QString const &file) {
-    std::unique_ptr < GamebryoSaveGame const> save(
+    std::unique_ptr <GamebryoSaveGame const> save(
             std::move(dynamic_cast<GamebryoSaveGame const *>(m_Info->getSaveGameInfo(file))));
     ui->saveNumLabel->setText(QString("%1").arg(save->getSaveNumber()));
     ui->characterLabel->setText(save->getPCName());
