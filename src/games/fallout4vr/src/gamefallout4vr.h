@@ -30,6 +30,8 @@ public: // IPluginGame interface
   virtual QStringList primaryPlugins() const override;
   virtual QStringList gameVariants() const override;
   virtual QString gameShortName() const override;
+  virtual QStringList primarySources() const override { return validShortNames(); };
+  virtual QStringList validShortNames() const override;
   virtual QString gameNexusName() const override;
   virtual QStringList iniFiles() const override;
   virtual QStringList DLCPlugins() const override;
@@ -48,9 +50,9 @@ public: // IPlugin interface
   virtual bool isActive() const override;
   virtual QList<MOBase::PluginSetting> settings() const override;
 
-private:
+protected:
 
-  QString identifyGamePathVR() const;
+  virtual QString identifyGamePath() const override;
 
 };
 
