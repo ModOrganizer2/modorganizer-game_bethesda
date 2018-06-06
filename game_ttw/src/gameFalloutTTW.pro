@@ -14,14 +14,14 @@ CONFIG += dll
 DEFINES += GAMEFALLOUTTTW_LIBRARY
 
 SOURCES += gamefalloutTTW.cpp \
-    falloutttwbsaittwalidation.cpp \
+    falloutttwbsainvalidation.cpp \
     falloutttwscriptextender.cpp \
     falloutttwdataarchives.cpp \
     falloutttwsavegame.cpp \
     falloutttwsavegameinfo.cpp
 
 HEADERS += gamefalloutttw.h \
-    falloutttwbsaittwalidation.h \
+    falloutttwbsainvalidation.h \
     falloutttwscriptextender.h \
     falloutttwdataarchives.h \
     falloutttwsavegame.h \
