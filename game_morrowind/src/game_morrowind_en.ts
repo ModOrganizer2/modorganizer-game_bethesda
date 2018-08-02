@@ -4,7 +4,7 @@
 <context>
     <name>GameMorrowind</name>
     <message>
-        <location filename="gamemorrowind.cpp" line="99"/>
+        <location filename="gamemorrowind.cpp" line="97"/>
         <source>Adds support for the game Morrowind.
 Splash by %1</source>
         <oldsource>Adds support for the game Morrowind</oldsource>
