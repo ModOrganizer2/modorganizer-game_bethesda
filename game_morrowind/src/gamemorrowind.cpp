@@ -121,12 +121,7 @@ void GameMorrowind::initializeProfile(const QDir &path, ProfileSettings settings
   }
 
   if (settings.testFlag(IPluginGame::CONFIGURATION)) {
-    if (settings.testFlag(IPluginGame::PREFER_DEFAULTS)
-        || !QFileInfo(myGamesPath() + "/morrowind.ini").exists()) {
-      copyToProfile(gameDirectory().absolutePath(), path, "Morrowind.ini");
-    } else {
-      copyToProfile(myGamesPath(), path, "Morrowind.ini");
-    }
+    copyToProfile(gameDirectory().absolutePath(), path, "Morrowind.ini");
   }
 }
 
