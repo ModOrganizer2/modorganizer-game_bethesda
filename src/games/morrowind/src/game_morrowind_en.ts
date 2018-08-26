@@ -7,7 +7,6 @@
         <location filename="gamemorrowind.cpp" line="97"/>
         <source>Adds support for the game Morrowind.
 Splash by %1</source>
-        <oldsource>Adds support for the game Morrowind</oldsource>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -106,14 +105,13 @@ Splash by %1</source>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="morrowindgameplugins.cpp" line="104"/>
-        <source>failed to set game file key (errorcode %1)</source>
+        <location filename="../../game_gamebryo/src/gamebryobsainvalidation.cpp" line="57"/>
+        <source>failed to deactivate BSA invalidation in &quot;%1&quot; (errorcode %2)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../game_gamebryo/src/gamebryogameplugins.cpp" line="108"/>
-        <location filename="morrowindgameplugins.cpp" line="112"/>
-        <source>Some of your plugins have invalid names! These plugins can not be loaded by the game. Please see mo_interface.log for a list of affected plugins and rename them.</source>
+        <location filename="../../game_gamebryo/src/gamebryobsainvalidation.cpp" line="90"/>
+        <source>failed to activate BSA invalidation in &quot;%1&quot; (errorcode %2)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -123,13 +121,9 @@ Splash by %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../game_gamebryo/src/gamebryobsainvalidation.cpp" line="57"/>
-        <source>failed to deactivate BSA invalidation in &quot;%1&quot; (errorcode %2)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../game_gamebryo/src/gamebryobsainvalidation.cpp" line="90"/>
-        <source>failed to activate BSA invalidation in &quot;%1&quot; (errorcode %2)</source>
+        <location filename="../../game_gamebryo/src/gamebryogameplugins.cpp" line="108"/>
+        <location filename="morrowindgameplugins.cpp" line="112"/>
+        <source>Some of your plugins have invalid names! These plugins can not be loaded by the game. Please see mo_interface.log for a list of affected plugins and rename them.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -150,6 +144,11 @@ Splash by %1</source>
     <message>
         <location filename="../../game_gamebryo/src/gamegamebryo.cpp" line="293"/>
         <source>failed to query registry path (read): %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="morrowindgameplugins.cpp" line="104"/>
+        <source>failed to set game file key (errorcode %1)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

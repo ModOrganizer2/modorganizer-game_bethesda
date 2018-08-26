@@ -2,13 +2,13 @@
 
 #include "morrowindbsainvalidation.h"
 #include "morrowinddataarchives.h"
-#include "morrowindsavegameinfo.h"
 #include "morrowindgameplugins.h"
+#include "morrowindlocalsavegames.h"
+#include "morrowindsavegameinfo.h"
 
 #include "executableinfo.h"
 #include "pluginsetting.h"
 
-#include <gamebryolocalsavegames.h>
 #include <gamebryounmanagedmods.h>
 
 #include <QCoreApplication>
@@ -40,7 +40,7 @@ bool GameMorrowind::init(IOrganizer *moInfo)
   registerFeature<DataArchives>(new MorrowindDataArchives(gameDirectory().absolutePath()));
   registerFeature<BSAInvalidation>(new MorrowindBSAInvalidation(feature<DataArchives>(), this));
   registerFeature<SaveGameInfo>(new MorrowindSaveGameInfo(this));
-  //registerFeature<LocalSavegames>(new GamebryoLocalSavegames(gameDirectory().absolutePath(), "morrowind.ini")); // local save games are not functional yet
+  registerFeature<LocalSavegames>(new MorrowindLocalSavegames(gameDirectory().absolutePath()));
   registerFeature<GamePlugins>(new MorrowindGamePlugins(moInfo));
   registerFeature<UnmanagedMods>(new GamebryoUnmangedMods(this));
   m_Organizer = moInfo;
@@ -100,7 +100,7 @@ QString GameMorrowind::description() const
 
 MOBase::VersionInfo GameMorrowind::version() const
 {
-  return VersionInfo(0, 2, 1, VersionInfo::RELEASE_FINAL);
+  return VersionInfo(0, 2, 2, VersionInfo::RELEASE_FINAL);
 }
 
 bool GameMorrowind::isActive() const
