@@ -36,6 +36,17 @@ GamebryoLocalSavegames::GamebryoLocalSavegames(const QDir &myGamesDir,
 {}
 
 
+MappingType GamebryoLocalSavegames::mappings(const QDir &profileSaveDir) const
+{
+  return {{
+           profileSaveDir.absolutePath(),
+           m_LocalSavesDir.absolutePath(),
+           true,
+           true
+    }};
+}
+
+
 void GamebryoLocalSavegames::prepareProfile(MOBase::IProfile *profile)
 {
   bool enable = profile->localSavesEnabled();
@@ -88,12 +99,7 @@ void GamebryoLocalSavegames::prepareProfile(MOBase::IProfile *profile)
 }
 
 
-MappingType GamebryoLocalSavegames::mappings(const QDir &profileSaveDir) const
+bool GamebryoLocalSavegames::updateSaveGames(MOBase::IProfile *profile)
 {
-  return {{
-           profileSaveDir.absolutePath(),
-           m_LocalSavesDir.absolutePath(),
-           true,
-           true
-    }};
+  return false;
 }
