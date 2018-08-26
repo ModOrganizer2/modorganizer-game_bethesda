@@ -28,8 +28,18 @@ void MorrowindGamePlugins::writePluginLists(const IPluginList *pluginList) {
     return;
   }
 
-  writePluginList(pluginList,
-                  organizer()->profile()->absolutePath() + "/Morrowind.ini");
+  if (organizer()->profile()->localSettingsEnabled()) {
+    writePluginList(
+      pluginList, 
+      organizer()->profile()->absolutePath() + "/Morrowind.ini"
+    );  
+  } else {
+    writePluginList(
+      pluginList, 
+      organizer()->managedGame()->gameDirectory().absolutePath() + "/Morrowind.ini"
+    );
+  }
+  
   writeLoadOrderList(pluginList,
                      organizer()->profile()->absolutePath() + "/loadorder.txt");
 
@@ -39,7 +49,11 @@ void MorrowindGamePlugins::writePluginLists(const IPluginList *pluginList) {
 void MorrowindGamePlugins::readPluginLists(MOBase::IPluginList *pluginList) {
   QString loadOrderPath =
       organizer()->profile()->absolutePath() + "/loadorder.txt";
+
   QString pluginsPath = organizer()->profile()->absolutePath() + "/Morrowind.ini";
+  if (!organizer()->profile()->localSettingsEnabled()) {
+    pluginsPath = organizer()->managedGame()->gameDirectory().absolutePath() + "/Morrowind.ini";
+  }
 
   bool loadOrderIsNew = !m_LastRead.isValid() ||
       !QFileInfo(loadOrderPath).exists() ||
@@ -139,6 +153,9 @@ bool MorrowindGamePlugins::readPluginList(MOBase::IPluginList *pluginList,
   });
 
   QString filePath = organizer()->profile()->absolutePath() + "/Morrowind.ini";
+  if (!organizer()->profile()->localSettingsEnabled()) {
+    filePath = organizer()->managedGame()->gameDirectory().absolutePath() + "/Morrowind.ini";
+  }
   wchar_t buffer[256];
   QStringList result;
   std::wstring iniFileW = QDir::toNativeSeparators(filePath).toStdWString();
