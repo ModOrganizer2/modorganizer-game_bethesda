@@ -106,13 +106,13 @@ Splash by %1</source>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="morrowindgameplugins.cpp" line="90"/>
+        <location filename="morrowindgameplugins.cpp" line="104"/>
         <source>failed to set game file key (errorcode %1)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../game_gamebryo/src/gamebryogameplugins.cpp" line="108"/>
-        <location filename="morrowindgameplugins.cpp" line="98"/>
+        <location filename="morrowindgameplugins.cpp" line="112"/>
         <source>Some of your plugins have invalid names! These plugins can not be loaded by the game. Please see mo_interface.log for a list of affected plugins and rename them.</source>
         <translation type="unfinished"></translation>
     </message>
