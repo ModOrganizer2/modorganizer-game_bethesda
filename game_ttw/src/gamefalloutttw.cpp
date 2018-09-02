@@ -80,7 +80,7 @@ QString GameFalloutTTW::description() const
 
 MOBase::VersionInfo GameFalloutTTW::version() const
 {
-  return VersionInfo(1, 0, 0, VersionInfo::RELEASE_FINAL);
+  return VersionInfo(1, 1, 0, VersionInfo::RELEASE_FINAL);
 }
 
 bool GameFalloutTTW::isActive() const
@@ -131,11 +131,23 @@ QString GameFalloutTTW::steamAPPId() const
 
 QStringList GameFalloutTTW::primaryPlugins() const
 {
-  return { "falloutnv.esm", "deadmoney.esm", "honesthearts.esm",
-           "oldworldblues.esm", "lonesomeroad.esm", "gunrunnersarsenal.esm",
-           "fallout3.esm", "anchorage.esm", "thepitt.esm", "brokensteel.esm",
-		   "pointlookout.esm", "zeta.esm", "caravanpack.esm", "classicpack.esm",
-		   "mercenarypack.esm", "tribalpack.esm", "taleoftwowastelands.esm" };
+  return { "falloutnv.esm",
+           "deadmoney.esm",
+           "honesthearts.esm",
+           "oldworldblues.esm",
+           "lonesomeroad.esm",
+           "gunrunnersarsenal.esm",
+           "caravanpack.esm",
+           "classicpack.esm",
+           "mercenarypack.esm",
+           "tribalpack.esm",
+           "fallout3.esm",
+           "anchorage.esm",
+           "thepitt.esm",
+           "brokensteel.esm",
+           "pointlookout.esm",
+           "zeta.esm",
+           "taleoftwowastelands.esm" };
 }
 
 QString GameFalloutTTW::binaryName() const
