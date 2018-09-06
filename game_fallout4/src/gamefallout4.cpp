@@ -80,7 +80,7 @@ QString GameFallout4::description() const
 
 MOBase::VersionInfo GameFallout4::version() const
 {
-  return VersionInfo(0, 3, 0, VersionInfo::RELEASE_BETA);
+  return VersionInfo(0, 3, 1, VersionInfo::RELEASE_FINAL);
 }
 
 bool GameFallout4::isActive() const
@@ -130,7 +130,7 @@ QString GameFallout4::steamAPPId() const
 
 QStringList GameFallout4::primaryPlugins() const {
   QStringList plugins = {"fallout4.esm", "dlcrobot.esm", "dlcworkshop01.esm", "dlccoast.esm", "dlcworkshop02.esm",
-          "dlcworkshop03.esm", "dlcnukaworld.esm"};
+          "dlcworkshop03.esm", "dlcnukaworld.esm", "dlcultrahighresolution.esm"};
 
   plugins.append(CCPlugins());
 
