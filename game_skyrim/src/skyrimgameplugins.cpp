@@ -35,18 +35,19 @@ void SkyrimGamePlugins::readPluginLists(MOBase::IPluginList *pluginList) {
 
   if (pluginsIsNew && !loadOrderIsNew) {
     // If the plugins is new but not loadorder, we must reparse the load order from the plugin files
-    readPluginList(pluginList, true);
+    QStringList loadOrder = readPluginList(pluginList);
+    pluginList->setLoadOrder(loadOrder);
   } else {
     // read both files if they are both new or both older than the last read
-    readLoadOrderList(pluginList, loadOrderPath);
-    readPluginList(pluginList, false);
+    QStringList loadOrder = readLoadOrderList(pluginList, loadOrderPath);
+    pluginList->setLoadOrder(loadOrder);
+    readPluginList(pluginList);
   }
 
   m_LastRead = QDateTime::currentDateTime();
 }
 
-bool SkyrimGamePlugins::readPluginList(MOBase::IPluginList *pluginList,
-    bool useLoadOrder)
+QStringList SkyrimGamePlugins::readPluginList(MOBase::IPluginList *pluginList)
 {
     QStringList plugins = pluginList->pluginNames();
     QStringList primaryPlugins = organizer()->managedGame()->primaryPlugins();
@@ -82,6 +83,7 @@ bool SkyrimGamePlugins::readPluginList(MOBase::IPluginList *pluginList,
         pluginsTxtExists = false;
     }
 
+    QStringList disabledPlugins;
     if (pluginsTxtExists) {
         while (!file.atEnd()) {
             QByteArray line = file.readLine();
@@ -92,6 +94,7 @@ bool SkyrimGamePlugins::readPluginList(MOBase::IPluginList *pluginList,
             if (pluginName.size() > 0) {
                 pluginList->setState(pluginName, IPluginList::STATE_ACTIVE);
                 plugins.removeAll(pluginName);
+                disabledPlugins.append(pluginName);
                 loadOrder.append(pluginName);
             }
         }
@@ -108,9 +111,5 @@ bool SkyrimGamePlugins::readPluginList(MOBase::IPluginList *pluginList,
         }
     }
 
-    if (useLoadOrder) {
-        pluginList->setLoadOrder(loadOrder);
-    }
-
-    return true;
+    return loadOrder + disabledPlugins;
 }
