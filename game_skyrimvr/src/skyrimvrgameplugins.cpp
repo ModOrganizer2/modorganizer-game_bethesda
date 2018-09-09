@@ -21,6 +21,25 @@ SkyrimVRGamePlugins::SkyrimVRGamePlugins(IOrganizer *organizer)
 {
 }
 
+void SkyrimVRGamePlugins::getLoadOrder(QStringList &loadOrder) {
+    QString loadOrderPath =
+            organizer()->profile()->absolutePath() + "/loadorder.txt";
+    QString pluginsPath = organizer()->profile()->absolutePath() + "/plugins.txt";
+
+    bool loadOrderIsNew = !m_LastRead.isValid() ||
+                          !QFileInfo(loadOrderPath).exists() ||
+                          QFileInfo(loadOrderPath).lastModified() > m_LastRead;
+    bool pluginsIsNew = !m_LastRead.isValid() ||
+                        QFileInfo(pluginsPath).lastModified() > m_LastRead;
+
+    if (loadOrderIsNew || !pluginsIsNew) {
+        loadOrder = readLoadOrderList(m_Organizer->pluginList(), loadOrderPath);
+    }
+    else {
+        loadOrder = readPluginList(m_Organizer->pluginList());
+    }
+}
+
 void SkyrimVRGamePlugins::writePluginList(const IPluginList *pluginList,
                                           const QString &filePath) {
   SafeWriteFile file(filePath);
@@ -45,22 +64,23 @@ void SkyrimVRGamePlugins::writePluginList(const IPluginList *pluginList,
 
   //TODO: do not write plugins in OFFICIAL_FILES container
   for (const QString &pluginName : plugins) {
-    if (!PrimaryPlugins.contains(pluginName,Qt::CaseInsensitive)) {
-      if (pluginList->state(pluginName) == IPluginList::STATE_ACTIVE) {
-        if (!textCodec->canEncode(pluginName)) {
-          invalidFileNames = true;
-          qCritical("invalid plugin name %s", qPrintable(pluginName));
-        }
-        else
-        {
-          file->write("*");
-          file->write(textCodec->fromUnicode(pluginName));
-        }
-        file->write("\r\n");
-        ++writtenCount;
+	if (!PrimaryPlugins.contains(pluginName,Qt::CaseInsensitive)) {
+    if (pluginList->state(pluginName) == IPluginList::STATE_ACTIVE) {
+      if (!textCodec->canEncode(pluginName)) {
+        invalidFileNames = true;
+        qCritical("invalid plugin name %s", qPrintable(pluginName));
       }
       else
       {
+        file->write("*");
+        file->write(textCodec->fromUnicode(pluginName));
+
+      }
+      file->write("\r\n");
+      ++writtenCount;
+    }
+	  else
+	  {
         if (!textCodec->canEncode(pluginName)) {
           invalidFileNames = true;
           qCritical("invalid plugin name %s", qPrintable(pluginName));
@@ -87,8 +107,7 @@ void SkyrimVRGamePlugins::writePluginList(const IPluginList *pluginList,
   }
 }
 
-bool SkyrimVRGamePlugins::readPluginList(MOBase::IPluginList *pluginList,
-                                         bool useLoadOrder)
+QStringList SkyrimVRGamePlugins::readPluginList(MOBase::IPluginList *pluginList)
 {
   QStringList plugins = pluginList->pluginNames();
   QStringList primaryPlugins = organizer()->managedGame()->primaryPlugins();
@@ -100,11 +119,12 @@ bool SkyrimVRGamePlugins::readPluginList(MOBase::IPluginList *pluginList,
     }
   }
 
+
   QString filePath = organizer()->profile()->absolutePath() + "/plugins.txt";
   QFile file(filePath);
   if (!file.open(QIODevice::ReadOnly)) {
     qWarning("%s not found", qPrintable(filePath));
-    return false;
+    return loadOrder;
   }
   ON_BLOCK_EXIT([&]() { file.close(); });
 
@@ -112,7 +132,7 @@ bool SkyrimVRGamePlugins::readPluginList(MOBase::IPluginList *pluginList,
     // MO stores at least a header in the file. if it's completely empty the
     // file is broken
     qWarning("%s empty", qPrintable(filePath));
-    return false;
+    return loadOrder;
   }
 
   while (!file.atEnd()) {
@@ -121,33 +141,33 @@ bool SkyrimVRGamePlugins::readPluginList(MOBase::IPluginList *pluginList,
     if ((line.size() > 0) && (line.at(0) != '#')) {
       pluginName = localCodec()->toUnicode(line.trimmed().constData());
     }
-    if (!primaryPlugins.contains(pluginName, Qt::CaseInsensitive)) {
-        if (pluginName.startsWith('*')) {
-            pluginName.remove(0, 1);
-            if (pluginName.size() > 0) {
-                pluginList->setState(pluginName, IPluginList::STATE_ACTIVE);
-                plugins.removeAll(pluginName);
-                if (!loadOrder.contains(pluginName, Qt::CaseInsensitive)) {
-                    loadOrder.append(pluginName);
-                }
-            }
-        }
-        else
-        {
-            if (pluginName.size() > 0) {
-                pluginList->setState(pluginName, IPluginList::STATE_INACTIVE);
-                plugins.removeAll(pluginName);
-                if (!loadOrder.contains(pluginName, Qt::CaseInsensitive)) {
-                    loadOrder.append(pluginName);
-                }
-            }
-        }
-    }
-    else
-    {
-        pluginName.remove(0, 1);
-        plugins.removeAll(pluginName);
-    }
+	if (!primaryPlugins.contains(pluginName, Qt::CaseInsensitive)) {
+		if (pluginName.startsWith('*')) {
+			pluginName.remove(0, 1);
+			if (pluginName.size() > 0) {
+				pluginList->setState(pluginName, IPluginList::STATE_ACTIVE);
+				plugins.removeAll(pluginName);
+				if (!loadOrder.contains(pluginName, Qt::CaseInsensitive)) {
+					loadOrder.append(pluginName);
+				}
+			}
+		}
+		else
+		{
+			if (pluginName.size() > 0) {
+				pluginList->setState(pluginName, IPluginList::STATE_INACTIVE);
+				plugins.removeAll(pluginName);
+				if (!loadOrder.contains(pluginName, Qt::CaseInsensitive)) {
+					loadOrder.append(pluginName);
+				}
+			}
+		}
+	}
+	else
+	{
+		pluginName.remove(0, 1);
+		plugins.removeAll(pluginName);
+	}
   }
 
   file.close();
@@ -157,9 +177,5 @@ bool SkyrimVRGamePlugins::readPluginList(MOBase::IPluginList *pluginList,
     pluginList->setState(pluginName, IPluginList::STATE_INACTIVE);
   }
 
-  if (useLoadOrder) {
-    pluginList->setLoadOrder(loadOrder);
-  }
-
-  return true;
+  return loadOrder;
 }
