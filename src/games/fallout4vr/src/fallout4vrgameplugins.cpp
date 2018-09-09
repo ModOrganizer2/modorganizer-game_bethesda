@@ -22,6 +22,25 @@ Fallout4VRGamePlugins::Fallout4VRGamePlugins(IOrganizer *organizer)
 {
 }
 
+void Fallout4VRGamePlugins::getLoadOrder(QStringList &loadOrder) {
+  QString loadOrderPath =
+    organizer()->profile()->absolutePath() + "/loadorder.txt";
+  QString pluginsPath = organizer()->profile()->absolutePath() + "/plugins.txt";
+
+  bool loadOrderIsNew = !m_LastRead.isValid() ||
+    !QFileInfo(loadOrderPath).exists() ||
+    QFileInfo(loadOrderPath).lastModified() > m_LastRead;
+  bool pluginsIsNew = !m_LastRead.isValid() ||
+    QFileInfo(pluginsPath).lastModified() > m_LastRead;
+
+  if (loadOrderIsNew || !pluginsIsNew) {
+    loadOrder = readLoadOrderList(m_Organizer->pluginList(), loadOrderPath);
+  }
+  else {
+    loadOrder = readPluginList(m_Organizer->pluginList());
+  }
+}
+
 void Fallout4VRGamePlugins::writePluginList(const IPluginList *pluginList,
                                           const QString &filePath) {
   SafeWriteFile file(filePath);
@@ -91,8 +110,7 @@ void Fallout4VRGamePlugins::writePluginList(const IPluginList *pluginList,
   }
 }
 
-bool Fallout4VRGamePlugins::readPluginList(MOBase::IPluginList *pluginList,
-                                         bool useLoadOrder)
+QStringList Fallout4VRGamePlugins::readPluginList(MOBase::IPluginList *pluginList)
 {
   QStringList plugins = pluginList->pluginNames();
   QStringList primaryPlugins = organizer()->managedGame()->primaryPlugins();
@@ -109,7 +127,7 @@ bool Fallout4VRGamePlugins::readPluginList(MOBase::IPluginList *pluginList,
   QFile file(filePath);
   if (!file.open(QIODevice::ReadOnly)) {
     qWarning("%s not found", qPrintable(filePath));
-    return false;
+    return loadOrder;
   }
   ON_BLOCK_EXIT([&]() { file.close(); });
 
@@ -117,7 +135,7 @@ bool Fallout4VRGamePlugins::readPluginList(MOBase::IPluginList *pluginList,
     // MO stores at least a header in the file. if it's completely empty the
     // file is broken
     qWarning("%s empty", qPrintable(filePath));
-    return false;
+    return loadOrder;
   }
 
   while (!file.atEnd()) {
@@ -162,9 +180,5 @@ bool Fallout4VRGamePlugins::readPluginList(MOBase::IPluginList *pluginList,
     pluginList->setState(pluginName, IPluginList::STATE_INACTIVE);
   }
 
-  if (useLoadOrder) {
-    pluginList->setLoadOrder(loadOrder);
-  }
-
-  return true;
+  return loadOrder;
 }
