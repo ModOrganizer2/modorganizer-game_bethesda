@@ -63,11 +63,13 @@ void MorrowindGamePlugins::readPluginLists(MOBase::IPluginList *pluginList) {
 
   if (loadOrderIsNew || !pluginsIsNew) {
     // read both files if they are both new or both older than the last read
-    readLoadOrderList(pluginList, loadOrderPath);
-    readPluginList(pluginList, false);
+    QStringList loadOrder = readLoadOrderList(pluginList, loadOrderPath);
+    pluginList->setLoadOrder(loadOrder);
+    readPluginList(pluginList);
   } else {
-    // If the plugins is new but not loadorder, we must reparse the load order from the plugin files
-    readPluginList(pluginList, true);
+      // If the plugins is new but not loadorder, we must reparse the load order from the plugin files
+    QStringList loadOrder = readPluginList(pluginList);
+    pluginList->setLoadOrder(loadOrder);
   }
 
   m_LastRead = QDateTime::currentDateTime();
@@ -121,8 +123,7 @@ void MorrowindGamePlugins::writeList(const IPluginList *pluginList,
   }
 }
 
-bool MorrowindGamePlugins::readPluginList(MOBase::IPluginList *pluginList,
-                                          bool useLoadOrder) {
+QStringList MorrowindGamePlugins::readPluginList(MOBase::IPluginList *pluginList) {
   QStringList primary = organizer()->managedGame()->primaryPlugins();
   for (const QString &pluginName : primary) {
     if (pluginList->state(pluginName) != IPluginList::STATE_MISSING) {
@@ -183,8 +184,5 @@ bool MorrowindGamePlugins::readPluginList(MOBase::IPluginList *pluginList,
   for (const QString &pluginName : inactivePlugins)
     pluginList->setState(pluginName, IPluginList::STATE_INACTIVE);
 
-  if (useLoadOrder)
-    pluginList->setLoadOrder(primary + plugins);
-
-  return true;
+  return primary + plugins;
 }
