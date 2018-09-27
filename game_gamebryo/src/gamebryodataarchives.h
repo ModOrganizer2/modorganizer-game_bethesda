@@ -17,9 +17,9 @@ public:
 protected:
 
   QDir m_LocalGameDir;
-  QStringList getArchivesFromKey(const QString &iniFile, const QString &key) const;
+  QStringList getArchivesFromKey(const QString &iniFile, const QString &key, int size=256) const;
   void setArchivesToKey(const QString &iniFile, const QString &key, const QString &value);
-
+  
 private:
 
   virtual void writeArchiveList(MOBase::IProfile *profile, const QStringList &before) = 0;
