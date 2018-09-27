@@ -7,9 +7,9 @@ GamebryoDataArchives::GamebryoDataArchives(const QDir &myGamesDir):
   m_LocalGameDir(myGamesDir.absolutePath())
 {}
 
-QStringList GamebryoDataArchives::getArchivesFromKey(const QString &iniFile, const QString &key) const
+QStringList GamebryoDataArchives::getArchivesFromKey(const QString &iniFile, const QString &key, const int size) const
 {
-  wchar_t buffer[256];
+  wchar_t * buffer = new wchar_t[size];
   QStringList result;
   std::wstring iniFileW = QDir::toNativeSeparators(iniFile).toStdWString();
 
@@ -18,13 +18,14 @@ QStringList GamebryoDataArchives::getArchivesFromKey(const QString &iniFile, con
   errno = 0;
 
   if (::GetPrivateProfileStringW(L"Archive", key.toStdWString().c_str(),
-                                 L"", buffer, 256, iniFileW.c_str()) != 0) {
+                                 L"", buffer, size, iniFileW.c_str()) != 0) {
     result.append(QString::fromStdWString(buffer).split(','));
   }
 
   for (int i = 0; i < result.count(); ++i) {
     result[i] = result[i].trimmed();
   }
+  delete[] buffer;
   return result;
 }
 
