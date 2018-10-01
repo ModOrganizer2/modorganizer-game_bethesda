@@ -3,13 +3,12 @@
 #include "fallout4dataarchives.h"
 #include "fallout4scriptextender.h"
 #include "fallout4savegameinfo.h"
-#include "fallout4gameplugins.h"
 #include "fallout4unmanagedmods.h"
 
 #include <pluginsetting.h>
 #include <executableinfo.h>
 #include <gamebryolocalsavegames.h>
-#include <gamebryogameplugins.h>
+#include <creationgameplugins.h>
 #include "versioninfo.h"
 
 #include <QCoreApplication>
@@ -40,7 +39,7 @@ bool GameFallout4::init(IOrganizer *moInfo)
   registerFeature<DataArchives>(new Fallout4DataArchives(myGamesPath()));
   registerFeature<LocalSavegames>(new GamebryoLocalSavegames(myGamesPath(), "Fallout4.ini"));
   registerFeature<SaveGameInfo>(new Fallout4SaveGameInfo(this));
-  registerFeature<GamePlugins>(new Fallout4GamePlugins(moInfo));
+  registerFeature<GamePlugins>(new CreationGamePlugins(moInfo));
   registerFeature<UnmanagedMods>(new Fallout4UnmangedMods(this));
 
   return true;
