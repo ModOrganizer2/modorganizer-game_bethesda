@@ -6,7 +6,6 @@ FILE(GLOB ${PROJ_NAME}_SRCS *.cpp)
 FILE(GLOB ${PROJ_NAME}_HDRS *.h)
 FILE(GLOB ${PROJ_NAME}_FORMS *.ui)
 
-
 SET(CMAKE_INCLUDE_CURRENT_DIR ON)
 SET(CMAKE_AUTOMOC ON)
 SET(CMAKE_AUTOUIC ON)
@@ -33,6 +32,7 @@ SET(plugin_path "${project_path}")
 INCLUDE_DIRECTORIES(${project_path}/uibase/src
                     ${project_path}/game_features/src
                     ${LZ4_ROOT}/include)
+
 LINK_DIRECTORIES(${lib_path}
                  ${LZ4_ROOT}/dll)
 
