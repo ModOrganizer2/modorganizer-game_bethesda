@@ -63,7 +63,7 @@ QList<ExecutableInfo> GameFallout3::executables() const
 
 QString GameFallout3::name() const
 {
-  return "Fallout3 Support Plugin";
+  return "Fallout 3 Support Plugin";
 }
 
 QString GameFallout3::author() const
