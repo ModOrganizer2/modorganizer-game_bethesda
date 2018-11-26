@@ -63,7 +63,7 @@ QList<ExecutableInfo> GameFalloutNV::executables() const
 
 QString GameFalloutNV::name() const
 {
-  return "FalloutNV Support Plugin";
+  return "Fallout NV Support Plugin";
 }
 
 QString GameFalloutNV::author() const
