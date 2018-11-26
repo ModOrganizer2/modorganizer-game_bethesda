@@ -65,7 +65,7 @@ QList<ExecutableInfo> GameFalloutTTW::executables() const
 
 QString GameFalloutTTW::name() const
 {
-  return "FalloutTTW Support Plugin";
+  return "Fallout TTW Support Plugin";
 }
 
 QString GameFalloutTTW::author() const
