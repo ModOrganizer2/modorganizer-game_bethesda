@@ -107,7 +107,9 @@ void GameFallout3::initializeProfile(const QDir &path, ProfileSettings settings)
     }
 
     copyToProfile(myGamesPath(), path, "falloutprefs.ini");
-	copyToProfile(myGamesPath(), path, "custom.ini");
+	  copyToProfile(myGamesPath(), path, "custom.ini");
+    copyToProfile(myGamesPath(), path, "GECKCustom.ini");
+    copyToProfile(myGamesPath(), path, "GECKPrefs.ini");
   }
 }
 
@@ -154,7 +156,7 @@ QString GameFallout3::gameNexusName() const
 
 QStringList GameFallout3::iniFiles() const
 {
-  return { "fallout.ini", "falloutprefs.ini", "custom.ini" };
+  return { "fallout.ini", "falloutprefs.ini", "custom.ini", "GECKCustom.ini", "GECKPrefs.ini" };
 }
 
 QStringList GameFallout3::DLCPlugins() const
