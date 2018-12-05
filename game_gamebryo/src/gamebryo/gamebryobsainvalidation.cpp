@@ -36,58 +36,90 @@ bool GamebryoBSAInvalidation::isInvalidationBSA(const QString &bsaName)
 
 void GamebryoBSAInvalidation::deactivate(MOBase::IProfile *profile)
 {
-  QStringList archivesBefore = m_DataArchives->archives(profile);
-  for (const QString &archive : archivesBefore) {
-    if (isInvalidationBSA(archive)) {
-      m_DataArchives->removeArchive(profile, archive);
-    }
-  }
-
-  QString bsaFile = m_Game->dataDirectory().absoluteFilePath(invalidationBSAName());
-  if (QFile::exists(bsaFile)) {
-    MOBase::shellDeleteQuiet(bsaFile);
-  }
-
-  QString iniFile = profile->localSettingsEnabled() ? QDir(profile->absolutePath()).absoluteFilePath(m_IniFileName) : m_Game->documentsDirectory().absoluteFilePath(m_IniFileName);
-
-  ::SetFileAttributesW(iniFile.toStdWString().c_str(), FILE_ATTRIBUTE_NORMAL);
-
-  if (!::WritePrivateProfileStringW(L"Archive", L"bInvalidateOlderFiles", L"0", iniFile.toStdWString().c_str()) ||
-      !::WritePrivateProfileStringW(L"Archive", L"SInvalidationFile", L"ArchiveInvalidation.txt", iniFile.toStdWString().c_str())) {
-    throw MOBase::MyException(QObject::tr("failed to deactivate BSA invalidation in \"%1\" (errorcode %2)").arg(iniFile, ::GetLastError()));
-  }
+  prepareProfile(profile);
 }
 
 void GamebryoBSAInvalidation::activate(MOBase::IProfile *profile)
 {
-  // set the invalidation bsa up to be loaded
-  QStringList archives = m_DataArchives->archives(profile);
-  bool bsaInstalled = false;
-  for (const QString &archive : archives) {
-    if (isInvalidationBSA(archive)) {
-      bsaInstalled = true;
-      break;
-    }
-  }
-  if (!bsaInstalled) {
-    m_DataArchives->addArchive(profile, 0, invalidationBSAName());
-  }
-
-  // create the dummy bsa if necessary
-  QString bsaFile = m_Game->dataDirectory().absoluteFilePath(invalidationBSAName());
-  if (!QFile::exists(bsaFile)) {
-    DummyBSA bsa(bsaVersion());
-    bsa.write(bsaFile);
-  }
-
-  // set the remaining ini settings required
-  QString iniFile = profile->localSettingsEnabled() ? QDir(profile->absolutePath()).absoluteFilePath(m_IniFileName) : m_Game->documentsDirectory().absoluteFilePath(m_IniFileName);
-
-  ::SetFileAttributesW(iniFile.toStdWString().c_str(), FILE_ATTRIBUTE_NORMAL);
-
-  if (!::WritePrivateProfileStringW(L"Archive", L"bInvalidateOlderFiles", L"1", iniFile.toStdWString().c_str()) ||
-      !::WritePrivateProfileStringW(L"Archive", L"SInvalidationFile", L"", iniFile.toStdWString().c_str())) {
-    throw MOBase::MyException(QObject::tr("failed to activate BSA invalidation in \"%1\" (errorcode %2)").arg(iniFile, ::GetLastError()));
-  }
+  prepareProfile(profile);
 }
 
+void GamebryoBSAInvalidation::prepareProfile(MOBase::IProfile *profile)
+{
+  QString basePath
+          = profile->localSettingsEnabled()
+            ? profile->absolutePath()
+            : m_Game->documentsDirectory().absolutePath();
+  QString iniFilePath = basePath + "/" + m_IniFileName;
+  WCHAR setting[MAX_PATH];
+
+  if (profile->invalidationActive(nullptr)){
+
+    // add the dummy bsa to the archive string, if needed
+    QStringList archives = m_DataArchives->archives(profile);
+    bool bsaInstalled = false;
+    for (const QString &archive : archives) {
+      if (isInvalidationBSA(archive)) {
+        bsaInstalled = true;
+        break;
+      }
+    }
+    if (!bsaInstalled) {
+      m_DataArchives->addArchive(profile, 0, invalidationBSAName());
+    }
+
+    // create the dummy bsa if necessary
+    QString bsaFile = m_Game->dataDirectory().absoluteFilePath(invalidationBSAName());
+    if (!QFile::exists(bsaFile)) {
+      DummyBSA bsa(bsaVersion());
+      bsa.write(bsaFile);
+    }
+
+    // write bInvalidateOlderFiles = 1, if needed
+    if (!::GetPrivateProfileStringW(L"Archive", L"bInvalidateOlderFiles", L"0", setting, MAX_PATH, iniFilePath.toStdWString().c_str())
+      || wcstol(setting, nullptr, 10) != 1) {
+      if (!::WritePrivateProfileStringW(L"Archive", L"bInvalidateOlderFiles", L"1", iniFilePath.toStdWString().c_str())) {
+        throw MOBase::MyException(QObject::tr("failed to activate BSA invalidation in \"%1\" (errorcode %2)").arg(m_IniFileName, ::GetLastError()));
+      }
+    }
+
+    // write SInvalidationFile = "", if needed
+    if (!::GetPrivateProfileStringW(L"Archive", L"SInvalidationFile", L"ArchiveInvalidation.txt", setting, MAX_PATH, iniFilePath.toStdWString().c_str())
+      || wcscmp(setting, L"") != 0) {
+      if (!::WritePrivateProfileStringW(L"Archive", L"SInvalidationFile", L"", iniFilePath.toStdWString().c_str())) {
+        throw MOBase::MyException(QObject::tr("failed to activate BSA invalidation in \"%1\" (errorcode %2)").arg(m_IniFileName, ::GetLastError()));
+      }
+    }
+  } else {
+
+    // remove the dummy bsa from the archive string, if needed
+    QStringList archivesBefore = m_DataArchives->archives(profile);
+    for (const QString &archive : archivesBefore) {
+      if (isInvalidationBSA(archive)) {
+        m_DataArchives->removeArchive(profile, archive);
+      }
+    }
+
+    // delete the dummy bsa, if needed
+    QString bsaFile = m_Game->dataDirectory().absoluteFilePath(invalidationBSAName());
+    if (QFile::exists(bsaFile)) {
+      MOBase::shellDeleteQuiet(bsaFile);
+    }
+
+    // write bInvalidateOlderFiles = 0, if needed
+    if (!::GetPrivateProfileStringW(L"Archive", L"bInvalidateOlderFiles", L"1", setting, MAX_PATH, iniFilePath.toStdWString().c_str())
+      || wcstol(setting, nullptr, 10) != 0) {
+      if (!::WritePrivateProfileStringW(L"Archive", L"bInvalidateOlderFiles", L"0", iniFilePath.toStdWString().c_str())) {
+        throw MOBase::MyException(QObject::tr("failed to deactivate BSA invalidation in \"%1\" (errorcode %2)").arg(m_IniFileName, ::GetLastError()));
+      }
+    }
+
+    // write SInvalidationFile = "ArchiveInvalidation.txt", if needed
+    if (!::GetPrivateProfileStringW(L"Archive", L"SInvalidationFile", L"", setting, MAX_PATH, iniFilePath.toStdWString().c_str())
+      || wcscmp(setting, L"ArchiveInvalidation.txt") != 0) {
+      if (!::WritePrivateProfileStringW(L"Archive", L"SInvalidationFile", L"ArchiveInvalidation.txt", iniFilePath.toStdWString().c_str())) {
+        throw MOBase::MyException(QObject::tr("failed to activate BSA invalidation in \"%1\" (errorcode %2)").arg(m_IniFileName, ::GetLastError()));
+      }
+    }
+  }
+}
