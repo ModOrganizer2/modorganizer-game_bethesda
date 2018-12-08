@@ -105,17 +105,13 @@ Splash by %1</source>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../../game_gamebryo/src/gamebryo/gamebryobsainvalidation.cpp" line="57"/>
-        <source>failed to deactivate BSA invalidation in &quot;%1&quot; (errorcode %2)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../game_gamebryo/src/gamebryo/gamebryobsainvalidation.cpp" line="90"/>
+        <location filename="../../game_gamebryo/src/gamebryo/gamebryobsainvalidation.cpp" line="62"/>
+        <location filename="../../game_gamebryo/src/gamebryo/gamebryobsainvalidation.cpp" line="95"/>
+        <location filename="../../game_gamebryo/src/gamebryo/gamebryobsainvalidation.cpp" line="121"/>
         <source>failed to activate BSA invalidation in &quot;%1&quot; (errorcode %2)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../game_gamebryo/src/gamebryo/gamebryodataarchives.cpp" line="35"/>
         <location filename="morrowinddataarchives.cpp" line="41"/>
         <source>failed to set archive key (errorcode %1)</source>
         <translation type="unfinished"></translation>
@@ -149,6 +145,11 @@ Splash by %1</source>
     <message>
         <location filename="morrowindgameplugins.cpp" line="106"/>
         <source>failed to set game file key (errorcode %1)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../game_gamebryo/src/gamebryo/gamebryodataarchives.cpp" line="35"/>
+        <source>failed to set archive key in %1 (errorcode %2)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
