@@ -29,24 +29,7 @@ MorrowindLocalSavegames::MorrowindLocalSavegames(const QDir &gameInstallDir)
   : m_GameInstallDir(gameInstallDir.absolutePath())
 {}
 
-void MorrowindLocalSavegames::prepareProfile(MOBase::IProfile *profile)
-{
-  updateSaveGames(profile);
-}
-
-
-MappingType MorrowindLocalSavegames::mappings(const QDir &profileSaveDir) const
-{
-  return {{
-           profileSaveDir.absolutePath(),
-           m_GameInstallDir.absolutePath() + "/Saves",
-           true,
-           true
-    }};
-}
-
-
-bool MorrowindLocalSavegames::updateSaveGames(MOBase::IProfile *profile)
+bool MorrowindLocalSavegames::prepareProfile(MOBase::IProfile *profile)
 {
   bool dirty = false;
 
@@ -67,4 +50,15 @@ bool MorrowindLocalSavegames::updateSaveGames(MOBase::IProfile *profile)
   }
 
   return dirty;
+}
+
+
+MappingType MorrowindLocalSavegames::mappings(const QDir &profileSaveDir) const
+{
+  return {{
+           profileSaveDir.absolutePath(),
+           m_GameInstallDir.absolutePath() + "/Saves",
+           true,
+           true
+    }};
 }
