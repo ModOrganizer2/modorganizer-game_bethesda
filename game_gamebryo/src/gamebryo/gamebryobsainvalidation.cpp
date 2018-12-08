@@ -44,8 +44,9 @@ void GamebryoBSAInvalidation::activate(MOBase::IProfile *profile)
   prepareProfile(profile);
 }
 
-void GamebryoBSAInvalidation::prepareProfile(MOBase::IProfile *profile)
+bool GamebryoBSAInvalidation::prepareProfile(MOBase::IProfile *profile)
 {
+  bool dirty = false;
   QString basePath
           = profile->localSettingsEnabled()
             ? profile->absolutePath()
@@ -56,6 +57,7 @@ void GamebryoBSAInvalidation::prepareProfile(MOBase::IProfile *profile)
   // write bInvalidateOlderFiles = 1, if needed
   if (!::GetPrivateProfileStringW(L"Archive", L"bInvalidateOlderFiles", L"0", setting, MAX_PATH, iniFilePath.toStdWString().c_str())
     || wcstol(setting, nullptr, 10) != 1) {
+    dirty = true;
     if (!::WritePrivateProfileStringW(L"Archive", L"bInvalidateOlderFiles", L"1", iniFilePath.toStdWString().c_str())) {
       throw MOBase::MyException(QObject::tr("failed to activate BSA invalidation in \"%1\" (errorcode %2)").arg(m_IniFileName, ::GetLastError()));
     }
@@ -74,6 +76,7 @@ void GamebryoBSAInvalidation::prepareProfile(MOBase::IProfile *profile)
     }
     if (!bsaInstalled) {
       m_DataArchives->addArchive(profile, 0, invalidationBSAName());
+      dirty = true;
     }
 
     // create the dummy bsa if necessary
@@ -81,11 +84,13 @@ void GamebryoBSAInvalidation::prepareProfile(MOBase::IProfile *profile)
     if (!QFile::exists(bsaFile)) {
       DummyBSA bsa(bsaVersion());
       bsa.write(bsaFile);
+      dirty = true;
     }
 
     // write SInvalidationFile = "", if needed
-    if (!::GetPrivateProfileStringW(L"Archive", L"SInvalidationFile", L"ArchiveInvalidation.txt", setting, MAX_PATH, iniFilePath.toStdWString().c_str())
+    if (::GetPrivateProfileStringW(L"Archive", L"SInvalidationFile", L"ArchiveInvalidation.txt", setting, MAX_PATH, iniFilePath.toStdWString().c_str())
       || wcscmp(setting, L"") != 0) {
+      dirty = true;
       if (!::WritePrivateProfileStringW(L"Archive", L"SInvalidationFile", L"", iniFilePath.toStdWString().c_str())) {
         throw MOBase::MyException(QObject::tr("failed to activate BSA invalidation in \"%1\" (errorcode %2)").arg(m_IniFileName, ::GetLastError()));
       }
@@ -97,6 +102,7 @@ void GamebryoBSAInvalidation::prepareProfile(MOBase::IProfile *profile)
     for (const QString &archive : archivesBefore) {
       if (isInvalidationBSA(archive)) {
         m_DataArchives->removeArchive(profile, archive);
+        dirty = true;
       }
     }
 
@@ -104,14 +110,18 @@ void GamebryoBSAInvalidation::prepareProfile(MOBase::IProfile *profile)
     QString bsaFile = m_Game->dataDirectory().absoluteFilePath(invalidationBSAName());
     if (QFile::exists(bsaFile)) {
       MOBase::shellDeleteQuiet(bsaFile);
+      dirty = true;
     }
 
     // write SInvalidationFile = "ArchiveInvalidation.txt", if needed
     if (!::GetPrivateProfileStringW(L"Archive", L"SInvalidationFile", L"", setting, MAX_PATH, iniFilePath.toStdWString().c_str())
       || wcscmp(setting, L"ArchiveInvalidation.txt") != 0) {
+      dirty = true;
       if (!::WritePrivateProfileStringW(L"Archive", L"SInvalidationFile", L"ArchiveInvalidation.txt", iniFilePath.toStdWString().c_str())) {
         throw MOBase::MyException(QObject::tr("failed to activate BSA invalidation in \"%1\" (errorcode %2)").arg(m_IniFileName, ::GetLastError()));
       }
     }
   }
+
+  return dirty;
 }
