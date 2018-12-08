@@ -33,8 +33,7 @@ public:
   MorrowindLocalSavegames(const QDir &m_GameInstallDir);
 
   virtual MappingType mappings(const QDir &profileSaveDir) const override;
-  virtual void prepareProfile(MOBase::IProfile *profile) override;
-  virtual bool updateSaveGames(MOBase::IProfile *profile) override;
+  virtual bool prepareProfile(MOBase::IProfile *profile) override;
 
 private:
 
