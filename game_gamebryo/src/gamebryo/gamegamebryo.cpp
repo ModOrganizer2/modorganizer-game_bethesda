@@ -114,8 +114,8 @@ MOBase::IPluginGame::SortMechanism GameGamebryo::sortMechanism() const
 
 bool GameGamebryo::looksValid(QDir const &path) const
 {
-  //Check for <prog>.exe and <gamename>Launcher.exe for now.
-  return path.exists(binaryName()) && path.exists(getLauncherName());
+  //Check for <prog>.exe for now.
+  return path.exists(binaryName());
 }
 
 QString GameGamebryo::gameVersion() const
