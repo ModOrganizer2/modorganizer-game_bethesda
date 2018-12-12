@@ -80,7 +80,7 @@ QString GameFalloutTTW::description() const
 
 MOBase::VersionInfo GameFalloutTTW::version() const
 {
-  return VersionInfo(1, 2, 0, VersionInfo::RELEASE_FINAL);
+  return VersionInfo(1, 3, 0, VersionInfo::RELEASE_FINAL);
 }
 
 bool GameFalloutTTW::isActive() const
