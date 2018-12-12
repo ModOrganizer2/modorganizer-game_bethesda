@@ -117,7 +117,7 @@ QString GameSkyrimVR::description() const
 
 MOBase::VersionInfo GameSkyrimVR::version() const
 {
-  return VersionInfo(0, 2, 0, VersionInfo::RELEASE_CANDIDATE);
+  return VersionInfo(1, 3, 0, VersionInfo::RELEASE_FINAL);
 }
 
 bool GameSkyrimVR::isActive() const
