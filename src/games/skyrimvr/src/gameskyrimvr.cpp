@@ -3,13 +3,12 @@
 #include "skyrimvrdataarchives.h"
 #include "skyrimvrscriptextender.h"
 #include "skyrimvrsavegameinfo.h"
-#include "skyrimvrgameplugins.h"
 #include "skyrimvrunmanagedmods.h"
 
 #include <pluginsetting.h>
 #include <executableinfo.h>
 #include <gamebryolocalsavegames.h>
-#include <gamebryogameplugins.h>
+#include <creationgameplugins.h>
 #include "versioninfo.h"
 
 #include <QCoreApplication>
@@ -73,7 +72,7 @@ bool GameSkyrimVR::init(IOrganizer *moInfo)
   registerFeature<DataArchives>(new SkyrimVRDataArchives(myGamesPath()));
   registerFeature<LocalSavegames>(new GamebryoLocalSavegames(myGamesPath(), "SkyrimVR.ini"));
   registerFeature<SaveGameInfo>(new SkyrimVRSaveGameInfo(this));
-  registerFeature<GamePlugins>(new SkyrimVRGamePlugins(moInfo));
+  registerFeature<GamePlugins>(new CreationGamePlugins(moInfo));
   registerFeature<UnmanagedMods>(new SkyrimVRUnmangedMods(this));
 
   return true;
@@ -118,7 +117,7 @@ QString GameSkyrimVR::description() const
 
 MOBase::VersionInfo GameSkyrimVR::version() const
 {
-  return VersionInfo(0, 2, 0, VersionInfo::RELEASE_CANDIDATE);
+  return VersionInfo(1, 3, 0, VersionInfo::RELEASE_FINAL);
 }
 
 bool GameSkyrimVR::isActive() const
