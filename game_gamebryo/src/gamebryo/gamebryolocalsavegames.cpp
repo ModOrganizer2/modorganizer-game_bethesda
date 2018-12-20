@@ -36,8 +36,20 @@ GamebryoLocalSavegames::GamebryoLocalSavegames(const QDir &myGamesDir,
 {}
 
 
-void GamebryoLocalSavegames::prepareProfile(MOBase::IProfile *profile)
+MappingType GamebryoLocalSavegames::mappings(const QDir &profileSaveDir) const
 {
+  return {{
+           profileSaveDir.absolutePath(),
+           m_LocalSavesDir.absolutePath(),
+           true,
+           true
+    }};
+}
+
+
+bool GamebryoLocalSavegames::prepareProfile(MOBase::IProfile *profile)
+{
+  bool dirty = false;
   bool enable = profile->localSavesEnabled();
   qDebug("enable local saves: %d", enable);
   QString basePath
@@ -50,7 +62,8 @@ void GamebryoLocalSavegames::prepareProfile(MOBase::IProfile *profile)
   WCHAR oldMyGames[1];
   GetPrivateProfileStringW(L"General", L"SLocalSavePath", NULL, oldPath, MAX_PATH, iniFilePath.toStdWString().c_str());
   GetPrivateProfileStringW(L"General", L"bUseMyGamesDirectory", NULL, oldMyGames, 1, iniFilePath.toStdWString().c_str());
-  if (enable && wcscmp(oldPath, L"") != 0 && wcscmp(oldPath, (LocalSavesDummy + "\\").toStdWString().c_str()) == 0) {
+  if (enable && wcscmp(oldPath, L"") != 0 && wcscmp(oldPath, (LocalSavesDummy + "\\").toStdWString().c_str()) != 0) {
+    dirty = true;
     WritePrivateProfileStringW(L"General", L"SLocalSavePath", oldPath, QString(profile->absolutePath() + "/" + "savepath.ini").toStdWString().c_str());
     if (wcscmp(oldMyGames, L"") != 0) {
       WritePrivateProfileStringW(L"General", L"bUseMyGamesDirectory", oldMyGames, QString(profile->absolutePath() + "/" + "savepath.ini").toStdWString().c_str());
@@ -77,23 +90,51 @@ void GamebryoLocalSavegames::prepareProfile(MOBase::IProfile *profile)
     }
   }
 
-  WritePrivateProfileStringW(L"General", L"SLocalSavePath",
-                             enable ? (LocalSavesDummy + "\\").toStdWString().c_str()
-                                    : (saved ? savedPath : NULL),
-                             iniFilePath.toStdWString().c_str());
+  if (enable) {
+    if (wcscmp(oldPath, (LocalSavesDummy + "\\").toStdWString().c_str()) != 0){
+      WritePrivateProfileStringW(L"General", L"SLocalSavePath",
+                                 (LocalSavesDummy + "\\").toStdWString().c_str(),
+                                 iniFilePath.toStdWString().c_str());
+      dirty = true;
+    }
+    if (wcscmp(oldMyGames, L"") != 0) {
+      WritePrivateProfileStringW(L"General", L"bUseMyGamesDirectory",
+                                 NULL,
+                                 iniFilePath.toStdWString().c_str());
+      dirty = true;
+    }
+  } else {
+    if (saved) {
+      if (wcscmp(oldPath, savedPath) != 0) {
+        WritePrivateProfileStringW(L"General", L"SLocalSavePath",
+          savedPath,
+          iniFilePath.toStdWString().c_str());
+        dirty = true;
+      }
+    } else {
+      if (wcscmp(oldPath, L"") != 0) {
+        WritePrivateProfileStringW(L"General", L"SLocalSavePath",
+          NULL,
+          iniFilePath.toStdWString().c_str());
+        dirty = true;
+      }
+    }
+    if (savedDir) {
+      if (wcscmp(oldMyGames, savedMyGames) != 0) {
+        WritePrivateProfileStringW(L"General", L"bUseMyGamesDirectory",
+          savedMyGames,
+          iniFilePath.toStdWString().c_str());
+        dirty = true;
+      }
+    } else {
+      if (wcscmp(oldMyGames, L"") != 0) {
+        WritePrivateProfileStringW(L"General", L"bUseMyGamesDirectory",
+          NULL,
+          iniFilePath.toStdWString().c_str());
+        dirty = true;
+      }
+    }
+  }
 
-  WritePrivateProfileStringW(L"General", L"bUseMyGamesDirectory",
-                             enable ? NULL : (savedDir ? savedMyGames : NULL),
-                             iniFilePath.toStdWString().c_str());
-}
-
-
-MappingType GamebryoLocalSavegames::mappings(const QDir &profileSaveDir) const
-{
-  return {{
-           profileSaveDir.absolutePath(),
-           m_LocalSavesDir.absolutePath(),
-           true,
-           true
-    }};
+  return dirty;
 }
