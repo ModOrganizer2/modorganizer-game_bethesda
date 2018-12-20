@@ -63,7 +63,7 @@ QList<ExecutableInfo> GameFalloutNV::executables() const
 
 QString GameFalloutNV::name() const
 {
-  return "FalloutNV Support Plugin";
+  return "Fallout NV Support Plugin";
 }
 
 QString GameFalloutNV::author() const
@@ -78,7 +78,7 @@ QString GameFalloutNV::description() const
 
 MOBase::VersionInfo GameFalloutNV::version() const
 {
-  return VersionInfo(1, 0, 0, VersionInfo::RELEASE_FINAL);
+  return VersionInfo(1, 3, 0, VersionInfo::RELEASE_FINAL);
 }
 
 bool GameFalloutNV::isActive() const
@@ -107,8 +107,11 @@ void GameFalloutNV::initializeProfile(const QDir &path, ProfileSettings settings
     }
 
     copyToProfile(myGamesPath(), path, "falloutprefs.ini");
-	copyToProfile(myGamesPath(), path, "falloutcustom.ini");
-	copyToProfile(myGamesPath(), path, "custom.ini");
+	  copyToProfile(myGamesPath(), path, "falloutcustom.ini");
+    copyToProfile(myGamesPath(), path, "custom.ini");
+    copyToProfile(myGamesPath(), path, "GECKCustom.ini");
+    copyToProfile(myGamesPath(), path, "GECKPrefs.ini");
+
   }
 }
 
@@ -144,7 +147,7 @@ QString GameFalloutNV::gameNexusName() const
 
 QStringList GameFalloutNV::iniFiles() const
 {
-  return { "fallout.ini", "falloutprefs.ini", "falloutcustom.ini",  "custom.ini"};
+  return { "fallout.ini", "falloutprefs.ini", "falloutcustom.ini",  "custom.ini", "GECKCustom.ini", "GECKPrefs.ini"};
 }
 
 QStringList GameFalloutNV::DLCPlugins() const
