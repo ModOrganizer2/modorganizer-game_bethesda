@@ -3,13 +3,12 @@
 #include "fallout4dataarchives.h"
 #include "fallout4scriptextender.h"
 #include "fallout4savegameinfo.h"
-#include "fallout4gameplugins.h"
 #include "fallout4unmanagedmods.h"
 
 #include <pluginsetting.h>
 #include <executableinfo.h>
 #include <gamebryolocalsavegames.h>
-#include <gamebryogameplugins.h>
+#include <creationgameplugins.h>
 #include "versioninfo.h"
 
 #include <QCoreApplication>
@@ -40,7 +39,7 @@ bool GameFallout4::init(IOrganizer *moInfo)
   registerFeature<DataArchives>(new Fallout4DataArchives(myGamesPath()));
   registerFeature<LocalSavegames>(new GamebryoLocalSavegames(myGamesPath(), "Fallout4.ini"));
   registerFeature<SaveGameInfo>(new Fallout4SaveGameInfo(this));
-  registerFeature<GamePlugins>(new Fallout4GamePlugins(moInfo));
+  registerFeature<GamePlugins>(new CreationGamePlugins(moInfo));
   registerFeature<UnmanagedMods>(new Fallout4UnmangedMods(this));
 
   return true;
@@ -64,7 +63,7 @@ QList<ExecutableInfo> GameFallout4::executables() const
 
 QString GameFallout4::name() const
 {
-  return "Fallout4 Support Plugin";
+  return "Fallout 4 Support Plugin";
 }
 
 QString GameFallout4::author() const
@@ -80,7 +79,7 @@ QString GameFallout4::description() const
 
 MOBase::VersionInfo GameFallout4::version() const
 {
-  return VersionInfo(0, 3, 0, VersionInfo::RELEASE_BETA);
+  return VersionInfo(1, 3, 0, VersionInfo::RELEASE_FINAL);
 }
 
 bool GameFallout4::isActive() const
@@ -130,7 +129,7 @@ QString GameFallout4::steamAPPId() const
 
 QStringList GameFallout4::primaryPlugins() const {
   QStringList plugins = {"fallout4.esm", "dlcrobot.esm", "dlcworkshop01.esm", "dlccoast.esm", "dlcworkshop02.esm",
-          "dlcworkshop03.esm", "dlcnukaworld.esm"};
+          "dlcworkshop03.esm", "dlcnukaworld.esm", "dlcultrahighresolution.esm"};
 
   plugins.append(CCPlugins());
 
