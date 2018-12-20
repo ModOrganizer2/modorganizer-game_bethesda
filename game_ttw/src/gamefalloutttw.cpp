@@ -65,7 +65,7 @@ QList<ExecutableInfo> GameFalloutTTW::executables() const
 
 QString GameFalloutTTW::name() const
 {
-  return "FalloutTTW Support Plugin";
+  return "Fallout TTW Support Plugin";
 }
 
 QString GameFalloutTTW::author() const
@@ -80,7 +80,7 @@ QString GameFalloutTTW::description() const
 
 MOBase::VersionInfo GameFalloutTTW::version() const
 {
-  return VersionInfo(1, 0, 0, VersionInfo::RELEASE_FINAL);
+  return VersionInfo(1, 3, 0, VersionInfo::RELEASE_FINAL);
 }
 
 bool GameFalloutTTW::isActive() const
@@ -111,6 +111,8 @@ void GameFalloutTTW::initializeProfile(const QDir &path, ProfileSettings setting
     copyToProfile(myGamesPath(), path, "falloutprefs.ini");
     copyToProfile(myGamesPath(), path, "falloutcustom.ini");
     copyToProfile(myGamesPath(), path, "custom.ini");
+    copyToProfile(myGamesPath(), path, "GECKCustom.ini");
+    copyToProfile(myGamesPath(), path, "GECKPrefs.ini");
   }
 }
 
@@ -131,11 +133,23 @@ QString GameFalloutTTW::steamAPPId() const
 
 QStringList GameFalloutTTW::primaryPlugins() const
 {
-  return { "falloutnv.esm", "deadmoney.esm", "honesthearts.esm",
-           "oldworldblues.esm", "lonesomeroad.esm", "gunrunnersarsenal.esm",
-           "fallout3.esm", "anchorage.esm", "thepitt.esm", "brokensteel.esm",
-		   "pointlookout.esm", "zeta.esm", "caravanpack.esm", "classicpack.esm",
-		   "mercenarypack.esm", "tribalpack.esm", "taleoftwowastelands.esm" };
+  return { "falloutnv.esm",
+           "deadmoney.esm",
+           "honesthearts.esm",
+           "oldworldblues.esm",
+           "lonesomeroad.esm",
+           "gunrunnersarsenal.esm",
+           "fallout3.esm",
+           "anchorage.esm",
+           "thepitt.esm",
+           "brokensteel.esm",
+           "pointlookout.esm",
+           "zeta.esm",
+           "caravanpack.esm",
+           "classicpack.esm",
+           "mercenarypack.esm",
+           "tribalpack.esm",
+           "taleoftwowastelands.esm" };
 }
 
 QString GameFalloutTTW::binaryName() const
@@ -165,7 +179,7 @@ QString GameFalloutTTW::gameNexusName() const
 
 QStringList GameFalloutTTW::iniFiles() const
 {
-  return { "fallout.ini", "falloutprefs.ini", "falloutcustom.ini",  "custom.ini" };
+  return { "fallout.ini", "falloutprefs.ini", "falloutcustom.ini", "custom.ini", "GECKCustom.ini", "GECKPrefs.ini" };
 }
 
 QStringList GameFalloutTTW::DLCPlugins() const
