@@ -2,13 +2,12 @@
 
 #include "fallout4vrdataarchives.h"
 #include "fallout4vrsavegameinfo.h"
-#include "fallout4vrgameplugins.h"
 #include "fallout4vrunmanagedmods.h"
 
 #include <pluginsetting.h>
 #include <executableinfo.h>
 #include <gamebryolocalsavegames.h>
-#include <gamebryogameplugins.h>
+#include <creationgameplugins.h>
 #include "versioninfo.h"
 
 #include <QCoreApplication>
@@ -40,7 +39,7 @@ bool GameFallout4VR::init(IOrganizer *moInfo)
   registerFeature<DataArchives>(new Fallout4VRDataArchives(myGamesPath()));
   registerFeature<LocalSavegames>(new GamebryoLocalSavegames(myGamesPath(), "fallout4custom.ini"));
   registerFeature<SaveGameInfo>(new Fallout4VRSaveGameInfo(this));
-  registerFeature<GamePlugins>(new Fallout4VRGamePlugins(moInfo));
+  registerFeature<GamePlugins>(new CreationGamePlugins(moInfo));
   registerFeature<UnmanagedMods>(new Fallout4VRUnmangedMods(this));
 
   return true;
@@ -78,7 +77,7 @@ QString GameFallout4VR::description() const
 
 MOBase::VersionInfo GameFallout4VR::version() const
 {
-  return VersionInfo(0, 4, 0, VersionInfo::RELEASE_CANDIDATE);
+  return VersionInfo(1, 3, 0, VersionInfo::RELEASE_FINAL);
 }
 
 bool GameFallout4VR::isActive() const
