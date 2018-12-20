@@ -33,7 +33,7 @@ public:
   GamebryoLocalSavegames(const QDir &myGamesDir, const QString &iniFileName);
 
   virtual MappingType mappings(const QDir &profileSaveDir) const override;
-  virtual void prepareProfile(MOBase::IProfile *profile) override;
+  virtual bool prepareProfile(MOBase::IProfile *profile) override;
 
 private:
 

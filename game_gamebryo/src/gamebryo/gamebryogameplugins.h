@@ -6,6 +6,7 @@
 #include <imoinfo.h>
 #include <QTextCodec>
 #include <QDateTime>
+#include <QStringList>
 
 class GamebryoGamePlugins : public GamePlugins {
 public:
@@ -13,6 +14,7 @@ public:
 
   virtual void writePluginLists(const MOBase::IPluginList *pluginList) override;
   virtual void readPluginLists(MOBase::IPluginList *pluginList) override;
+  virtual void getLoadOrder(QStringList &loadOrder) override;
 
 protected:
   QTextCodec *utf8Codec() const { return m_Utf8Codec; }
@@ -24,12 +26,12 @@ protected:
                                const QString &filePath);
   virtual void writeLoadOrderList(const MOBase::IPluginList *pluginList,
                                   const QString &filePath);
-  virtual bool readLoadOrderList(MOBase::IPluginList *pluginList,
+  virtual QStringList readLoadOrderList(MOBase::IPluginList *pluginList,
                                  const QString &filePath);
-  virtual bool readPluginList(MOBase::IPluginList *pluginList, bool useLoadOrder);
+  virtual QStringList readPluginList(MOBase::IPluginList *pluginList);
 
 protected:
-
+  MOBase::IOrganizer *m_Organizer;
   QDateTime m_LastRead;
 
 private:
@@ -37,7 +39,6 @@ private:
                  bool loadOrder);
 
 private:
-  MOBase::IOrganizer *m_Organizer;
   QTextCodec *m_Utf8Codec;
   QTextCodec *m_LocalCodec;
 

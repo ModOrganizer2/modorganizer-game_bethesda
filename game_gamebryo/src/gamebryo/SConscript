@@ -1,0 +1,28 @@
+import os
+
+Import('qt_env')
+
+env = qt_env.Clone()
+
+env.EnableQtModules('Widgets')
+
+env['CPPPATH'] += [
+    '.',            # Why is this necessary?
+    os.path.join('..', 'gamefeatures'),
+    '${BOOSTPATH}'
+]
+
+env.Uic(env.Glob('*.ui'))
+
+#env.AppendUnique(LIBS = [
+#        'advapi32',
+#        'ole32',
+#        'shell32',
+#        'version'
+#])
+
+lib = env.StaticLibrary('gameGamebryo', env.Glob('*.cpp'))
+#env.InstallModule(lib)
+
+res = env['QT_USED_MODULES']
+Return('res')
