@@ -63,7 +63,7 @@ QList<ExecutableInfo> GameFallout3::executables() const
 
 QString GameFallout3::name() const
 {
-  return "Fallout3 Support Plugin";
+  return "Fallout 3 Support Plugin";
 }
 
 QString GameFallout3::author() const
@@ -78,7 +78,7 @@ QString GameFallout3::description() const
 
 MOBase::VersionInfo GameFallout3::version() const
 {
-  return VersionInfo(1, 0, 0, VersionInfo::RELEASE_FINAL);
+  return VersionInfo(1, 3, 0, VersionInfo::RELEASE_FINAL);
 }
 
 bool GameFallout3::isActive() const
@@ -107,7 +107,9 @@ void GameFallout3::initializeProfile(const QDir &path, ProfileSettings settings)
     }
 
     copyToProfile(myGamesPath(), path, "falloutprefs.ini");
-	copyToProfile(myGamesPath(), path, "custom.ini");
+	  copyToProfile(myGamesPath(), path, "custom.ini");
+    copyToProfile(myGamesPath(), path, "GECKCustom.ini");
+    copyToProfile(myGamesPath(), path, "GECKPrefs.ini");
   }
 }
 
@@ -154,7 +156,7 @@ QString GameFallout3::gameNexusName() const
 
 QStringList GameFallout3::iniFiles() const
 {
-  return { "fallout.ini", "falloutprefs.ini", "custom.ini" };
+  return { "fallout.ini", "falloutprefs.ini", "custom.ini", "GECKCustom.ini", "GECKPrefs.ini" };
 }
 
 QStringList GameFallout3::DLCPlugins() const
