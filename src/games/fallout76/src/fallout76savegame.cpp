@@ -1,11 +1,11 @@
-#include "fallout4savegame.h"
+#include "fallout76savegame.h"
 
 #include <Windows.h>
 
-Fallout4SaveGame::Fallout4SaveGame(QString const &fileName, MOBase::IPluginGame const *game, bool const lightEnabled) :
+Fallout76SaveGame::Fallout76SaveGame(QString const &fileName, MOBase::IPluginGame const *game, bool const lightEnabled) :
   GamebryoSaveGame(fileName, game, lightEnabled)
 {
-  FileWrapper file(this, "FO4_SAVEGAME");
+  FileWrapper file(this, "FO76_SAVEGAME");
   file.skip<unsigned long>(); // header size
   file.skip<uint32_t>(); // header version
   file.read(m_SaveNumber);

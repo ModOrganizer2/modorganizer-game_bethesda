@@ -11,21 +11,21 @@ TEMPLATE = lib
 CONFIG += plugins
 CONFIG += dll
 
-DEFINES += GAMEFALLOUT4_LIBRARY
+DEFINES += GAMEFALLOUT76_LIBRARY
 
-SOURCES += gamefallout4.cpp \
-    fallout4bsainvalidation.cpp \
-    fallout4scriptextender.cpp \
-    fallout4dataarchives.cpp \
-    fallout4savegame.cpp \
-    fallout4savegameinfo.cpp
+SOURCES += gamefallout76.cpp \
+    fallout76bsainvalidation.cpp \
+    fallout76scriptextender.cpp \
+    fallout76dataarchives.cpp \
+    fallout76savegame.cpp \
+    fallout76savegameinfo.cpp
 
-HEADERS += gamefallout4.h \
-    fallout4bsainvalidation.h \
-    fallout4scriptextender.h \
-    fallout4dataarchives.h \
-    fallout4savegame.h \
-    fallout4savegameinfo.h
+HEADERS += gamefallout76.h \
+    fallout76bsainvalidation.h \
+    fallout76scriptextender.h \
+    fallout76dataarchives.h \
+    fallout76savegame.h \
+    fallout76savegameinfo.h
 
 CONFIG(debug, debug|release) {
   LIBS += -L"$${OUT_PWD}/../gameGamebryo/debug"
@@ -44,7 +44,7 @@ INCLUDEPATH += "$${BOOSTPATH}" "$${PWD}/../gamefeatures" "$${PWD}/../gamegamebry
 LIBS += -ladvapi32 -lole32 -lgameGamebryo
 
 OTHER_FILES += \
-    gamefallout4.json\
+    gamefallout76.json\
     SConscript \
     CMakeLists.txt
 

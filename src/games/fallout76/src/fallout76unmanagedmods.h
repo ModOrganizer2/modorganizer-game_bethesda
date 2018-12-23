@@ -1,15 +1,15 @@
-#ifndef FALLOUT4UNMANAGEDMODS_H
-#define FALLOUT4UNMANAGEDMODS_H
+#ifndef FALLOUT76UNMANAGEDMODS_H
+#define FALLOUT76UNMANAGEDMODS_H
 
 
 #include "gamebryounmanagedmods.h"
 #include <gamegamebryo.h>
 
 
-class Fallout4UnmangedMods : public GamebryoUnmangedMods {
+class Fallout76UnmangedMods : public GamebryoUnmangedMods {
 public:
-  Fallout4UnmangedMods(const GameGamebryo *game);
-  ~Fallout4UnmangedMods();
+  Fallout76UnmangedMods(const GameGamebryo *game);
+  ~Fallout76UnmangedMods();
 
   virtual QStringList mods(bool onlyOfficial) const override;
   virtual QStringList secondaryFiles(const QString &modName) const override;
@@ -18,4 +18,4 @@ public:
 
 
 
-#endif // FALLOUT4UNMANAGEDMODS_H
+#endif // FALLOUT76UNMANAGEDMODS_H

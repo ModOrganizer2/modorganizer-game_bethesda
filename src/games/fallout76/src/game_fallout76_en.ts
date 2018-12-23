@@ -2,10 +2,10 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="en_US">
 <context>
-    <name>GameFallout4</name>
+    <name>GameFallout76</name>
     <message>
-        <location filename="gamefallout4.cpp" line="76"/>
-        <source>Adds support for the game Fallout 4.
+        <location filename="gamefallout76.cpp" line="76"/>
+        <source>Adds support for the game Fallout 76.
 Splash by %1</source>
         <translation type="unfinished"></translation>
     </message>
