@@ -79,7 +79,7 @@ QString GameFallout76::description() const
 
 MOBase::VersionInfo GameFallout76::version() const
 {
-  return VersionInfo(1, 3, 0, VersionInfo::RELEASE_FINAL);
+  return VersionInfo(1, 0, 1, VersionInfo::RELEASE_FINAL);
 }
 
 bool GameFallout76::isActive() const
@@ -101,14 +101,14 @@ void GameFallout76::initializeProfile(const QDir &path, ProfileSettings settings
 
   if (settings.testFlag(IPluginGame::CONFIGURATION)) {
     if (settings.testFlag(IPluginGame::PREFER_DEFAULTS)
-        || !QFileInfo(myGamesPath() + "/fallout76.ini").exists()) {
-      copyToProfile(gameDirectory().absolutePath(), path, "fallout76_default.ini", "fallout76.ini");
+        || !QFileInfo(myGamesPath() + "/Fallout76.ini").exists()) {
+      copyToProfile(gameDirectory().absolutePath(), path, "Fallout76_default.ini", "Fallout76.ini");
     } else {
-      copyToProfile(myGamesPath(), path, "fallout76.ini");
+      copyToProfile(myGamesPath(), path, "Fallout76.ini");
     }
 
-    copyToProfile(myGamesPath(), path, "fallout76prefs.ini");
-	copyToProfile(myGamesPath(), path, "fallout76custom.ini");
+    copyToProfile(myGamesPath(), path, "Fallout76Prefs.ini");
+	copyToProfile(myGamesPath(), path, "Fallout76Custom.ini");
   }
 }
 

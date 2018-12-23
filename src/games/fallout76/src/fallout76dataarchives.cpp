@@ -55,6 +55,13 @@ QStringList Fallout76DataArchives::sResourceStartUpArchiveList() const
          , "SeventySix - Startup.ba2" };
 }
 
+QStringList Fallout76DataArchives::SResourceArchiveMemoryCacheList() const {
+  return { "SeventySix - Interface.ba2"
+         , "SeventySix - Materials.ba2"
+         , "SeventySix - MiscClient.ba2"
+         , "SeventySix - Shaders.ba2" };
+}
+
 QStringList Fallout76DataArchives::SResourceArchiveList() const {
   return { "SeventySix - GeneratedMeshes.ba2"
          , "SeventySix - Materials.ba2"
@@ -76,13 +83,6 @@ QStringList Fallout76DataArchives::SResourceArchiveList2() const {
          , "SeventySix - EnlightenExteriors02.ba2" };
 }
 
-QStringList Fallout76DataArchives::SResourceArchiveMemoryCacheList() const {
-  return { "SeventySix - Interface.ba2"
-         , "SeventySix - Materials.ba2"
-         , "SeventySix - MiscClient.ba2"
-         , "SeventySix - Shaders.ba2" };
-}
-
 QStringList Fallout76DataArchives::sResourceArchive2List() const {
   return { "SeventySix - ATX_Main.ba2"
          , "SeventySix - ATX_Textures.ba2" };
@@ -93,22 +93,53 @@ QStringList Fallout76DataArchives::archives(const MOBase::IProfile *profile) con
   QStringList result;
 
   QString iniFile = profile->localSettingsEnabled() ? QDir(profile->absolutePath()).absoluteFilePath("Fallout76.ini") : m_LocalGameDir.absoluteFilePath("Fallout76.ini");
+
+  result.append(getArchivesFromKey(iniFile, "sResourceIndexFileList"));
+  result.append(getArchivesFromKey(iniFile, "sResourceStartUpArchiveList"));
+  result.append(getArchivesFromKey(iniFile, "SResourceArchiveMemoryCacheList"));
   result.append(getArchivesFromKey(iniFile, "SResourceArchiveList"));
   result.append(getArchivesFromKey(iniFile, "SResourceArchiveList2"));
+  result.append(getArchivesFromKey(iniFile, "sResourceArchive2List"));
 
   return result;
 }
 
 void Fallout76DataArchives::writeArchiveList(MOBase::IProfile *profile, const QStringList &before)
 {
-  QString list = before.join(", ");
-
   QString iniFile = profile->localSettingsEnabled() ? QDir(profile->absolutePath()).absoluteFilePath("Fallout76.ini") : m_LocalGameDir.absoluteFilePath("Fallout76.ini");
-//  if (list.length() > 255) {
-//    int splitIdx = list.lastIndexOf(",", 256);
-//    setArchivesToKey(iniFile, "SResourceArchiveList", list.mid(0, splitIdx));
-//    setArchivesToKey(iniFile, "SResourceArchiveList2", list.mid(splitIdx + 2));
-//  } else {
-    setArchivesToKey(iniFile, "sResourceArchive2List", list);
-//  }
+
+  QStringList sResourceIndexFileList = {};
+  QStringList sResourceStartUpArchiveList = {};
+  QStringList SResourceArchiveMemoryCacheList = {};
+  QStringList SResourceArchiveList = {};
+  QStringList SResourceArchiveList2 = {};
+  QStringList sResourceArchive2List = {};
+
+  for (int i = 0; i < before.size(); ++i) {
+    QString archive = before[i];
+    if (archive.contains(QRegExp(" - Textures(\\d{2})\\.ba2$"))) {
+      sResourceIndexFileList.append(archive);
+    } else if (archive.contains(QRegExp(" - (Interface|Localization|Shaders|Startup)\\.ba2$"))) {
+      sResourceStartUpArchiveList.append(archive);
+    } else if (archive.contains(QRegExp(" - (Interface|Materials|MiscClient|Shaders)\\.ba2$"))) {
+      SResourceArchiveMemoryCacheList.append(archive);
+    } else if (archive.contains(QRegExp(" - (GeneratedMeshes|Materials|Meshes(\\d{2}|\\w+)?|MiscClient|Sounds\\d{2}|Startup|Voices)\\.ba2$"))) {
+      SResourceArchiveList.append(archive);
+    } else if (archive.contains(QRegExp(" - (Animations|Enlighten(Interiors|Exteriors\\d{2})|GeneratedTextures)\\.ba2$"))) {
+      SResourceArchiveList2.append(archive);
+    } else if (archive.contains(QRegExp(" - ATX_.*\\.ba2$"))) {
+      // if it is named after DLC, it has to go here
+      sResourceArchive2List.append(archive);
+    } else {
+      // if it did not fit any description above, it gets tacked on at the end
+      sResourceArchive2List.append(archive);
+    }
+  }
+
+  setArchivesToKey(iniFile, "sResourceIndexFileList", sResourceIndexFileList.join(", "));
+  setArchivesToKey(iniFile, "sResourceStartUpArchiveList", sResourceStartUpArchiveList.join(", "));
+  setArchivesToKey(iniFile, "SResourceArchiveMemoryCacheList", SResourceArchiveMemoryCacheList.join(", "));
+  setArchivesToKey(iniFile, "SResourceArchiveList", SResourceArchiveList.join(", "));
+  setArchivesToKey(iniFile, "SResourceArchiveList2", SResourceArchiveList2.join(", "));
+  setArchivesToKey(iniFile, "sResourceArchive2List", sResourceArchive2List.join(", "));
 }
