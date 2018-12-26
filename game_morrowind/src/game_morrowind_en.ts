@@ -105,20 +105,20 @@ Splash by %1</source>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../../game_gamebryo/src/gamebryo/gamebryobsainvalidation.cpp" line="62"/>
-        <location filename="../../game_gamebryo/src/gamebryo/gamebryobsainvalidation.cpp" line="95"/>
-        <location filename="../../game_gamebryo/src/gamebryo/gamebryobsainvalidation.cpp" line="121"/>
+        <location filename="../../game_gamebryo/src/gamebryo/gamebryobsainvalidation.cpp" line="63"/>
+        <location filename="../../game_gamebryo/src/gamebryo/gamebryobsainvalidation.cpp" line="96"/>
+        <location filename="../../game_gamebryo/src/gamebryo/gamebryobsainvalidation.cpp" line="122"/>
         <source>failed to activate BSA invalidation in &quot;%1&quot; (errorcode %2)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="morrowinddataarchives.cpp" line="41"/>
+        <location filename="morrowinddataarchives.cpp" line="42"/>
         <source>failed to set archive key (errorcode %1)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../game_gamebryo/src/gamebryo/gamebryogameplugins.cpp" line="128"/>
-        <location filename="morrowindgameplugins.cpp" line="114"/>
+        <location filename="morrowindgameplugins.cpp" line="115"/>
         <source>Some of your plugins have invalid names! These plugins can not be loaded by the game. Please see mo_interface.log for a list of affected plugins and rename them.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -143,12 +143,12 @@ Splash by %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="morrowindgameplugins.cpp" line="106"/>
+        <location filename="morrowindgameplugins.cpp" line="107"/>
         <source>failed to set game file key (errorcode %1)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../game_gamebryo/src/gamebryo/gamebryodataarchives.cpp" line="35"/>
+        <location filename="../../game_gamebryo/src/gamebryo/gamebryodataarchives.cpp" line="36"/>
         <source>failed to set archive key in %1 (errorcode %2)</source>
         <translation type="unfinished"></translation>
     </message>
