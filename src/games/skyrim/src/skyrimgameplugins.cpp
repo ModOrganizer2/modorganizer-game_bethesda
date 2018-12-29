@@ -83,7 +83,6 @@ QStringList SkyrimGamePlugins::readPluginList(MOBase::IPluginList *pluginList)
         pluginsTxtExists = false;
     }
 
-    QStringList disabledPlugins;
     if (pluginsTxtExists) {
         while (!file.atEnd()) {
             QByteArray line = file.readLine();
@@ -94,7 +93,6 @@ QStringList SkyrimGamePlugins::readPluginList(MOBase::IPluginList *pluginList)
             if (pluginName.size() > 0) {
                 pluginList->setState(pluginName, IPluginList::STATE_ACTIVE);
                 plugins.removeAll(pluginName);
-                disabledPlugins.append(pluginName);
                 loadOrder.append(pluginName);
             }
         }
@@ -111,5 +109,5 @@ QStringList SkyrimGamePlugins::readPluginList(MOBase::IPluginList *pluginList)
         }
     }
 
-    return loadOrder + disabledPlugins;
+    return loadOrder;
 }
