@@ -35,8 +35,15 @@ void SkyrimGamePlugins::readPluginLists(MOBase::IPluginList *pluginList) {
 
   if (pluginsIsNew && !loadOrderIsNew) {
     // If the plugins is new but not loadorder, we must reparse the load order from the plugin files
-    QStringList loadOrder = readPluginList(pluginList);
+    
+    //removed because returned loadorder was incorrect and did not account for plugins that were already disabled before.
+    /*QStringList loadOrder = readPluginList(pluginList);
+    pluginList->setLoadOrder(loadOrder);*/
+
+    //Fix me: we are ignoring order changes in plugins.txt favouring loadorder.txt in all cases (plugins.txt shuld have precedence)
+    QStringList loadOrder = readLoadOrderList(pluginList, loadOrderPath);
     pluginList->setLoadOrder(loadOrder);
+    readPluginList(pluginList);
   } else {
     // read both files if they are both new or both older than the last read
     QStringList loadOrder = readLoadOrderList(pluginList, loadOrderPath);
@@ -47,13 +54,14 @@ void SkyrimGamePlugins::readPluginLists(MOBase::IPluginList *pluginList) {
   m_LastRead = QDateTime::currentDateTime();
 }
 
+//TODO: return value is incorrect and should be ignored (it's not currently used
 QStringList SkyrimGamePlugins::readPluginList(MOBase::IPluginList *pluginList)
 {
     QStringList plugins = pluginList->pluginNames();
     QStringList primaryPlugins = organizer()->managedGame()->primaryPlugins();
-    QStringList loadOrder(primaryPlugins);
+    QStringList loadOrder(plugins);
 
-    for (const QString &pluginName : loadOrder) {
+    for (const QString &pluginName : primaryPlugins) {
         if (pluginList->state(pluginName) != IPluginList::STATE_MISSING) {
             pluginList->setState(pluginName, IPluginList::STATE_ACTIVE);
         }
@@ -93,7 +101,8 @@ QStringList SkyrimGamePlugins::readPluginList(MOBase::IPluginList *pluginList)
             if (pluginName.size() > 0) {
                 pluginList->setState(pluginName, IPluginList::STATE_ACTIVE);
                 plugins.removeAll(pluginName);
-                loadOrder.append(pluginName);
+                //we already have the old loadorder and we ignore the positions in plugins.txt (needs fix)
+                //loadOrder.append(pluginName);
             }
         }
 
