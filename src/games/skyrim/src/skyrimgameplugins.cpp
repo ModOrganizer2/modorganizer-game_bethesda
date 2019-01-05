@@ -35,7 +35,7 @@ void SkyrimGamePlugins::readPluginLists(MOBase::IPluginList *pluginList) {
 
   if (pluginsIsNew && !loadOrderIsNew) {
     // If the plugins is new but not loadorder, we must reparse the load order from the plugin files
-    
+
     //removed because returned loadorder was incorrect and did not account for plugins that were already disabled before.
     /*QStringList loadOrder = readPluginList(pluginList);
     pluginList->setLoadOrder(loadOrder);*/
@@ -81,7 +81,7 @@ QStringList SkyrimGamePlugins::readPluginList(MOBase::IPluginList *pluginList)
         pluginsTxtExists = false;
     }
     ON_BLOCK_EXIT([&]() {
-        qDebug("close %s", qPrintable(filePath));
+        qDebug("close %s", qUtf8Printable(filePath));
         file.close();
     });
 
