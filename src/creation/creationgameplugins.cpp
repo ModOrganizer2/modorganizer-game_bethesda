@@ -70,7 +70,7 @@ void CreationGamePlugins::writePluginList(const IPluginList *pluginList,
     if (pluginList->state(pluginName) == IPluginList::STATE_ACTIVE) {
       if (!textCodec->canEncode(pluginName)) {
         invalidFileNames = true;
-        qCritical("invalid plugin name %s", qPrintable(pluginName));
+        qCritical("invalid plugin name %s", qUtf8Printable(pluginName));
       }
       else
       {
@@ -85,7 +85,7 @@ void CreationGamePlugins::writePluginList(const IPluginList *pluginList,
 	  {
         if (!textCodec->canEncode(pluginName)) {
           invalidFileNames = true;
-          qCritical("invalid plugin name %s", qPrintable(pluginName));
+          qCritical("invalid plugin name %s", qUtf8Printable(pluginName));
         }
         else
         {
@@ -105,7 +105,7 @@ void CreationGamePlugins::writePluginList(const IPluginList *pluginList,
   }
 
   if (file.commitIfDifferent(m_LastSaveHash[filePath])) {
-    qDebug("%s saved", qPrintable(QDir::toNativeSeparators(filePath)));
+    qDebug("%s saved", qUtf8Printable(QDir::toNativeSeparators(filePath)));
   }
 }
 
@@ -124,7 +124,7 @@ QStringList CreationGamePlugins::readPluginList(MOBase::IPluginList *pluginList)
   QString filePath = organizer()->profile()->absolutePath() + "/plugins.txt";
   QFile file(filePath);
   if (!file.open(QIODevice::ReadOnly)) {
-    qWarning("%s not found", qPrintable(filePath));
+    qWarning("%s not found", qUtf8Printable(filePath));
     return loadOrder;
   }
   ON_BLOCK_EXIT([&]() { file.close(); });
@@ -132,7 +132,7 @@ QStringList CreationGamePlugins::readPluginList(MOBase::IPluginList *pluginList)
   if (file.size() == 0) {
     // MO stores at least a header in the file. if it's completely empty the
     // file is broken
-    qWarning("%s empty", qPrintable(filePath));
+    qWarning("%s empty", qUtf8Printable(filePath));
     return loadOrder;
   }
 
