@@ -115,7 +115,7 @@ void GamebryoGamePlugins::writeList(const IPluginList *pluginList,
         (pluginList->state(pluginName) == IPluginList::STATE_ACTIVE)) {
       if (!textCodec->canEncode(pluginName)) {
         invalidFileNames = true;
-        qCritical("invalid plugin name %s", qPrintable(pluginName));
+        qCritical("invalid plugin name %s", qUtf8Printable(pluginName));
       } else {
         file->write(textCodec->fromUnicode(pluginName));
       }
@@ -136,7 +136,7 @@ void GamebryoGamePlugins::writeList(const IPluginList *pluginList,
              "saving.");
   } else {
     if (file.commitIfDifferent(m_LastSaveHash[filePath])) {
-      qDebug("%s saved", qPrintable(QDir::toNativeSeparators(filePath)));
+      qDebug("%s saved", qUtf8Printable(QDir::toNativeSeparators(filePath)));
     }
   }
 }
@@ -211,7 +211,7 @@ QStringList GamebryoGamePlugins::readPluginList(MOBase::IPluginList *pluginList)
       pluginsTxtExists = false;
   }
   ON_BLOCK_EXIT([&]() {
-      qDebug("close %s", qPrintable(filePath));
+      qDebug("close %s", qUtf8Printable(filePath));
       file.close();
   });
 
