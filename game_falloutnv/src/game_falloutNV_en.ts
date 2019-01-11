@@ -4,7 +4,7 @@
 <context>
     <name>GameFalloutNV</name>
     <message>
-        <location filename="gamefalloutnv.cpp" line="76"/>
+        <location filename="gamefalloutnv.cpp" line="81"/>
         <source>Adds support for the game Fallout New Vegas</source>
         <translation type="unfinished"></translation>
     </message>
