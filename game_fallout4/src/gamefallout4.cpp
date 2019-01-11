@@ -61,6 +61,11 @@ QList<ExecutableInfo> GameFallout4::executables() const
          ;
 }
 
+QList<ExecutableForcedLoadSetting> GameFallout4::executableForcedLoads() const
+{
+  return QList<ExecutableForcedLoadSetting>();
+}
+
 QString GameFallout4::name() const
 {
   return "Fallout 4 Support Plugin";
