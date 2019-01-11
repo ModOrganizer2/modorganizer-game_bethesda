@@ -63,6 +63,11 @@ QList<ExecutableInfo> GameFalloutTTW::executables() const
          ;
 }
 
+QList<ExecutableForcedLoadSetting> GameFalloutTTW::executableForcedLoads() const
+{
+  return QList<ExecutableForcedLoadSetting>();
+}
+
 QString GameFalloutTTW::name() const
 {
   return "Fallout TTW Support Plugin";
