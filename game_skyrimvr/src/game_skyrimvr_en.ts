@@ -4,7 +4,7 @@
 <context>
     <name>GameSkyrimVR</name>
     <message>
-        <location filename="gameskyrimvr.cpp" line="115"/>
+        <location filename="gameskyrimvr.cpp" line="120"/>
         <source>Adds support for the game Skyrim VR.</source>
         <translation type="unfinished"></translation>
     </message>
