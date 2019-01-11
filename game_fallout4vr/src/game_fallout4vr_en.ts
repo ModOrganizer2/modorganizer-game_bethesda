@@ -4,7 +4,7 @@
 <context>
     <name>GameFallout4VR</name>
     <message>
-        <location filename="gamefallout4vr.cpp" line="74"/>
+        <location filename="gamefallout4vr.cpp" line="79"/>
         <source>Adds support for the game Fallout 4 VR.
 Splash by %1</source>
         <translation type="unfinished"></translation>
