@@ -4,7 +4,7 @@
 <context>
     <name>GameFallout3</name>
     <message>
-        <location filename="gamefallout3.cpp" line="76"/>
+        <location filename="gamefallout3.cpp" line="81"/>
         <source>Adds support for the game Fallout 3s</source>
         <translation type="unfinished"></translation>
     </message>
