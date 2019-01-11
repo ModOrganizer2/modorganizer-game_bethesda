@@ -61,6 +61,11 @@ QList<ExecutableInfo> GameFallout3::executables() const
          ;
 }
 
+QList<ExecutableForcedLoadSetting> GameFallout3::executableForcedLoads() const
+{
+  return QList<ExecutableForcedLoadSetting>();
+}
+
 QString GameFallout3::name() const
 {
   return "Fallout 3 Support Plugin";
