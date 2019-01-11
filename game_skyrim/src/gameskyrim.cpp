@@ -67,6 +67,11 @@ QList<ExecutableInfo> GameSkyrim::executables() const
   ;
 }
 
+QList<ExecutableForcedLoadSetting> GameSkyrim::executableForcedLoads() const
+{
+  return QList<ExecutableForcedLoadSetting>();
+}
+
 QString GameSkyrim::name() const
 {
   return "Skyrim Support Plugin";
