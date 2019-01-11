@@ -59,6 +59,11 @@ QList<ExecutableInfo> GameFallout4VR::executables() const
          ;
 }
 
+QList<ExecutableForcedLoadSetting> GameFallout4VR::executableForcedLoads() const
+{
+  return QList<ExecutableForcedLoadSetting>();
+}
+
 QString GameFallout4VR::name() const
 {
   return "Fallout 4 VR Support Plugin";
