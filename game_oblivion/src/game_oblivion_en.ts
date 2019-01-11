@@ -4,7 +4,7 @@
 <context>
     <name>GameOblivion</name>
     <message>
-        <location filename="gameoblivion.cpp" line="71"/>
+        <location filename="gameoblivion.cpp" line="80"/>
         <source>Adds support for the game Oblivion</source>
         <translation type="unfinished"></translation>
     </message>
