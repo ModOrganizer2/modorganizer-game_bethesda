@@ -82,6 +82,11 @@ QList<ExecutableInfo> GameMorrowind::executables() const
   ;
 }
 
+QList<ExecutableForcedLoadSetting> GameMorrowind::executableForcedLoads() const
+{
+  return QList<ExecutableForcedLoadSetting>();
+}
+
 QString GameMorrowind::name() const
 {
   return "Morrowind Support Plugin";
