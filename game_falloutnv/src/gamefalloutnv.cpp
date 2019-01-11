@@ -61,6 +61,11 @@ QList<ExecutableInfo> GameFalloutNV::executables() const
          ;
 }
 
+QList<ExecutableForcedLoadSetting> GameFalloutNV::executableForcedLoads() const
+{
+  return QList<ExecutableForcedLoadSetting>();
+}
+
 QString GameFalloutNV::name() const
 {
   return "Fallout NV Support Plugin";
