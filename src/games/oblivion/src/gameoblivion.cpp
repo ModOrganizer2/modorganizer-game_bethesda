@@ -56,6 +56,15 @@ QList<ExecutableInfo> GameOblivion::executables() const
   ;
 }
 
+QList<ExecutableForcedLoadSetting> GameOblivion::executableForcedLoads() const
+{
+  //TODO Search game directory for OBSE DLLs
+  return QList<ExecutableForcedLoadSetting>()
+      << ExecutableForcedLoadSetting("Oblivion.exe", "obse_1_2_416.dll").withForced()
+      << ExecutableForcedLoadSetting("TESConstructionSet.exe", "obse_editor_1_2.dll").withForced()
+  ;
+}
+
 QString GameOblivion::name() const
 {
   return "Oblivion Support Plugin";
