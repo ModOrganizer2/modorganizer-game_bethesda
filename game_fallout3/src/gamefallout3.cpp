@@ -155,7 +155,7 @@ QString GameFallout3::gameShortName() const
 
 QString GameFallout3::gameNexusName() const
 {
-  return "Fallout3";
+  return "fallout3";
 }
 
 
