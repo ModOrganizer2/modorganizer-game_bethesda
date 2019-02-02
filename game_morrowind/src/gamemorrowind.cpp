@@ -37,7 +37,7 @@ bool GameMorrowind::init(IOrganizer *moInfo)
   if (!GameGamebryo::init(moInfo)) {
     return false;
   }
-  registerFeature<DataArchives>(new MorrowindDataArchives(gameDirectory().absolutePath()));
+  registerFeature<DataArchives>(new MorrowindDataArchives(this));
   registerFeature<BSAInvalidation>(new MorrowindBSAInvalidation(feature<DataArchives>(), this));
   registerFeature<SaveGameInfo>(new MorrowindSaveGameInfo(this));
   registerFeature<LocalSavegames>(new MorrowindLocalSavegames(this));
