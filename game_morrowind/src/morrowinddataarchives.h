@@ -4,6 +4,7 @@
 
 #include <gamebryodataarchives.h>
 #include <iprofile.h>
+#include <iplugingame.h>
 #include <QString>
 #include <QStringList>
 #include <QDir>
@@ -12,7 +13,7 @@ class MorrowindDataArchives : public GamebryoDataArchives
 {
 
 public:
-  MorrowindDataArchives(const QDir &myGamesDir);
+  MorrowindDataArchives(const MOBase::IPluginGame *game);
 
 public:
 
@@ -27,6 +28,8 @@ protected:
 private:
 
   virtual void writeArchiveList(MOBase::IProfile *profile, const QStringList &before) override;
+
+  const MOBase::IPluginGame *m_GamePlugin;
 
 };
 
