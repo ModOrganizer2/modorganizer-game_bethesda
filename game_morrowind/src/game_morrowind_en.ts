@@ -112,8 +112,8 @@ Splash by %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="morrowinddataarchives.cpp" line="42"/>
-        <source>failed to set archive key (errorcode %1)</source>
+        <location filename="../../game_gamebryo/src/gamebryo/gamebryodataarchives.cpp" line="36"/>
+        <source>failed to set archive key in %1 (errorcode %2)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -143,13 +143,13 @@ Splash by %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="morrowindgameplugins.cpp" line="107"/>
-        <source>failed to set game file key (errorcode %1)</source>
+        <location filename="morrowinddataarchives.cpp" line="42"/>
+        <source>failed to set archive key (errorcode %1)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../game_gamebryo/src/gamebryo/gamebryodataarchives.cpp" line="36"/>
-        <source>failed to set archive key in %1 (errorcode %2)</source>
+        <location filename="morrowindgameplugins.cpp" line="107"/>
+        <source>failed to set game file key (errorcode %1)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
