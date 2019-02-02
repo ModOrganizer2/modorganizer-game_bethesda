@@ -40,7 +40,7 @@ bool GameMorrowind::init(IOrganizer *moInfo)
   registerFeature<DataArchives>(new MorrowindDataArchives(gameDirectory().absolutePath()));
   registerFeature<BSAInvalidation>(new MorrowindBSAInvalidation(feature<DataArchives>(), this));
   registerFeature<SaveGameInfo>(new MorrowindSaveGameInfo(this));
-  registerFeature<LocalSavegames>(new MorrowindLocalSavegames(gameDirectory().absolutePath()));
+  registerFeature<LocalSavegames>(new MorrowindLocalSavegames(this));
   registerFeature<GamePlugins>(new MorrowindGamePlugins(moInfo));
   registerFeature<UnmanagedMods>(new GamebryoUnmangedMods(this));
   m_Organizer = moInfo;
