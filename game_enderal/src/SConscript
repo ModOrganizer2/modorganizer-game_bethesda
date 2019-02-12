@@ -1,0 +1,15 @@
+Import('qt_env')
+
+env = qt_env.Clone()
+
+env.AppendUnique(CPPDEFINES = [ 'GAMEENDERAL_LIBRARY' ])
+
+env.RequiresGamebryo()
+
+env.AppendUnique(LIBS = [ 'Version' ])
+
+lib = env.SharedLibrary('gameEnderal', env.Glob('*.cpp'))
+env.InstallModule(lib)
+
+res = env['QT_USED_MODULES']
+Return('res')
