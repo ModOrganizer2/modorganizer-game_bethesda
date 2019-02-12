@@ -39,7 +39,9 @@ public: // IPluginGame interface
   virtual QStringList DLCPlugins() const override;
   virtual LoadOrderMechanism loadOrderMechanism() const override;
   virtual int nexusModOrganizerID() const override;
+  virtual SortMechanism sortMechanism() const override;
   virtual int nexusGameID() const override;
+  virtual bool looksValid(QDir const &) const override;
 
 public: // IPlugin interface
 
@@ -49,6 +51,10 @@ public: // IPlugin interface
   virtual MOBase::VersionInfo version() const;
   virtual bool isActive() const;
   virtual QList<MOBase::PluginSetting> settings() const;
+
+protected:
+
+  virtual QString identifyGamePath() const override;
 };
 
 #endif // GAMEENDERAL_H
