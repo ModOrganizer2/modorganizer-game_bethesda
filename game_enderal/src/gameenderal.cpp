@@ -113,14 +113,14 @@ void GameEnderal::initializeProfile(const QDir &path, ProfileSettings settings) 
   if (settings.testFlag(IPluginGame::CONFIGURATION)) {
     if (settings.testFlag(IPluginGame::PREFER_DEFAULTS)
         || !QFileInfo(myGamesPath() + "/enderal.ini").exists()) {
-			
-	    //there is no defalt ini, actually they are going to put them in for us!
+
+	    //there is no default ini, actually they are going to put them in for us!
       copyToProfile(gameDirectory().absolutePath(), path, "enderal_default.ini", "enderal.ini");
       copyToProfile(gameDirectory().absolutePath(), path, "enderalprefs_default.ini", "enderalprefs.ini");
     } else {
       copyToProfile(myGamesPath(), path, "enderal.ini");
       copyToProfile(myGamesPath(), path, "enderalprefs.ini");
-    }    
+    }
   }
 }
 
@@ -244,7 +244,7 @@ int GameEnderal::nexusGameID() const
 
 QString GameEnderal::identifyGamePath() const
 {
-  QString path = "SOFTWARE\SureAI\Enderal";
+  QString path = "SOFTWARE\\SureAI\\Enderal";
   return findInRegistry(HKEY_LOCAL_MACHINE, path.toStdWString().c_str(), L"Install_Path");
 }
 
