@@ -1,4 +1,4 @@
-#include "enderalimsavegameinfo.h"
+#include "enderalsavegameinfo.h"
 
 #include "enderalsavegame.h"
 #include "gamegamebryo.h"
