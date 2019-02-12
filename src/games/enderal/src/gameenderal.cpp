@@ -39,6 +39,7 @@ bool GameEnderal::init(IOrganizer *moInfo)
   if (!GameGamebryo::init(moInfo)) {
     return false;
   }
+  m_GamePath = identifyGamePath();
   registerFeature<ScriptExtender>(new EnderalScriptExtender(this));
   registerFeature<DataArchives>(new EnderalDataArchives(myGamesPath()));
   registerFeature<BSAInvalidation>(new EnderalBSAInvalidation(feature<DataArchives>(), this));
@@ -123,6 +124,12 @@ void GameEnderal::initializeProfile(const QDir &path, ProfileSettings settings) 
   }
 }
 
+bool GameEnderal::looksValid(QDir const &path) const
+{
+  //Check for <prog>.exe for now.
+  return path.exists(getLauncherName());
+}
+
 QString GameEnderal::savegameExtension() const
 {
   return "ess";
@@ -136,6 +143,11 @@ QString GameEnderal::savegameSEExtension() const
 QString GameEnderal::steamAPPId() const
 {
   return "933480";
+}
+
+MOBase::IPluginGame::SortMechanism GameEnderal::sortMechanism() const
+{
+  return SortMechanism::NONE;
 }
 
 QStringList GameEnderal::primaryPlugins() const
@@ -229,3 +241,10 @@ int GameEnderal::nexusGameID() const
 {
   return 110;
 }
+
+QString GameEnderal::identifyGamePath() const
+{
+  QString path = "SOFTWARE\SureAI\Enderal";
+  return findInRegistry(HKEY_LOCAL_MACHINE, path.toStdWString().c_str(), L"Install_Path");
+}
+
