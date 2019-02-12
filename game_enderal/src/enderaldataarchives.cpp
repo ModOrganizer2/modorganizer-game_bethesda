@@ -1,12 +1,12 @@
 #include "enderaldataarchives.h"
 #include <utility.h>
 
-SkyrimDataArchives::SkyrimDataArchives(const QDir &myGamesDir) :
+EnderalDataArchives::EnderalDataArchives(const QDir &myGamesDir) :
   GamebryoDataArchives(myGamesDir)
 {
 }
 
-QStringList SkyrimDataArchives::vanillaArchives() const
+QStringList EnderalDataArchives::vanillaArchives() const
 {
   return  { "Skyrim - Misc.bsa"
           , "Skyrim - Shaders.bsa"
