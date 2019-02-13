@@ -42,6 +42,7 @@ public: // IPluginGame interface
   virtual SortMechanism sortMechanism() const override;
   virtual int nexusGameID() const override;
   virtual bool looksValid(QDir const &) const override;
+  virtual QIcon gameIcon() const override;
 
 public: // IPlugin interface
 
