@@ -9,6 +9,7 @@
 #include "executableinfo.h"
 #include "pluginsetting.h"
 #include "utility.h"
+#include "steamutility.h"
 
 #include <gamebryolocalsavegames.h>
 #include <gamebryogameplugins.h>
@@ -252,7 +253,6 @@ int GameEnderal::nexusGameID() const
 
 QString GameEnderal::identifyGamePath() const
 {
-  QString path = "SOFTWARE\\SureAI\\Enderal";
-  return findInRegistry(HKEY_LOCAL_MACHINE, path.toStdWString().c_str(), L"Install_Path");
+  return MOBase::findSteamGame("Enderal", "Data\\Enderal - Forgotten Stories.esm");
 }
 
