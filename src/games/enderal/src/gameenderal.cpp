@@ -8,6 +8,7 @@
 
 #include "executableinfo.h"
 #include "pluginsetting.h"
+#include "utility.h"
 
 #include <gamebryolocalsavegames.h>
 #include <gamebryogameplugins.h>
@@ -18,6 +19,8 @@
 #include <QFileInfo>
 
 #include <QtDebug>
+#include <QIcon>
+
 
 #include <Windows.h>
 #include <winver.h>
@@ -90,7 +93,7 @@ QString GameEnderal::description() const
 
 MOBase::VersionInfo GameEnderal::version() const
 {
-  return VersionInfo(0, 0, 1, VersionInfo::RELEASE_PREALPHA);
+  return VersionInfo(0, 1, 0, VersionInfo::RELEASE_PREALPHA);
 }
 
 bool GameEnderal::isActive() const
@@ -128,6 +131,11 @@ bool GameEnderal::looksValid(QDir const &path) const
 {
   //Check for <prog>.exe for now.
   return path.exists(getLauncherName());
+}
+
+QIcon GameEnderal::gameIcon() const
+{
+  return MOBase::iconForExecutable(gameDirectory().absoluteFilePath(getLauncherName()));
 }
 
 QString GameEnderal::savegameExtension() const
