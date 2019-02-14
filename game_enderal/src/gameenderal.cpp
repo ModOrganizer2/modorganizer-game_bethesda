@@ -5,13 +5,14 @@
 #include "enderaldataarchives.h"
 #include "enderalsavegameinfo.h"
 #include "enderalgameplugins.h"
+#include "enderallocalsavegames.h"
+
 
 #include "executableinfo.h"
 #include "pluginsetting.h"
 #include "utility.h"
 #include "steamutility.h"
 
-#include <gamebryolocalsavegames.h>
 #include <gamebryogameplugins.h>
 #include <gamebryounmanagedmods.h>
 
@@ -48,7 +49,7 @@ bool GameEnderal::init(IOrganizer *moInfo)
   registerFeature<DataArchives>(new EnderalDataArchives(myGamesPath()));
   registerFeature<BSAInvalidation>(new EnderalBSAInvalidation(feature<DataArchives>(), this));
   registerFeature<SaveGameInfo>(new EnderalSaveGameInfo(this));
-  registerFeature<LocalSavegames>(new GamebryoLocalSavegames(myGamesPath(), "enderal.ini"));
+  registerFeature<LocalSavegames>(new EnderalLocalSavegames(myGamesPath(), "enderal.ini"));
   registerFeature<GamePlugins>(new EnderalGamePlugins(moInfo));
   registerFeature<UnmanagedMods>(new GamebryoUnmangedMods(this));
   return true;
