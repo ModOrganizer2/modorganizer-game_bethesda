@@ -44,6 +44,7 @@ public: // IPluginGame interface
   virtual SortMechanism sortMechanism() const override;
   virtual int nexusModOrganizerID() const override;
   virtual int nexusGameID() const override;
+  virtual QString identifyGamePath() const;
 
 public: // IPlugin interface
 
