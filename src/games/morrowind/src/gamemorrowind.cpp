@@ -8,6 +8,7 @@
 
 #include "executableinfo.h"
 #include "pluginsetting.h"
+#include "steamutility.h"
 
 #include <gamebryounmanagedmods.h>
 
@@ -211,7 +212,6 @@ VS_FIXEDFILEINFO GetFileVersion(const std::wstring &fileName)
 
 }
 
-
 int GameMorrowind::nexusModOrganizerID() const
 {
   return 1334;
@@ -220,4 +220,12 @@ int GameMorrowind::nexusModOrganizerID() const
 int GameMorrowind::nexusGameID() const
 {
   return 100;
+}
+
+QString GameMorrowind::identifyGamePath() const
+{
+  QString path = GameGamebryo::identifyGamePath();
+  if (path.isEmpty())
+    path = MOBase::findSteamGame("Morrowind", "Data Files\\Morrowind.esm");
+  return path;
 }
