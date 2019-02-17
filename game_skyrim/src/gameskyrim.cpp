@@ -153,7 +153,7 @@ QString GameSkyrim::gameShortName() const
 
 QString GameSkyrim::gameNexusName() const
 {
-  return "Skyrim";
+  return "skyrim";
 }
 
 
@@ -216,7 +216,7 @@ IPluginGame::LoadOrderMechanism GameSkyrim::loadOrderMechanism() const
 
 int GameSkyrim::nexusModOrganizerID() const
 {
-  return 1334;
+  return 0;
 }
 
 int GameSkyrim::nexusGameID() const
