@@ -179,7 +179,7 @@ QStringList GameFalloutTTW::validShortNames() const
 
 QString GameFalloutTTW::gameNexusName() const
 {
-  return "newvegas";
+  return QString();
 }
 
 QStringList GameFalloutTTW::iniFiles() const
@@ -199,12 +199,12 @@ MOBase::IPluginGame::SortMechanism GameFalloutTTW::sortMechanism() const
 
 int GameFalloutTTW::nexusModOrganizerID() const
 {
-  return 42572;
+  return 0;
 }
 
 int GameFalloutTTW::nexusGameID() const
 {
-  return 130;
+  return 0;
 }
 
 QString GameFalloutTTW::getLauncherName() const
