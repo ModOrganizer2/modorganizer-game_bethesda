@@ -182,7 +182,7 @@ QString GameEnderal::gameShortName() const
 
 QString GameEnderal::gameNexusName() const
 {
-  return "Skyrim";
+  return QString();
 }
 
 QStringList GameEnderal::primarySources() const
@@ -244,16 +244,23 @@ IPluginGame::LoadOrderMechanism GameEnderal::loadOrderMechanism() const
 
 int GameEnderal::nexusModOrganizerID() const
 {
-  return 1334;
+  return 0;
 }
 
 int GameEnderal::nexusGameID() const
 {
-  return 110;
+  return 0;
 }
 
 QString GameEnderal::identifyGamePath() const
 {
-  return MOBase::findSteamGame("Enderal", "Data\\Enderal - Forgotten Stories.esm");
+  QString path = "Software\\SureAI\\Enderal";
+  QString result;
+  try {
+      result = findInRegistry(HKEY_CURRENT_USER, path.toStdWString().c_str(), L"Install_Path");
+  } catch (MOBase::MyException) {
+      result = MOBase::findSteamGame("Enderal", "Data\\Enderal - Forgotten Stories.esm");
+  }
+  return result;
 }
 
