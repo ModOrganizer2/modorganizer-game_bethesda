@@ -199,7 +199,7 @@ QStringList GameSkyrimVR::validShortNames() const
 
 QString GameSkyrimVR::gameNexusName() const
 {
-  return "skyrimspecialedition";
+  return QString();
 }
 
 
@@ -252,12 +252,12 @@ MOBase::IPluginGame::SortMechanism GameSkyrimVR::sortMechanism() const
 
 int GameSkyrimVR::nexusModOrganizerID() const
 {
-  return 6194;
+  return 0;
 }
 
 int GameSkyrimVR::nexusGameID() const
 {
-  return 1704;
+  return 0;
 }
 
 QString GameSkyrimVR::getLauncherName() const
