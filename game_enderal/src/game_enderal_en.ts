@@ -4,7 +4,7 @@
 <context>
     <name>GameEnderal</name>
     <message>
-        <location filename="gameenderal.cpp" line="92"/>
+        <location filename="gameenderal.cpp" line="93"/>
         <source>Adds support for the game Enderal</source>
         <translation type="unfinished"></translation>
     </message>
