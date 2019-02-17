@@ -155,7 +155,7 @@ QStringList GameFallout4VR::validShortNames() const
 
 QString GameFallout4VR::gameNexusName() const
 {
-  return "Fallout4";
+  return QString();
 }
 
 QStringList GameFallout4VR::iniFiles() const
@@ -208,7 +208,7 @@ int GameFallout4VR::nexusModOrganizerID() const
 
 int GameFallout4VR::nexusGameID() const
 {
-  return 1151;
+  return 0;
 }
 
 QString GameFallout4VR::getLauncherName() const
