@@ -162,7 +162,7 @@ MOBase::IPluginGame::SortMechanism GameEnderal::sortMechanism() const
 
 QStringList GameEnderal::primaryPlugins() const
 {
-  return { "Skyrim.esm", "update.esm", "Enderal - Forgotten Stories.esm" };
+  return { "Skyrim.esm", "Enderal - Forgotten Stories.esm", "update.esm" };
 }
 
 QString GameEnderal::binaryName() const
