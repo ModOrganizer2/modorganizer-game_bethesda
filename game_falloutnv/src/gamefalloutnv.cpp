@@ -61,6 +61,11 @@ QList<ExecutableInfo> GameFalloutNV::executables() const
          ;
 }
 
+QList<ExecutableForcedLoadSetting> GameFalloutNV::executableForcedLoads() const
+{
+  return QList<ExecutableForcedLoadSetting>();
+}
+
 QString GameFalloutNV::name() const
 {
   return "Fallout NV Support Plugin";
@@ -78,7 +83,7 @@ QString GameFalloutNV::description() const
 
 MOBase::VersionInfo GameFalloutNV::version() const
 {
-  return VersionInfo(1, 3, 0, VersionInfo::RELEASE_FINAL);
+  return VersionInfo(1, 3, 1, VersionInfo::RELEASE_FINAL);
 }
 
 bool GameFalloutNV::isActive() const
