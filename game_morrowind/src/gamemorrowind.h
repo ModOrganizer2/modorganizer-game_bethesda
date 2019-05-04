@@ -30,6 +30,7 @@ public: // IPluginGame interface
   virtual QDir savesDirectory() const override;
   virtual QDir documentsDirectory() const override;
   virtual QList<MOBase::ExecutableInfo> executables() const override;
+  virtual QList<MOBase::ExecutableForcedLoadSetting> executableForcedLoads() const override;
   virtual void initializeProfile(const QDir &path, ProfileSettings settings) const override;
   virtual QString savegameExtension() const override;
   virtual QString savegameSEExtension() const override;
@@ -43,6 +44,7 @@ public: // IPluginGame interface
   virtual SortMechanism sortMechanism() const override;
   virtual int nexusModOrganizerID() const override;
   virtual int nexusGameID() const override;
+  virtual QString identifyGamePath() const;
 
 public: // IPlugin interface
 
