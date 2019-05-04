@@ -1,4 +1,5 @@
 #include "gamebryodataarchives.h"
+#include "registry.h"
 #include <Windows.h>
 #include <utility.h>
 
@@ -31,7 +32,7 @@ QStringList GamebryoDataArchives::getArchivesFromKey(const QString &iniFile, con
 
 void GamebryoDataArchives::setArchivesToKey(const QString &iniFile, const QString &key, const QString &value)
 {
-  if (!::WritePrivateProfileStringW(L"Archive", key.toStdWString().c_str(), value.toStdWString().c_str(), iniFile.toStdWString().c_str())) {
+  if (!MOBase::WriteRegistryValue(L"Archive", key.toStdWString().c_str(), value.toStdWString().c_str(), iniFile.toStdWString().c_str())) {
     throw MOBase::MyException(QObject::tr("failed to set archive key in %1 (errorcode %2)").arg(iniFile).arg(errno));
   }
 }
