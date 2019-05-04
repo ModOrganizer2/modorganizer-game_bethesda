@@ -8,6 +8,7 @@
 
 #include "executableinfo.h"
 #include "pluginsetting.h"
+#include "steamutility.h"
 
 #include <gamebryounmanagedmods.h>
 
@@ -37,10 +38,10 @@ bool GameMorrowind::init(IOrganizer *moInfo)
   if (!GameGamebryo::init(moInfo)) {
     return false;
   }
-  registerFeature<DataArchives>(new MorrowindDataArchives(gameDirectory().absolutePath()));
+  registerFeature<DataArchives>(new MorrowindDataArchives(this));
   registerFeature<BSAInvalidation>(new MorrowindBSAInvalidation(feature<DataArchives>(), this));
   registerFeature<SaveGameInfo>(new MorrowindSaveGameInfo(this));
-  registerFeature<LocalSavegames>(new MorrowindLocalSavegames(gameDirectory().absolutePath()));
+  registerFeature<LocalSavegames>(new MorrowindLocalSavegames(this));
   registerFeature<GamePlugins>(new MorrowindGamePlugins(moInfo));
   registerFeature<UnmanagedMods>(new GamebryoUnmangedMods(this));
   m_Organizer = moInfo;
@@ -82,6 +83,11 @@ QList<ExecutableInfo> GameMorrowind::executables() const
   ;
 }
 
+QList<ExecutableForcedLoadSetting> GameMorrowind::executableForcedLoads() const
+{
+  return QList<ExecutableForcedLoadSetting>();
+}
+
 QString GameMorrowind::name() const
 {
   return "Morrowind Support Plugin";
@@ -100,7 +106,7 @@ QString GameMorrowind::description() const
 
 MOBase::VersionInfo GameMorrowind::version() const
 {
-  return VersionInfo(1, 3, 0, VersionInfo::RELEASE_FINAL);
+  return VersionInfo(1, 3, 1, VersionInfo::RELEASE_FINAL);
 }
 
 bool GameMorrowind::isActive() const
@@ -206,7 +212,6 @@ VS_FIXEDFILEINFO GetFileVersion(const std::wstring &fileName)
 
 }
 
-
 int GameMorrowind::nexusModOrganizerID() const
 {
   return 1334;
@@ -215,4 +220,12 @@ int GameMorrowind::nexusModOrganizerID() const
 int GameMorrowind::nexusGameID() const
 {
   return 100;
+}
+
+QString GameMorrowind::identifyGamePath() const
+{
+  QString path = GameGamebryo::identifyGamePath();
+  if (path.isEmpty())
+    path = MOBase::findSteamGame("Morrowind", "Data Files\\Morrowind.esm");
+  return path;
 }
