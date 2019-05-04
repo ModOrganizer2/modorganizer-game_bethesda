@@ -1,12 +1,12 @@
 #include "enderaldataarchives.h"
 #include <utility.h>
 
-SkyrimDataArchives::SkyrimDataArchives(const QDir &myGamesDir) :
+EnderalDataArchives::EnderalDataArchives(const QDir &myGamesDir) :
   GamebryoDataArchives(myGamesDir)
 {
 }
 
-QStringList SkyrimDataArchives::vanillaArchives() const
+QStringList EnderalDataArchives::vanillaArchives() const
 {
   return  { "Skyrim - Misc.bsa"
           , "Skyrim - Shaders.bsa"
@@ -21,10 +21,10 @@ QStringList SkyrimDataArchives::vanillaArchives() const
           , "E - Sounds.bsa"
           , "E - Textures1.bsa"
           , "E - Textures2.bsa"
-		  , "E - Textures3.bsa"
-		  , "L - Textures.bsa"
-		  , "L - Voices.bsa"
-		  };
+          , "E - Textures3.bsa"
+          , "L - Textures.bsa"
+          , "L - Voices.bsa"
+          };
 }
 
 
@@ -32,7 +32,7 @@ QStringList EnderalDataArchives::archives(const MOBase::IProfile *profile) const
 {
   QStringList result;
 
-  QString iniFile = profile->localSettingsEnabled() ? QDir(profile->absolutePath()).absoluteFilePath("enderal.ini") : m_LocalGameDir.absoluteFilePath("elnderal.ini");
+  QString iniFile = profile->localSettingsEnabled() ? QDir(profile->absolutePath()).absoluteFilePath("enderal.ini") : m_LocalGameDir.absoluteFilePath("enderal.ini");
   result.append(getArchivesFromKey(iniFile, "SResourceArchiveList"));
   result.append(getArchivesFromKey(iniFile, "SResourceArchiveList2"));
 

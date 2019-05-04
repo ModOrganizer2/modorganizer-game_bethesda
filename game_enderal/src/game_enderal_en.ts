@@ -2,10 +2,10 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="en_US">
 <context>
-    <name>GameSkyrim</name>
+    <name>GameEnderal</name>
     <message>
-        <location filename="gameskyrim.cpp" line="87"/>
-        <source>Adds support for the game Skyrim</source>
+        <location filename="gameenderal.cpp" line="93"/>
+        <source>Adds support for the game Enderal</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -68,6 +68,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../../game_gamebryo/src/gamebryo/gamebryodataarchives.cpp" line="36"/>
+        <source>failed to set archive key in %1 (errorcode %2)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../../game_gamebryo/src/gamebryo/gamebryogameplugins.cpp" line="128"/>
         <source>Some of your plugins have invalid names! These plugins can not be loaded by the game. Please see mo_interface.log for a list of affected plugins and rename them.</source>
         <translation type="unfinished"></translation>
@@ -90,11 +95,6 @@
     <message>
         <location filename="../../game_gamebryo/src/gamebryo/gamegamebryo.cpp" line="293"/>
         <source>failed to query registry path (read): %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../game_gamebryo/src/gamebryo/gamebryodataarchives.cpp" line="36"/>
-        <source>failed to set archive key in %1 (errorcode %2)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
