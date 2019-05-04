@@ -40,7 +40,7 @@ void EnderalGamePlugins::readPluginLists(MOBase::IPluginList *pluginList) {
     /*QStringList loadOrder = readPluginList(pluginList);
     pluginList->setLoadOrder(loadOrder);*/
 
-    //Fix me: we are ignoring order changes in plugins.txt favouring loadorder.txt in all cases (plugins.txt shuld have precedence)
+    //Fix me: we are ignoring order changes in plugins.txt favouring loadorder.txt in all cases (plugins.txt should have precedence)
     QStringList loadOrder = readLoadOrderList(pluginList, loadOrderPath);
     pluginList->setLoadOrder(loadOrder);
     readPluginList(pluginList);
