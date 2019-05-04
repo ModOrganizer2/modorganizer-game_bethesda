@@ -25,19 +25,20 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
 #include <QDir>
 #include <QString>
+#include "iplugingame.h"
 
 class MorrowindLocalSavegames : public LocalSavegames
 {
 
 public:
-  MorrowindLocalSavegames(const QDir &m_GameInstallDir);
+  MorrowindLocalSavegames(const MOBase::IPluginGame *game);
 
   virtual MappingType mappings(const QDir &profileSaveDir) const override;
   virtual bool prepareProfile(MOBase::IProfile *profile) override;
 
 private:
 
-  QDir m_GameInstallDir;
+  const MOBase::IPluginGame *m_GamePlugin;
 
 };
 

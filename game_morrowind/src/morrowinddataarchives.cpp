@@ -1,8 +1,10 @@
 #include "morrowinddataarchives.h"
 #include <utility.h>
+#include "registry.h"
 
-MorrowindDataArchives::MorrowindDataArchives(const QDir &myGamesDir) :
-  GamebryoDataArchives(myGamesDir)
+MorrowindDataArchives::MorrowindDataArchives(const MOBase::IPluginGame *game) 
+  : GamebryoDataArchives(QDir()) // m_LocalGameDir is not used as it's determined too soon
+  , m_GamePlugin(game)
 {
 }
 
@@ -33,11 +35,11 @@ QStringList MorrowindDataArchives::getArchives(const QString &iniFile) const
 void MorrowindDataArchives::setArchives(const QString &iniFile, const QStringList &list)
 {
   ::WritePrivateProfileSectionW(L"Archives", NULL, iniFile.toStdWString().c_str());
-  
+
   QString key = "Archive ";
   int writtenCount = 0;
   foreach(const QString &value, list) {
-    if (!::WritePrivateProfileStringW(L"Archives", (key+QString::number(writtenCount)).toStdWString().c_str(), value.toStdWString().c_str(), iniFile.toStdWString().c_str())) {
+    if (!MOBase::WriteRegistryValue(L"Archives", (key+QString::number(writtenCount)).toStdWString().c_str(), value.toStdWString().c_str(), iniFile.toStdWString().c_str())) {
       throw MOBase::MyException(QObject::tr("failed to set archive key (errorcode %1)").arg(errno));
     }
 	++writtenCount;
@@ -48,7 +50,7 @@ QStringList MorrowindDataArchives::archives(const MOBase::IProfile *profile) con
 {
   QStringList result;
 
-  QString iniFile = profile->localSettingsEnabled() ? QDir(profile->absolutePath()).absoluteFilePath("morrowind.ini") : m_LocalGameDir.absoluteFilePath("morrowind.ini");
+  QString iniFile = profile->localSettingsEnabled() ? QDir(profile->absolutePath()).absoluteFilePath("morrowind.ini") : m_GamePlugin->gameDirectory().absoluteFilePath("morrowind.ini");
   result.append(getArchives(iniFile));
 
   return result;
@@ -56,6 +58,6 @@ QStringList MorrowindDataArchives::archives(const MOBase::IProfile *profile) con
 
 void MorrowindDataArchives::writeArchiveList(MOBase::IProfile *profile, const QStringList &before)
 {
-  QString iniFile = profile->localSettingsEnabled() ? QDir(profile->absolutePath()).absoluteFilePath("morrowind.ini") : m_LocalGameDir.absoluteFilePath("morrowind.ini");
+  QString iniFile = profile->localSettingsEnabled() ? QDir(profile->absolutePath()).absoluteFilePath("morrowind.ini") : m_GamePlugin->gameDirectory().absoluteFilePath("morrowind.ini");
   setArchives(iniFile, before);
 }

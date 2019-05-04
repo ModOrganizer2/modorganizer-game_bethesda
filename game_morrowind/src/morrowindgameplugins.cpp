@@ -6,6 +6,7 @@
 #include <iplugingame.h>
 #include <imodinterface.h>
 #include <scopeguard.h>
+#include "registry.h"
 
 #include <QDir>
 #include <QTextCodec>
@@ -30,16 +31,16 @@ void MorrowindGamePlugins::writePluginLists(const IPluginList *pluginList) {
 
   if (organizer()->profile()->localSettingsEnabled()) {
     writePluginList(
-      pluginList, 
+      pluginList,
       organizer()->profile()->absolutePath() + "/Morrowind.ini"
-    );  
+    );
   } else {
     writePluginList(
-      pluginList, 
+      pluginList,
       organizer()->managedGame()->gameDirectory().absolutePath() + "/Morrowind.ini"
     );
   }
-  
+
   writeLoadOrderList(pluginList,
                      organizer()->profile()->absolutePath() + "/loadorder.txt");
 
@@ -83,12 +84,12 @@ void MorrowindGamePlugins::writePluginList(const MOBase::IPluginList *pluginList
 void MorrowindGamePlugins::writeList(const IPluginList *pluginList,
                                     const QString &filePath, bool loadOrder) {
   QTextCodec *textCodec = loadOrder ? utf8Codec() : localCodec();
-  
+
   ::WritePrivateProfileSectionW(L"Game Files", NULL, filePath.toStdWString().c_str());
-  
+
   bool invalidFileNames = false;
   int writtenCount = 0;
-  
+
   QStringList plugins = pluginList->pluginNames();
   std::sort(plugins.begin(), plugins.end(),
             [pluginList](const QString &lhs, const QString &rhs) {
@@ -100,23 +101,23 @@ void MorrowindGamePlugins::writeList(const IPluginList *pluginList,
         (pluginList->state(pluginName) == IPluginList::STATE_ACTIVE)) {
       if (!textCodec->canEncode(pluginName)) {
         invalidFileNames = true;
-        qCritical("invalid plugin name %s", qPrintable(pluginName));
+        qCritical("invalid plugin name %s", qUtf8Printable(pluginName));
       } else {
-	    if (!::WritePrivateProfileStringW(L"Game Files", (key+QString::number(writtenCount)).toStdWString().c_str(), pluginName.toStdWString().c_str(), filePath.toStdWString().c_str())) {
+	    if (!MOBase::WriteRegistryValue(L"Game Files", (key+QString::number(writtenCount)).toStdWString().c_str(), pluginName.toStdWString().c_str(), filePath.toStdWString().c_str())) {
           throw MOBase::MyException(QObject::tr("failed to set game file key (errorcode %1)").arg(errno));
         }
       }
       ++writtenCount;
     }
   }
-  
+
   if (invalidFileNames) {
     reportError(QObject::tr("Some of your plugins have invalid names! These "
                             "plugins can not be loaded by the game. Please see "
                             "mo_interface.log for a list of affected plugins "
                             "and rename them."));
   }
-  
+
   if (writtenCount == 0) {
     qWarning("plugin list would be empty, this is almost certainly wrong. Not "
              "saving.");
