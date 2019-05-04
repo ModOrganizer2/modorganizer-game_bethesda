@@ -63,6 +63,11 @@ QList<ExecutableInfo> GameFalloutTTW::executables() const
          ;
 }
 
+QList<ExecutableForcedLoadSetting> GameFalloutTTW::executableForcedLoads() const
+{
+  return QList<ExecutableForcedLoadSetting>();
+}
+
 QString GameFalloutTTW::name() const
 {
   return "Fallout TTW Support Plugin";
@@ -80,7 +85,7 @@ QString GameFalloutTTW::description() const
 
 MOBase::VersionInfo GameFalloutTTW::version() const
 {
-  return VersionInfo(1, 3, 0, VersionInfo::RELEASE_FINAL);
+  return VersionInfo(1, 3, 1, VersionInfo::RELEASE_FINAL);
 }
 
 bool GameFalloutTTW::isActive() const
@@ -174,7 +179,7 @@ QStringList GameFalloutTTW::validShortNames() const
 
 QString GameFalloutTTW::gameNexusName() const
 {
-  return "newvegas";
+  return QString();
 }
 
 QStringList GameFalloutTTW::iniFiles() const
@@ -194,12 +199,12 @@ MOBase::IPluginGame::SortMechanism GameFalloutTTW::sortMechanism() const
 
 int GameFalloutTTW::nexusModOrganizerID() const
 {
-  return 42572;
+  return 0;
 }
 
 int GameFalloutTTW::nexusGameID() const
 {
-  return 130;
+  return 0;
 }
 
 QString GameFalloutTTW::getLauncherName() const
