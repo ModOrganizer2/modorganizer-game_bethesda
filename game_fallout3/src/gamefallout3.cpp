@@ -61,6 +61,11 @@ QList<ExecutableInfo> GameFallout3::executables() const
          ;
 }
 
+QList<ExecutableForcedLoadSetting> GameFallout3::executableForcedLoads() const
+{
+  return QList<ExecutableForcedLoadSetting>();
+}
+
 QString GameFallout3::name() const
 {
   return "Fallout 3 Support Plugin";
@@ -78,7 +83,7 @@ QString GameFallout3::description() const
 
 MOBase::VersionInfo GameFallout3::version() const
 {
-  return VersionInfo(1, 3, 0, VersionInfo::RELEASE_FINAL);
+  return VersionInfo(1, 3, 1, VersionInfo::RELEASE_FINAL);
 }
 
 bool GameFallout3::isActive() const
@@ -150,7 +155,7 @@ QString GameFallout3::gameShortName() const
 
 QString GameFallout3::gameNexusName() const
 {
-  return "Fallout3";
+  return "fallout3";
 }
 
 
