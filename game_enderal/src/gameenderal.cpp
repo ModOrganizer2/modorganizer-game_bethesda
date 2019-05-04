@@ -5,11 +5,14 @@
 #include "enderaldataarchives.h"
 #include "enderalsavegameinfo.h"
 #include "enderalgameplugins.h"
+#include "enderallocalsavegames.h"
+
 
 #include "executableinfo.h"
 #include "pluginsetting.h"
+#include "utility.h"
+#include "steamutility.h"
 
-#include <gamebryolocalsavegames.h>
 #include <gamebryogameplugins.h>
 #include <gamebryounmanagedmods.h>
 
@@ -18,6 +21,8 @@
 #include <QFileInfo>
 
 #include <QtDebug>
+#include <QIcon>
+
 
 #include <Windows.h>
 #include <winver.h>
@@ -39,11 +44,12 @@ bool GameEnderal::init(IOrganizer *moInfo)
   if (!GameGamebryo::init(moInfo)) {
     return false;
   }
+  m_GamePath = identifyGamePath();
   registerFeature<ScriptExtender>(new EnderalScriptExtender(this));
   registerFeature<DataArchives>(new EnderalDataArchives(myGamesPath()));
   registerFeature<BSAInvalidation>(new EnderalBSAInvalidation(feature<DataArchives>(), this));
   registerFeature<SaveGameInfo>(new EnderalSaveGameInfo(this));
-  registerFeature<LocalSavegames>(new GamebryoLocalSavegames(myGamesPath(), "enderal.ini"));
+  registerFeature<LocalSavegames>(new EnderalLocalSavegames(myGamesPath(), "enderal.ini"));
   registerFeature<GamePlugins>(new EnderalGamePlugins(moInfo));
   registerFeature<UnmanagedMods>(new GamebryoUnmangedMods(this));
   return true;
@@ -89,7 +95,7 @@ QString GameEnderal::description() const
 
 MOBase::VersionInfo GameEnderal::version() const
 {
-  return VersionInfo(0, 0, 1, VersionInfo::RELEASE_PREALPHA);
+  return VersionInfo(0, 1, 0, VersionInfo::RELEASE_PREALPHA);
 }
 
 bool GameEnderal::isActive() const
@@ -112,15 +118,26 @@ void GameEnderal::initializeProfile(const QDir &path, ProfileSettings settings) 
   if (settings.testFlag(IPluginGame::CONFIGURATION)) {
     if (settings.testFlag(IPluginGame::PREFER_DEFAULTS)
         || !QFileInfo(myGamesPath() + "/enderal.ini").exists()) {
-			
-	    //there is no defalt ini, actually they are going to put them in for us!
+
+	    //there is no default ini, actually they are going to put them in for us!
       copyToProfile(gameDirectory().absolutePath(), path, "enderal_default.ini", "enderal.ini");
       copyToProfile(gameDirectory().absolutePath(), path, "enderalprefs_default.ini", "enderalprefs.ini");
     } else {
       copyToProfile(myGamesPath(), path, "enderal.ini");
       copyToProfile(myGamesPath(), path, "enderalprefs.ini");
-    }    
+    }
   }
+}
+
+bool GameEnderal::looksValid(QDir const &path) const
+{
+  //Check for <prog>.exe for now.
+  return path.exists(getLauncherName());
+}
+
+QIcon GameEnderal::gameIcon() const
+{
+  return MOBase::iconForExecutable(gameDirectory().absoluteFilePath(getLauncherName()));
 }
 
 QString GameEnderal::savegameExtension() const
@@ -138,9 +155,14 @@ QString GameEnderal::steamAPPId() const
   return "933480";
 }
 
+MOBase::IPluginGame::SortMechanism GameEnderal::sortMechanism() const
+{
+  return SortMechanism::NONE;
+}
+
 QStringList GameEnderal::primaryPlugins() const
 {
-  return { "Skyrim.esm", "update.esm", "Enderal - Forgotten Stories.esm" };
+  return { "Skyrim.esm", "Enderal - Forgotten Stories.esm", "Update.esm" };
 }
 
 QString GameEnderal::binaryName() const
@@ -160,7 +182,7 @@ QString GameEnderal::gameShortName() const
 
 QString GameEnderal::gameNexusName() const
 {
-  return "Skyrim";
+  return "enderal";
 }
 
 QStringList GameEnderal::primarySources() const
@@ -222,10 +244,23 @@ IPluginGame::LoadOrderMechanism GameEnderal::loadOrderMechanism() const
 
 int GameEnderal::nexusModOrganizerID() const
 {
-  return 1334;
+  return 0;
 }
 
 int GameEnderal::nexusGameID() const
 {
-  return 110;
+  return 0;
 }
+
+QString GameEnderal::identifyGamePath() const
+{
+  QString path = "Software\\SureAI\\Enderal";
+  QString result;
+  try {
+      result = findInRegistry(HKEY_CURRENT_USER, path.toStdWString().c_str(), L"Install_Path");
+  } catch (MOBase::MyException) {
+      result = MOBase::findSteamGame("Enderal", "Data\\Enderal - Forgotten Stories.esm");
+  }
+  return result;
+}
+
