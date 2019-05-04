@@ -20,5 +20,5 @@ QString SkyrimScriptExtender::PluginPath() const
 
 QStringList SkyrimScriptExtender::saveGameAttachmentExtensions() const
 {
-  return { "skse" };
+  return { };
 }
