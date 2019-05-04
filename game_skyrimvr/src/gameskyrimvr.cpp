@@ -95,6 +95,11 @@ QList<ExecutableInfo> GameSkyrimVR::executables() const
     ;
 }
 
+QList<ExecutableForcedLoadSetting> GameSkyrimVR::executableForcedLoads() const
+{
+  return QList<ExecutableForcedLoadSetting>();
+}
+
 QFileInfo GameSkyrimVR::findInGameFolder(const QString &relativePath) const
 {
   return QFileInfo(m_GamePath + "/" + relativePath);
@@ -117,7 +122,7 @@ QString GameSkyrimVR::description() const
 
 MOBase::VersionInfo GameSkyrimVR::version() const
 {
-  return VersionInfo(1, 3, 0, VersionInfo::RELEASE_FINAL);
+  return VersionInfo(1, 3, 1, VersionInfo::RELEASE_FINAL);
 }
 
 bool GameSkyrimVR::isActive() const
@@ -194,7 +199,7 @@ QStringList GameSkyrimVR::validShortNames() const
 
 QString GameSkyrimVR::gameNexusName() const
 {
-  return "skyrimspecialedition";
+  return QString();
 }
 
 
@@ -247,12 +252,12 @@ MOBase::IPluginGame::SortMechanism GameSkyrimVR::sortMechanism() const
 
 int GameSkyrimVR::nexusModOrganizerID() const
 {
-  return 6194;
+  return 0;
 }
 
 int GameSkyrimVR::nexusGameID() const
 {
-  return 1704;
+  return 0;
 }
 
 QString GameSkyrimVR::getLauncherName() const
