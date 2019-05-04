@@ -59,6 +59,11 @@ QList<ExecutableInfo> GameFallout4VR::executables() const
          ;
 }
 
+QList<ExecutableForcedLoadSetting> GameFallout4VR::executableForcedLoads() const
+{
+  return QList<ExecutableForcedLoadSetting>();
+}
+
 QString GameFallout4VR::name() const
 {
   return "Fallout 4 VR Support Plugin";
@@ -77,7 +82,7 @@ QString GameFallout4VR::description() const
 
 MOBase::VersionInfo GameFallout4VR::version() const
 {
-  return VersionInfo(1, 3, 0, VersionInfo::RELEASE_FINAL);
+  return VersionInfo(1, 3, 1, VersionInfo::RELEASE_FINAL);
 }
 
 bool GameFallout4VR::isActive() const
@@ -150,7 +155,7 @@ QStringList GameFallout4VR::validShortNames() const
 
 QString GameFallout4VR::gameNexusName() const
 {
-  return "Fallout4";
+  return QString();
 }
 
 QStringList GameFallout4VR::iniFiles() const
@@ -203,7 +208,7 @@ int GameFallout4VR::nexusModOrganizerID() const
 
 int GameFallout4VR::nexusGameID() const
 {
-  return 1151;
+  return 0;
 }
 
 QString GameFallout4VR::getLauncherName() const
