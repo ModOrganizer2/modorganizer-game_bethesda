@@ -4,7 +4,7 @@
 <context>
     <name>GameSkyrimVR</name>
     <message>
-        <location filename="gameskyrimvr.cpp" line="115"/>
+        <location filename="gameskyrimvr.cpp" line="120"/>
         <source>Adds support for the game Skyrim VR.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -77,9 +77,9 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../game_gamebryo/src/gamebryo/gamebryobsainvalidation.cpp" line="62"/>
-        <location filename="../../game_gamebryo/src/gamebryo/gamebryobsainvalidation.cpp" line="95"/>
-        <location filename="../../game_gamebryo/src/gamebryo/gamebryobsainvalidation.cpp" line="121"/>
+        <location filename="../../game_gamebryo/src/gamebryo/gamebryobsainvalidation.cpp" line="63"/>
+        <location filename="../../game_gamebryo/src/gamebryo/gamebryobsainvalidation.cpp" line="96"/>
+        <location filename="../../game_gamebryo/src/gamebryo/gamebryobsainvalidation.cpp" line="122"/>
         <source>failed to activate BSA invalidation in &quot;%1&quot; (errorcode %2)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -94,7 +94,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../game_gamebryo/src/gamebryo/gamebryodataarchives.cpp" line="35"/>
+        <location filename="../../game_gamebryo/src/gamebryo/gamebryodataarchives.cpp" line="36"/>
         <source>failed to set archive key in %1 (errorcode %2)</source>
         <translation type="unfinished"></translation>
     </message>
