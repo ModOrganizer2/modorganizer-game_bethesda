@@ -67,6 +67,11 @@ QList<ExecutableInfo> GameSkyrim::executables() const
   ;
 }
 
+QList<ExecutableForcedLoadSetting> GameSkyrim::executableForcedLoads() const
+{
+  return QList<ExecutableForcedLoadSetting>();
+}
+
 QString GameSkyrim::name() const
 {
   return "Skyrim Support Plugin";
@@ -84,7 +89,7 @@ QString GameSkyrim::description() const
 
 MOBase::VersionInfo GameSkyrim::version() const
 {
-  return VersionInfo(1, 3, 0, VersionInfo::RELEASE_FINAL);
+  return VersionInfo(1, 3, 1, VersionInfo::RELEASE_FINAL);
 }
 
 bool GameSkyrim::isActive() const
@@ -148,7 +153,7 @@ QString GameSkyrim::gameShortName() const
 
 QString GameSkyrim::gameNexusName() const
 {
-  return "Skyrim";
+  return "skyrim";
 }
 
 
@@ -211,7 +216,7 @@ IPluginGame::LoadOrderMechanism GameSkyrim::loadOrderMechanism() const
 
 int GameSkyrim::nexusModOrganizerID() const
 {
-  return 1334;
+  return 0;
 }
 
 int GameSkyrim::nexusGameID() const
