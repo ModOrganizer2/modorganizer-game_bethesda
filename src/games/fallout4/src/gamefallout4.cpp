@@ -61,6 +61,11 @@ QList<ExecutableInfo> GameFallout4::executables() const
          ;
 }
 
+QList<ExecutableForcedLoadSetting> GameFallout4::executableForcedLoads() const
+{
+  return QList<ExecutableForcedLoadSetting>();
+}
+
 QString GameFallout4::name() const
 {
   return "Fallout 4 Support Plugin";
@@ -79,7 +84,7 @@ QString GameFallout4::description() const
 
 MOBase::VersionInfo GameFallout4::version() const
 {
-  return VersionInfo(1, 3, 0, VersionInfo::RELEASE_FINAL);
+  return VersionInfo(1, 3, 1, VersionInfo::RELEASE_FINAL);
 }
 
 bool GameFallout4::isActive() const
@@ -148,7 +153,7 @@ QString GameFallout4::gameShortName() const
 
 QString GameFallout4::gameNexusName() const
 {
-  return "Fallout4";
+  return "fallout4";
 }
 
 QStringList GameFallout4::iniFiles() const
