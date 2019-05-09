@@ -35,9 +35,9 @@ SET(plugin_path "${project_path}")
 INCLUDE_DIRECTORIES(../gamebryo
                     ${project_path}/uibase/src
                     ${project_path}/game_features/src
-                    ${LZ4_ROOT}/include)
+                    ${LZ4_ROOT}/lib)
 LINK_DIRECTORIES(${lib_path}
-                 ${LZ4_ROOT}/dll)
+                 ${LZ4_ROOT}/bin)
 
 ADD_LIBRARY(${PROJ_NAME} STATIC ${${PROJ_NAME}_HDRS} ${${PROJ_NAME}_SRCS} ${${PROJ_NAME}_UIHDRS})
 TARGET_LINK_LIBRARIES(${PROJ_NAME}
