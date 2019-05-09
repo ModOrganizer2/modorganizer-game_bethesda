@@ -43,7 +43,7 @@ INCLUDE_DIRECTORIES(${project_path}/uibase/src
                     ${project_path}/game_gamebryo/src/creation)
 LINK_DIRECTORIES(${project_path}/uibase/build/src
                  ${lib_path}
-				 ${LZ4_ROOT}/dll)
+				 ${LZ4_ROOT}/bin)
 
 
 ADD_LIBRARY(${PROJ_NAME} SHARED ${${PROJ_NAME}_HDRS} ${${PROJ_NAME}_SRCS} ${${PROJ_NAME}_UIHDRS} ${${PROJ_NAME}_RCCPPS} ${${PROJ_NAME}_translations_qm})
