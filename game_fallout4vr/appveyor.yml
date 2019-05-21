@@ -14,11 +14,11 @@ build_script:
 
     C:\Python37-x64\python.exe unimake.py -d c:\projects\modorganizer-build -s Appveyor_Build=True %APPVEYOR_PROJECT_NAME%
 artifacts:
-- path: ..\..\..\install\bin\plugins\game_fallout4vr.dll
+- path: build\src\game_fallout4vr.dll
   name: game_fallout4vr_dll
-- path: ..\..\..\install\pdb\game_fallout4vr.pdb
+- path: build\src\game_fallout4vr.pdb
   name: game_fallout4vr_pdb
-- path: ..\..\..\install\libs\game_fallout4vr.lib
+- path: build\src\game_fallout4vr.lib
   name: game_fallout4vr_lib
 on_success:
   - ps: Set-Location -Path $env:APPVEYOR_BUILD_FOLDER
