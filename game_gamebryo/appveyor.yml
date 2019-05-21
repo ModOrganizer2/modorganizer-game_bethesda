@@ -14,9 +14,9 @@ build_script:
 
     C:\Python37-x64\python.exe unimake.py -d c:\projects\modorganizer-build -s Appveyor_Build=True %APPVEYOR_PROJECT_NAME%
 artifacts:
-- path: ..\..\..\install\libs\game_gamebryo.lib
+- path: build\src\game_gamebryo.lib
   name: game_gamebryo_lib
-- path: ..\..\..\install\libs\game_creation.lib
+- path: build\src\game_creation.lib
   name: game_creation_lib
 on_success:
   - ps: Set-Location -Path $env:APPVEYOR_BUILD_FOLDER
