@@ -14,11 +14,11 @@ build_script:
 
     C:\Python37-x64\python.exe unimake.py -d c:\projects\modorganizer-build -s Appveyor_Build=True %APPVEYOR_PROJECT_NAME%
 artifacts:
-- path: ..\..\..\install\bin\plugins\game_morrowind.dll
+- path: build\src\game_morrowind.dll
   name: game_morrowind_dll
-- path: ..\..\..\install\pdb\game_morrowind.pdb
+- path: build\src\game_morrowind.pdb
   name: game_morrowind_pdb
-- path: ..\..\..\install\libs\game_morrowind.lib
+- path: build\src\game_morrowind.lib
   name: game_morrowind_lib
 on_success:
   - ps: Set-Location -Path $env:APPVEYOR_BUILD_FOLDER
