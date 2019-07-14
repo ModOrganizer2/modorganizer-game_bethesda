@@ -179,7 +179,7 @@ QStringList GameMorrowind::DLCPlugins() const
 
 MOBase::IPluginGame::SortMechanism GameMorrowind::sortMechanism() const
 {
-  return SortMechanism::NONE;
+  return SortMechanism::LOOT;
 }
 
 namespace {

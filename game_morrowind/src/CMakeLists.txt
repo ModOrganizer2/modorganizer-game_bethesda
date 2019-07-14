@@ -42,7 +42,7 @@ INCLUDE_DIRECTORIES(${project_path}/uibase/src
                     ${project_path}/game_gamebryo/src/gamebryo)
 LINK_DIRECTORIES(${project_path}/uibase/build/src
                  ${lib_path}
-				 ${LZ4_ROOT}/dll)
+				 ${LZ4_ROOT}/bin)
 
 ADD_DEFINITIONS(-DUNICODE -D_UNICODE)
 
