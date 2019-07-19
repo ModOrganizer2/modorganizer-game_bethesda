@@ -52,7 +52,7 @@ bool GamebryoLocalSavegames::prepareProfile(MOBase::IProfile *profile)
 {
   bool dirty = false;
   bool enable = profile->localSavesEnabled();
-  qDebug("enable local saves: %d", enable);
+
   QString basePath
           = profile->localSettingsEnabled()
             ? profile->absolutePath()
