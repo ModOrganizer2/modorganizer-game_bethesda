@@ -83,7 +83,7 @@ QString GameFallout3::description() const
 
 MOBase::VersionInfo GameFallout3::version() const
 {
-  return VersionInfo(1, 3, 1, VersionInfo::RELEASE_FINAL);
+  return VersionInfo(1, 4, 0, VersionInfo::RELEASE_FINAL);
 }
 
 bool GameFallout3::isActive() const
@@ -143,7 +143,6 @@ QStringList GameFallout3::primaryPlugins() const
   return { "fallout3.esm" };
 }
 
-
 QStringList GameFallout3::gameVariants() const
 {
   return { "Regular", "Game Of The Year" };
@@ -154,11 +153,15 @@ QString GameFallout3::gameShortName() const
   return "Fallout3";
 }
 
+QStringList GameFallout3::validShortNames() const
+{
+  return { "FalloutNV" };
+}
+
 QString GameFallout3::gameNexusName() const
 {
   return "fallout3";
 }
-
 
 QStringList GameFallout3::iniFiles() const
 {
