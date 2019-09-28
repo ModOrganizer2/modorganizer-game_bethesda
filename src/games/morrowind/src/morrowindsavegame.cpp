@@ -103,7 +103,7 @@ MorrowindSaveGame::MorrowindSaveGame(QString const &fileName, MOBase::IPluginGam
     }
   }
 
-  std::experimental::filesystem::path realFile(fileName.toStdWString());
+  std::filesystem::path realFile(fileName.toStdWString());
   QString realFileName = QString::fromStdWString(realFile.filename().wstring());
   m_SaveNumber = realFileName.mid(4, 5).remove(QRegExp("0+$")).toInt();
 }
