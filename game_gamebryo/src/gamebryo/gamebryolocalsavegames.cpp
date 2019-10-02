@@ -29,35 +29,36 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 static const QString LocalSavesDummy = "__MO_Saves";
 
 
-GamebryoLocalSavegames::GamebryoLocalSavegames(const QDir &myGamesDir,
-                                               const QString &iniFileName)
+GamebryoLocalSavegames::GamebryoLocalSavegames(const QDir& myGamesDir,
+  const QString& iniFileName)
   : m_LocalSavesDir(myGamesDir.absoluteFilePath(LocalSavesDummy))
   , m_LocalGameDir(myGamesDir.absolutePath())
   , m_IniFileName(iniFileName)
 {}
 
 
-MappingType GamebryoLocalSavegames::mappings(const QDir &profileSaveDir) const
+MappingType GamebryoLocalSavegames::mappings(const QDir& profileSaveDir) const
 {
-  return {{
+  return { {
            profileSaveDir.absolutePath(),
            m_LocalSavesDir.absolutePath(),
            true,
            true
-    }};
+    } };
 }
 
 
-bool GamebryoLocalSavegames::prepareProfile(MOBase::IProfile *profile)
+bool GamebryoLocalSavegames::prepareProfile(MOBase::IProfile* profile)
 {
   bool dirty = false;
   bool enable = profile->localSavesEnabled();
 
   QString basePath
-          = profile->localSettingsEnabled()
-            ? profile->absolutePath()
-            : m_LocalGameDir.absolutePath();
+    = profile->localSettingsEnabled()
+    ? profile->absolutePath()
+    : m_LocalGameDir.absolutePath();
   QString iniFilePath = basePath + "/" + m_IniFileName;
+  QString savepathFilePath = profile->absolutePath() + "/" + "savepath.ini";
 
   WCHAR oldPath[MAX_PATH];
   WCHAR oldMyGames[1];
@@ -65,9 +66,9 @@ bool GamebryoLocalSavegames::prepareProfile(MOBase::IProfile *profile)
   GetPrivateProfileStringW(L"General", L"bUseMyGamesDirectory", NULL, oldMyGames, 1, iniFilePath.toStdWString().c_str());
   if (enable && wcscmp(oldPath, L"") != 0 && wcscmp(oldPath, (LocalSavesDummy + "\\").toStdWString().c_str()) != 0) {
     dirty = true;
-    MOBase::WriteRegistryValue(L"General", L"SLocalSavePath", oldPath, QString(profile->absolutePath() + "/" + "savepath.ini").toStdWString().c_str());
+    MOBase::WriteRegistryValue(L"General", L"SLocalSavePath", oldPath, savepathFilePath.toStdWString().c_str());
     if (wcscmp(oldMyGames, L"") != 0) {
-      MOBase::WriteRegistryValue(L"General", L"bUseMyGamesDirectory", oldMyGames, QString(profile->absolutePath() + "/" + "savepath.ini").toStdWString().c_str());
+      MOBase::WriteRegistryValue(L"General", L"bUseMyGamesDirectory", oldMyGames, savepathFilePath.toStdWString().c_str());
     }
   }
   bool saved = false;
@@ -75,16 +76,17 @@ bool GamebryoLocalSavegames::prepareProfile(MOBase::IProfile *profile)
   WCHAR savedPath[MAX_PATH];
   WCHAR savedMyGames[1];
   if (!enable) {
-    if (QFile::exists(QString(profile->absolutePath() + "/" + "savepath.ini"))) {
+    if (QFile::exists(savepathFilePath)) {
       saved = true;
-      GetPrivateProfileStringW(L"General", L"SLocalSavePath", NULL, savedPath, MAX_PATH,  QString(profile->absolutePath() + "/" + "savepath.ini").toStdWString().c_str());
-      GetPrivateProfileStringW(L"General", L"bUseMyGamesDirectory", NULL, savedMyGames, 1,  QString(profile->absolutePath() + "/" + "savepath.ini").toStdWString().c_str());
+      GetPrivateProfileStringW(L"General", L"SLocalSavePath", NULL, savedPath, MAX_PATH, savepathFilePath.toStdWString().c_str());
+      GetPrivateProfileStringW(L"General", L"bUseMyGamesDirectory", NULL, savedMyGames, 1, savepathFilePath.toStdWString().c_str());
       if (wcscmp(savedMyGames, L"") != 0) {
         savedDir = true;
       }
-      QFile::remove(QString(profile->absolutePath() + "/" + "savepath.ini"));
+      QFile::remove(savepathFilePath);
     }
-  } else {
+  }
+  else {
     QDir saves = QDir(m_LocalGameDir.absolutePath() + "/" + LocalSavesDummy);
     if (!saves.exists()) {
       saves.mkdir(".");
@@ -92,19 +94,20 @@ bool GamebryoLocalSavegames::prepareProfile(MOBase::IProfile *profile)
   }
 
   if (enable) {
-    if (wcscmp(oldPath, (LocalSavesDummy + "\\").toStdWString().c_str()) != 0){
+    if (wcscmp(oldPath, (LocalSavesDummy + "\\").toStdWString().c_str()) != 0) {
       MOBase::WriteRegistryValue(L"General", L"SLocalSavePath",
-                                 (LocalSavesDummy + "\\").toStdWString().c_str(),
-                                 iniFilePath.toStdWString().c_str());
+        (LocalSavesDummy + "\\").toStdWString().c_str(),
+        iniFilePath.toStdWString().c_str());
       dirty = true;
     }
     if (wcscmp(oldMyGames, L"") != 0) {
       MOBase::WriteRegistryValue(L"General", L"bUseMyGamesDirectory",
-                                 NULL,
-                                 iniFilePath.toStdWString().c_str());
+        NULL,
+        iniFilePath.toStdWString().c_str());
       dirty = true;
     }
-  } else {
+  }
+  else {
     if (saved) {
       if (wcscmp(oldPath, savedPath) != 0) {
         MOBase::WriteRegistryValue(L"General", L"SLocalSavePath",
@@ -112,8 +115,9 @@ bool GamebryoLocalSavegames::prepareProfile(MOBase::IProfile *profile)
           iniFilePath.toStdWString().c_str());
         dirty = true;
       }
-    } else {
-      if (wcscmp(oldPath, L"") == 0) {
+    }
+    else {
+      if (wcscmp(oldPath, L"") != 0) {
         MOBase::WriteRegistryValue(L"General", L"SLocalSavePath",
           NULL,
           iniFilePath.toStdWString().c_str());
@@ -127,8 +131,9 @@ bool GamebryoLocalSavegames::prepareProfile(MOBase::IProfile *profile)
           iniFilePath.toStdWString().c_str());
         dirty = true;
       }
-    } else {
-      if (wcscmp(oldMyGames, L"") == 0) {
+    }
+    else {
+      if (wcscmp(oldMyGames, L"") != 0) {
         MOBase::WriteRegistryValue(L"General", L"bUseMyGamesDirectory",
           NULL,
           iniFilePath.toStdWString().c_str());
