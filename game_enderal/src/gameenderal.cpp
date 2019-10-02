@@ -95,7 +95,7 @@ QString GameEnderal::description() const
 
 MOBase::VersionInfo GameEnderal::version() const
 {
-  return VersionInfo(0, 1, 0, VersionInfo::RELEASE_PREALPHA);
+  return VersionInfo(1, 0, 0, VersionInfo::RELEASE_FINAL);
 }
 
 bool GameEnderal::isActive() const
