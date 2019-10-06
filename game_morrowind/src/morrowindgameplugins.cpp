@@ -104,7 +104,7 @@ void MorrowindGamePlugins::writeList(const IPluginList *pluginList,
         qCritical("invalid plugin name %s", qUtf8Printable(pluginName));
       } else {
 	    if (!MOBase::WriteRegistryValue(L"Game Files", (key+QString::number(writtenCount)).toStdWString().c_str(), pluginName.toStdWString().c_str(), filePath.toStdWString().c_str())) {
-          throw MOBase::MyException(QObject::tr("failed to set game file key (errorcode %1)").arg(errno));
+          qWarning("failed to set game files in \"%s\"", qUtf8Printable(filePath));
         }
       }
       ++writtenCount;
