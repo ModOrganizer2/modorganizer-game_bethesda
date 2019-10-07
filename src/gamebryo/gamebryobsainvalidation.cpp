@@ -60,7 +60,7 @@ bool GamebryoBSAInvalidation::prepareProfile(MOBase::IProfile *profile)
     || wcstol(setting, nullptr, 10) != 1) {
     dirty = true;
     if (!MOBase::WriteRegistryValue(L"Archive", L"bInvalidateOlderFiles", L"1", iniFilePath.toStdWString().c_str())) {
-      throw MOBase::MyException(QObject::tr("failed to activate BSA invalidation in \"%1\" (errorcode %2)").arg(m_IniFileName, ::GetLastError()));
+      qWarning("failed to activate BSA invalidation in \"%s\"", qUtf8Printable(m_IniFileName));
     }
   }
 
@@ -93,7 +93,7 @@ bool GamebryoBSAInvalidation::prepareProfile(MOBase::IProfile *profile)
       || wcscmp(setting, L"") != 0) {
       dirty = true;
       if (!MOBase::WriteRegistryValue(L"Archive", L"SInvalidationFile", L"", iniFilePath.toStdWString().c_str())) {
-        throw MOBase::MyException(QObject::tr("failed to activate BSA invalidation in \"%1\" (errorcode %2)").arg(m_IniFileName, ::GetLastError()));
+        qWarning("failed to activate BSA invalidation in \"%s\"", qUtf8Printable(m_IniFileName));
       }
     }
   } else {
@@ -119,7 +119,7 @@ bool GamebryoBSAInvalidation::prepareProfile(MOBase::IProfile *profile)
       || wcscmp(setting, L"ArchiveInvalidation.txt") != 0) {
       dirty = true;
       if (!MOBase::WriteRegistryValue(L"Archive", L"SInvalidationFile", L"ArchiveInvalidation.txt", iniFilePath.toStdWString().c_str())) {
-        throw MOBase::MyException(QObject::tr("failed to activate BSA invalidation in \"%1\" (errorcode %2)").arg(m_IniFileName, ::GetLastError()));
+        qWarning("failed to activate BSA invalidation in \"%s\"", qUtf8Printable(m_IniFileName));
       }
     }
   }
