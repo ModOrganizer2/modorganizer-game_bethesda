@@ -16,6 +16,7 @@ protected:
                                const QString &filePath) override;
   virtual QStringList readPluginList(MOBase::IPluginList *pluginList) override;
   virtual void getLoadOrder(QStringList &loadOrder) override;
+  virtual bool lightPluginsAreSupported() override;
 
 private:
   std::map<QString, QByteArray> m_LastSaveHash;
