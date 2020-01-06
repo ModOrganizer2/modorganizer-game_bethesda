@@ -52,7 +52,7 @@ bool EnderalLocalSavegames::prepareProfile(MOBase::IProfile *profile)
 {
   bool dirty = false;
   bool enable = profile->localSavesEnabled();
-  qDebug("enable local saves: %d", enable);
+
   QString basePath
           = profile->localSettingsEnabled()
             ? profile->absolutePath()
@@ -114,7 +114,7 @@ bool EnderalLocalSavegames::prepareProfile(MOBase::IProfile *profile)
         dirty = true;
       }
     } else {
-      if (wcscmp(oldPath, L"") == 0) {
+      if (wcscmp(oldPath, L"") != 0) {
         MOBase::WriteRegistryValue(L"General", L"SLocalSavePath",
           NULL,
           iniFilePath.toStdWString().c_str());
@@ -129,7 +129,7 @@ bool EnderalLocalSavegames::prepareProfile(MOBase::IProfile *profile)
         dirty = true;
       }
     } else {
-      if (wcscmp(oldMyGames, L"") == 0) {
+      if (wcscmp(oldMyGames, L"") != 0) {
         MOBase::WriteRegistryValue(L"General", L"bUseMyGamesDirectory",
           NULL,
           iniFilePath.toStdWString().c_str());
