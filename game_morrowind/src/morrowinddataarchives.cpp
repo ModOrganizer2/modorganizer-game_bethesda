@@ -40,7 +40,7 @@ void MorrowindDataArchives::setArchives(const QString &iniFile, const QStringLis
   int writtenCount = 0;
   foreach(const QString &value, list) {
     if (!MOBase::WriteRegistryValue(L"Archives", (key+QString::number(writtenCount)).toStdWString().c_str(), value.toStdWString().c_str(), iniFile.toStdWString().c_str())) {
-      throw MOBase::MyException(QObject::tr("failed to set archive key (errorcode %1)").arg(errno));
+      qWarning("failed to set archives in \"%s\"", qUtf8Printable(iniFile));
     }
 	++writtenCount;
   }
