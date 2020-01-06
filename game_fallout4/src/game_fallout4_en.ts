@@ -68,13 +68,6 @@ Splash by %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../game_gamebryo/src/gamebryo/gamebryobsainvalidation.cpp" line="63"/>
-        <location filename="../../game_gamebryo/src/gamebryo/gamebryobsainvalidation.cpp" line="96"/>
-        <location filename="../../game_gamebryo/src/gamebryo/gamebryobsainvalidation.cpp" line="122"/>
-        <source>failed to activate BSA invalidation in &quot;%1&quot; (errorcode %2)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../game_gamebryo/src/gamebryo/gamebryosavegame.cpp" line="92"/>
         <source>failed to open %1</source>
         <translation type="unfinished"></translation>
@@ -92,11 +85,6 @@ Splash by %1</source>
     <message>
         <location filename="../../game_gamebryo/src/gamebryo/gamegamebryo.cpp" line="293"/>
         <source>failed to query registry path (read): %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../game_gamebryo/src/gamebryo/gamebryodataarchives.cpp" line="36"/>
-        <source>failed to set archive key in %1 (errorcode %2)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

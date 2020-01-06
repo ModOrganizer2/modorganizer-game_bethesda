@@ -84,7 +84,7 @@ QString GameFallout4::description() const
 
 MOBase::VersionInfo GameFallout4::version() const
 {
-  return VersionInfo(1, 3, 1, VersionInfo::RELEASE_FINAL);
+  return VersionInfo(1, 4, 0, VersionInfo::RELEASE_FINAL);
 }
 
 bool GameFallout4::isActive() const
