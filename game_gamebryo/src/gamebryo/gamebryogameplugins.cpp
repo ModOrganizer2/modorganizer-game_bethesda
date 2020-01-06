@@ -250,3 +250,8 @@ QStringList GamebryoGamePlugins::readPluginList(MOBase::IPluginList *pluginList)
 
   return primary + plugins;
 }
+
+bool GamebryoGamePlugins::lightPluginsAreSupported()
+{
+  return false;
+}

@@ -15,6 +15,7 @@ public:
   virtual void writePluginLists(const MOBase::IPluginList *pluginList) override;
   virtual void readPluginLists(MOBase::IPluginList *pluginList) override;
   virtual void getLoadOrder(QStringList &loadOrder) override;
+  virtual bool lightPluginsAreSupported() override;
 
 protected:
   QTextCodec *utf8Codec() const { return m_Utf8Codec; }

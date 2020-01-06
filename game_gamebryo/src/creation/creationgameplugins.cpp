@@ -180,3 +180,8 @@ QStringList CreationGamePlugins::readPluginList(MOBase::IPluginList *pluginList)
 
   return loadOrder;
 }
+
+bool CreationGamePlugins::lightPluginsAreSupported()
+{
+  return true;
+}
