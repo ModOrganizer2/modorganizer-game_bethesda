@@ -80,6 +80,7 @@ QList<ExecutableInfo> GameMorrowind::executables() const
     << ExecutableInfo("Morrowind", findInGameFolder(binaryName()))
     << ExecutableInfo("Morrowind Launcher", findInGameFolder(getLauncherName()))
     << ExecutableInfo("MGE XE", findInGameFolder("MGEXEgui.exe"))
+    << ExecutableInfo("LOOT", getLootPath()).withArgument("--game=\"Morrowind\"")
   ;
 }
 
@@ -106,7 +107,7 @@ QString GameMorrowind::description() const
 
 MOBase::VersionInfo GameMorrowind::version() const
 {
-  return VersionInfo(1, 3, 1, VersionInfo::RELEASE_FINAL);
+  return VersionInfo(1, 4, 0, VersionInfo::RELEASE_FINAL);
 }
 
 bool GameMorrowind::isActive() const
