@@ -4,7 +4,7 @@
 <context>
     <name>GameMorrowind</name>
     <message>
-        <location filename="gamemorrowind.cpp" line="103"/>
+        <location filename="gamemorrowind.cpp" line="104"/>
         <source>Adds support for the game Morrowind.
 Splash by %1</source>
         <translation type="unfinished"></translation>
@@ -105,18 +105,6 @@ Splash by %1</source>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../../game_gamebryo/src/gamebryo/gamebryobsainvalidation.cpp" line="63"/>
-        <location filename="../../game_gamebryo/src/gamebryo/gamebryobsainvalidation.cpp" line="96"/>
-        <location filename="../../game_gamebryo/src/gamebryo/gamebryobsainvalidation.cpp" line="122"/>
-        <source>failed to activate BSA invalidation in &quot;%1&quot; (errorcode %2)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../game_gamebryo/src/gamebryo/gamebryodataarchives.cpp" line="36"/>
-        <source>failed to set archive key in %1 (errorcode %2)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../game_gamebryo/src/gamebryo/gamebryogameplugins.cpp" line="128"/>
         <location filename="morrowindgameplugins.cpp" line="115"/>
         <source>Some of your plugins have invalid names! These plugins can not be loaded by the game. Please see mo_interface.log for a list of affected plugins and rename them.</source>
@@ -140,16 +128,6 @@ Splash by %1</source>
     <message>
         <location filename="../../game_gamebryo/src/gamebryo/gamegamebryo.cpp" line="293"/>
         <source>failed to query registry path (read): %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="morrowinddataarchives.cpp" line="43"/>
-        <source>failed to set archive key (errorcode %1)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="morrowindgameplugins.cpp" line="107"/>
-        <source>failed to set game file key (errorcode %1)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
