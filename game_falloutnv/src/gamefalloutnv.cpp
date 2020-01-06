@@ -83,7 +83,7 @@ QString GameFalloutNV::description() const
 
 MOBase::VersionInfo GameFalloutNV::version() const
 {
-  return VersionInfo(1, 3, 1, VersionInfo::RELEASE_FINAL);
+  return VersionInfo(1, 4, 0, VersionInfo::RELEASE_FINAL);
 }
 
 bool GameFalloutNV::isActive() const
@@ -143,6 +143,11 @@ QStringList GameFalloutNV::primaryPlugins() const
 QString GameFalloutNV::gameShortName() const
 {
   return "FalloutNV";
+}
+
+QStringList GameFalloutNV::validShortNames() const
+{
+  return { "Fallout3" };
 }
 
 QString GameFalloutNV::gameNexusName() const
