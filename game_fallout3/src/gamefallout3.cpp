@@ -83,7 +83,7 @@ QString GameFallout3::description() const
 
 MOBase::VersionInfo GameFallout3::version() const
 {
-  return VersionInfo(1, 4, 0, VersionInfo::RELEASE_FINAL);
+  return VersionInfo(1, 4, 1, VersionInfo::RELEASE_FINAL);
 }
 
 bool GameFallout3::isActive() const
