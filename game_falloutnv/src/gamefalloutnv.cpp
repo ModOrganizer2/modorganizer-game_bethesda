@@ -83,7 +83,7 @@ QString GameFalloutNV::description() const
 
 MOBase::VersionInfo GameFalloutNV::version() const
 {
-  return VersionInfo(1, 4, 0, VersionInfo::RELEASE_FINAL);
+  return VersionInfo(1, 4, 1, VersionInfo::RELEASE_FINAL);
 }
 
 bool GameFalloutNV::isActive() const
