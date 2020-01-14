@@ -116,7 +116,7 @@ bool GamebryoLocalSavegames::prepareProfile(MOBase::IProfile* profile)
         dirty = true;
       }
     }
-    else {
+    else if (dirty) {
       if (wcscmp(oldPath, L"") != 0) {
         MOBase::WriteRegistryValue(L"General", L"SLocalSavePath",
           NULL,
@@ -132,7 +132,7 @@ bool GamebryoLocalSavegames::prepareProfile(MOBase::IProfile* profile)
         dirty = true;
       }
     }
-    else {
+    else if (dirty) {
       if (wcscmp(oldMyGames, L"") != 0) {
         MOBase::WriteRegistryValue(L"General", L"bUseMyGamesDirectory",
           NULL,
