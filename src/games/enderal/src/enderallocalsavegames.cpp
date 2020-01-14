@@ -113,7 +113,7 @@ bool EnderalLocalSavegames::prepareProfile(MOBase::IProfile *profile)
           iniFilePath.toStdWString().c_str());
         dirty = true;
       }
-    } else {
+    } else if (dirty) {
       if (wcscmp(oldPath, L"") != 0) {
         MOBase::WriteRegistryValue(L"General", L"SLocalSavePath",
           NULL,
@@ -128,7 +128,7 @@ bool EnderalLocalSavegames::prepareProfile(MOBase::IProfile *profile)
           iniFilePath.toStdWString().c_str());
         dirty = true;
       }
-    } else {
+    } else if (dirty) {
       if (wcscmp(oldMyGames, L"") != 0) {
         MOBase::WriteRegistryValue(L"General", L"bUseMyGamesDirectory",
           NULL,
