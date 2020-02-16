@@ -5,6 +5,7 @@
 #include <iplugingame.h>
 #include <imodinterface.h>
 #include <scopeguard.h>
+#include <utility.h>
 
 #include <QDir>
 #include <QTextCodec>
@@ -142,70 +143,22 @@ void GamebryoGamePlugins::writeList(const IPluginList *pluginList,
 QStringList GamebryoGamePlugins::readLoadOrderList(
   MOBase::IPluginList *pluginList, const QString &filePath)
 {
-  HANDLE h = ::CreateFileW(
-    reinterpret_cast<const wchar_t*>(filePath.utf16()), GENERIC_READ,
-    FILE_SHARE_READ, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
-
-  if (h == INVALID_HANDLE_VALUE) {
-    return readPluginList(pluginList);
-  }
-
-  MOBase::Guard g([&]{ ::CloseHandle(h); });
-
-  LARGE_INTEGER fileSize;
-  if (!GetFileSizeEx(h, &fileSize)) {
-    return readPluginList(pluginList);
-  }
-
-  auto buffer = std::make_unique<char[]>(fileSize.QuadPart);
-  DWORD byteCount = static_cast<DWORD>(fileSize.QuadPart);
-  if (!::ReadFile(h, buffer.get(), byteCount, &byteCount, nullptr)) {
-    return readPluginList(pluginList);
-  }
-
   QStringList pluginNames = organizer()->managedGame()->primaryPlugins();
 
   std::set<QString> pluginLookup;
   for (auto&& name : pluginNames) {
-    pluginLookup.insert(name.toLower());
+    pluginLookup.insert(name);
   }
 
-  const char* lineStart = buffer.get();
-  const char* p = lineStart;
-
-  while (*p) {
-    // skip all newline characters
-    while (*p && (*p == '\n' || *p == '\r')) {
-      ++p;
+  const auto b = MOBase::forEachLineInFile(filePath, [&](QString s) {
+    if (!pluginLookup.contains(s)) {
+      pluginLookup.insert(s);
+      pluginNames.push_back(std::move(s));
     }
+  });
 
-    // line starts here
-    lineStart = p;
-
-    // find end of line
-    while (*p && *p != '\n' && *p != '\r') {
-      ++p;
-    }
-
-    if (p != lineStart && *lineStart != '#') {
-      // skip whitespace at beginning of line
-      while (std::isspace(*lineStart)) {
-        ++lineStart;
-      }
-
-      // skip white at end of line
-      const char* lineEnd = p - 1;
-      while (std::isspace(*lineEnd) && lineEnd > lineStart) {
-        --lineEnd;
-      }
-      ++lineEnd;
-
-      QString s = QString::fromUtf8(lineStart, lineEnd - lineStart).toLower();
-
-      if (!pluginLookup.contains(s)) {
-        pluginNames.push_back(std::move(s));
-      }
-    }
+  if (!b) {
+    return readPluginList(pluginList);
   }
 
   return pluginNames;
