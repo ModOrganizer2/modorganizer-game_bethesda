@@ -104,9 +104,7 @@ void CreationGamePlugins::writePluginList(const IPluginList *pluginList,
                             "and rename them."));
   }
 
-  if (file.commitIfDifferent(m_LastSaveHash[filePath])) {
-    qDebug("%s saved", qUtf8Printable(QDir::toNativeSeparators(filePath)));
-  }
+  file.commitIfDifferent(m_LastSaveHash[filePath]);
 }
 
 QStringList CreationGamePlugins::readPluginList(MOBase::IPluginList *pluginList)

@@ -5,6 +5,7 @@
 #include <iplugingame.h>
 #include <imodinterface.h>
 #include <scopeguard.h>
+#include <utility.h>
 
 #include <QDir>
 #include <QTextCodec>
@@ -135,41 +136,32 @@ void GamebryoGamePlugins::writeList(const IPluginList *pluginList,
     qWarning("plugin list would be empty, this is almost certainly wrong. Not "
              "saving.");
   } else {
-    if (file.commitIfDifferent(m_LastSaveHash[filePath])) {
-      qDebug("%s saved", qUtf8Printable(QDir::toNativeSeparators(filePath)));
-    }
+    file.commitIfDifferent(m_LastSaveHash[filePath]);
   }
 }
 
-QStringList GamebryoGamePlugins::readLoadOrderList(MOBase::IPluginList *pluginList,
-                                            const QString &filePath) {
-    QFile file(filePath);
-    if (!file.open(QIODevice::ReadOnly)) {
-        return readPluginList(pluginList);
-    } else {
-        QStringList pluginNames = organizer()->managedGame()->primaryPlugins();
+QStringList GamebryoGamePlugins::readLoadOrderList(
+  MOBase::IPluginList *pluginList, const QString &filePath)
+{
+  QStringList pluginNames = organizer()->managedGame()->primaryPlugins();
 
-        ON_BLOCK_EXIT([&file]() { file.close(); });
+  std::set<QString> pluginLookup;
+  for (auto&& name : pluginNames) {
+    pluginLookup.insert(name);
+  }
 
-        if (file.size() == 0) {
-          return readPluginList(pluginList);
-        }
-        while (!file.atEnd()) {
-            QByteArray line = file.readLine().trimmed();
-            QString modName;
-            if ((line.size() > 0) && (line.at(0) != '#')) {
-                modName = QString::fromUtf8(line.constData()).toLower();
-            }
-
-            if (modName.size() > 0) {
-                if (!pluginNames.contains(modName, Qt::CaseInsensitive)) {
-                    pluginNames.append(modName);
-                }
-            }
-        }
-
-        return pluginNames;
+  const auto b = MOBase::forEachLineInFile(filePath, [&](QString s) {
+    if (!pluginLookup.contains(s)) {
+      pluginLookup.insert(s);
+      pluginNames.push_back(std::move(s));
     }
+  });
+
+  if (!b) {
+    return readPluginList(pluginList);
+  }
+
+  return pluginNames;
 }
 
 QStringList GamebryoGamePlugins::readPluginList(MOBase::IPluginList *pluginList) {
@@ -211,7 +203,6 @@ QStringList GamebryoGamePlugins::readPluginList(MOBase::IPluginList *pluginList)
       pluginsTxtExists = false;
   }
   ON_BLOCK_EXIT([&]() {
-      qDebug("close %s", qUtf8Printable(filePath));
       file.close();
   });
 
