@@ -37,7 +37,7 @@ bool GameFallout4::init(IOrganizer *moInfo)
 
   registerFeature<ScriptExtender>(new Fallout4ScriptExtender(this));
   registerFeature<DataArchives>(new Fallout4DataArchives(myGamesPath()));
-  registerFeature<LocalSavegames>(new GamebryoLocalSavegames(myGamesPath(), "Fallout4.ini"));
+  registerFeature<LocalSavegames>(new GamebryoLocalSavegames(myGamesPath(), "fallout4custom.ini"));
   registerFeature<SaveGameInfo>(new Fallout4SaveGameInfo(this));
   registerFeature<GamePlugins>(new CreationGamePlugins(moInfo));
   registerFeature<UnmanagedMods>(new Fallout4UnmangedMods(this));
@@ -84,7 +84,7 @@ QString GameFallout4::description() const
 
 MOBase::VersionInfo GameFallout4::version() const
 {
-  return VersionInfo(1, 4, 1, VersionInfo::RELEASE_FINAL);
+  return VersionInfo(1, 5, 0, VersionInfo::RELEASE_FINAL);
 }
 
 bool GameFallout4::isActive() const
