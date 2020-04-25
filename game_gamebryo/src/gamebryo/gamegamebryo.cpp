@@ -162,25 +162,30 @@ WORD GameGamebryo::getArch(QString const &program) const
 {
 	WORD arch = 0;
 	//This *really* needs to be factored out
-	LPCSTR app_name = ("\\\\?\\" +
-		QDir::toNativeSeparators(this->gameDirectory().absoluteFilePath(program)).toStdString()).c_str();
+	std::wstring app_name =
+    L"\\\\?\\" + QDir::toNativeSeparators(this->gameDirectory().absoluteFilePath(program)).toStdWString();
 
-	WIN32_FIND_DATA FindFileData;
-	HANDLE hFind = ::FindFirstFile(app_name, &FindFileData);
+	WIN32_FIND_DATAW FindFileData;
+	HANDLE hFind = ::FindFirstFileW(app_name.c_str(), &FindFileData);
 
 	//exit if the binary was not found
 	if (hFind == INVALID_HANDLE_VALUE) return arch;
 
-	HANDLE hFile = CreateFile(app_name, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_READONLY, NULL);
+  HANDLE hFile = INVALID_HANDLE_VALUE;
+  HANDLE hMapping = INVALID_HANDLE_VALUE;
+  LPVOID addrHeader = nullptr;
+  PIMAGE_NT_HEADERS peHdr = nullptr;
+
+	hFile = CreateFileW(app_name.c_str(), GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_READONLY, NULL);
 	if (hFile == INVALID_HANDLE_VALUE) goto cleanup;
 
-	HANDLE hMapping = CreateFileMapping(hFile, NULL, PAGE_READONLY | SEC_IMAGE, 0, 0, program.toStdString().c_str());
+	hMapping = CreateFileMappingW(hFile, NULL, PAGE_READONLY | SEC_IMAGE, 0, 0, program.toStdWString().c_str());
 	if (hMapping == INVALID_HANDLE_VALUE) goto cleanup;
 
-	LPVOID addrHeader = MapViewOfFile(hMapping, FILE_MAP_READ, 0, 0, 0);
+	addrHeader = MapViewOfFile(hMapping, FILE_MAP_READ, 0, 0, 0);
 	if (addrHeader == NULL) goto cleanup; //couldn't memory map the file
 
-	PIMAGE_NT_HEADERS peHdr = ImageNtHeader(addrHeader);
+	peHdr = ImageNtHeader(addrHeader);
 	if (peHdr == NULL) goto cleanup; //couldn't read the header
 
 	arch = peHdr->FileHeader.Machine;
