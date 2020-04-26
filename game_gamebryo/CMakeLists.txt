@@ -1,19 +1,11 @@
-CMAKE_MINIMUM_REQUIRED(VERSION 2.8.12)
+cmake_minimum_required(VERSION 3.16)
 
-ADD_COMPILE_OPTIONS(
-	$<$<CXX_COMPILER_ID:MSVC>:/MP>
-	$<$<CXX_COMPILER_ID:MSVC>:$<$<CONFIG:RELEASE>:/O2>>
-	$<$<CXX_COMPILER_ID:MSVC>:$<$<CONFIG:RELWITHDEBINFO>:/O2>>)
+project(game_gamebryo)
+set(project_type lib)
+set(enable_warnings OFF)
 
-SET(PROJ_NAME game_gamebryo)
-PROJECT(${PROJ_NAME})
+include(../cmake_common/project.cmake)
+add_subdirectory(src/gamebryo)
 
-set(CMAKE_VS_INCLUDE_INSTALL_TO_DEFAULT_BUILD 1)
-SET(DEPENDENCIES_DIR CACHE PATH "")
-
-# hint to find qt in dependencies path
-LIST(APPEND CMAKE_PREFIX_PATH ${QT_ROOT}/lib/cmake)
-LIST(APPEND CMAKE_PREFIX_PATH ${LZ4_ROOT}/dll)
-
-ADD_SUBDIRECTORY(src/gamebryo)
-ADD_SUBDIRECTORY(src/creation)
+# note that this also creates a project
+add_subdirectory(src/creation)
