@@ -10,6 +10,7 @@
 #include "pluginsetting.h"
 #include "steamutility.h"
 
+#include <gamebryomoddatachecker.h>
 #include <gamebryounmanagedmods.h>
 
 #include <QCoreApplication>
@@ -42,6 +43,7 @@ bool GameMorrowind::init(IOrganizer *moInfo)
   registerFeature<BSAInvalidation>(new MorrowindBSAInvalidation(feature<DataArchives>(), this));
   registerFeature<SaveGameInfo>(new MorrowindSaveGameInfo(this));
   registerFeature<LocalSavegames>(new MorrowindLocalSavegames(this));
+  registerFeature<ModDataChecker>(new GamebryoModDataChecker(this));
   registerFeature<GamePlugins>(new MorrowindGamePlugins(moInfo));
   registerFeature<UnmanagedMods>(new GamebryoUnmangedMods(this));
   m_Organizer = moInfo;
