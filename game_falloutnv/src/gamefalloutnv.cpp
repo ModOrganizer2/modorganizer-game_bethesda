@@ -9,6 +9,7 @@
 #include "pluginsetting.h"
 #include "versioninfo.h"
 #include <gamebryolocalsavegames.h>
+#include <gamebryomoddatachecker.h>
 #include <gamebryogameplugins.h>
 #include <gamebryounmanagedmods.h>
 
@@ -38,6 +39,7 @@ bool GameFalloutNV::init(IOrganizer *moInfo)
   registerFeature<BSAInvalidation>(new FalloutNVBSAInvalidation(feature<DataArchives>(), this));
   registerFeature<SaveGameInfo>(new FalloutNVSaveGameInfo(this));
   registerFeature<LocalSavegames>(new GamebryoLocalSavegames(myGamesPath(), "fallout.ini"));
+  registerFeature<ModDataChecker>(new GamebryoModDataChecker(this));
   registerFeature<GamePlugins>(new GamebryoGamePlugins(moInfo));
   registerFeature<UnmanagedMods>(new GamebryoUnmangedMods(this));
   return true;
