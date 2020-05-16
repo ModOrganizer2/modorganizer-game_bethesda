@@ -6,6 +6,7 @@
 #include "enderalsavegameinfo.h"
 #include "enderalgameplugins.h"
 #include "enderallocalsavegames.h"
+#include "gamebryomoddatachecker.h"
 
 
 #include "executableinfo.h"
@@ -50,6 +51,7 @@ bool GameEnderal::init(IOrganizer *moInfo)
   registerFeature<BSAInvalidation>(new EnderalBSAInvalidation(feature<DataArchives>(), this));
   registerFeature<SaveGameInfo>(new EnderalSaveGameInfo(this));
   registerFeature<LocalSavegames>(new EnderalLocalSavegames(myGamesPath(), "enderal.ini"));
+  registerFeature<ModDataChecker>(new GamebryoModDataChecker(this));
   registerFeature<GamePlugins>(new EnderalGamePlugins(moInfo));
   registerFeature<UnmanagedMods>(new GamebryoUnmangedMods(this));
   return true;
