@@ -6,50 +6,43 @@
 
 class GameGamebryo;
 
-class GamebryoModDataChecker: public ModDataChecker 
-{
-  /**
-   * @brief Standard list of folders.
-   */
-  static const QStringList STANDARD_FOLDERS;
-
-  /**
-   * @brief Standard list of extensions.
-   */
-  static const QStringList STANDARD_EXTENSIONS;
-
+/**
+ * @brief ModDataChecker for GameBryo games that look at folder and files in the "data"
+ *     directory.
+ *
+ * The default implementation is game-agnostic and uses the list of folders and file extensions
+ * that were used before the ModDataChecker feature was added. It is possible to inherit the class
+ * to provide custom list of folders or filenames.
+ */
+class GamebryoModDataChecker: public ModDataChecker {
 public:
 
 
   /**
-   * @brief Construct a new mod-data checker for GameBryo games using the default
-   *     list of possible folders and extensions.
+   * @brief Construct a new mod-data checker for GameBryo games.
    */
-  GamebryoModDataChecker(const GameGamebryo* game) : 
-    GamebryoModDataChecker(game, STANDARD_FOLDERS, STANDARD_EXTENSIONS) { }
-
-
-  /**
-   * @brief Construct a new mod-data checker for GameBryo games using the given
-   *     list of possible folders and extensions.
-   *
-   * @param folders List of folders that should be found in the data folder.
-   * @param extensions List of extension of files that should be found in the data folder (without
-   *     the leading dot).
-   */
-  GamebryoModDataChecker(const GameGamebryo* game, QStringList folders, QStringList extensions);
-
+  GamebryoModDataChecker(const GameGamebryo* game);
 
   virtual bool dataLooksValid(std::shared_ptr<const MOBase::IFileTree> fileTree) const override;
 
 protected:
+
+  using FileNameSet = std::set<QString, MOBase::FileNameComparator>;
+
   const GameGamebryo* game() const { return m_Game; }
+
+  /**
+   * @return the list of possible folder names in data.
+   */
+  virtual const FileNameSet& possibleFolderNames() const;
+
+  /**
+   * @return the extensions of possible files in data.
+   */
+  virtual const FileNameSet& possibleFileExtensions() const;
 
 private:
   const GameGamebryo* m_Game;
-
-  std::set<QString, MOBase::FileNameComparator> m_FolderNames;
-  std::set<QString, MOBase::FileNameComparator> m_FileExtensions;
 
 };
 
