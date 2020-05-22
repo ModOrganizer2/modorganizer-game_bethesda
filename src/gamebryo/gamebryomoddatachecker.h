@@ -27,6 +27,8 @@ public:
 
 protected:
 
+  GameGamebryo const * const m_Game;
+
   using FileNameSet = std::set<QString, MOBase::FileNameComparator>;
 
   const GameGamebryo* game() const { return m_Game; }
@@ -40,9 +42,6 @@ protected:
    * @return the extensions of possible files in data.
    */
   virtual const FileNameSet& possibleFileExtensions() const;
-
-private:
-  const GameGamebryo* m_Game;
 
 };
 
