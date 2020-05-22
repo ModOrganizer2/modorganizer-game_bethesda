@@ -18,10 +18,6 @@ const QStringList GamebryoModDataChecker::STANDARD_EXTENSIONS = {
 GamebryoModDataChecker::GamebryoModDataChecker(const GameGamebryo* game, QStringList folders, QStringList extensions) :
   m_Game(game), m_FolderNames(folders.begin(), folders.end()), m_FileExtensions(extensions.begin(), extensions.end()) { }
 
-QString GamebryoModDataChecker::getDataFolderName() const {
-  return "data";
-}
-
 bool GamebryoModDataChecker::dataLooksValid(std::shared_ptr<const MOBase::IFileTree> fileTree) const {
   for (auto entry : *fileTree) {
     if (entry->isDir()) {

@@ -40,8 +40,7 @@ public:
   GamebryoModDataChecker(const GameGamebryo* game, QStringList folders, QStringList extensions);
 
 
-  virtual QString getDataFolderName() const override;
-  virtual bool dataLooksValid(std::shared_ptr<const MOBase::IFileTree> fileTree) const;
+  virtual bool dataLooksValid(std::shared_ptr<const MOBase::IFileTree> fileTree) const override;
 
 protected:
   const GameGamebryo* game() const { return m_Game; }
