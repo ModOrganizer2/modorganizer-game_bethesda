@@ -4,6 +4,7 @@
 #include "fallout4scriptextender.h"
 #include "fallout4savegameinfo.h"
 #include "fallout4unmanagedmods.h"
+#include "fallout4moddatachecker.h"
 
 #include <pluginsetting.h>
 #include <executableinfo.h>
@@ -38,6 +39,7 @@ bool GameFallout4::init(IOrganizer *moInfo)
   registerFeature<ScriptExtender>(new Fallout4ScriptExtender(this));
   registerFeature<DataArchives>(new Fallout4DataArchives(myGamesPath()));
   registerFeature<LocalSavegames>(new GamebryoLocalSavegames(myGamesPath(), "fallout4custom.ini"));
+  registerFeature<ModDataChecker>(new Fallout4ModDataChecker(this));
   registerFeature<SaveGameInfo>(new Fallout4SaveGameInfo(this));
   registerFeature<GamePlugins>(new CreationGamePlugins(moInfo));
   registerFeature<UnmanagedMods>(new Fallout4UnmangedMods(this));
