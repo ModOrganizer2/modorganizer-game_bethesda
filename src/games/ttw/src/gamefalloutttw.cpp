@@ -4,12 +4,12 @@
 #include "falloutttwdataarchives.h"
 #include "falloutttwsavegameinfo.h"
 #include "falloutttwscriptextender.h"
+#include "falloutttwmoddatachecker.h"
 
 #include "executableinfo.h"
 #include "pluginsetting.h"
 #include "versioninfo.h"
 #include <gamebryolocalsavegames.h>
-#include <gamebryomoddatachecker.h>
 #include <gamebryogameplugins.h>
 #include <gamebryounmanagedmods.h>
 
@@ -41,7 +41,7 @@ bool GameFalloutTTW::init(IOrganizer *moInfo)
   registerFeature<BSAInvalidation>(new FalloutTTWBSAInvalidation(feature<DataArchives>(), this));
   registerFeature<SaveGameInfo>(new FalloutTTWSaveGameInfo(this));
   registerFeature<LocalSavegames>(new GamebryoLocalSavegames(myGamesPath(), "fallout.ini"));
-  registerFeature<ModDataChecker>(new GamebryoModDataChecker(this));
+  registerFeature<ModDataChecker>(new FalloutTTWModDataChecker(this));
   registerFeature<GamePlugins>(new GamebryoGamePlugins(moInfo));
   registerFeature<UnmanagedMods>(new GamebryoUnmangedMods(this));
   return true;
