@@ -4,6 +4,7 @@
 #include "falloutnvdataarchives.h"
 #include "falloutnvsavegameinfo.h"
 #include "falloutnvscriptextender.h"
+#include "falloutnvmoddatachecker.h"
 
 #include "executableinfo.h"
 #include "pluginsetting.h"
@@ -38,6 +39,7 @@ bool GameFalloutNV::init(IOrganizer *moInfo)
   registerFeature<BSAInvalidation>(new FalloutNVBSAInvalidation(feature<DataArchives>(), this));
   registerFeature<SaveGameInfo>(new FalloutNVSaveGameInfo(this));
   registerFeature<LocalSavegames>(new GamebryoLocalSavegames(myGamesPath(), "fallout.ini"));
+  registerFeature<ModDataChecker>(new FalloutNVModDataChecker(this));
   registerFeature<GamePlugins>(new GamebryoGamePlugins(moInfo));
   registerFeature<UnmanagedMods>(new GamebryoUnmangedMods(this));
   return true;
