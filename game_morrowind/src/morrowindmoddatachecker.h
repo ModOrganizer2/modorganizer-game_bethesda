@@ -22,8 +22,6 @@ protected:
     };
     return result;
   }
-
-  const GameGamebryo* m_Game;
 };
 
 #endif // MORROWIND_MODATACHECKER_H
