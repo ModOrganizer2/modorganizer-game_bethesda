@@ -5,6 +5,7 @@
 #include "morrowindgameplugins.h"
 #include "morrowindlocalsavegames.h"
 #include "morrowindsavegameinfo.h"
+#include "morrowindmoddatachecker.h"
 
 #include "executableinfo.h"
 #include "pluginsetting.h"
@@ -42,6 +43,7 @@ bool GameMorrowind::init(IOrganizer *moInfo)
   registerFeature<BSAInvalidation>(new MorrowindBSAInvalidation(feature<DataArchives>(), this));
   registerFeature<SaveGameInfo>(new MorrowindSaveGameInfo(this));
   registerFeature<LocalSavegames>(new MorrowindLocalSavegames(this));
+  registerFeature<ModDataChecker>(new MorrowindModDataChecker(this));
   registerFeature<GamePlugins>(new MorrowindGamePlugins(moInfo));
   registerFeature<UnmanagedMods>(new GamebryoUnmangedMods(this));
   m_Organizer = moInfo;
