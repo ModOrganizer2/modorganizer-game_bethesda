@@ -24,8 +24,6 @@ protected:
     };
     return result;
   }
-
-  const GameGamebryo* m_Game;
 };
 
 #endif // SKYRIMVR_MODATACHECKER_H
