@@ -5,6 +5,7 @@
 #include "skyrimdataarchives.h"
 #include "skyrimsavegameinfo.h"
 #include "skyrimgameplugins.h"
+#include "skyrimmoddatachecker.h"
 
 #include "executableinfo.h"
 #include "pluginsetting.h"
@@ -44,6 +45,7 @@ bool GameSkyrim::init(IOrganizer *moInfo)
   registerFeature<BSAInvalidation>(new SkyrimBSAInvalidation(feature<DataArchives>(), this));
   registerFeature<SaveGameInfo>(new SkyrimSaveGameInfo(this));
   registerFeature<LocalSavegames>(new GamebryoLocalSavegames(myGamesPath(), "skyrim.ini"));
+  registerFeature<ModDataChecker>(new SkyrimModDataChecker(this));
   registerFeature<GamePlugins>(new SkyrimGamePlugins(moInfo));
   registerFeature<UnmanagedMods>(new GamebryoUnmangedMods(this));
   return true;
