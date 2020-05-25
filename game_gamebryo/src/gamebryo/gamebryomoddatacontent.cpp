@@ -6,18 +6,18 @@
 
 std::vector<GamebryoModDataContent::Content> GamebryoModDataContent::getAllContents() const {
   return {
-    {CONTENT_PLUGIN,    ":/MO/gui/content/plugin",    QT_TR_NOOP("Game Plugins (ESP/ESM/ESL)")},
-    {CONTENT_INTERFACE, ":/MO/gui/content/interface", QT_TR_NOOP("Interface")},
-    {CONTENT_MESH,      ":/MO/gui/content/mesh",      QT_TR_NOOP("Meshes")},
-    {CONTENT_BSA,       ":/MO/gui/content/bsa",       QT_TR_NOOP("Bethesda Archive")},
-    {CONTENT_SCRIPT,    ":/MO/gui/content/script",    QT_TR_NOOP("Scripts (Papyrus)")},
-    {CONTENT_SKSE,      ":/MO/gui/content/skse",      QT_TR_NOOP("Script Extender Plugin")},
-    {CONTENT_SKYPROC,   ":/MO/gui/content/skyproc",   QT_TR_NOOP("SkyProc Patcher")},
-    {CONTENT_SOUND,     ":/MO/gui/content/sound",     QT_TR_NOOP("Sound or Music")},
-    {CONTENT_TEXTURE,   ":/MO/gui/content/texture",   QT_TR_NOOP("Textures")},
-    {CONTENT_MCM,       ":/MO/gui/content/menu",      QT_TR_NOOP("MCM Configuration")},
-    {CONTENT_INI,       ":/MO/gui/content/inifile",   QT_TR_NOOP("INI files")},
-    {CONTENT_MODGROUP,  ":/MO/gui/content/modgroup",  QT_TR_NOOP("ModGroup files")}
+    {CONTENT_PLUGIN,    QT_TR_NOOP("Game Plugins (ESP/ESM/ESL)"), ":/MO/gui/content/plugin"},
+    {CONTENT_INTERFACE, QT_TR_NOOP("Interface"),                  ":/MO/gui/content/interface"},
+    {CONTENT_MESH,      QT_TR_NOOP("Meshes"),                     ":/MO/gui/content/mesh"},
+    {CONTENT_BSA,       QT_TR_NOOP("Bethesda Archive"),           ":/MO/gui/content/bsa"},
+    {CONTENT_SCRIPT,    QT_TR_NOOP("Scripts (Papyrus)"),          ":/MO/gui/content/script"},
+    {CONTENT_SKSE,      QT_TR_NOOP("Script Extender Plugin"),     ":/MO/gui/content/skse"},
+    {CONTENT_SKYPROC,   QT_TR_NOOP("SkyProc Patcher"),            ":/MO/gui/content/skyproc"},
+    {CONTENT_SOUND,     QT_TR_NOOP("Sound or Music"),             ":/MO/gui/content/sound"},
+    {CONTENT_TEXTURE,   QT_TR_NOOP("Textures"),                   ":/MO/gui/content/texture"},
+    {CONTENT_MCM,       QT_TR_NOOP("MCM Configuration"),          ":/MO/gui/content/menu"},
+    {CONTENT_INI,       QT_TR_NOOP("INI files"),                  ":/MO/gui/content/inifile"},
+    {CONTENT_MODGROUP,  QT_TR_NOOP("ModGroup files"),             ":/MO/gui/content/modgroup"}
   };
 }
 
