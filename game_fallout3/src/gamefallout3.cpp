@@ -5,6 +5,7 @@
 #include "fallout3dataarchives.h"
 #include "fallout3savegameinfo.h"
 #include "fallout3moddatachecker.h"
+#include "fallout3moddatacontent.h"
 
 #include "executableinfo.h"
 #include "pluginsetting.h"
@@ -40,6 +41,7 @@ bool GameFallout3::init(IOrganizer *moInfo)
   registerFeature<SaveGameInfo>(new Fallout3SaveGameInfo(this));
   registerFeature<LocalSavegames>(new GamebryoLocalSavegames(myGamesPath(), "fallout.ini"));
   registerFeature<ModDataChecker>(new Fallout3ModDataChecker(this));
+  registerFeature<ModDataContent>(new Fallout3ModDataContent(this));
   registerFeature<GamePlugins>(new GamebryoGamePlugins(moInfo));
   registerFeature<UnmanagedMods>(new GamebryoUnmangedMods(this));
   return true;
