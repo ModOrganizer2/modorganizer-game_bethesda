@@ -13,6 +13,10 @@ class GameGamebryo;
 class GamebryoModDataContent : public ModDataContent {
 protected:
 
+  /**
+   * Note: These are used to index m_Contents so should have standard
+   * enum values, not custom ones.
+   */
   enum EContent {
     CONTENT_PLUGIN,
     CONTENT_TEXTURE,
@@ -33,7 +37,7 @@ public:
   /**
    *
    */
-  GamebryoModDataContent(GameGamebryo const* gamePlugin) : m_GamePlugin{gamePlugin} { }
+  GamebryoModDataContent(GameGamebryo const* gamePlugin);
 
   /**
    * @return the list of all possible contents for the corresponding game.
@@ -52,6 +56,9 @@ public:
 protected:
 
   GameGamebryo const* const m_GamePlugin;
+
+  // List of enabled contents:
+  std::vector<bool> m_Enabled;
 
 };
 

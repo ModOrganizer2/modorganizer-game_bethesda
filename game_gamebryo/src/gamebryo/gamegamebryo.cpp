@@ -6,6 +6,7 @@
 #include "scriptextender.h"
 #include "scopeguard.h"
 #include "utility.h"
+#include "gamebryomoddatacontent.h"
 
 #include <QDir>
 #include <QIcon>
@@ -33,6 +34,7 @@ bool GameGamebryo::init(MOBase::IOrganizer *moInfo)
 {
   m_GamePath = identifyGamePath();
   m_MyGamesPath = determineMyGamesPath(gameShortName());
+  registerFeature<ModDataContent>(new GamebryoModDataContent(this));
   m_Organizer = moInfo;
   return true;
 }
