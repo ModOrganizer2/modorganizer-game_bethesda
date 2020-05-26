@@ -3,7 +3,7 @@
 
 #include <gamebryomoddatachecker.h>
 
-class SkyrimSEModDataChecker : public GamebryoModDataChecker
+class OblivionModDataChecker : public GamebryoModDataChecker
 {
 public:
   using GamebryoModDataChecker::GamebryoModDataChecker;
