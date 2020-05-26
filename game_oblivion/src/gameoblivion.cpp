@@ -5,6 +5,7 @@
 #include "oblivionsavegameinfo.h"
 #include "oblivionscriptextender.h"
 #include "oblivionmoddatachecker.h"
+#include "oblivionmoddatacontent.h"
 
 #include "pluginsetting.h"
 #include "executableinfo.h"
@@ -35,6 +36,7 @@ bool GameOblivion::init(IOrganizer *moInfo)
   registerFeature<SaveGameInfo>(new OblivionSaveGameInfo(this));
   registerFeature<LocalSavegames>(new GamebryoLocalSavegames(myGamesPath(), "oblivion.ini"));
   registerFeature<ModDataChecker>(new OblivionModDataChecker(this));
+  registerFeature<ModDataContent>(new OblivionModDataContent(this));
   registerFeature<GamePlugins>(new GamebryoGamePlugins(moInfo));
   registerFeature<UnmanagedMods>(new GamebryoUnmangedMods(this));
   return true;
