@@ -5,7 +5,7 @@
 #include "gamegamebryo.h"
 
 GamebryoModDataContent::GamebryoModDataContent(GameGamebryo const* gamePlugin) : 
-  m_GamePlugin(gamePlugin), m_Enabled(CONTENT_MODGROUP, true) { }
+  m_GamePlugin(gamePlugin), m_Enabled(CONTENT_MODGROUP + 1, true) { }
 
 std::vector<GamebryoModDataContent::Content> GamebryoModDataContent::getAllContents() const {
   static std::vector<Content> GAMEBRYO_CONTENTS{
