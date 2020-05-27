@@ -4,6 +4,7 @@
 #include "fallout4vrsavegameinfo.h"
 #include "fallout4vrunmanagedmods.h"
 #include "fallout4vrmoddatachecker.h"
+#include "fallout4vrmoddatacontent.h"
 
 #include <pluginsetting.h>
 #include <executableinfo.h>
@@ -40,6 +41,7 @@ bool GameFallout4VR::init(IOrganizer *moInfo)
   registerFeature<DataArchives>(new Fallout4VRDataArchives(myGamesPath()));
   registerFeature<LocalSavegames>(new GamebryoLocalSavegames(myGamesPath(), "fallout4custom.ini"));
   registerFeature<ModDataChecker>(new Fallout4VRModDataChecker(this));
+  registerFeature<ModDataContent>(new Fallout4VRModDataContent(this));
   registerFeature<SaveGameInfo>(new Fallout4VRSaveGameInfo(this));
   registerFeature<GamePlugins>(new CreationGamePlugins(moInfo));
   registerFeature<UnmanagedMods>(new Fallout4VRUnmangedMods(this));
