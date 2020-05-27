@@ -34,7 +34,6 @@ bool GameGamebryo::init(MOBase::IOrganizer *moInfo)
 {
   m_GamePath = identifyGamePath();
   m_MyGamesPath = determineMyGamesPath(gameShortName());
-  registerFeature<ModDataContent>(new GamebryoModDataContent(this));
   m_Organizer = moInfo;
   return true;
 }
