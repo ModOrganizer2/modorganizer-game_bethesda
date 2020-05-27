@@ -32,6 +32,11 @@ protected:
     CONTENT_MODGROUP
   };
 
+  /**
+   * This is the first value that can be used for game-specific contents.
+   */
+  constexpr static auto CONTENT_NEXT_VALUE = CONTENT_MODGROUP + 1;
+
 public:
 
   /**
