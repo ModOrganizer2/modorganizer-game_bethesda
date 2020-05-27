@@ -9,18 +9,19 @@ GamebryoModDataContent::GamebryoModDataContent(GameGamebryo const* gamePlugin) :
 
 std::vector<GamebryoModDataContent::Content> GamebryoModDataContent::getAllContents() const {
   static std::vector<Content> GAMEBRYO_CONTENTS{
-    {CONTENT_PLUGIN,    QT_TR_NOOP("Plugins (ESP/ESM/ESL)"),  ":/MO/gui/content/plugin"},
-    {CONTENT_INTERFACE, QT_TR_NOOP("Interface"),              ":/MO/gui/content/interface"},
-    {CONTENT_MESH,      QT_TR_NOOP("Meshes"),                 ":/MO/gui/content/mesh"},
-    {CONTENT_BSA,       QT_TR_NOOP("Bethesda Archive"),       ":/MO/gui/content/bsa"},
-    {CONTENT_SCRIPT,    QT_TR_NOOP("Scripts (Papyrus)"),      ":/MO/gui/content/script"},
-    {CONTENT_SKSE,      QT_TR_NOOP("Script Extender Plugin"), ":/MO/gui/content/skse"},
-    {CONTENT_SKYPROC,   QT_TR_NOOP("SkyProc Patcher"),        ":/MO/gui/content/skyproc"},
-    {CONTENT_SOUND,     QT_TR_NOOP("Sound or Music"),         ":/MO/gui/content/sound"},
-    {CONTENT_TEXTURE,   QT_TR_NOOP("Textures"),               ":/MO/gui/content/texture"},
-    {CONTENT_MCM,       QT_TR_NOOP("MCM Configuration"),      ":/MO/gui/content/menu"},
-    {CONTENT_INI,       QT_TR_NOOP("INI files"),              ":/MO/gui/content/inifile"},
-    {CONTENT_MODGROUP,  QT_TR_NOOP("ModGroup files"),         ":/MO/gui/content/modgroup"}
+    {CONTENT_PLUGIN,     QT_TR_NOOP("Plugins (ESP/ESM/ESL)"),  ":/MO/gui/content/plugin"},
+    {CONTENT_INTERFACE,  QT_TR_NOOP("Interface"),              ":/MO/gui/content/interface"},
+    {CONTENT_MESH,       QT_TR_NOOP("Meshes"),                 ":/MO/gui/content/mesh"},
+    {CONTENT_BSA,        QT_TR_NOOP("Bethesda Archive"),       ":/MO/gui/content/bsa"},
+    {CONTENT_SCRIPT,     QT_TR_NOOP("Scripts (Papyrus)"),      ":/MO/gui/content/script"},
+    {CONTENT_SKSE,       QT_TR_NOOP("Script Extender Plugin"), ":/MO/gui/content/skse"},
+    {CONTENT_SKSE_FILES, QT_TR_NOOP("Script Extender Files"),  "", true},
+    {CONTENT_SKYPROC,    QT_TR_NOOP("SkyProc Patcher"),        ":/MO/gui/content/skyproc"},
+    {CONTENT_SOUND,      QT_TR_NOOP("Sound or Music"),         ":/MO/gui/content/sound"},
+    {CONTENT_TEXTURE,    QT_TR_NOOP("Textures"),               ":/MO/gui/content/texture"},
+    {CONTENT_MCM,        QT_TR_NOOP("MCM Configuration"),      ":/MO/gui/content/menu"},
+    {CONTENT_INI,        QT_TR_NOOP("INI Files"),              ":/MO/gui/content/inifile"},
+    {CONTENT_MODGROUP,   QT_TR_NOOP("ModGroup Files"),         ":/MO/gui/content/modgroup"}
   };
 
   // Copy the list of enabled contents:
@@ -75,13 +76,18 @@ std::vector<int> GamebryoModDataContent::getContentsFor(std::shared_ptr<const MO
   }
 
   ScriptExtender* extender = m_GamePlugin->feature<ScriptExtender>();
-  if (m_Enabled[CONTENT_SKSE] && extender != nullptr) {
+  if (extender != nullptr) {
     auto e = fileTree->findDirectory(extender->PluginPath());
     if (e) {
-      for (auto f : *e) {
-        if (f->hasSuffix("dll")) {
-          contents.push_back(CONTENT_SKSE);
-          break;
+      if (m_Enabled[CONTENT_SKSE_FILES]) {
+        contents.push_back(CONTENT_SKSE_FILES);
+      }
+      if (m_Enabled[CONTENT_SKSE]) {
+        for (auto f : *e) {
+          if (f->hasSuffix("dll")) {
+            contents.push_back(CONTENT_SKSE);
+            break;
+          }
         }
       }
     }
