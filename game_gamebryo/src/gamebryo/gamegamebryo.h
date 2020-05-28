@@ -132,7 +132,7 @@ protected:
     if (m_FeatureList.find(index) != m_FeatureList.end()) {
       delete boost::any_cast<T*>(m_FeatureList[index]);
     }
-    m_FeatureList[std::type_index(typeid(T))] = type;
+    m_FeatureList[index] = type;
   }
 
 protected:
