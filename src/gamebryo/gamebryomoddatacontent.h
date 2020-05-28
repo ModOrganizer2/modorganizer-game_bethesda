@@ -14,7 +14,7 @@ class GamebryoModDataContent : public ModDataContent {
 protected:
 
   /**
-   * Note: These are used to index m_Contents so should have standard
+   * Note: These are used to index m_Enabled so should have standard
    * enum values, not custom ones.
    */
   enum EContent {
