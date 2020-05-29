@@ -6,6 +6,7 @@
 #include "scriptextender.h"
 #include "scopeguard.h"
 #include "utility.h"
+#include "gamebryomoddatacontent.h"
 
 #include <QDir>
 #include <QIcon>
