@@ -112,7 +112,7 @@ protected:
 
 protected:
 
-  std::map<std::type_index, boost::any> featureList() const;
+  std::map<std::type_index, boost::any> featureList() const override;
 
   //These should be implemented by anything that uses gamebryo (I think)
   //(and if they don't, it'll be a null pointer and won't look implemented,
@@ -128,7 +128,11 @@ protected:
 
   template <typename T>
   void registerFeature(T *type) {
-    m_FeatureList[std::type_index(typeid(T))] = type;
+    auto index = std::type_index(typeid(T));
+    if (m_FeatureList.find(index) != m_FeatureList.end()) {
+      delete boost::any_cast<T*>(m_FeatureList[index]);
+    }
+    m_FeatureList[index] = type;
   }
 
 protected:
