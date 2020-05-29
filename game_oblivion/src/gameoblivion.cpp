@@ -4,11 +4,12 @@
 #include "obliviondataarchives.h"
 #include "oblivionsavegameinfo.h"
 #include "oblivionscriptextender.h"
+#include "oblivionmoddatachecker.h"
+#include "oblivionmoddatacontent.h"
 
 #include "pluginsetting.h"
 #include "executableinfo.h"
 #include <gamebryolocalsavegames.h>
-#include <gamebryomoddatachecker.h>
 #include <gamebryogameplugins.h>
 #include <gamebryounmanagedmods.h>
 
@@ -34,7 +35,8 @@ bool GameOblivion::init(IOrganizer *moInfo)
   registerFeature<BSAInvalidation>(new OblivionBSAInvalidation(feature<DataArchives>(), this));
   registerFeature<SaveGameInfo>(new OblivionSaveGameInfo(this));
   registerFeature<LocalSavegames>(new GamebryoLocalSavegames(myGamesPath(), "oblivion.ini"));
-  registerFeature<ModDataChecker>(new GamebryoModDataChecker(this));
+  registerFeature<ModDataChecker>(new OblivionModDataChecker(this));
+  registerFeature<ModDataContent>(new OblivionModDataContent(this));
   registerFeature<GamePlugins>(new GamebryoGamePlugins(moInfo));
   registerFeature<UnmanagedMods>(new GamebryoUnmangedMods(this));
   return true;
