@@ -31,6 +31,13 @@ class GameGamebryo : public MOBase::IPluginGame,
   friend class GamebryoSaveGameInfo;
   friend class GamebryoSaveGameInfoWidget;
 
+  /**
+   * Some Bethesda games do not have a valid file version but a valid product
+   * version. If the file version starts with FALLBACK_GAME_VERSION, the product
+   * version will be tried.
+   */
+  static constexpr const char* FALLBACK_GAME_VERSION = "1.0.0";
+
 public:
 
   GameGamebryo();

@@ -122,7 +122,17 @@ bool GameGamebryo::looksValid(QDir const &path) const
 
 QString GameGamebryo::gameVersion() const
 {
-  return getVersion(binaryName());
+  // We try the file version, but if it looks invalid (starts with the fallback
+  // version), we look the product version instead. If the product version is 
+  // not empty, we use it.
+  QString version = getVersion(binaryName());
+  if (version.startsWith(FALLBACK_GAME_VERSION)) {
+    QString pversion = getProductVersion(binaryName());
+    if (!pversion.isEmpty()) {
+      version = pversion;
+    }
+  }
+  return version;
 }
 
 QString GameGamebryo::getLauncherName() const
