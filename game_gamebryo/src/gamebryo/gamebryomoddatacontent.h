@@ -19,6 +19,7 @@ protected:
    */
   enum EContent {
     CONTENT_PLUGIN,
+    CONTENT_OPTIONAL,
     CONTENT_TEXTURE,
     CONTENT_MESH,
     CONTENT_BSA,
