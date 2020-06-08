@@ -10,6 +10,7 @@ GamebryoModDataContent::GamebryoModDataContent(GameGamebryo const* gamePlugin) :
 std::vector<GamebryoModDataContent::Content> GamebryoModDataContent::getAllContents() const {
   static std::vector<Content> GAMEBRYO_CONTENTS{
     {CONTENT_PLUGIN,     QT_TR_NOOP("Plugins (ESP/ESM/ESL)"),  ":/MO/gui/content/plugin"},
+    {CONTENT_OPTIONAL,   QT_TR_NOOP("Optional Plugins"),       "", true},
     {CONTENT_INTERFACE,  QT_TR_NOOP("Interface"),              ":/MO/gui/content/interface"},
     {CONTENT_MESH,       QT_TR_NOOP("Meshes"),                 ":/MO/gui/content/mesh"},
     {CONTENT_BSA,        QT_TR_NOOP("Bethesda Archive"),       ":/MO/gui/content/bsa"},
@@ -71,6 +72,9 @@ std::vector<int> GamebryoModDataContent::getContentsFor(std::shared_ptr<const MO
       }
       else if (m_Enabled[CONTENT_MCM] && e->compare("MCM") == 0) {
         contents.push_back(CONTENT_MCM);
+      }
+      else if (m_Enabled[CONTENT_OPTIONAL] && e->compare("Optional") == 0 && e->astree()->size() > 0) {
+        contents.push_back(CONTENT_OPTIONAL);
       }
     }
   }
