@@ -126,9 +126,10 @@ QString GameGamebryo::gameVersion() const
   // We try the file version, but if it looks invalid (starts with the fallback
   // version), we look the product version instead. If the product version is 
   // not empty, we use it.
-  QString version = getVersion(binaryName());
+  QString binaryAbsPath = gameDirectory().absoluteFilePath(binaryName());
+  QString version = MOBase::getFileVersion(binaryAbsPath);
   if (version.startsWith(FALLBACK_GAME_VERSION)) {
-    QString pversion = getProductVersion(binaryName());
+    QString pversion = MOBase::getProductVersion(binaryAbsPath);
     if (!pversion.isEmpty()) {
       version = pversion;
     }
@@ -139,72 +140,6 @@ QString GameGamebryo::gameVersion() const
 QString GameGamebryo::getLauncherName() const
 {
   return gameShortName() + "Launcher.exe";
-}
-
-QString GameGamebryo::getVersion(QString const &program) const
-{
-  //This *really* needs to be factored out
-  std::wstring app_name = L"\\\\?\\" +
-      QDir::toNativeSeparators(this->gameDirectory().absoluteFilePath(program)).toStdWString();
-  DWORD handle;
-  DWORD info_len = ::GetFileVersionInfoSizeW(app_name.c_str(), &handle);
-  if (info_len == 0) {
-    qDebug("GetFileVersionInfoSizeW Error %d", ::GetLastError());
-    return "";
-  }
-
-  std::vector<char> buff(info_len);
-  if( ! ::GetFileVersionInfoW(app_name.c_str(), handle, info_len, buff.data())) {
-    qDebug("GetFileVersionInfoW Error %d", ::GetLastError());
-    return "";
-  }
-
-  VS_FIXEDFILEINFO *pFileInfo;
-  UINT buf_len;
-  if ( ! ::VerQueryValueW(buff.data(), L"\\", reinterpret_cast<LPVOID *>(&pFileInfo), &buf_len)) {
-    qDebug("VerQueryValueW Error %d", ::GetLastError());
-    return "";
-  }
-  return QString("%1.%2.%3.%4").arg(HIWORD(pFileInfo->dwFileVersionMS))
-                               .arg(LOWORD(pFileInfo->dwFileVersionMS))
-                               .arg(HIWORD(pFileInfo->dwFileVersionLS))
-                               .arg(LOWORD(pFileInfo->dwFileVersionLS));
-}
-
-QString GameGamebryo::getProductVersion(QString const& program) const {
-  //This *really* needs to be factored out
-  std::wstring app_name = L"\\\\?\\" +
-    QDir::toNativeSeparators(this->gameDirectory().absoluteFilePath(program)).toStdWString();
-  DWORD handle;
-  DWORD info_len = ::GetFileVersionInfoSizeW(app_name.c_str(), &handle);
-  if (info_len == 0) {
-    qDebug("GetFileVersionInfoSizeW Error %d", ::GetLastError());
-    return "";
-  }
-
-  std::vector<char> buff(info_len);
-  if (!::GetFileVersionInfoW(app_name.c_str(), handle, info_len, buff.data())) {
-    qDebug("GetFileVersionInfoW Error %d", ::GetLastError());
-    return "";
-  }
-
-  // The following is from https://stackoverflow.com/a/12408544/2666289
-
-  UINT uiSize;
-  BYTE* lpb;
-  if (!::VerQueryValueW(buff.data(), TEXT("\\VarFileInfo\\Translation"), (void**)&lpb, &uiSize)) {
-    qDebug("VerQueryValue Error %d", ::GetLastError());
-    return "";
-  }
-
-  WORD* lpw = (WORD*)lpb;
-  auto query = fmt::format(L"\\StringFileInfo\\{:04x}{:04x}\\ProductVersion", lpw[0], lpw[1]);
-  if (!::VerQueryValueW(buff.data(), query.data(), (void**)&lpb, &uiSize) && uiSize > 0) {
-    qDebug("VerQueryValue Error %d", ::GetLastError());
-    return "";
-  }
-
-  return QString::fromWCharArray((LPCWSTR)lpb);
 }
 
 WORD GameGamebryo::getArch(QString const &program) const
