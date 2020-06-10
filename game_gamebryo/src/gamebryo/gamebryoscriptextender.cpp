@@ -2,6 +2,8 @@
 
 #include "gamegamebryo.h"
 
+#include "utility.h"
+
 #include <QDir>
 #include <QString>
 
@@ -35,7 +37,7 @@ bool GamebryoScriptExtender::isInstalled() const
 
 QString GamebryoScriptExtender::getExtenderVersion() const
 {
-  return m_Game->getVersion(loaderName());
+  return MOBase::getFileVersion(m_Game->gameDirectory().absoluteFilePath(loaderName()));
 }
 
 WORD GamebryoScriptExtender::getArch() const

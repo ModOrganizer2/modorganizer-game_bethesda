@@ -86,8 +86,6 @@ protected:
   QFileInfo findInGameFolder(const QString &relativePath) const;
   QString myGamesPath() const;
   QString selectedVariant() const;
-  QString getVersion(QString const &program) const;
-  QString getProductVersion(QString const& program) const;
   WORD getArch(QString const &program) const;
 
   static QString localAppFolder();
