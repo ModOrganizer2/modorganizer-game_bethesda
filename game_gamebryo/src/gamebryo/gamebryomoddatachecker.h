@@ -23,7 +23,7 @@ public:
    */
   GamebryoModDataChecker(const GameGamebryo* game);
 
-  virtual bool dataLooksValid(std::shared_ptr<const MOBase::IFileTree> fileTree) const override;
+  virtual CheckReturn dataLooksValid(std::shared_ptr<const MOBase::IFileTree> fileTree) const override;
 
 protected:
 
