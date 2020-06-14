@@ -63,7 +63,7 @@ void GamebryoGamePlugins::readPluginLists(MOBase::IPluginList *pluginList) {
   m_LastRead = QDateTime::currentDateTime();
 }
 
-void GamebryoGamePlugins::getLoadOrder(QStringList &loadOrder) {
+QStringList GamebryoGamePlugins::getLoadOrder() {
   QString loadOrderPath =
     organizer()->profile()->absolutePath() + "/loadorder.txt";
   QString pluginsPath = organizer()->profile()->absolutePath() + "/plugins.txt";
@@ -75,9 +75,9 @@ void GamebryoGamePlugins::getLoadOrder(QStringList &loadOrder) {
     QFileInfo(pluginsPath).lastModified() > m_LastRead;
 
   if (loadOrderIsNew || !pluginsIsNew) {
-    loadOrder = readLoadOrderList(m_Organizer->pluginList(), loadOrderPath);
+    return readLoadOrderList(m_Organizer->pluginList(), loadOrderPath);
   } else {
-    loadOrder = readPluginList(m_Organizer->pluginList());
+    return readPluginList(m_Organizer->pluginList());
   }
 }
 
