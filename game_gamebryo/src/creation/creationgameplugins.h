@@ -15,7 +15,7 @@ protected:
   virtual void writePluginList(const MOBase::IPluginList *pluginList,
                                const QString &filePath) override;
   virtual QStringList readPluginList(MOBase::IPluginList *pluginList) override;
-  virtual void getLoadOrder(QStringList &loadOrder) override;
+  virtual QStringList getLoadOrder() override;
   virtual bool lightPluginsAreSupported() override;
 
 private:

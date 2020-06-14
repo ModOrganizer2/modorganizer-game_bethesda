@@ -21,7 +21,7 @@ CreationGamePlugins::CreationGamePlugins(IOrganizer *organizer)
 {
 }
 
-void CreationGamePlugins::getLoadOrder(QStringList &loadOrder) {
+QStringList CreationGamePlugins::getLoadOrder() {
   QString loadOrderPath =
     organizer()->profile()->absolutePath() + "/loadorder.txt";
   QString pluginsPath = organizer()->profile()->absolutePath() + "/plugins.txt";
@@ -33,10 +33,10 @@ void CreationGamePlugins::getLoadOrder(QStringList &loadOrder) {
     QFileInfo(pluginsPath).lastModified() > m_LastRead;
 
   if (loadOrderIsNew || !pluginsIsNew) {
-    loadOrder = readLoadOrderList(m_Organizer->pluginList(), loadOrderPath);
+    return readLoadOrderList(m_Organizer->pluginList(), loadOrderPath);
   }
   else {
-    loadOrder = readPluginList(m_Organizer->pluginList());
+    return readPluginList(m_Organizer->pluginList());
   }
 }
 
