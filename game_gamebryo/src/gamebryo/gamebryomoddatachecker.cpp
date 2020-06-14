@@ -31,20 +31,20 @@ auto GamebryoModDataChecker::possibleFileExtensions() const -> const FileNameSet
 
 GamebryoModDataChecker::GamebryoModDataChecker(const GameGamebryo* game) : m_Game(game) { }
 
-bool GamebryoModDataChecker::dataLooksValid(std::shared_ptr<const MOBase::IFileTree> fileTree) const {
+GamebryoModDataChecker::CheckReturn GamebryoModDataChecker::dataLooksValid(std::shared_ptr<const MOBase::IFileTree> fileTree) const {
   auto& folders = possibleFolderNames();
   auto& suffixes = possibleFileExtensions();
   for (auto entry : *fileTree) {
     if (entry->isDir()) {
       if (folders.count(entry->name()) > 0) {
-        return true;
+        return CheckReturn::VALID;
       }
     }
     else {
       if (suffixes.count(entry->suffix()) > 0) {
-        return true;
+        return CheckReturn::VALID;
       }
     }
   }
-  return false;
+  return CheckReturn::INVALID;
 }
