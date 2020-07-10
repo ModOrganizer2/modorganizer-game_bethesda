@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.16)
 project(game_creation)
 set(project_type lib)
 set(enable_warnings OFF)
+set(create_translations OFF)
 
 # appveyor does not build modorganizer in its standard location, so use
 # DEPENDENCIES_DIR to find cmake_common
