@@ -61,6 +61,10 @@ QList<ExecutableInfo> GameFallout76::executables() const
          ;
 }
 
+QList<ExecutableForcedLoadSetting> GameFallout76::executableForcedLoads() const {
+  return {};
+}
+
 QString GameFallout76::name() const
 {
   return "Fallout 76 Support Plugin";
@@ -68,7 +72,7 @@ QString GameFallout76::name() const
 
 QString GameFallout76::author() const
 {
-  return "EntranceJew";
+  return "EntranceJew & Holt59";
 }
 
 QString GameFallout76::description() const
@@ -79,7 +83,7 @@ QString GameFallout76::description() const
 
 MOBase::VersionInfo GameFallout76::version() const
 {
-  return VersionInfo(1, 0, 1, VersionInfo::RELEASE_FINAL);
+  return VersionInfo(2, 0, 0, VersionInfo::RELEASE_ALPHA);
 }
 
 bool GameFallout76::isActive() const
