@@ -1,6 +1,8 @@
 #include "gameFallout76.h"
 
 #include "fallout76dataarchives.h"
+#include "fallout76moddatachecker.h"
+#include "fallout76moddatacontent.h"
 #include "fallout76scriptextender.h"
 #include "fallout76savegameinfo.h"
 #include "fallout76unmanagedmods.h"
@@ -38,6 +40,8 @@ bool GameFallout76::init(IOrganizer *moInfo)
   registerFeature<ScriptExtender>(new Fallout76ScriptExtender(this));
   registerFeature<DataArchives>(new Fallout76DataArchives(myGamesPath()));
   registerFeature<LocalSavegames>(new GamebryoLocalSavegames(myGamesPath(), "Fallout76.ini"));
+  registerFeature<ModDataChecker>(new Fallout76ModDataChecker(this));
+  registerFeature<ModDataContent>(new Fallout76ModDataContent(this));
   registerFeature<SaveGameInfo>(new Fallout76SaveGameInfo(this));
   registerFeature<GamePlugins>(new CreationGamePlugins(moInfo));
   registerFeature<UnmanagedMods>(new Fallout76UnmangedMods(this));
