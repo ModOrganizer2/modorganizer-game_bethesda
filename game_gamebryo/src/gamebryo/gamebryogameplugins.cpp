@@ -147,11 +147,11 @@ QStringList GamebryoGamePlugins::readLoadOrderList(
 
   std::set<QString> pluginLookup;
   for (auto&& name : pluginNames) {
-    pluginLookup.insert(name);
+    pluginLookup.insert(name.toLower());
   }
 
   const auto b = MOBase::forEachLineInFile(filePath, [&](QString s) {
-    if (!pluginLookup.contains(s)) {
+    if (!pluginLookup.contains(s.toLower())) {
       pluginLookup.insert(s);
       pluginNames.push_back(std::move(s));
     }
