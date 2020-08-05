@@ -68,7 +68,8 @@ QStringList EnderalGamePlugins::readPluginList(MOBase::IPluginList *pluginList)
     }
 
     // Do not sort the primary plugins. Their load order should be locked as defined in "primaryPlugins".
-    for (QString plugin : plugins) {
+    const QStringList pluginsClone(plugins);
+    for (QString plugin : pluginsClone) {
         if (primaryPlugins.contains(plugin, Qt::CaseInsensitive))
             plugins.removeAll(plugin);
     }
