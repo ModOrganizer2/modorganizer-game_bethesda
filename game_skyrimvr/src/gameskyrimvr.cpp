@@ -4,6 +4,7 @@
 #include "skyrimvrscriptextender.h"
 #include "skyrimvrsavegameinfo.h"
 #include "skyrimvrunmanagedmods.h"
+#include "skyrimvrmoddatachecker.h"
 #include "skyrimvrmoddatacontent.h"
 
 #include <pluginsetting.h>
@@ -72,6 +73,7 @@ bool GameSkyrimVR::init(IOrganizer *moInfo)
   registerFeature<ScriptExtender>(new SkyrimVRScriptExtender(this));
   registerFeature<DataArchives>(new SkyrimVRDataArchives(myGamesPath()));
   registerFeature<LocalSavegames>(new GamebryoLocalSavegames(myGamesPath(), "SkyrimVR.ini"));
+  registerFeature<ModDataChecker>(new SkyrimVRModDataChecker(this));
   registerFeature<SaveGameInfo>(new SkyrimVRSaveGameInfo(this));
   registerFeature<ModDataContent>(new SkyrimVRModDataContent(this));
   registerFeature<GamePlugins>(new CreationGamePlugins(moInfo));
