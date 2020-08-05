@@ -133,7 +133,8 @@ QStringList MorrowindGamePlugins::readPluginList(MOBase::IPluginList *pluginList
   }
   QStringList plugins = pluginList->pluginNames();
   // Do not sort the primary plugins. Their load order should be locked as defined in "primaryPlugins".
-  for (QString plugin : plugins) {
+  const QStringList pluginsClone(plugins);
+  for (QString plugin : pluginsClone) {
     if (primary.contains(plugin, Qt::CaseInsensitive))
       plugins.removeAll(plugin);
   }
