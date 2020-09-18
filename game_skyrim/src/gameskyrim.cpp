@@ -93,7 +93,7 @@ QString GameSkyrim::description() const
 
 MOBase::VersionInfo GameSkyrim::version() const
 {
-  return VersionInfo(1, 4, 1, VersionInfo::RELEASE_FINAL);
+  return VersionInfo(1, 5, 0, VersionInfo::RELEASE_FINAL);
 }
 
 bool GameSkyrim::isActive() const
@@ -103,7 +103,9 @@ bool GameSkyrim::isActive() const
 
 QList<PluginSetting> GameSkyrim::settings() const
 {
-  return QList<PluginSetting>();
+  QList<PluginSetting> results;
+  results.push_back(PluginSetting("sse_downloads", "allow Skyrim SE downloads", QVariant(false)));
+  return results;
 }
 
 void GameSkyrim::initializeProfile(const QDir &path, ProfileSettings settings) const
@@ -160,6 +162,15 @@ QString GameSkyrim::gameNexusName() const
   return "skyrim";
 }
 
+QStringList GameSkyrim::validShortNames() const
+{
+  QStringList results;
+  if (m_Organizer->pluginSetting(name(), "sse_downloads").toBool())
+  {
+    results.push_back( "SkyrimSE" );
+  }
+  return results;
+}
 
 QStringList GameSkyrim::iniFiles() const
 {
