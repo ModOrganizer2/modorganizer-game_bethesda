@@ -99,7 +99,7 @@ QString GameEnderal::description() const
 
 MOBase::VersionInfo GameEnderal::version() const
 {
-  return VersionInfo(1, 1, 0, VersionInfo::RELEASE_FINAL);
+  return VersionInfo(1, 2, 0, VersionInfo::RELEASE_FINAL);
 }
 
 bool GameEnderal::isActive() const
@@ -109,7 +109,9 @@ bool GameEnderal::isActive() const
 
 QList<PluginSetting> GameEnderal::settings() const
 {
-  return QList<PluginSetting>();
+  QList<PluginSetting> results;
+  results.push_back(PluginSetting("sse_downloads", "allow Skyrim SE downloads", QVariant(false)));
+  return results;
 }
 
 void GameEnderal::initializeProfile(const QDir &path, ProfileSettings settings) const
@@ -196,7 +198,13 @@ QStringList GameEnderal::primarySources() const
 
 QStringList GameEnderal::validShortNames() const
 {
-  return {"Skyrim"};
+  QStringList results;
+  results.push_back( "Skyrim" );
+  if (m_Organizer->pluginSetting(name(), "sse_downloads").toBool())
+  {
+    results.push_back( "SkyrimSE" );
+  }
+  return results;
 }
 
 QStringList GameEnderal::iniFiles() const
