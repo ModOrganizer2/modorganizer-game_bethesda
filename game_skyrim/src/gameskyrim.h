@@ -32,6 +32,7 @@ public: // IPluginGame interface
   virtual QString binaryName() const override;
   virtual QString gameShortName() const override;
   virtual QString gameNexusName() const override;
+  virtual QStringList validShortNames() const override;
   virtual QStringList iniFiles() const override;
   virtual QStringList DLCPlugins() const override;
   virtual LoadOrderMechanism loadOrderMechanism() const override;
