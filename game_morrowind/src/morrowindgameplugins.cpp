@@ -141,8 +141,8 @@ QStringList MorrowindGamePlugins::readPluginList(MOBase::IPluginList *pluginList
 
   // Always use filetime loadorder to get the actual load order
   std::sort(plugins.begin(), plugins.end(), [&](const QString &lhs, const QString &rhs) {
-    MOBase::IModInterface *lhm = organizer()->getMod(pluginList->origin(lhs));
-    MOBase::IModInterface *rhm = organizer()->getMod(pluginList->origin(rhs));
+    MOBase::IModInterface *lhm = organizer()->modList()->getMod(pluginList->origin(lhs));
+    MOBase::IModInterface *rhm = organizer()->modList()->getMod(pluginList->origin(rhs));
     QDir lhd = organizer()->managedGame()->dataDirectory();
     QDir rhd = organizer()->managedGame()->dataDirectory();
     if (lhm != nullptr)
