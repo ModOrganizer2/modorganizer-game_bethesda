@@ -57,8 +57,8 @@ GamebryoSaveGameInfo::MissingAssets GamebryoSaveGameInfo::getMissingAssets(QStri
   QString dataDir(organizerCore->managedGame()->dataDirectory().absolutePath());
 
   //Search normal mods. A note: This will also find mods in data.
-  for (QString const &mod : organizerCore->modsSortedByProfilePriority()) {
-    MOBase::IModInterface *modInfo = organizerCore->getMod(mod);
+  for (QString const &mod : organizerCore->modList()->allModsByProfilePriority()) {
+    MOBase::IModInterface *modInfo = organizerCore->modList()->getMod(mod);
     QStringList esps = QDir(modInfo->absolutePath()).entryList(espFilter);
     for (QString const &esp : esps) {
       MissingAssets::iterator iter = missingAssets.find(esp);
