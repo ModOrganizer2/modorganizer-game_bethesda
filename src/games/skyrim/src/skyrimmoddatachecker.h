@@ -14,7 +14,8 @@ protected:
       "fonts", "interface", "menus", "meshes", "music", "scripts", "shaders",
       "sound", "strings", "textures", "trees", "video", "facegen", "materials",
       "skse", "distantlod", "asi", "Tools", "MCM", "distantland", "mits",
-      "dllplugins", "SkyProc Patchers", "CalienteTools", "NetScriptFramework", "shadersfx"
+      "dllplugins", "SkyProc Patchers", "CalienteTools", "NetScriptFramework", 
+      "shadersfx", "Nemesis_Engine"
     };
     return result;
   }
