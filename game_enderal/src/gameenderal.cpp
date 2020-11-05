@@ -46,7 +46,7 @@ bool GameEnderal::init(IOrganizer *moInfo)
   if (!GameGamebryo::init(moInfo)) {
     return false;
   }
-  m_GamePath = identifyGamePath();
+
   registerFeature<ScriptExtender>(new EnderalScriptExtender(this));
   registerFeature<DataArchives>(new EnderalDataArchives(myGamesPath()));
   registerFeature<BSAInvalidation>(new EnderalBSAInvalidation(feature<DataArchives>(), this));
