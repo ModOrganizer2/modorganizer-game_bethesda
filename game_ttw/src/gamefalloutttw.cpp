@@ -30,13 +30,18 @@ GameFalloutTTW::GameFalloutTTW()
 {
 }
 
+void GameFalloutTTW::registered()
+{
+  GameGamebryo::registered();
+  m_MyGamesPath = determineMyGamesPath("FalloutNV");
+}
+
 bool GameFalloutTTW::init(IOrganizer *moInfo)
 {
   if (!GameGamebryo::init(moInfo)) {
     return false;
   }
-  m_GamePath = identifyGamePath();
-  m_MyGamesPath = determineMyGamesPath("FalloutNV");
+
   registerFeature<ScriptExtender>(new FalloutTTWScriptExtender(this));
   registerFeature<DataArchives>(new FalloutTTWDataArchives(myGamesPath()));
   registerFeature<BSAInvalidation>(new FalloutTTWBSAInvalidation(feature<DataArchives>(), this));
