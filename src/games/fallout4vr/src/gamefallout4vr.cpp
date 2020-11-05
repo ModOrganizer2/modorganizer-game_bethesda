@@ -36,8 +36,6 @@ bool GameFallout4VR::init(IOrganizer *moInfo)
     return false;
   }
 
-  m_GamePath = identifyGamePath();
-
   registerFeature<DataArchives>(new Fallout4VRDataArchives(myGamesPath()));
   registerFeature<LocalSavegames>(new GamebryoLocalSavegames(myGamesPath(), "fallout4custom.ini"));
   registerFeature<ModDataChecker>(new Fallout4VRModDataChecker(this));
