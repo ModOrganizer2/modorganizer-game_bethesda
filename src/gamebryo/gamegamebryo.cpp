@@ -32,7 +32,7 @@ GameGamebryo::GameGamebryo()
 {
 }
 
-void GameGamebryo::registered()
+void GameGamebryo::detectGame()
 {
   m_GamePath = identifyGamePath();
   m_MyGamesPath = determineMyGamesPath(gameShortName());
