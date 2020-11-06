@@ -30,9 +30,9 @@ GameFalloutTTW::GameFalloutTTW()
 {
 }
 
-void GameFalloutTTW::registered()
+void GameFalloutTTW::detectGame()
 {
-  GameGamebryo::registered();
+  GameGamebryo::detectGame();
   m_MyGamesPath = determineMyGamesPath("FalloutNV");
 }
 
