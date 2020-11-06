@@ -32,10 +32,14 @@ GameGamebryo::GameGamebryo()
 {
 }
 
-bool GameGamebryo::init(MOBase::IOrganizer *moInfo)
+void GameGamebryo::registered()
 {
   m_GamePath = identifyGamePath();
   m_MyGamesPath = determineMyGamesPath(gameShortName());
+}
+
+bool GameGamebryo::init(MOBase::IOrganizer *moInfo)
+{
   m_Organizer = moInfo;
   return true;
 }
@@ -124,7 +128,7 @@ bool GameGamebryo::looksValid(QDir const &path) const
 QString GameGamebryo::gameVersion() const
 {
   // We try the file version, but if it looks invalid (starts with the fallback
-  // version), we look the product version instead. If the product version is 
+  // version), we look the product version instead. If the product version is
   // not empty, we use it.
   QString binaryAbsPath = gameDirectory().absoluteFilePath(binaryName());
   QString version = MOBase::getFileVersion(binaryAbsPath);
