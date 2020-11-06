@@ -67,9 +67,6 @@ bool GameSkyrimVR::init(IOrganizer *moInfo)
     return false;
   }
 
-  m_GamePath = GameSkyrimVR::identifyGamePath();
-  m_MyGamesPath = determineMyGamesPath(gameName());
-
   registerFeature<ScriptExtender>(new SkyrimVRScriptExtender(this));
   registerFeature<DataArchives>(new SkyrimVRDataArchives(myGamesPath()));
   registerFeature<LocalSavegames>(new GamebryoLocalSavegames(myGamesPath(), "SkyrimVR.ini"));
