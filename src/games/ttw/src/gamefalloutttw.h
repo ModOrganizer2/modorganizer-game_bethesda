@@ -17,7 +17,7 @@ public:
 
   GameFalloutTTW();
 
-  void registered() override;
+  void detectGame() override;
   bool init(MOBase::IOrganizer *moInfo) override;
 
 public: // IPluginGame interface
