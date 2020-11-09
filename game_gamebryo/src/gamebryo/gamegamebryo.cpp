@@ -35,7 +35,11 @@ GameGamebryo::GameGamebryo()
 void GameGamebryo::detectGame()
 {
   m_GamePath = identifyGamePath();
+
   m_MyGamesPath = determineMyGamesPath(gameShortName());
+  if (m_MyGamesPath.isEmpty()) {
+    m_MyGamesPath = determineMyGamesPath(gameName());
+  }
 }
 
 bool GameGamebryo::init(MOBase::IOrganizer *moInfo)
@@ -340,6 +344,11 @@ QString GameGamebryo::determineMyGamesPath(const QString &gameName)
   if (result.isEmpty()
     || !QFileInfo(result + "/My Games/" + gameName).exists()) {
     result = getSpecialPath("Personal");
+  }
+
+  if (result.isEmpty()
+    || !QFileInfo(result + "/My Games/" + gameName).exists()) {
+    return {};
   }
 
   return result + "/My Games/" + gameName;
