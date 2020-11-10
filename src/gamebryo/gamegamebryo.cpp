@@ -23,8 +23,8 @@
 #include <winver.h>
 
 #include <string>
-#include <stddef.h>
 #include <vector>
+#include <optional>
 
 #include <fmt/format.h>
 
@@ -36,9 +36,16 @@ void GameGamebryo::detectGame()
 {
   m_GamePath = identifyGamePath();
 
-  m_MyGamesPath = determineMyGamesPath(gameShortName());
+  // some games have the same short and long names, such as "Skyrim"; others
+  // have different values, such as "SkyrimSE" and "Skyrim Special Edition"
+  //
+  // games with different short/long names typically use the long name in
+  // "My Games", so that's tried first; if it fails, the short name is tried
+  m_MyGamesPath = determineMyGamesPath(gameName());
   if (m_MyGamesPath.isEmpty()) {
-    m_MyGamesPath = determineMyGamesPath(gameName());
+    if (gameName() != gameShortName()) {
+      m_MyGamesPath = determineMyGamesPath(gameShortName());
+    }
   }
 }
 
@@ -332,24 +339,36 @@ QString GameGamebryo::getSpecialPath(const QString &name)
 
 QString GameGamebryo::determineMyGamesPath(const QString &gameName)
 {
+  const QString pattern = "%1/My Games/" + gameName;
+
+  auto tryDir = [&](const QString& dir) -> std::optional<QString> {
+    if (dir.isEmpty()) {
+      return {};
+    }
+
+    const auto path = pattern.arg(dir);
+    if (!QFileInfo(path).exists()) {
+      return {};
+    }
+
+    return path;
+  };
+
+
   // a) this is the way it should work. get the configured My Documents directory
-  QString result = getKnownFolderPath(FOLDERID_Documents, false);
+  if (auto d=tryDir(getKnownFolderPath(FOLDERID_Documents, false))) {
+    return *d;
+  }
 
   // b) if there is no <game> directory there, look in the default directory
-  if (result.isEmpty()
-    || !QFileInfo(result + "/My Games/" + gameName).exists()) {
-    result = getKnownFolderPath(FOLDERID_Documents, true);
+  if (auto d=tryDir(getKnownFolderPath(FOLDERID_Documents, true))) {
+    return *d;
   }
+
   // c) finally, look in the registry. This is discouraged
-  if (result.isEmpty()
-    || !QFileInfo(result + "/My Games/" + gameName).exists()) {
-    result = getSpecialPath("Personal");
+  if (auto d=tryDir(getSpecialPath("Personal"))) {
+    return *d;
   }
 
-  if (result.isEmpty()
-    || !QFileInfo(result + "/My Games/" + gameName).exists()) {
-    return {};
-  }
-
-  return result + "/My Games/" + gameName;
+  return {};
 }
