@@ -81,6 +81,11 @@ QString GameSkyrim::name() const
   return "Skyrim Support Plugin";
 }
 
+QString GameSkyrim::localizedName() const
+{
+  return tr("Skyrim Support Plugin");
+}
+
 QString GameSkyrim::author() const
 {
   return "Tannin";
@@ -94,11 +99,6 @@ QString GameSkyrim::description() const
 MOBase::VersionInfo GameSkyrim::version() const
 {
   return VersionInfo(1, 5, 0, VersionInfo::RELEASE_FINAL);
-}
-
-bool GameSkyrim::isActive() const
-{
-  return qApp->property("managed_game").value<IPluginGame*>() == this;
 }
 
 QList<PluginSetting> GameSkyrim::settings() const
