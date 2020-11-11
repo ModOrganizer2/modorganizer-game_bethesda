@@ -82,6 +82,11 @@ QString GameFalloutTTW::name() const
   return "Fallout TTW Support Plugin";
 }
 
+QString GameFalloutTTW::localizedName() const
+{
+  return tr("Fallout TTW Support Plugin");
+}
+
 QString GameFalloutTTW::author() const
 {
   return "SuperSandro2000";
@@ -95,11 +100,6 @@ QString GameFalloutTTW::description() const
 MOBase::VersionInfo GameFalloutTTW::version() const
 {
   return VersionInfo(1, 4, 1, VersionInfo::RELEASE_FINAL);
-}
-
-bool GameFalloutTTW::isActive() const
-{
-  return qApp->property("managed_game").value<IPluginGame*>() == this;
 }
 
 QList<PluginSetting> GameFalloutTTW::settings() const
