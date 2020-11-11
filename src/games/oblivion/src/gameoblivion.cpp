@@ -74,6 +74,11 @@ QString GameOblivion::name() const
   return "Oblivion Support Plugin";
 }
 
+QString GameOblivion::localizedName() const
+{
+  return tr("Oblivion Support Plugin");
+}
+
 QString GameOblivion::author() const
 {
   return "Tannin";
@@ -87,11 +92,6 @@ QString GameOblivion::description() const
 MOBase::VersionInfo GameOblivion::version() const
 {
   return VersionInfo(1, 4, 1, VersionInfo::RELEASE_FINAL);
-}
-
-bool GameOblivion::isActive() const
-{
-  return qApp->property("managed_game").value<IPluginGame*>() == this;
 }
 
 QList<PluginSetting> GameOblivion::settings() const
