@@ -87,6 +87,11 @@ QString GameEnderal::name() const
   return "Enderal Support Plugin";
 }
 
+QString GameEnderal::localizedName() const
+{
+  return tr("Enderal Support Plugin");
+}
+
 QString GameEnderal::author() const
 {
   return "AL12";
@@ -100,11 +105,6 @@ QString GameEnderal::description() const
 MOBase::VersionInfo GameEnderal::version() const
 {
   return VersionInfo(1, 2, 0, VersionInfo::RELEASE_FINAL);
-}
-
-bool GameEnderal::isActive() const
-{
-  return qApp->property("managed_game").value<IPluginGame*>() == this;
 }
 
 QList<PluginSetting> GameEnderal::settings() const
