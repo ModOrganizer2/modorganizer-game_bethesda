@@ -75,6 +75,11 @@ QString GameFallout3::name() const
   return "Fallout 3 Support Plugin";
 }
 
+QString GameFallout3::localizedName() const
+{
+  return tr("Fallout 3 Support Plugin");
+}
+
 QString GameFallout3::author() const
 {
   return "Tannin";
@@ -90,10 +95,6 @@ MOBase::VersionInfo GameFallout3::version() const
   return VersionInfo(1, 4, 1, VersionInfo::RELEASE_FINAL);
 }
 
-bool GameFallout3::isActive() const
-{
-  return qApp->property("managed_game").value<IPluginGame*>() == this;
-}
 
 QList<PluginSetting> GameFallout3::settings() const
 {
