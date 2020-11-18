@@ -21,15 +21,15 @@ GamebryoSaveGameInfo::~GamebryoSaveGameInfo()
 {
 }
 
-GamebryoSaveGameInfo::MissingAssets GamebryoSaveGameInfo::getMissingAssets(QString const &file) const
+GamebryoSaveGameInfo::MissingAssets GamebryoSaveGameInfo::getMissingAssets(MOBase::ISaveGame const& save) const
 {
-  GamebryoSaveGame const *save = dynamic_cast<GamebryoSaveGame const *>(getSaveGameInfo(file));
+  GamebryoSaveGame const &gamebryoSave = dynamic_cast<GamebryoSaveGame const&>(save);
   MOBase::IOrganizer *organizerCore = m_Game->m_Organizer;
 
   // collect the list of missing plugins
   MissingAssets missingAssets;
 
-  for (QString const &pluginName : save->getPlugins()) {
+  for (QString const &pluginName : gamebryoSave.getPlugins()) {
     switch (organizerCore->pluginList()->state(pluginName)) {
       case MOBase::IPluginList::STATE_INACTIVE:
         missingAssets[pluginName] = ProvidingModules { organizerCore->pluginList()->origin(pluginName) };
@@ -40,7 +40,7 @@ GamebryoSaveGameInfo::MissingAssets GamebryoSaveGameInfo::getMissingAssets(QStri
     }
   }
 
-  for (QString const &pluginName : save->getLightPlugins()) {
+  for (QString const &pluginName : gamebryoSave.getLightPlugins()) {
 	  switch (organizerCore->pluginList()->state(pluginName)) {
 	  case MOBase::IPluginList::STATE_INACTIVE:
 		  missingAssets[pluginName] = ProvidingModules{ organizerCore->pluginList()->origin(pluginName) };
@@ -98,10 +98,4 @@ GamebryoSaveGameInfo::MissingAssets GamebryoSaveGameInfo::getMissingAssets(QStri
 MOBase::ISaveGameInfoWidget *GamebryoSaveGameInfo::getSaveGameWidget(QWidget *parent) const
 {
   return new GamebryoSaveGameInfoWidget(this, parent);
-}
-
-bool GamebryoSaveGameInfo::hasScriptExtenderSave(QString const &file) const
-{
-    GamebryoSaveGame const *save = dynamic_cast<GamebryoSaveGame const *>(getSaveGameInfo(file));
-    return save->hasScriptExtenderFile();
 }
