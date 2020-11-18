@@ -2,14 +2,15 @@
 
 #include "skyrimvrdataarchives.h"
 #include "skyrimvrscriptextender.h"
-#include "skyrimvrsavegameinfo.h"
 #include "skyrimvrunmanagedmods.h"
 #include "skyrimvrmoddatachecker.h"
 #include "skyrimvrmoddatacontent.h"
+#include "skyrimvrsavegame.h"
 
 #include <pluginsetting.h>
 #include <executableinfo.h>
 #include <gamebryolocalsavegames.h>
+#include <gamebryosavegameinfo.h>
 #include <creationgameplugins.h>
 #include "versioninfo.h"
 
@@ -71,7 +72,7 @@ bool GameSkyrimVR::init(IOrganizer *moInfo)
   registerFeature<DataArchives>(new SkyrimVRDataArchives(myGamesPath()));
   registerFeature<LocalSavegames>(new GamebryoLocalSavegames(myGamesPath(), "SkyrimVR.ini"));
   registerFeature<ModDataChecker>(new SkyrimVRModDataChecker(this));
-  registerFeature<SaveGameInfo>(new SkyrimVRSaveGameInfo(this));
+  registerFeature<SaveGameInfo>(new GamebryoSaveGameInfo(this));
   registerFeature<ModDataContent>(new SkyrimVRModDataContent(this));
   registerFeature<GamePlugins>(new CreationGamePlugins(moInfo));
   registerFeature<UnmanagedMods>(new SkyrimVRUnmangedMods(this));
@@ -164,6 +165,12 @@ QString GameSkyrimVR::savegameSEExtension() const
 {
   return "skse";
 }
+
+std::shared_ptr<const GamebryoSaveGame> GameSkyrimVR::makeSaveGame(QString filePath) const
+{
+  return std::make_shared<const SkyrimVRSaveGame>(filePath, this);
+}
+
 
 QString GameSkyrimVR::steamAPPId() const
 {
