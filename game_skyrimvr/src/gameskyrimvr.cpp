@@ -111,6 +111,11 @@ QString GameSkyrimVR::name() const
   return "Skyrim VR Support Plugin";
 }
 
+QString GameSkyrimVR::localizedName() const
+{
+  return tr("Skyrim VR Support Plugin");
+}
+
 QString GameSkyrimVR::author() const
 {
   return "Brixified & MO2 Team";
@@ -124,11 +129,6 @@ QString GameSkyrimVR::description() const
 MOBase::VersionInfo GameSkyrimVR::version() const
 {
   return VersionInfo(1, 4, 1, VersionInfo::RELEASE_FINAL);
-}
-
-bool GameSkyrimVR::isActive() const
-{
-  return qApp->property("managed_game").value<IPluginGame*>() == this;
 }
 
 QList<PluginSetting> GameSkyrimVR::settings() const
