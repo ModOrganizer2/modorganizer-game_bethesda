@@ -98,6 +98,12 @@ QString GameMorrowind::name() const
   return "Morrowind Support Plugin";
 }
 
+QString GameMorrowind::localizedName() const
+{
+  return tr("Morrowind Support Plugin");
+}
+
+
 QString GameMorrowind::author() const
 {
   return "Schilduin";
@@ -112,11 +118,6 @@ QString GameMorrowind::description() const
 MOBase::VersionInfo GameMorrowind::version() const
 {
   return VersionInfo(1, 4, 0, VersionInfo::RELEASE_FINAL);
-}
-
-bool GameMorrowind::isActive() const
-{
-  return qApp->property("managed_game").value<IPluginGame*>() == this;
 }
 
 QList<PluginSetting> GameMorrowind::settings() const
