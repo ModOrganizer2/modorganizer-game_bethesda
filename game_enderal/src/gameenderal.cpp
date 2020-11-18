@@ -3,11 +3,11 @@
 #include "enderalbsainvalidation.h"
 #include "enderalscriptextender.h"
 #include "enderaldataarchives.h"
-#include "enderalsavegameinfo.h"
 #include "enderalgameplugins.h"
 #include "enderallocalsavegames.h"
 #include "enderalmoddatachecker.h"
 #include "enderalmoddatacontent.h"
+#include "enderalsavegame.h"
 
 
 #include "executableinfo.h"
@@ -17,6 +17,7 @@
 
 #include <gamebryogameplugins.h>
 #include <gamebryounmanagedmods.h>
+#include <gamebryosavegameinfo.h>
 
 #include <QCoreApplication>
 #include <QDebug>
@@ -50,7 +51,7 @@ bool GameEnderal::init(IOrganizer *moInfo)
   registerFeature<ScriptExtender>(new EnderalScriptExtender(this));
   registerFeature<DataArchives>(new EnderalDataArchives(myGamesPath()));
   registerFeature<BSAInvalidation>(new EnderalBSAInvalidation(feature<DataArchives>(), this));
-  registerFeature<SaveGameInfo>(new EnderalSaveGameInfo(this));
+  registerFeature<SaveGameInfo>(new GamebryoSaveGameInfo(this));
   registerFeature<LocalSavegames>(new EnderalLocalSavegames(myGamesPath(), "enderal.ini"));
   registerFeature<ModDataChecker>(new EnderalModDataChecker(this));
   registerFeature<ModDataContent>(new EnderalModDataContent(this));
@@ -155,6 +156,12 @@ QString GameEnderal::savegameSEExtension() const
 {
   return "skse";
 }
+
+std::shared_ptr<const GamebryoSaveGame> GameEnderal::makeSaveGame(QString filepath) const
+{
+  return std::make_shared<const EnderalSaveGame>(filepath, this);
+}
+
 
 QString GameEnderal::steamAPPId() const
 {
