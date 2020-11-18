@@ -4,6 +4,7 @@
 #include "morrowinddataarchives.h"
 #include "morrowindgameplugins.h"
 #include "morrowindlocalsavegames.h"
+#include "morrowindsavegame.h"
 #include "morrowindsavegameinfo.h"
 #include "morrowindmoddatachecker.h"
 #include "morrowindmoddatacontent.h"
@@ -145,6 +146,11 @@ QString GameMorrowind::savegameExtension() const
 QString GameMorrowind::savegameSEExtension() const
 {
   return "mwse";
+}
+
+std::shared_ptr<const GamebryoSaveGame> GameMorrowind::makeSaveGame(QString filePath) const
+{
+  return std::make_shared<const MorrowindSaveGame>(filePath, this);
 }
 
 QString GameMorrowind::steamAPPId() const
