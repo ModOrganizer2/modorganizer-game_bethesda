@@ -2,12 +2,24 @@
 
 #include <Windows.h>
 
-OblivionSaveGame::OblivionSaveGame(QString const &fileName, MOBase::IPluginGame const *game) :
+OblivionSaveGame::OblivionSaveGame(QString const &fileName, GameOblivion const *game) :
   GamebryoSaveGame(fileName, game)
 {
-  FileWrapper file(this, "TES4SAVEGAME");
+  FileWrapper file(getFilepath(), "TES4SAVEGAME");
   file.setPluginString(GamebryoSaveGame::StringType::TYPE_BSTRING);
 
+  SYSTEMTIME creationTime;
+  fetchInformationFields(file, m_SaveNumber, m_PCName, m_PCLevel, m_PCLocation, creationTime);
+  setCreationTime(creationTime);
+}
+
+void OblivionSaveGame::fetchInformationFields(FileWrapper& file,
+  unsigned long& saveNumber,
+  QString& playerName,
+  unsigned short& playerLevel,
+  QString& playerLocation,
+  SYSTEMTIME& creationTime) const
+{
   file.skip<unsigned char>(); //Major version
   file.skip<unsigned char>(); //Minor version
 
@@ -16,11 +28,11 @@ OblivionSaveGame::OblivionSaveGame(QString const &fileName, MOBase::IPluginGame 
   file.skip<unsigned long>(); //Header version
   file.skip<unsigned long>(); //Header size
 
-  file.read(m_SaveNumber);
+  file.read(saveNumber);
 
-  file.read(m_PCName);
-  file.read(m_PCLevel);
-  file.read(m_PCLocation);
+  file.read(playerName);
+  file.read(playerLevel);
+  file.read(playerLocation);
 
   file.skip<float>(); //game days
   file.skip<unsigned long>(); //game ticks
@@ -29,16 +41,33 @@ OblivionSaveGame::OblivionSaveGame(QString const &fileName, MOBase::IPluginGame 
   //could have been copied.
   //Note: This says it uses getlocaltime api to obtain it which is u/s - if so
   //we should ignore this.
-  SYSTEMTIME ctime;
-  file.read(ctime);
-  setCreationTime(ctime);
+  file.read(creationTime);
+}
+
+std::unique_ptr<GamebryoSaveGame::DataFields> OblivionSaveGame::fetchDataFields() const
+{
+  FileWrapper file(getFilepath(), "TES4SAVEGAME");
+  file.setPluginString(GamebryoSaveGame::StringType::TYPE_BSTRING);
+
+  std::unique_ptr<DataFields> fields = std::make_unique<DataFields>();
+
+  {
+    QString dummyName, dummyLocation;
+    unsigned short dummyLevel;
+    unsigned long dummySaveNumber;
+    SYSTEMTIME dummyTime;
+
+    fetchInformationFields(file, dummySaveNumber, dummyName, dummyLevel,
+      dummyLocation, dummyTime);
+  }
 
   //Note that screenshot size, width, height and data are apparently the same
   //structure
   file.skip<unsigned long>(); //Screenshot size.
 
-  file.readImage();
+  fields->Screenshot = file.readImage();
 
-  //file.setPluginString(GamebryoSaveGame::StringType::TYPE_BSTRING);
-  file.readPlugins();
+  fields->Plugins = file.readPlugins();
+
+  return fields;
 }
