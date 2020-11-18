@@ -75,6 +75,12 @@ QString GameFalloutNV::name() const
   return "Fallout NV Support Plugin";
 }
 
+QString GameFalloutNV::localizedName() const
+{
+  return tr("Fallout NV Support Plugin");
+}
+
+
 QString GameFalloutNV::author() const
 {
   return "Tannin";
@@ -88,11 +94,6 @@ QString GameFalloutNV::description() const
 MOBase::VersionInfo GameFalloutNV::version() const
 {
   return VersionInfo(1, 4, 1, VersionInfo::RELEASE_FINAL);
-}
-
-bool GameFalloutNV::isActive() const
-{
-  return qApp->property("managed_game").value<IPluginGame*>() == this;
 }
 
 QList<PluginSetting> GameFalloutNV::settings() const
