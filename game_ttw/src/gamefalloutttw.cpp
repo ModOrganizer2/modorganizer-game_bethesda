@@ -2,16 +2,17 @@
 
 #include "falloutttwbsainvalidation.h"
 #include "falloutttwdataarchives.h"
-#include "falloutttwsavegameinfo.h"
 #include "falloutttwscriptextender.h"
 #include "falloutttwmoddatachecker.h"
 #include "falloutttwmoddatacontent.h"
+#include "falloutttwsavegame.h"
 
 #include "executableinfo.h"
 #include "pluginsetting.h"
 #include "versioninfo.h"
 #include <gamebryolocalsavegames.h>
 #include <gamebryogameplugins.h>
+#include <gamebryosavegameinfo.h>
 #include <gamebryounmanagedmods.h>
 
 #include <QCoreApplication>
@@ -45,7 +46,7 @@ bool GameFalloutTTW::init(IOrganizer *moInfo)
   registerFeature<ScriptExtender>(new FalloutTTWScriptExtender(this));
   registerFeature<DataArchives>(new FalloutTTWDataArchives(myGamesPath()));
   registerFeature<BSAInvalidation>(new FalloutTTWBSAInvalidation(feature<DataArchives>(), this));
-  registerFeature<SaveGameInfo>(new FalloutTTWSaveGameInfo(this));
+  registerFeature<SaveGameInfo>(new GamebryoSaveGameInfo(this));
   registerFeature<LocalSavegames>(new GamebryoLocalSavegames(myGamesPath(), "fallout.ini"));
   registerFeature<ModDataChecker>(new FalloutTTWModDataChecker(this));
   registerFeature<ModDataContent>(new FalloutTTWModDataContent(this));
@@ -139,6 +140,12 @@ QString GameFalloutTTW::savegameSEExtension() const
 {
   return "nvse";
 }
+
+std::shared_ptr<const GamebryoSaveGame> GameFalloutTTW::makeSaveGame(QString filePath) const
+{
+  return std::make_shared<const FalloutTTWSaveGame>(filePath, this);
+}
+
 
 QString GameFalloutTTW::steamAPPId() const
 {

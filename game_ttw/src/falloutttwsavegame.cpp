@@ -1,10 +1,25 @@
 #include "falloutttwsavegame.h"
 
-FalloutTTWSaveGame::FalloutTTWSaveGame(QString const &fileName, MOBase::IPluginGame const *game) :
+#include "gamefalloutttw.h"
+
+FalloutTTWSaveGame::FalloutTTWSaveGame(QString const &fileName, GameFalloutTTW const *game) :
   GamebryoSaveGame(fileName, game)
 {
-  FileWrapper file(this, "FO3SAVEGAME");
+  FileWrapper file(getFilepath(), "FO3SAVEGAME");
+  unsigned long width, height;
+  fetchInformationFields(file, width, height, m_SaveNumber, m_PCName, m_PCLevel, m_PCLocation);
 
+}
+
+void FalloutTTWSaveGame::fetchInformationFields(
+  FileWrapper& file,
+  unsigned long& width,
+  unsigned long& height,
+  unsigned long& saveNumber,
+  QString& playerName,
+  unsigned short& playerLevel,
+  QString& playerLocation) const
+{
   file.skip<unsigned long>(); //Save header size
 
   file.skip<unsigned long>(); //File version?
@@ -20,33 +35,45 @@ FalloutTTWSaveGame::FalloutTTWSaveGame(QString const &fileName, MOBase::IPluginG
   file.setHasFieldMarkers(true);
   file.setPluginString(GamebryoSaveGame::StringType::TYPE_BZSTRING);
 
-  unsigned long width;
   file.read(width);
-
-  unsigned long height;
   file.read(height);
-
-  file.read(m_SaveNumber);
-
-  file.read(m_PCName);
+  file.read(saveNumber);
+  file.read(playerName);
 
   QString whatthis;
   file.read(whatthis);
 
   long level;
   file.read(level);
-  m_PCLevel = level;
+  playerLevel = level;
+  file.read(playerLocation);
+}
 
-  file.read(m_PCLocation);
+std::unique_ptr<GamebryoSaveGame::DataFields> FalloutTTWSaveGame::fetchDataFields() const
+{
+  FileWrapper file(getFilepath(), "FO3SAVEGAME");
+
+  std::unique_ptr<DataFields> fields = std::make_unique<DataFields>();
+
+  unsigned long width, height;
+  {
+    QString dummyName, dummyLocation;
+    unsigned short dummyLevel;
+    unsigned long dummySaveNumber;
+
+    fetchInformationFields(file, width, height,
+      dummySaveNumber, dummyName, dummyLevel, dummyLocation);
+  }
 
   QString playtime;
   file.read(playtime);
 
-  file.readImage(width, height, 256);
+  fields->Screenshot = file.readImage(width, height, 256);
 
-  file.skip<char>(5); // unknown byte, size of plugin data
+  file.skip<char>(5); // unknown (1 byte), plugin size (4 bytes)
 
-  //Abstract this
   file.setPluginString(GamebryoSaveGame::StringType::TYPE_BSTRING);
-  file.readPlugins();
+  fields->Plugins = file.readPlugins();
+
+  return fields;
 }
