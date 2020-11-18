@@ -2,14 +2,15 @@
 
 #include "fallout4dataarchives.h"
 #include "fallout4scriptextender.h"
-#include "fallout4savegameinfo.h"
 #include "fallout4unmanagedmods.h"
 #include "fallout4moddatachecker.h"
 #include "fallout4moddatacontent.h"
+#include "fallout4savegame.h"
 
 #include <pluginsetting.h>
 #include <executableinfo.h>
 #include <gamebryolocalsavegames.h>
+#include <gamebryosavegameinfo.h>
 #include <creationgameplugins.h>
 #include "versioninfo.h"
 
@@ -42,7 +43,7 @@ bool GameFallout4::init(IOrganizer *moInfo)
   registerFeature<LocalSavegames>(new GamebryoLocalSavegames(myGamesPath(), "fallout4custom.ini"));
   registerFeature<ModDataChecker>(new Fallout4ModDataChecker(this));
   registerFeature<ModDataContent>(new Fallout4ModDataContent(this));
-  registerFeature<SaveGameInfo>(new Fallout4SaveGameInfo(this));
+  registerFeature<SaveGameInfo>(new GamebryoSaveGameInfo(this));
   registerFeature<GamePlugins>(new CreationGamePlugins(moInfo));
   registerFeature<UnmanagedMods>(new Fallout4UnmangedMods(this));
 
@@ -130,6 +131,11 @@ QString GameFallout4::savegameExtension() const
 QString GameFallout4::savegameSEExtension() const
 {
   return "f4se";
+}
+
+std::shared_ptr<const GamebryoSaveGame> GameFallout4::makeSaveGame(QString filePath) const
+{
+  return std::make_shared<const Fallout4SaveGame>(filePath, this);
 }
 
 QString GameFallout4::steamAPPId() const
