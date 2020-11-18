@@ -71,6 +71,12 @@ QString GameFallout4VR::name() const
   return "Fallout 4 VR Support Plugin";
 }
 
+QString GameFallout4VR::localizedName() const
+{
+  return tr("Fallout 4 VR Support Plugin");
+}
+
+
 QString GameFallout4VR::author() const
 {
   return "MO2 Contibutors";
@@ -85,11 +91,6 @@ QString GameFallout4VR::description() const
 MOBase::VersionInfo GameFallout4VR::version() const
 {
   return VersionInfo(1, 4, 1, VersionInfo::RELEASE_FINAL);
-}
-
-bool GameFallout4VR::isActive() const
-{
-  return qApp->property("managed_game").value<IPluginGame*>() == this;
 }
 
 QList<PluginSetting> GameFallout4VR::settings() const
