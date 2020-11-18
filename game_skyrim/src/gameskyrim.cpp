@@ -3,10 +3,10 @@
 #include "skyrimbsainvalidation.h"
 #include "skyrimscriptextender.h"
 #include "skyrimdataarchives.h"
-#include "skyrimsavegameinfo.h"
 #include "skyrimgameplugins.h"
 #include "skyrimmoddatachecker.h"
 #include "skyrimmoddatacontent.h"
+#include "skyrimsavegame.h"
 
 #include "executableinfo.h"
 #include "pluginsetting.h"
@@ -14,6 +14,7 @@
 #include <gamebryolocalsavegames.h>
 #include <gamebryogameplugins.h>
 #include <gamebryounmanagedmods.h>
+#include <gamebryosavegameinfo.h>
 
 #include <QCoreApplication>
 #include <QDebug>
@@ -44,7 +45,7 @@ bool GameSkyrim::init(IOrganizer *moInfo)
   registerFeature<ScriptExtender>(new SkyrimScriptExtender(this));
   registerFeature<DataArchives>(new SkyrimDataArchives(myGamesPath()));
   registerFeature<BSAInvalidation>(new SkyrimBSAInvalidation(feature<DataArchives>(), this));
-  registerFeature<SaveGameInfo>(new SkyrimSaveGameInfo(this));
+  registerFeature<SaveGameInfo>(new GamebryoSaveGameInfo(this));
   registerFeature<LocalSavegames>(new GamebryoLocalSavegames(myGamesPath(), "skyrim.ini"));
   registerFeature<ModDataChecker>(new SkyrimModDataChecker(this));
   registerFeature<ModDataContent>(new SkyrimModDataContent(this));
@@ -135,6 +136,11 @@ QString GameSkyrim::savegameExtension() const
 QString GameSkyrim::savegameSEExtension() const
 {
   return "skse";
+}
+
+std::shared_ptr<const GamebryoSaveGame> GameSkyrim::makeSaveGame(QString filepath) const
+{
+  return std::make_shared<const SkyrimSaveGame>(filepath, this);
 }
 
 QString GameSkyrim::steamAPPId() const
