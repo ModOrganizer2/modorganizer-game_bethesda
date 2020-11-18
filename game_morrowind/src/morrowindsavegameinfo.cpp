@@ -13,12 +13,6 @@ MorrowindSaveGameInfo::~MorrowindSaveGameInfo()
 {
 }
 
-
-MOBase::ISaveGame const *MorrowindSaveGameInfo::getSaveGameInfo(QString const &file) const
-{
-  return new MorrowindSaveGame(file, m_Game);
-}
-
 MOBase::ISaveGameInfoWidget *MorrowindSaveGameInfo::getSaveGameWidget(QWidget *parent) const
 {
   return new MorrowindSaveGameInfoWidget(this, parent);

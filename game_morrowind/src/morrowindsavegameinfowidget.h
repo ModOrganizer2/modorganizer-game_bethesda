@@ -18,7 +18,7 @@ public:
   MorrowindSaveGameInfoWidget(MorrowindSaveGameInfo const *info, QWidget *parent);
   ~MorrowindSaveGameInfoWidget();
 
-  virtual void setSave(QString const &) override;
+  virtual void setSave(MOBase::ISaveGame const&) override;
 
 private:
   Ui::MorrowindSaveGameInfoWidget *ui;
