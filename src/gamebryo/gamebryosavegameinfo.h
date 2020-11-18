@@ -11,11 +11,9 @@ public:
   GamebryoSaveGameInfo(GameGamebryo const *game);
   ~GamebryoSaveGameInfo();
 
-  virtual MissingAssets getMissingAssets(QString const &file) const override;
+  virtual MissingAssets getMissingAssets(MOBase::ISaveGame const& save) const override;
 
   virtual MOBase::ISaveGameInfoWidget *getSaveGameWidget(QWidget *) const override;
-
-  virtual bool hasScriptExtenderSave(QString const &file) const override;
 
 protected:
   friend class GamebryoSaveGameInfoWidget;
