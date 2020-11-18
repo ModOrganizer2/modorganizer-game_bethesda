@@ -2,16 +2,17 @@
 
 #include "oblivionbsainvalidation.h"
 #include "obliviondataarchives.h"
-#include "oblivionsavegameinfo.h"
 #include "oblivionscriptextender.h"
 #include "oblivionmoddatachecker.h"
 #include "oblivionmoddatacontent.h"
+#include "oblivionsavegame.h"
 
 #include "pluginsetting.h"
 #include "executableinfo.h"
 #include <gamebryolocalsavegames.h>
 #include <gamebryogameplugins.h>
 #include <gamebryounmanagedmods.h>
+#include <gamebryosavegameinfo.h>
 
 #include <QCoreApplication>
 #include <QDir>
@@ -33,7 +34,7 @@ bool GameOblivion::init(IOrganizer *moInfo)
   registerFeature<ScriptExtender>(new OblivionScriptExtender(this));
   registerFeature<DataArchives>(new OblivionDataArchives(myGamesPath()));
   registerFeature<BSAInvalidation>(new OblivionBSAInvalidation(feature<DataArchives>(), this));
-  registerFeature<SaveGameInfo>(new OblivionSaveGameInfo(this));
+  registerFeature<SaveGameInfo>(new GamebryoSaveGameInfo(this));
   registerFeature<LocalSavegames>(new GamebryoLocalSavegames(myGamesPath(), "oblivion.ini"));
   registerFeature<ModDataChecker>(new OblivionModDataChecker(this));
   registerFeature<ModDataContent>(new OblivionModDataContent(this));
@@ -126,6 +127,11 @@ QString GameOblivion::savegameExtension() const
 QString GameOblivion::savegameSEExtension() const
 {
   return "obse";
+}
+
+std::shared_ptr<const GamebryoSaveGame> GameOblivion::makeSaveGame(QString filePath) const
+{
+  return std::make_shared<const OblivionSaveGame>(filePath, this);
 }
 
 QString GameOblivion::steamAPPId() const
