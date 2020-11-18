@@ -75,6 +75,12 @@ QString GameFallout4::name() const
   return "Fallout 4 Support Plugin";
 }
 
+QString GameFallout4::localizedName() const
+{
+  return tr("Fallout 4 Support Plugin");
+}
+
+
 QString GameFallout4::author() const
 {
   return "Tannin";
@@ -89,11 +95,6 @@ QString GameFallout4::description() const
 MOBase::VersionInfo GameFallout4::version() const
 {
   return VersionInfo(1, 5, 0, VersionInfo::RELEASE_FINAL);
-}
-
-bool GameFallout4::isActive() const
-{
-  return qApp->property("managed_game").value<IPluginGame*>() == this;
 }
 
 QList<PluginSetting> GameFallout4::settings() const
