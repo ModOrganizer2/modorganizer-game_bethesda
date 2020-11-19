@@ -179,12 +179,12 @@ QImage GamebryoSaveGame::FileWrapper::readImage(unsigned long width, unsigned lo
   read(buffer.data(), width * height * bpp);
   QImage image(buffer.data(), width, height, alpha ? QImage::Format_RGBA8888_Premultiplied
     : QImage::Format_RGB888);
+
+  // We need to copy the image here because QImage does not make a copy of the
+  // buffer when constructed.
   if (scale != 0) {
     return image.copy().scaledToWidth(scale);
   } else {
-    // why do I have to copy here? without the copy, the buffer seems to get
-    // deleted after the temporary vanishes, but shouldn't Qts implicit sharing
-    // handle that?
     return image.copy();
   }
 }
