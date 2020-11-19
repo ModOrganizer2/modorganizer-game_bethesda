@@ -92,7 +92,7 @@ protected:
   virtual QString savegameExtension() const = 0;
   virtual QString savegameSEExtension() const = 0;
 
-  // Create a save game:
+  // Create a save game.
   virtual std::shared_ptr<const GamebryoSaveGame> makeSaveGame(QString filepath) const = 0;
 
 
