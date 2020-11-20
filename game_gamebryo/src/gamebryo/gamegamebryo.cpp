@@ -99,14 +99,9 @@ GameGamebryo::listSaves(QDir folder) const
   QStringList filters;
   filters << QString("*.") + savegameExtension();
 
-  folder.setNameFilters(filters);
-  folder.setFilter(QDir::Files);
-  QDirIterator it(folder, QDirIterator::Subdirectories);
-
   std::vector<std::shared_ptr<const MOBase::ISaveGame>> saves;
-  while (it.hasNext()) {
-    it.next();
-    saves.push_back(makeSaveGame(it.filePath()));
+  for (auto info : folder.entryInfoList(filters, QDir::Files)) {
+    saves.push_back(makeSaveGame(info.filePath()));
   }
 
   return saves;
