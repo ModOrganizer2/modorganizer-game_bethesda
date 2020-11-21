@@ -17,8 +17,3 @@ QString EnderalScriptExtender::PluginPath() const
 {
   return "skse/plugins";
 }
-
-QStringList EnderalScriptExtender::saveGameAttachmentExtensions() const
-{
-  return { };
-}
