@@ -32,6 +32,7 @@ class GameGamebryo : public MOBase::IPluginGame,
   friend class GamebryoScriptExtender;
   friend class GamebryoSaveGameInfo;
   friend class GamebryoSaveGameInfoWidget;
+  friend class GamebryoSaveGame;
 
   /**
    * Some Bethesda games do not have a valid file version but a valid product
@@ -85,8 +86,6 @@ public: // IPluginFileMapper interface
   virtual MappingType mappings() const;
 
 protected:
-
-  friend class GamebryoSaveGame;
 
   // Retrieve the saves extension for the game.
   virtual QString savegameExtension() const = 0;

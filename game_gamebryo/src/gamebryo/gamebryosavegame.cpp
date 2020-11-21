@@ -63,13 +63,6 @@ QStringList GamebryoSaveGame::allFiles() const
   ScriptExtender const *e = m_Game->feature<ScriptExtender>();
   if (e != nullptr) {
     QFileInfo file(m_FileName);
-    for (QString const &ext : e->saveGameAttachmentExtensions()) {
-      QFileInfo name(file.absoluteDir().absoluteFilePath(file.completeBaseName() + "." + ext));
-      if (name.exists()) {
-        res.push_back(name.absoluteFilePath());
-      }
-    }
-
     QFileInfo SEfile(file.absolutePath() + "/" + file.completeBaseName() + "." + m_Game->savegameSEExtension());
     if (SEfile.exists()) {
       res.push_back(SEfile.absoluteFilePath());
