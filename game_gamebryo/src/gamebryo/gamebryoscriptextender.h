@@ -16,6 +16,8 @@ public:
 
   virtual QString loaderPath() const override;
 
+  virtual QString savegameExtension() const override;
+
   virtual bool isInstalled() const override;
 
   virtual QString getExtenderVersion() const override;
