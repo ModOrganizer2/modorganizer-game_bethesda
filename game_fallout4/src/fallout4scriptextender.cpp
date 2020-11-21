@@ -17,8 +17,3 @@ QString Fallout4ScriptExtender::PluginPath() const
 {
   return "f4se/plugins";
 }
-
-QStringList Fallout4ScriptExtender::saveGameAttachmentExtensions() const
-{
-  return { };
-}
