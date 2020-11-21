@@ -17,8 +17,3 @@ QString Fallout3ScriptExtender::PluginPath() const
 {
   return "fose/plugins";
 }
-
-QStringList Fallout3ScriptExtender::saveGameAttachmentExtensions() const
-{
-  return { };
-}
