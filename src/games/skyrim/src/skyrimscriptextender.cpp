@@ -17,8 +17,3 @@ QString SkyrimScriptExtender::PluginPath() const
 {
   return "skse/plugins";
 }
-
-QStringList SkyrimScriptExtender::saveGameAttachmentExtensions() const
-{
-  return { };
-}
