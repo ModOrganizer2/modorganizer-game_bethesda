@@ -13,12 +13,12 @@ SkyrimVRSaveGame::SkyrimVRSaveGame(QString const &fileName, GameSkyrimVR const *
   FILETIME ftime;
   fetchInformationFields(file, version, m_PCName, m_PCLevel, m_PCLocation, m_SaveNumber, ftime);
 
-  //A file time is a 64-bit value that represents the number of 100-nanosecond
-             //intervals that have elapsed since 12:00 A.M. January 1, 1601 Coordinated Universal Time (UTC).
-             //So we need to convert that to something useful
+  // A file time is a 64-bit value that represents the number of 100-nanosecond
+  // intervals that have elapsed since 12:00 A.M. January 1, 1601 Coordinated Universal Time (UTC).
+  // So we need to convert that to something useful
 
-             //For some reason, the file time is off by about 6 hours.
-             //So we need to subtract those 6 hours from the filetime.
+  // For some reason, the file time is off by about 6 hours.
+  // So we need to subtract those 6 hours from the filetime.
   _ULARGE_INTEGER time;
   time.LowPart = ftime.dwLowDateTime;
   time.HighPart = ftime.dwHighDateTime;
@@ -89,19 +89,11 @@ std::unique_ptr<GamebryoSaveGame::DataFields> SkyrimVRSaveGame::fetchDataFields(
   file.read(width);
   file.read(height);
 
-  bool alpha = false;
+  uint16_t compressionType;
+  file.read(compressionType);
+  file.setCompressionType(compressionType);
 
-  // compatibility between LE and SE:
-  //  SE has an additional uin16_t for compression
-  //  SE uses an alpha channel, whereas LE does not
-  if (version == 12) {
-    uint16_t compressionType;
-    file.read(compressionType);
-    file.setCompressionType(compressionType);
-    alpha = true;
-  }
-
-  fields->Screenshot = file.readImage(width, height, 320, alpha);
+  fields->Screenshot = file.readImage(width, height, 320, true);
 
   file.openCompressedData();
 
