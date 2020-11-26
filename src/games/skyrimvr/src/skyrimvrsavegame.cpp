@@ -44,7 +44,7 @@ void SkyrimVRSaveGame::fetchInformationFields(
 {
   unsigned long headerSize;
   file.read(headerSize); // header size "TESV_SAVEGAME"
-  file.read(version);
+  file.read(version);    // header version 74 (original Skyrim is 79)
   file.read(saveNumber);
 
   file.read(playerName);
