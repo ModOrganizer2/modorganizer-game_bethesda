@@ -107,6 +107,8 @@ protected:
 
   virtual QString identifyGamePath() const;
 
+  virtual bool prepareIni(const QString& exec);
+
   static std::unique_ptr<BYTE[]> getRegValue(HKEY key, LPCWSTR path, LPCWSTR value, DWORD flags, LPDWORD type);
 
   static QString findInRegistry(HKEY baseKey, LPCWSTR path, LPCWSTR value);
