@@ -2,16 +2,17 @@
 
 #include "falloutnvbsainvalidation.h"
 #include "falloutnvdataarchives.h"
-#include "falloutnvsavegameinfo.h"
 #include "falloutnvscriptextender.h"
 #include "falloutnvmoddatachecker.h"
 #include "falloutnvmoddatacontent.h"
+#include "falloutnvsavegame.h"
 
 #include "executableinfo.h"
 #include "pluginsetting.h"
 #include "versioninfo.h"
 #include <gamebryolocalsavegames.h>
 #include <gamebryogameplugins.h>
+#include <gamebryosavegameinfo.h>
 #include <gamebryounmanagedmods.h>
 
 #include <QCoreApplication>
@@ -38,7 +39,7 @@ bool GameFalloutNV::init(IOrganizer *moInfo)
   registerFeature<ScriptExtender>(new FalloutNVScriptExtender(this));
   registerFeature<DataArchives>(new FalloutNVDataArchives(myGamesPath()));
   registerFeature<BSAInvalidation>(new FalloutNVBSAInvalidation(feature<DataArchives>(), this));
-  registerFeature<SaveGameInfo>(new FalloutNVSaveGameInfo(this));
+  registerFeature<SaveGameInfo>(new GamebryoSaveGameInfo(this));
   registerFeature<LocalSavegames>(new GamebryoLocalSavegames(myGamesPath(), "fallout.ini"));
   registerFeature<ModDataChecker>(new FalloutNVModDataChecker(this));
   registerFeature<ModDataContent>(new FalloutNVModDataContent(this));
@@ -133,6 +134,11 @@ QString GameFalloutNV::savegameExtension() const
 QString GameFalloutNV::savegameSEExtension() const
 {
   return "nvse";
+}
+
+std::shared_ptr<const GamebryoSaveGame> GameFalloutNV::makeSaveGame(QString filePath) const
+{
+  return std::make_shared<const FalloutNVSaveGame>(filePath, this);
 }
 
 QString GameFalloutNV::steamAPPId() const
