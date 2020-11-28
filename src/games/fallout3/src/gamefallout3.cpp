@@ -3,9 +3,9 @@
 #include "fallout3bsainvalidation.h"
 #include "fallout3scriptextender.h"
 #include "fallout3dataarchives.h"
-#include "fallout3savegameinfo.h"
 #include "fallout3moddatachecker.h"
 #include "fallout3moddatacontent.h"
+#include "fallout3savegame.h"
 
 #include "executableinfo.h"
 #include "pluginsetting.h"
@@ -13,6 +13,7 @@
 #include <gamebryolocalsavegames.h>
 #include <gamebryogameplugins.h>
 #include <gamebryounmanagedmods.h>
+#include <gamebryosavegameinfo.h>
 
 #include <QCoreApplication>
 #include <QDir>
@@ -38,7 +39,7 @@ bool GameFallout3::init(IOrganizer *moInfo)
   registerFeature<ScriptExtender>(new Fallout3ScriptExtender(this));
   registerFeature<DataArchives>(new Fallout3DataArchives(myGamesPath()));
   registerFeature<BSAInvalidation>(new Fallout3BSAInvalidation(feature<DataArchives>(), this));
-  registerFeature<SaveGameInfo>(new Fallout3SaveGameInfo(this));
+  registerFeature<SaveGameInfo>(new GamebryoSaveGameInfo(this));
   registerFeature<LocalSavegames>(new GamebryoLocalSavegames(myGamesPath(), "fallout.ini"));
   registerFeature<ModDataChecker>(new Fallout3ModDataChecker(this));
   registerFeature<ModDataContent>(new Fallout3ModDataContent(this));
@@ -117,8 +118,8 @@ void GameFallout3::initializeProfile(const QDir &path, ProfileSettings settings)
     }
 
     copyToProfile(myGamesPath(), path, "falloutprefs.ini");
-	copyToProfile(myGamesPath(), path, "FalloutCustom.ini");
-	copyToProfile(myGamesPath(), path, "custom.ini");
+	  copyToProfile(myGamesPath(), path, "FalloutCustom.ini");
+	  copyToProfile(myGamesPath(), path, "custom.ini");
     copyToProfile(myGamesPath(), path, "GECKCustom.ini");
     copyToProfile(myGamesPath(), path, "GECKPrefs.ini");
   }
@@ -132,6 +133,11 @@ QString GameFallout3::savegameExtension() const
 QString GameFallout3::savegameSEExtension() const
 {
   return "";
+}
+
+std::shared_ptr<const GamebryoSaveGame> GameFallout3::makeSaveGame(QString filePath) const
+{
+  return std::make_shared<const Fallout3SaveGame>(filePath, this);
 }
 
 QString GameFallout3::steamAPPId() const
