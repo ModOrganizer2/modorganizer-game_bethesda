@@ -43,21 +43,22 @@ MorrowindSaveGameInfoWidget::~MorrowindSaveGameInfoWidget() {
   delete ui;
 }
 
-void MorrowindSaveGameInfoWidget::setSave(QString const &file) {
-  std::unique_ptr < MorrowindSaveGame const> save(
-    std::move(dynamic_cast<MorrowindSaveGame const *>(m_Info->getSaveGameInfo(file))));
-  ui->saveNameLabel->setText(QString("%1 (Day %2)").arg(save->getSaveName()).arg(save->getGameDays()));
-  ui->saveNumLabel->setText(QString("%1").arg(save->getSaveNumber()));
-  ui->healthLabel->setText(QString("%1 / %2").arg(round(save->getPCCurrentHealth())).arg(save->getPCMaxHealth()));
-  ui->characterLabel->setText(save->getPCName());
-  ui->locationLabel->setText(save->getPCLocation());
-  ui->levelLabel->setText(QString("%1").arg(save->getPCLevel()));
+void MorrowindSaveGameInfoWidget::setSave(MOBase::ISaveGame const& save) {
+  auto const& morrowindSave = dynamic_cast<MorrowindSaveGame const&>(save);
+
+  ui->saveNameLabel->setText(QString("%1 (Day %2)").arg(morrowindSave.getSaveName()).arg(morrowindSave.getGameDays()));
+  ui->saveNumLabel->setText(QString("%1").arg(morrowindSave.getSaveNumber()));
+  ui->healthLabel->setText(QString("%1 / %2").arg(round(morrowindSave.getPCCurrentHealth())).arg(morrowindSave.getPCMaxHealth()));
+  ui->characterLabel->setText(morrowindSave.getPCName());
+  ui->locationLabel->setText(morrowindSave.getPCLocation());
+  ui->levelLabel->setText(QString("%1").arg(morrowindSave.getPCLevel()));
+
   //This somewhat contorted code is because on my system at least, the
   //old way of doing this appears to give short date and long time.
-  QDateTime t = save->getCreationTime();
+  QDateTime t = morrowindSave.getCreationTime();
   ui->dateLabel->setText(t.date().toString(Qt::DefaultLocaleShortDate) + " " +
     t.time().toString(Qt::DefaultLocaleLongDate));
-  ui->screenshotLabel->setPixmap(QPixmap::fromImage(save->getScreenshot()));
+  ui->screenshotLabel->setPixmap(QPixmap::fromImage(morrowindSave.getScreenshot()));
   if (ui->gameFrame->layout() != nullptr) {
     QLayoutItem *item = nullptr;
     while ((item = ui->gameFrame->layout()->takeAt(0)) != nullptr) {
@@ -81,7 +82,7 @@ void MorrowindSaveGameInfoWidget::setSave(QString const &file) {
   layout->addWidget(header);
   int count = 0;
   MOBase::IPluginList *pluginList = m_Info->m_Game->m_Organizer->pluginList();
-  for (QString const &pluginName : save->getPlugins()) {
+  for (QString const &pluginName : morrowindSave.getPlugins()) {
     if (pluginList->state(pluginName) == MOBase::IPluginList::STATE_ACTIVE) {
       continue;
     }
