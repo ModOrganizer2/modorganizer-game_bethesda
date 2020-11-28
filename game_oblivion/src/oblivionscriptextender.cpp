@@ -21,8 +21,3 @@ QString OblivionScriptExtender::PluginPath() const
 {
   return "obse/plugins";
 }
-
-QStringList OblivionScriptExtender::saveGameAttachmentExtensions() const
-{
-  return {};
-}
