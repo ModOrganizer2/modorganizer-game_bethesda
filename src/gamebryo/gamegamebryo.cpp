@@ -2,11 +2,13 @@
 
 #include "bsainvalidation.h"
 #include "dataarchives.h"
-#include "savegameinfo.h"
-#include "scriptextender.h"
-#include "scopeguard.h"
-#include "utility.h"
 #include "gamebryomoddatacontent.h"
+#include "iprofile.h"
+#include "registry.h"
+#include "savegameinfo.h"
+#include "scopeguard.h"
+#include "scriptextender.h"
+#include "utility.h"
 #include "gamebryosavegame.h"
 #include "gameplugins.h"
 
@@ -54,7 +56,9 @@ void GameGamebryo::detectGame()
 
 bool GameGamebryo::init(MOBase::IOrganizer *moInfo)
 {
+  using namespace std::placeholders;
   m_Organizer = moInfo;
+  m_Organizer->onAboutToRun(std::bind(&GameGamebryo::prepareIni, this, _1));
   return true;
 }
 
@@ -224,6 +228,29 @@ QString GameGamebryo::identifyGamePath() const
 {
   QString path = "Software\\Bethesda Softworks\\" + gameShortName();
   return findInRegistry(HKEY_LOCAL_MACHINE, path.toStdWString().c_str(), L"Installed Path");
+}
+
+bool GameGamebryo::prepareIni(const QString& exec)
+{
+  MOBase::IProfile *profile = m_Organizer->profile();
+
+  QString basePath
+      = profile->localSettingsEnabled()
+            ? profile->absolutePath()
+            : documentsDirectory().absolutePath();
+
+  if (!iniFiles().isEmpty()) {
+
+    QString profileIni = basePath + "/" + iniFiles()[0];
+
+    WCHAR setting[512];
+    if (!GetPrivateProfileStringW(L"Launcher", L"bEnableFileSelection", L"0", setting, 512, profileIni.toStdWString().c_str())
+      || wcstol(setting, nullptr, 10) != 1) {
+      MOBase::WriteRegistryValue(L"Launcher", L"bEnableFileSelection", L"1", profileIni.toStdWString().c_str());
+    }
+  }
+
+  return true;
 }
 
 QString GameGamebryo::selectedVariant() const
