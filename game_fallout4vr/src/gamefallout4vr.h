@@ -25,8 +25,6 @@ public: // IPluginGame interface
   virtual QList<MOBase::ExecutableInfo> executables() const override;
   virtual QList<MOBase::ExecutableForcedLoadSetting> executableForcedLoads() const override;
   virtual void initializeProfile(const QDir &path, ProfileSettings settings) const override;
-  virtual QString savegameExtension() const override;
-  virtual QString savegameSEExtension() const override;
   virtual QString steamAPPId() const override;
   virtual QStringList primaryPlugins() const override;
   virtual QStringList gameVariants() const override;
@@ -52,6 +50,10 @@ public: // IPlugin interface
   virtual QList<MOBase::PluginSetting> settings() const override;
 
 protected:
+
+  std::shared_ptr<const GamebryoSaveGame> makeSaveGame(QString filePath) const override;
+  QString savegameExtension() const override;
+  QString savegameSEExtension() const override;
 
   virtual QString identifyGamePath() const override;
 

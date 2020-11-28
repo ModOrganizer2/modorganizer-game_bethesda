@@ -1,14 +1,15 @@
 #include "gameFallout4vr.h"
 
 #include "fallout4vrdataarchives.h"
-#include "fallout4vrsavegameinfo.h"
 #include "fallout4vrunmanagedmods.h"
 #include "fallout4vrmoddatachecker.h"
 #include "fallout4vrmoddatacontent.h"
+#include "fallout4vrsavegame.h"
 
 #include <pluginsetting.h>
 #include <executableinfo.h>
 #include <gamebryolocalsavegames.h>
+#include <gamebryosavegameinfo.h>
 #include <creationgameplugins.h>
 #include "versioninfo.h"
 
@@ -40,7 +41,7 @@ bool GameFallout4VR::init(IOrganizer *moInfo)
   registerFeature<LocalSavegames>(new GamebryoLocalSavegames(myGamesPath(), "fallout4custom.ini"));
   registerFeature<ModDataChecker>(new Fallout4VRModDataChecker(this));
   registerFeature<ModDataContent>(new Fallout4VRModDataContent(this));
-  registerFeature<SaveGameInfo>(new Fallout4VRSaveGameInfo(this));
+  registerFeature<SaveGameInfo>(new GamebryoSaveGameInfo(this));
   registerFeature<GamePlugins>(new CreationGamePlugins(moInfo));
   registerFeature<UnmanagedMods>(new Fallout4VRUnmangedMods(this));
 
@@ -126,6 +127,11 @@ QString GameFallout4VR::savegameExtension() const
 QString GameFallout4VR::savegameSEExtension() const
 {
   return "f4se";
+}
+
+std::shared_ptr<const GamebryoSaveGame> GameFallout4VR::makeSaveGame(QString filePath) const
+{
+  return std::make_shared<const Fallout4VRSaveGame>(filePath, this);
 }
 
 QString GameFallout4VR::steamAPPId() const
