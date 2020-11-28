@@ -9,8 +9,11 @@
 #include "scopeguard.h"
 #include "scriptextender.h"
 #include "utility.h"
+#include "gamebryosavegame.h"
+#include "gameplugins.h"
 
 #include <QDir>
+#include <QDirIterator>
 #include <QIcon>
 #include <QFile>
 #include <QFileInfo>
@@ -92,6 +95,20 @@ QDir GameGamebryo::documentsDirectory() const
 QDir GameGamebryo::savesDirectory() const
 {
   return QDir(m_MyGamesPath + "/Saves");
+}
+
+std::vector<std::shared_ptr<const MOBase::ISaveGame>>
+GameGamebryo::listSaves(QDir folder) const
+{
+  QStringList filters;
+  filters << QString("*.") + savegameExtension();
+
+  std::vector<std::shared_ptr<const MOBase::ISaveGame>> saves;
+  for (auto info : folder.entryInfoList(filters, QDir::Files)) {
+    saves.push_back(makeSaveGame(info.filePath()));
+  }
+
+  return saves;
 }
 
 QStringList GameGamebryo::gameVariants() const

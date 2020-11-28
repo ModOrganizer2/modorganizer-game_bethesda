@@ -17,7 +17,7 @@ public:
   GamebryoSaveGameInfoWidget(GamebryoSaveGameInfo const *info, QWidget *parent);
   ~GamebryoSaveGameInfoWidget();
 
-  virtual void setSave(QString const &) override;
+  virtual void setSave(MOBase::ISaveGame const &) override;
 
 private:
   Ui::GamebryoSaveGameInfoWidget *ui;
