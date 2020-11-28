@@ -21,6 +21,8 @@ class UnmanagedMods;
 #include <ShlObj.h>
 #include <dbghelp.h>
 
+#include "gamebryosavegame.h"
+
 class GameGamebryo : public MOBase::IPluginGame,
                      public MOBase::IPluginFileMapper
 {
@@ -30,6 +32,7 @@ class GameGamebryo : public MOBase::IPluginGame,
   friend class GamebryoScriptExtender;
   friend class GamebryoSaveGameInfo;
   friend class GamebryoSaveGameInfoWidget;
+  friend class GamebryoSaveGame;
 
   /**
    * Some Bethesda games do not have a valid file version but a valid product
@@ -49,8 +52,8 @@ public: // IPluginGame interface
 
   //getName
   //initializeProfile
-  //savegameExtension
-  //savegameSEExtension
+  virtual std::vector<std::shared_ptr<const MOBase::ISaveGame>> listSaves(QDir folder) const override;
+
   virtual bool isInstalled() const override;
   virtual QIcon gameIcon() const override;
   virtual QDir gameDirectory() const override;
@@ -83,6 +86,14 @@ public: // IPluginFileMapper interface
   virtual MappingType mappings() const;
 
 protected:
+
+  // Retrieve the saves extension for the game.
+  virtual QString savegameExtension() const = 0;
+  virtual QString savegameSEExtension() const = 0;
+
+  // Create a save game.
+  virtual std::shared_ptr<const GamebryoSaveGame> makeSaveGame(QString filepath) const = 0;
+
 
   QFileInfo findInGameFolder(const QString &relativePath) const;
   QString myGamesPath() const;

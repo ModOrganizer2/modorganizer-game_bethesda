@@ -43,19 +43,18 @@ GamebryoSaveGameInfoWidget::~GamebryoSaveGameInfoWidget() {
     delete ui;
 }
 
-void GamebryoSaveGameInfoWidget::setSave(QString const &file) {
-    std::unique_ptr <GamebryoSaveGame const> save(
-            std::move(dynamic_cast<GamebryoSaveGame const *>(m_Info->getSaveGameInfo(file))));
-    ui->saveNumLabel->setText(QString("%1").arg(save->getSaveNumber()));
-    ui->characterLabel->setText(save->getPCName());
-    ui->locationLabel->setText(save->getPCLocation());
-    ui->levelLabel->setText(QString("%1").arg(save->getPCLevel()));
+void GamebryoSaveGameInfoWidget::setSave(MOBase::ISaveGame const& save) {
+    auto& gamebryoSave = dynamic_cast<GamebryoSaveGame const&>(save);
+    ui->saveNumLabel->setText(QString("%1").arg(gamebryoSave.getSaveNumber()));
+    ui->characterLabel->setText(gamebryoSave.getPCName());
+    ui->locationLabel->setText(gamebryoSave.getPCLocation());
+    ui->levelLabel->setText(QString("%1").arg(gamebryoSave.getPCLevel()));
     //This somewhat contorted code is because on my system at least, the
     //old way of doing this appears to give short date and long time.
-    QDateTime t = save->getCreationTime();
+    QDateTime t = gamebryoSave.getCreationTime();
     ui->dateLabel->setText(t.date().toString(Qt::DefaultLocaleShortDate) + " " +
                            t.time().toString(Qt::DefaultLocaleLongDate));
-    ui->screenshotLabel->setPixmap(QPixmap::fromImage(save->getScreenshot()));
+    ui->screenshotLabel->setPixmap(QPixmap::fromImage(gamebryoSave.getScreenshot()));
     if (ui->gameFrame->layout() != nullptr) {
         QLayoutItem *item = nullptr;
         while ((item = ui->gameFrame->layout()->takeAt(0)) != nullptr) {
@@ -64,12 +63,12 @@ void GamebryoSaveGameInfoWidget::setSave(QString const &file) {
         }
         ui->gameFrame->layout()->setSizeConstraint(QLayout::SetFixedSize);
     }
-	
+
 	// Resize box to new content
 	this->resize(0, 0);
 
     QLayout *layout = ui->gameFrame->layout();
-    if (m_Info->hasScriptExtenderSave(file)) {
+    if (gamebryoSave.hasScriptExtenderFile()) {
         QLabel *scriptExtender = new QLabel(tr("Has Script Extender Data"));
         QFont headerFont = scriptExtender->font();
         headerFont.setBold(true);
@@ -85,7 +84,7 @@ void GamebryoSaveGameInfoWidget::setSave(QString const &file) {
     layout->addWidget(header);
     int count = 0;
     MOBase::IPluginList *pluginList = m_Info->m_Game->m_Organizer->pluginList();
-    for (QString const &pluginName : save->getPlugins()) {
+    for (QString const &pluginName : gamebryoSave.getPlugins()) {
         if (pluginList->state(pluginName) == MOBase::IPluginList::STATE_ACTIVE) {
             continue;
         }
@@ -113,7 +112,7 @@ void GamebryoSaveGameInfoWidget::setSave(QString const &file) {
         dotDotLabel->setFont(contentFont);
         layout->addWidget(dotDotLabel);
     }
-    if (save->isLightEnabled()) {
+    if (gamebryoSave.isLightEnabled()) {
         QLabel *headerEsl = new QLabel(tr("Missing ESLs"));
         QFont headerEslFont = headerEsl->font();
         QFont contentEslFont = headerEslFont;
@@ -123,7 +122,7 @@ void GamebryoSaveGameInfoWidget::setSave(QString const &file) {
         headerEsl->setFont(headerEslFont);
         layout->addWidget(headerEsl);
         int countEsl = 0;
-        for (QString const &pluginName : save->getLightPlugins()) {
+        for (QString const &pluginName : gamebryoSave.getLightPlugins()) {
             if (pluginList->state(pluginName) == MOBase::IPluginList::STATE_ACTIVE) {
                 continue;
             }
