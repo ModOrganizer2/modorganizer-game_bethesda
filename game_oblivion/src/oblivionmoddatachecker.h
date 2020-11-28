@@ -8,6 +8,9 @@ class OblivionModDataChecker : public GamebryoModDataChecker
 public:
   using GamebryoModDataChecker::GamebryoModDataChecker;
 
+  CheckReturn dataLooksValid(std::shared_ptr<const MOBase::IFileTree> fileTree) const override;
+  std::shared_ptr<MOBase::IFileTree> fix(std::shared_ptr<MOBase::IFileTree> fileTree) const override;
+
 protected:
   virtual const FileNameSet& possibleFolderNames() const override {
     static FileNameSet result{
