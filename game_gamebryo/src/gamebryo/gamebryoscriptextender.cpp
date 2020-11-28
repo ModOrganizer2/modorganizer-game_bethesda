@@ -26,6 +26,11 @@ QString GamebryoScriptExtender::loaderPath() const
   return m_Game->gameDirectory().absoluteFilePath(loaderName());
 }
 
+QString GamebryoScriptExtender::savegameExtension() const
+{
+  return m_Game->savegameSEExtension();
+}
+
 bool GamebryoScriptExtender::isInstalled() const
 {
   //A note: It is possibly also OK if xxse_steam_loader.dll exists, but it's
