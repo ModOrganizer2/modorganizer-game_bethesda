@@ -17,8 +17,3 @@ QString FalloutTTWScriptExtender::PluginPath() const
 {
   return "nvse/plugins";
 }
-
-QStringList FalloutTTWScriptExtender::saveGameAttachmentExtensions() const
-{
-  return { };
-}
