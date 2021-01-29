@@ -22,11 +22,11 @@ build_script:
     
     if($LastExitCode -ne 0) { $host.SetShouldExit($LastExitCode )  }
 artifacts:
-- path: build\src\game_morrowind.dll
+- path: vsbuild\src\RelWithDebInfo\game_morrowind.dll
   name: game_morrowind_dll
-- path: build\src\game_morrowind.pdb
+- path: vsbuild\src\RelWithDebInfo\game_morrowind.pdb
   name: game_morrowind_pdb
-- path: build\src\game_morrowind.lib
+- path: vsbuild\src\RelWithDebInfo\game_morrowind.lib
   name: game_morrowind_lib
 on_success:
   - ps: Set-Location -Path $env:APPVEYOR_BUILD_FOLDER
