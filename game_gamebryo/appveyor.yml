@@ -22,9 +22,9 @@ build_script:
     
     if($LastExitCode -ne 0) { $host.SetShouldExit($LastExitCode )  }
 artifacts:
-- path: build\src\gamebryo\game_gamebryo.lib
+- path: vsbuild\src\RelWithDebInfo\gamebryo\game_gamebryo.lib
   name: game_gamebryo_lib
-- path: build\src\creation\game_creation.lib
+- path: vsbuild\src\RelWithDebInfo\creation\game_creation.lib
   name: game_creation_lib
 on_success:
   - ps: Set-Location -Path $env:APPVEYOR_BUILD_FOLDER
