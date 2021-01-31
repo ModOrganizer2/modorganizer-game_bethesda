@@ -167,16 +167,16 @@ QStringList GamebryoGamePlugins::readLoadOrderList(
 QStringList GamebryoGamePlugins::readPluginList(MOBase::IPluginList *pluginList) {
   QStringList primary = organizer()->managedGame()->primaryPlugins();
   for (const QString &pluginName : primary) {
-      if (pluginList->state(pluginName) != IPluginList::STATE_MISSING) {
-          pluginList->setState(pluginName, IPluginList::STATE_ACTIVE);
-      }
+    if (pluginList->state(pluginName) != IPluginList::STATE_MISSING) {
+      pluginList->setState(pluginName, IPluginList::STATE_ACTIVE);
+    }
   }
   QStringList plugins = pluginList->pluginNames();
   QStringList pluginsClone(plugins);
   // Do not sort the primary plugins. Their load order should be locked as defined in "primaryPlugins".
-  for (QString plugin : pluginsClone) {
-      if (primary.contains(plugin, Qt::CaseInsensitive))
-          plugins.removeAll(plugin);
+  for (const auto& plugin : pluginsClone) {
+    if (primary.contains(plugin, Qt::CaseInsensitive))
+      plugins.removeAll(plugin);
   }
 
   // Always use filetime loadorder to get the actual load order
@@ -200,43 +200,42 @@ QStringList GamebryoGamePlugins::readPluginList(MOBase::IPluginList *pluginList)
   QString filePath = organizer()->profile()->absolutePath() + "/plugins.txt";
   QFile file(filePath);
   if (!file.open(QIODevice::ReadOnly)) {
-      pluginsTxtExists = false;
+    pluginsTxtExists = false;
   }
   ON_BLOCK_EXIT([&]() {
-      file.close();
+    file.close();
   });
 
   if (file.size() == 0) {
-      // MO stores at least a header in the file. if it's completely empty the
-      // file is broken
-      pluginsTxtExists = false;
+    // MO stores at least a header in the file. if it's completely empty the
+    // file is broken
+    pluginsTxtExists = false;
   }
 
   QStringList activePlugins;
   QStringList inactivePlugins;
   if (pluginsTxtExists) {
-      while (!file.atEnd()) {
-          QByteArray line = file.readLine();
-          QString pluginName;
-          if ((line.size() > 0) && (line.at(0) != '#')) {
-              pluginName = m_LocalCodec->toUnicode(line.trimmed().constData());
-          }
-          if (pluginName.size() > 0) {
-              pluginList->setState(pluginName, IPluginList::STATE_ACTIVE);
-              activePlugins.push_back(pluginName);
-          }
+    while (!file.atEnd()) {
+      QByteArray line = file.readLine();
+      QString pluginName;
+      if ((line.size() > 0) && (line.at(0) != '#')) {
+        pluginName = m_LocalCodec->toUnicode(line.trimmed().constData());
       }
+      if (pluginName.size() > 0) {
+        pluginList->setState(pluginName, IPluginList::STATE_ACTIVE);
+        activePlugins.push_back(pluginName);
+      }
+    }
 
-      for (const QString &pluginName : plugins)
-          if (!activePlugins.contains(pluginName))
-              inactivePlugins.push_back(pluginName);
-
-      for (const QString &pluginName : inactivePlugins)
-          pluginList->setState(pluginName, IPluginList::STATE_INACTIVE);
+    for (const auto& pluginName : plugins) {
+      if (!activePlugins.contains(pluginName, Qt::CaseInsensitive)) {
+        pluginList->setState(pluginName, IPluginList::STATE_INACTIVE);
+      }
+    }
   } else {
-      for (const QString &pluginName : plugins) {
-          pluginList->setState(pluginName, IPluginList::STATE_INACTIVE);
-      }
+    for (const QString &pluginName : plugins) {
+      pluginList->setState(pluginName, IPluginList::STATE_INACTIVE);
+    }
   }
 
   return primary + plugins;
