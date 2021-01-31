@@ -102,23 +102,23 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="gamebryo/gamebryosavegameinfowidget.cpp" line="73"/>
+        <location filename="gamebryo/gamebryosavegameinfowidget.cpp" line="72"/>
         <source>Has Script Extender Data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="gamebryo/gamebryosavegameinfowidget.cpp" line="78"/>
+        <location filename="gamebryo/gamebryosavegameinfowidget.cpp" line="77"/>
         <source>Missing ESPs</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="gamebryo/gamebryosavegameinfowidget.cpp" line="111"/>
-        <location filename="gamebryo/gamebryosavegameinfowidget.cpp" line="149"/>
+        <location filename="gamebryo/gamebryosavegameinfowidget.cpp" line="110"/>
+        <location filename="gamebryo/gamebryosavegameinfowidget.cpp" line="148"/>
         <source>None</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="gamebryo/gamebryosavegameinfowidget.cpp" line="117"/>
+        <location filename="gamebryo/gamebryosavegameinfowidget.cpp" line="116"/>
         <source>Missing ESLs</source>
         <translation type="unfinished"></translation>
     </message>
@@ -126,28 +126,32 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="creation/creationgameplugins.cpp" line="101"/>
         <location filename="gamebryo/gamebryogameplugins.cpp" line="129"/>
         <source>Some of your plugins have invalid names! These plugins can not be loaded by the game. Please see mo_interface.log for a list of affected plugins and rename them.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="gamebryo/gamebryosavegame.cpp" line="92"/>
+        <location filename="gamebryo/gamebryosavegame.cpp" line="47"/>
+        <source>%1, #%2, Level %3, %4</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="gamebryo/gamebryosavegame.cpp" line="97"/>
         <source>failed to open %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="gamebryo/gamebryosavegame.cpp" line="102"/>
+        <location filename="gamebryo/gamebryosavegame.cpp" line="107"/>
         <source>wrong file format - expected %1 got %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="gamebryo/gamegamebryo.cpp" line="275"/>
+        <location filename="gamebryo/gamegamebryo.cpp" line="334"/>
         <source>failed to query registry path (preflight): %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="gamebryo/gamegamebryo.cpp" line="282"/>
+        <location filename="gamebryo/gamegamebryo.cpp" line="341"/>
         <source>failed to query registry path (read): %1</source>
         <translation type="unfinished"></translation>
     </message>
