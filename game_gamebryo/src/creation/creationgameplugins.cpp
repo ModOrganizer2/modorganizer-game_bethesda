@@ -66,7 +66,7 @@ void CreationGamePlugins::writePluginList(const IPluginList *pluginList,
 
   //TODO: do not write plugins in OFFICIAL_FILES container
   for (const QString &pluginName : plugins) {
-	if (!PrimaryPlugins.contains(pluginName,Qt::CaseInsensitive)) {
+  if (!PrimaryPlugins.contains(pluginName,Qt::CaseInsensitive)) {
     if (pluginList->state(pluginName) == IPluginList::STATE_ACTIVE) {
       if (!textCodec->canEncode(pluginName)) {
         invalidFileNames = true;
@@ -81,8 +81,8 @@ void CreationGamePlugins::writePluginList(const IPluginList *pluginList,
       file->write("\r\n");
       ++writtenCount;
     }
-	  else
-	  {
+    else
+    {
         if (!textCodec->canEncode(pluginName)) {
           invalidFileNames = true;
           qCritical("invalid plugin name %s", qUtf8Printable(pluginName));
@@ -93,7 +93,7 @@ void CreationGamePlugins::writePluginList(const IPluginList *pluginList,
         }
         file->write("\r\n");
         ++writtenCount;
-	  }
+    }
     }
   }
 
@@ -109,8 +109,8 @@ void CreationGamePlugins::writePluginList(const IPluginList *pluginList,
 
 QStringList CreationGamePlugins::readPluginList(MOBase::IPluginList *pluginList)
 {
-  QStringList plugins = pluginList->pluginNames();
-  QStringList primaryPlugins = organizer()->managedGame()->primaryPlugins();
+  const auto plugins = pluginList->pluginNames();
+  const auto primaryPlugins = organizer()->managedGame()->primaryPlugins();
   QStringList loadOrder(primaryPlugins);
 
   for (const QString &pluginName : loadOrder) {
@@ -134,46 +134,47 @@ QStringList CreationGamePlugins::readPluginList(MOBase::IPluginList *pluginList)
     return loadOrder;
   }
 
+  QStringList pluginsFound;
   while (!file.atEnd()) {
     QByteArray line = file.readLine();
     QString pluginName;
     if ((line.size() > 0) && (line.at(0) != '#')) {
       pluginName = localCodec()->toUnicode(line.trimmed().constData());
     }
-	if (!primaryPlugins.contains(pluginName, Qt::CaseInsensitive)) {
-		if (pluginName.startsWith('*')) {
-			pluginName.remove(0, 1);
-			if (pluginName.size() > 0) {
-				pluginList->setState(pluginName, IPluginList::STATE_ACTIVE);
-				plugins.removeAll(pluginName);
-				if (!loadOrder.contains(pluginName, Qt::CaseInsensitive)) {
-					loadOrder.append(pluginName);
-				}
-			}
-		}
-		else
-		{
-			if (pluginName.size() > 0) {
-				pluginList->setState(pluginName, IPluginList::STATE_INACTIVE);
-				plugins.removeAll(pluginName);
-				if (!loadOrder.contains(pluginName, Qt::CaseInsensitive)) {
-					loadOrder.append(pluginName);
-				}
-			}
-		}
-	}
-	else
-	{
-		pluginName.remove(0, 1);
-		plugins.removeAll(pluginName);
-	}
+    if (!primaryPlugins.contains(pluginName, Qt::CaseInsensitive)) {
+      if (pluginName.startsWith('*')) {
+        pluginName.remove(0, 1);
+        if (pluginName.size() > 0) {
+          pluginList->setState(pluginName, IPluginList::STATE_ACTIVE);
+          pluginsFound.append(pluginName);
+          if (!loadOrder.contains(pluginName, Qt::CaseInsensitive)) {
+            loadOrder.append(pluginName);
+          }
+        }
+      }
+      else {
+        if (pluginName.size() > 0) {
+          pluginList->setState(pluginName, IPluginList::STATE_INACTIVE);
+          pluginsFound.append(pluginName);
+          if (!loadOrder.contains(pluginName, Qt::CaseInsensitive)) {
+            loadOrder.append(pluginName);
+          }
+        }
+      }
+    }
+    else {
+      pluginName.remove(0, 1);
+      pluginsFound.append(pluginName);
+    }
   }
 
   file.close();
 
-  // we removed each plugin found in the file, so what's left are inactive mods
-  for (const QString &pluginName : plugins) {
-    pluginList->setState(pluginName, IPluginList::STATE_INACTIVE);
+  // set all plugins not found inactive
+  for (const auto& pluginName : plugins) {
+    if (!pluginsFound.contains(pluginName, Qt::CaseInsensitive)) {
+      pluginList->setState(pluginName, IPluginList::STATE_INACTIVE);
+    }
   }
 
   return loadOrder;
