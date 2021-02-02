@@ -4,7 +4,12 @@
 <context>
     <name>GameFalloutTTW</name>
     <message>
-        <location filename="gamefalloutttw.cpp" line="87"/>
+        <location filename="gamefalloutttw.cpp" line="88"/>
+        <source>Fallout TTW Support Plugin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="gamefalloutttw.cpp" line="98"/>
         <source>Adds support for the game Fallout TTW</source>
         <translation type="unfinished"></translation>
     </message>
