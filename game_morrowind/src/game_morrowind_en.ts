@@ -4,7 +4,12 @@
 <context>
     <name>GameMorrowind</name>
     <message>
-        <location filename="gamemorrowind.cpp" line="108"/>
+        <location filename="gamemorrowind.cpp" line="104"/>
+        <source>Morrowind Support Plugin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="gamemorrowind.cpp" line="115"/>
         <source>Adds support for the game Morrowind.
 Splash by %1</source>
         <translation type="unfinished"></translation>
@@ -43,12 +48,12 @@ Splash by %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="morrowindsavegameinfowidget.cpp" line="74"/>
+        <location filename="morrowindsavegameinfowidget.cpp" line="75"/>
         <source>Missing ESPs</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="morrowindsavegameinfowidget.cpp" line="107"/>
+        <location filename="morrowindsavegameinfowidget.cpp" line="108"/>
         <source>None</source>
         <translation type="unfinished"></translation>
     </message>
