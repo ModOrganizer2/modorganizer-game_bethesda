@@ -4,7 +4,12 @@
 <context>
     <name>GameSkyrim</name>
     <message>
-        <location filename="gameskyrim.cpp" line="91"/>
+        <location filename="gameskyrim.cpp" line="87"/>
+        <source>Skyrim Support Plugin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="gameskyrim.cpp" line="97"/>
         <source>Adds support for the game Skyrim</source>
         <translation type="unfinished"></translation>
     </message>
