@@ -4,7 +4,12 @@
 <context>
     <name>GameOblivion</name>
     <message>
-        <location filename="gameoblivion.cpp" line="84"/>
+        <location filename="gameoblivion.cpp" line="80"/>
+        <source>Oblivion Support Plugin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="gameoblivion.cpp" line="90"/>
         <source>Adds support for the game Oblivion</source>
         <translation type="unfinished"></translation>
     </message>
