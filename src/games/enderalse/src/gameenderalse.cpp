@@ -1,6 +1,5 @@
 #include "gameenderalse.h"
 
-#include "enderalsebsainvalidation.h"
 #include "enderalsedataarchives.h"
 #include "enderalsescriptextender.h"
 #include "enderalseunmanagedmods.h"
@@ -14,6 +13,7 @@
 #include <gamebryolocalsavegames.h>
 #include <creationgameplugins.h>
 #include "versioninfo.h"
+#include <ipluginlist.h>
 #include <utility.h>
 
 #include <QCoreApplication>
@@ -78,7 +78,6 @@ bool GameEnderalSE::init(IOrganizer *moInfo)
 
   registerFeature<ScriptExtender>(new EnderalSEScriptExtender(this));
   registerFeature<DataArchives>(new EnderalSEDataArchives(myGamesPath()));
-  registerFeature<BSAInvalidation>(new EnderalSEBSAInvalidation(feature<DataArchives>(), this));
   registerFeature<LocalSavegames>(new GamebryoLocalSavegames(myGamesPath(), "skyrimcustom.ini"));
   registerFeature<ModDataChecker>(new EnderalSEModDataChecker(this));
   registerFeature<ModDataContent>(new EnderalSEModDataContent(this));
@@ -158,8 +157,8 @@ QList<PluginSetting> GameEnderalSE::settings() const
 void GameEnderalSE::initializeProfile(const QDir &path, ProfileSettings settings) const
 {
   if (settings.testFlag(IPluginGame::MODS)) {
-    copyToProfile(localAppFolder() + "/Enderal Special Edition", path, "plugins.txt");
-    copyToProfile(localAppFolder() + "/Enderal Special Edition", path, "loadorder.txt");
+    copyToProfile(localAppFolder() + "/Skyrim Special Edition", path, "plugins.txt");
+    copyToProfile(localAppFolder() + "/Skyrim Special Edition", path, "loadorder.txt");
   }
 
   if (settings.testFlag(IPluginGame::CONFIGURATION)) {
@@ -200,8 +199,7 @@ QStringList GameEnderalSE::primaryPlugins() const
 {
   return {
     "skyrim.esm",
-    "Enderal - Forgotten Stories.esm",
-    "update.esm"
+    "update.esm",
   };
 }
 
@@ -227,17 +225,34 @@ QString GameEnderalSE::gameNexusName() const
 
 QStringList GameEnderalSE::iniFiles() const
 {
-  return{ "skyrim.ini", "skyrimprefs.ini", "skyrimcustom.ini" };
+  return { "skyrim.ini", "skyrimprefs.ini", "skyrimcustom.ini" };
 }
 
 QStringList GameEnderalSE::DLCPlugins() const
 {
-  return {};
+  return {
+    "dawnguard.esm",
+    "hearthfires.esm",
+    "dragonborn.esm"
+  };
 }
 
 QStringList GameEnderalSE::CCPlugins() const
 {
-  return {};
+  QStringList plugins;
+  std::set<QString> pluginsLookup;
+
+  const QString path = gameDirectory().filePath("Skyrim.ccc");
+
+  MOBase::forEachLineInFile(path, [&](QString s) {
+    const auto lc = s.toLower();
+    if (!pluginsLookup.contains(lc)) {
+      pluginsLookup.insert(lc);
+      plugins.append(std::move(s));
+    }
+    });
+
+  return plugins;
 }
 
 MOBase::IPluginGame::SortMechanism GameEnderalSE::sortMechanism() const
@@ -272,7 +287,7 @@ MappingType GameEnderalSE::mappings() const
 
   for (const QString &profileFile : { "plugins.txt", "loadorder.txt" }) {
     result.push_back({ m_Organizer->profilePath() + "/" + profileFile,
-        localAppFolder() + "/" + gameName() + "/" + profileFile,
+        localAppFolder() + "/Skyrim Special Edition/" + profileFile,
         false });
   }
 

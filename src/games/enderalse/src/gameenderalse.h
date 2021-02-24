@@ -1,7 +1,6 @@
 #ifndef GAMEENDERALSE_H
 #define GAMEENDERALSE_H
 
-
 #include "gamegamebryo.h"
 
 #include <QObject>
