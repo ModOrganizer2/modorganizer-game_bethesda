@@ -210,7 +210,7 @@ QStringList GameEnderalSE::gameVariants() const
 
 QString GameEnderalSE::gameShortName() const
 {
-  return "EnderalSE";
+  return "enderalspecialedition";
 }
 
 QStringList GameEnderalSE::validShortNames() const
