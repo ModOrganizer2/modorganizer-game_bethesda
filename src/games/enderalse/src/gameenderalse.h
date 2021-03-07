@@ -20,8 +20,8 @@ public:
 
 public: // IPluginGame interface
 
-  virtual void detectGame() override;
   virtual QString gameName() const override;
+  virtual QIcon gameIcon() const override;
   virtual QList<MOBase::ExecutableInfo> executables() const override;
   virtual QList<MOBase::ExecutableForcedLoadSetting> executableForcedLoads() const override;
   virtual void initializeProfile(const QDir &path, ProfileSettings settings) const override;

@@ -6,6 +6,7 @@
 #include "enderalsemoddatachecker.h"
 #include "enderalsemoddatacontent.h"
 #include "enderalsesavegame.h"
+#include "steamutility.h"
 
 #include <pluginsetting.h>
 #include <executableinfo.h>
@@ -45,8 +46,15 @@ QDir GameEnderalSE::documentsDirectory() const
 
 QString GameEnderalSE::identifyGamePath() const
 {
-  QString path = "Software\\Bethesda Softworks\\Skyrim Special Edition";
-  return findInRegistry(HKEY_LOCAL_MACHINE, path.toStdWString().c_str(), L"Installed Path");
+  QString path = "Software\\SureAI\\EnderalSE";
+  QString result;
+  try {
+    result = findInRegistry(HKEY_CURRENT_USER, path.toStdWString().c_str(), L"Install_Path");
+  }
+  catch (MOBase::MyException) {
+    result = MOBase::findSteamGame("Enderal Special Edition", "Data\\Enderal - Forgotten Stories.esm");
+  }
+  return result;
 }
 
 QDir GameEnderalSE::savesDirectory() const
@@ -64,12 +72,6 @@ bool GameEnderalSE::isInstalled() const
   return !m_GamePath.isEmpty();
 }
 
-void GameEnderalSE::detectGame()
-{
-  m_GamePath = identifyGamePath();
-  m_MyGamesPath = determineMyGamesPath("Skyrim Special Edition");
-}
-
 bool GameEnderalSE::init(IOrganizer *moInfo)
 {
   if (!GameGamebryo::init(moInfo)) {
@@ -78,7 +80,7 @@ bool GameEnderalSE::init(IOrganizer *moInfo)
 
   registerFeature<ScriptExtender>(new EnderalSEScriptExtender(this));
   registerFeature<DataArchives>(new EnderalSEDataArchives(myGamesPath()));
-  registerFeature<LocalSavegames>(new GamebryoLocalSavegames(myGamesPath(), "skyrimcustom.ini"));
+  registerFeature<LocalSavegames>(new GamebryoLocalSavegames(myGamesPath(), "enderal.ini"));
   registerFeature<ModDataChecker>(new EnderalSEModDataChecker(this));
   registerFeature<ModDataContent>(new EnderalSEModDataContent(this));
   registerFeature<SaveGameInfo>(new GamebryoSaveGameInfo(this));
@@ -93,14 +95,19 @@ QString GameEnderalSE::gameName() const
   return "Enderal Special Edition";
 }
 
+QIcon GameEnderalSE::gameIcon() const
+{
+  return MOBase::iconForExecutable(gameDirectory().absoluteFilePath(getLauncherName()));
+}
+
 QList<ExecutableInfo> GameEnderalSE::executables() const
 {
-  return QList<ExecutableInfo>()
-    << ExecutableInfo("Enderal Special Edition (SKSE)", findInGameFolder(feature<ScriptExtender>()->loaderName()))
-    // << ExecutableInfo("Enderal Special Edition Launcher", findInGameFolder(getLauncherName()))
-    // << ExecutableInfo("LOOT", getLootPath()).withArgument("--game=\"Skyrim Special Edition\"")
-    << ExecutableInfo("Creation Kit", findInGameFolder("CreationKit.exe"))
-    ;
+  return {
+    ExecutableInfo("Enderal Special Edition (SKSE)", findInGameFolder(feature<ScriptExtender>()->loaderName())),
+    ExecutableInfo("Enderal Special Edition Launcher", findInGameFolder(getLauncherName())),
+    // ExecutableInfo("LOOT", getLootPath()).withArgument("--game=\"Skyrim Special Edition\""),
+    ExecutableInfo("Creation Kit", findInGameFolder("CreationKit.exe"))
+  };
 }
 
 QList<ExecutableForcedLoadSetting> GameEnderalSE::executableForcedLoads() const
@@ -115,7 +122,7 @@ QString GameEnderalSE::binaryName() const
 
 QString GameEnderalSE::getLauncherName() const
 {
-  return "";
+  return "Enderal Launcher.exe";
 }
 
 
@@ -136,7 +143,7 @@ QString GameEnderalSE::localizedName() const
 
 QString GameEnderalSE::author() const
 {
-  return "Holt59 & Archost & ZachHaber";
+  return "Holt59, Archost & ZachHaber";
 }
 
 QString GameEnderalSE::description() const
@@ -157,21 +164,22 @@ QList<PluginSetting> GameEnderalSE::settings() const
 void GameEnderalSE::initializeProfile(const QDir &path, ProfileSettings settings) const
 {
   if (settings.testFlag(IPluginGame::MODS)) {
-    copyToProfile(localAppFolder() + "/Skyrim Special Edition", path, "plugins.txt");
-    copyToProfile(localAppFolder() + "/Skyrim Special Edition", path, "loadorder.txt");
+    copyToProfile(localAppFolder() + "/Enderal Special Edition", path, "plugins.txt");
+    copyToProfile(localAppFolder() + "/Enderal Special Edition", path, "loadorder.txt");
   }
 
   if (settings.testFlag(IPluginGame::CONFIGURATION)) {
     if (settings.testFlag(IPluginGame::PREFER_DEFAULTS)
-      || !QFileInfo(myGamesPath() + "/skyrim.ini").exists()) {
-      copyToProfile(gameDirectory().absolutePath(), path, "skyrim_default.ini", "skyrim.ini");
+      || !QFileInfo(myGamesPath() + "/Enderal.ini").exists()) {
+
+      //there is no default ini, actually they are going to put them in for us!
+      copyToProfile(gameDirectory().absolutePath(), path, "enderal_default.ini", "Enderal.ini");
+      copyToProfile(gameDirectory().absolutePath(), path, "enderalprefs_default.ini", "EnderalPrefs.ini");
     }
     else {
-      copyToProfile(myGamesPath(), path, "skyrim.ini");
+      copyToProfile(myGamesPath(), path, "Enderal.ini");
+      copyToProfile(myGamesPath(), path, "EnderalPrefs.ini");
     }
-
-    copyToProfile(myGamesPath(), path, "skyrimprefs.ini");
-    copyToProfile(myGamesPath(), path, "skyrimcustom.ini");
   }
 }
 
@@ -199,9 +207,20 @@ QStringList GameEnderalSE::primaryPlugins() const
 {
   return {
     "skyrim.esm",
+    "dawnguard.esm",
+    "hearthfires.esm",
+    "dragonborn.esm",
     "update.esm",
+    "enderal - forgotten stories.esm",
+    "skyui_se.esp"
   };
 }
+
+QStringList GameEnderalSE::DLCPlugins() const
+{
+  return { };
+}
+
 
 QStringList GameEnderalSE::gameVariants() const
 {
@@ -210,7 +229,7 @@ QStringList GameEnderalSE::gameVariants() const
 
 QString GameEnderalSE::gameShortName() const
 {
-  return "enderalspecialedition";
+  return "EnderalSE";
 }
 
 QStringList GameEnderalSE::validShortNames() const
@@ -225,18 +244,8 @@ QString GameEnderalSE::gameNexusName() const
 
 QStringList GameEnderalSE::iniFiles() const
 {
-  return { "skyrim.ini", "skyrimprefs.ini", "skyrimcustom.ini" };
+  return { "Enderal.ini", "EnderalPrefs.ini" };
 }
-
-QStringList GameEnderalSE::DLCPlugins() const
-{
-  return {
-    "dawnguard.esm",
-    "hearthfires.esm",
-    "dragonborn.esm"
-  };
-}
-
 QStringList GameEnderalSE::CCPlugins() const
 {
   QStringList plugins;
@@ -287,7 +296,7 @@ MappingType GameEnderalSE::mappings() const
 
   for (const QString &profileFile : { "plugins.txt", "loadorder.txt" }) {
     result.push_back({ m_Organizer->profilePath() + "/" + profileFile,
-        localAppFolder() + "/Skyrim Special Edition/" + profileFile,
+        localAppFolder() + "/Enderal Special Edition/" + profileFile,
         false });
   }
 
