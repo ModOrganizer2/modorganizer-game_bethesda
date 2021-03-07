@@ -45,19 +45,19 @@ QStringList EnderalSEDataArchives::archives(const MOBase::IProfile *profile) con
   QStringList result;
 
   QString iniFile = profile->localSettingsEnabled() ? QDir(profile->absolutePath()).absoluteFilePath("enderal.ini") : m_LocalGameDir.absoluteFilePath("enderal.ini");
-  result.append(getArchivesFromKey(iniFile, "SResourceArchiveList"));
-  result.append(getArchivesFromKey(iniFile, "SResourceArchiveList2"));
+  result.append(getArchivesFromKey(iniFile, "SResourceArchiveList", 512));
+  result.append(getArchivesFromKey(iniFile, "SResourceArchiveList2", 512));
 
   return result;
 }
 
 void EnderalSEDataArchives::writeArchiveList(MOBase::IProfile *profile, const QStringList &before)
 {
-  QString list = before.join(", ");
+  QString list = before.join(",");
 
   QString iniFile = profile->localSettingsEnabled() ? QDir(profile->absolutePath()).absoluteFilePath("enderal.ini") : m_LocalGameDir.absoluteFilePath("enderal.ini");
-  if (list.length() > 255) {
-    int splitIdx = list.lastIndexOf(",", 256);
+  if (list.length() > 511) {
+    int splitIdx = list.lastIndexOf(",", 512);
     setArchivesToKey(iniFile, "SResourceArchiveList", list.mid(0, splitIdx));
     setArchivesToKey(iniFile, "SResourceArchiveList2", list.mid(splitIdx + 2));
   } else {

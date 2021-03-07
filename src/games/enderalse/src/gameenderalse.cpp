@@ -3,6 +3,7 @@
 #include "enderalsedataarchives.h"
 #include "enderalsescriptextender.h"
 #include "enderalseunmanagedmods.h"
+#include "enderalsegameplugins.h"
 #include "enderalsemoddatachecker.h"
 #include "enderalsemoddatacontent.h"
 #include "enderalsesavegame.h"
@@ -12,7 +13,6 @@
 #include <executableinfo.h>
 #include <gamebryosavegameinfo.h>
 #include <gamebryolocalsavegames.h>
-#include <creationgameplugins.h>
 #include "versioninfo.h"
 #include <ipluginlist.h>
 #include <utility.h>
@@ -84,7 +84,7 @@ bool GameEnderalSE::init(IOrganizer *moInfo)
   registerFeature<ModDataChecker>(new EnderalSEModDataChecker(this));
   registerFeature<ModDataContent>(new EnderalSEModDataContent(this));
   registerFeature<SaveGameInfo>(new GamebryoSaveGameInfo(this));
-  registerFeature<GamePlugins>(new CreationGamePlugins(moInfo));
+  registerFeature<GamePlugins>(new EnderalSEGamePlugins(moInfo));
   registerFeature<UnmanagedMods>(new EnderalSEUnmangedMods(this));
 
   return true;
@@ -211,6 +211,10 @@ QStringList GameEnderalSE::primaryPlugins() const
     "hearthfires.esm",
     "dragonborn.esm",
     "update.esm",
+
+    // these two plugins are considered "primary" for users but are not
+    // automatically loaded by the game so we need to force-write them
+    // to the plugin list
     "enderal - forgotten stories.esm",
     "skyui_se.esp"
   };

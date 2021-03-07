@@ -14,4 +14,12 @@
         <translation type="unfinished"></translation>
     </message>
 </context>
+<context>
+    <name>QObject</name>
+    <message>
+        <location filename="enderalsegameplugins.cpp" line="73"/>
+        <source>Some of your plugins have invalid names! These plugins can not be loaded by the game. Please see mo_interface.log for a list of affected plugins and rename them.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
 </TS>
