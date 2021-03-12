@@ -182,10 +182,10 @@ QStringList GameEnderalSE::primaryPlugins() const
 {
   return {
     "skyrim.esm",
+    "update.esm",
     "dawnguard.esm",
     "hearthfires.esm",
     "dragonborn.esm",
-    "update.esm",
 
     // these two plugins are considered "primary" for users but are not
     // automatically loaded by the game so we need to force-write them
