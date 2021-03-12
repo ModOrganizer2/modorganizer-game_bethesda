@@ -41,10 +41,6 @@ public: // IPluginGame interface
   virtual int nexusModOrganizerID() const override;
   virtual int nexusGameID() const override;
 
-  virtual bool isInstalled() const override;
-  virtual void setGamePath(const QString &path) override;
-  virtual QDir gameDirectory() const override;
-
 public: // IPlugin interface
 
   virtual QString name() const override;
@@ -62,10 +58,7 @@ protected:
   QString savegameExtension() const override;
   QString savegameSEExtension() const override;
 
-  QDir documentsDirectory() const;
-  QDir savesDirectory() const;
   QFileInfo findInGameFolder(const QString &relativePath) const;
-  QString myGamesPath() const;
 
   virtual QString identifyGamePath() const override;
 

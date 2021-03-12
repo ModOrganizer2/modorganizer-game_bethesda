@@ -4,6 +4,7 @@
 #include "enderalsescriptextender.h"
 #include "enderalseunmanagedmods.h"
 #include "enderalsegameplugins.h"
+#include "enderalselocalsavegames.h"
 #include "enderalsemoddatachecker.h"
 #include "enderalsemoddatacontent.h"
 #include "enderalsesavegame.h"
@@ -12,7 +13,6 @@
 #include <pluginsetting.h>
 #include <executableinfo.h>
 #include <gamebryosavegameinfo.h>
-#include <gamebryolocalsavegames.h>
 #include "versioninfo.h"
 #include <ipluginlist.h>
 #include <utility.h>
@@ -34,16 +34,6 @@ GameEnderalSE::GameEnderalSE()
 {
 }
 
-void GameEnderalSE::setGamePath(const QString &path)
-{
-  m_GamePath = path;
-}
-
-QDir GameEnderalSE::documentsDirectory() const
-{
-  return m_MyGamesPath;
-}
-
 QString GameEnderalSE::identifyGamePath() const
 {
   QString path = "Software\\SureAI\\EnderalSE";
@@ -57,21 +47,6 @@ QString GameEnderalSE::identifyGamePath() const
   return result;
 }
 
-QDir GameEnderalSE::savesDirectory() const
-{
-  return QDir(m_MyGamesPath + "/Saves");
-}
-
-QString GameEnderalSE::myGamesPath() const
-{
-  return m_MyGamesPath;
-}
-
-bool GameEnderalSE::isInstalled() const
-{
-  return !m_GamePath.isEmpty();
-}
-
 bool GameEnderalSE::init(IOrganizer *moInfo)
 {
   if (!GameGamebryo::init(moInfo)) {
@@ -80,7 +55,7 @@ bool GameEnderalSE::init(IOrganizer *moInfo)
 
   registerFeature<ScriptExtender>(new EnderalSEScriptExtender(this));
   registerFeature<DataArchives>(new EnderalSEDataArchives(myGamesPath()));
-  registerFeature<LocalSavegames>(new GamebryoLocalSavegames(myGamesPath(), "enderal.ini"));
+  registerFeature<LocalSavegames>(new EnderalSELocalSavegames(myGamesPath(), "Enderal.ini"));
   registerFeature<ModDataChecker>(new EnderalSEModDataChecker(this));
   registerFeature<ModDataContent>(new EnderalSEModDataContent(this));
   registerFeature<SaveGameInfo>(new GamebryoSaveGameInfo(this));
@@ -286,11 +261,6 @@ int GameEnderalSE::nexusModOrganizerID() const
 int GameEnderalSE::nexusGameID() const
 {
   return 3685;
-}
-
-QDir GameEnderalSE::gameDirectory() const
-{
-  return QDir(m_GamePath);
 }
 
 // Not to delete all the spaces...
