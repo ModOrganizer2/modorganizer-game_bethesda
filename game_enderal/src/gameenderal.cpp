@@ -138,8 +138,9 @@ void GameEnderal::initializeProfile(const QDir &path, ProfileSettings settings) 
 
 bool GameEnderal::looksValid(QDir const &path) const
 {
-  //Check for <prog>.exe for now.
-  return path.exists(getLauncherName());
+  // we need to check both launcher and binary because the binary also exists for
+  // Skyrim and the launcher for Enderal SE
+  return path.exists(getLauncherName()) && path.exists(binaryName());
 }
 
 QIcon GameEnderal::gameIcon() const
