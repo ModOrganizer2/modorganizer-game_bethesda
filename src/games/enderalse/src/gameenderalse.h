@@ -30,6 +30,7 @@ public: // IPluginGame interface
   virtual QStringList gameVariants() const override;
   virtual QString binaryName() const override;
   virtual QString getLauncherName() const override;
+  virtual bool looksValid(const QDir& folder) const override;
   virtual QString gameShortName() const override;
   virtual QString gameNexusName() const override;
   virtual QStringList validShortNames() const override;

@@ -4,12 +4,12 @@
 <context>
     <name>GameEnderalSE</name>
     <message>
-        <location filename="gameenderalse.cpp" line="116"/>
+        <location filename="gameenderalse.cpp" line="122"/>
         <source>Enderal Special Edition Support Plugin</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="gameenderalse.cpp" line="126"/>
+        <location filename="gameenderalse.cpp" line="132"/>
         <source>Adds support for the game Enderal Special Edition.</source>
         <translation type="unfinished"></translation>
     </message>

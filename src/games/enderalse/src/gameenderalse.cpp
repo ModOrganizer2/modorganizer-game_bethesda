@@ -100,6 +100,12 @@ QString GameEnderalSE::getLauncherName() const
   return "Enderal Launcher.exe";
 }
 
+bool GameEnderalSE::looksValid(const QDir& folder) const
+{
+  // we need to check both launcher and binary because the binary also exists for
+  // Skyrim SE and the launcher for Enderal LE
+  return folder.exists(getLauncherName()) && folder.exists(binaryName());
+}
 
 QFileInfo GameEnderalSE::findInGameFolder(const QString &relativePath) const
 {
