@@ -24,7 +24,7 @@ auto GamebryoModDataChecker::possibleFolderNames() const -> const FileNameSet& {
  */
 auto GamebryoModDataChecker::possibleFileExtensions() const -> const FileNameSet& {
   static FileNameSet result{
-    "esp", "esm", "esl", "bsa", "ba2", "modgroups"
+    "esp", "esm", "esl", "bsa", "ba2", "modgroups", "ini"
   };
   return result;
 }
