@@ -20,7 +20,7 @@ protected:
   }
   virtual const FileNameSet& possibleFileExtensions() const override {
     static FileNameSet result{
-      "esp", "esm", "ba2", "modgroups"
+      "esp", "esm", "ba2", "modgroups", "ini"
     };
     return result;
   }
