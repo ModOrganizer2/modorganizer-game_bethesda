@@ -88,7 +88,7 @@ QString GameFallout3::author() const
 
 QString GameFallout3::description() const
 {
-  return tr("Adds support for the game Fallout 3s");
+  return tr("Adds support for the game Fallout 3.");
 }
 
 MOBase::VersionInfo GameFallout3::version() const
