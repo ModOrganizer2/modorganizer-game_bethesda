@@ -132,7 +132,7 @@ protected:
 
 protected:
 
-  std::map<std::type_index, boost::any> featureList() const override;
+  std::map<std::type_index, std::any> featureList() const override;
 
   //These should be implemented by anything that uses gamebryo (I think)
   //(and if they don't, it'll be a null pointer and won't look implemented,
@@ -150,7 +150,7 @@ protected:
   void registerFeature(T *type) {
     auto index = std::type_index(typeid(T));
     if (m_FeatureList.find(index) != m_FeatureList.end()) {
-      delete boost::any_cast<T*>(m_FeatureList[index]);
+      delete std::any_cast<T*>(m_FeatureList[index]);
     }
     m_FeatureList[index] = type;
   }
@@ -162,7 +162,7 @@ protected:
   QString m_GameVariant;
   MOBase::IOrganizer *m_Organizer;
 
-  std::map<std::type_index, boost::any> m_FeatureList;
+  std::map<std::type_index, std::any> m_FeatureList;
 
 };
 
