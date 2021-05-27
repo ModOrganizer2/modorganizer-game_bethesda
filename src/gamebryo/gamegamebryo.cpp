@@ -268,7 +268,7 @@ QString GameGamebryo::myGamesPath() const
   return findInRegistry(HKEY_LOCAL_MACHINE, L"Software\\LOOT", L"Installed Path") + "/Loot.exe";
 }
 
-std::map<std::type_index, boost::any> GameGamebryo::featureList() const
+std::map<std::type_index, std::any> GameGamebryo::featureList() const
 {
   return m_FeatureList;
 }
