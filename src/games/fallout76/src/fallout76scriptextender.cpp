@@ -17,8 +17,3 @@ QString Fallout76ScriptExtender::PluginPath() const
 {
   return "f76se/plugins";
 }
-
-QStringList Fallout76ScriptExtender::saveGameAttachmentExtensions() const
-{
-  return { };
-}

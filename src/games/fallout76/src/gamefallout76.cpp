@@ -39,10 +39,8 @@ bool GameFallout76::init(IOrganizer *moInfo)
 
   registerFeature<ScriptExtender>(new Fallout76ScriptExtender(this));
   registerFeature<DataArchives>(new Fallout76DataArchives(myGamesPath()));
-  registerFeature<LocalSavegames>(new GamebryoLocalSavegames(myGamesPath(), "Fallout76.ini"));
   registerFeature<ModDataChecker>(new Fallout76ModDataChecker(this));
   registerFeature<ModDataContent>(new Fallout76ModDataContent(this));
-  registerFeature<SaveGameInfo>(new Fallout76SaveGameInfo(this));
   registerFeature<GamePlugins>(new CreationGamePlugins(moInfo));
   registerFeature<UnmanagedMods>(new Fallout76UnmangedMods(this));
 
@@ -87,12 +85,7 @@ QString GameFallout76::description() const
 
 MOBase::VersionInfo GameFallout76::version() const
 {
-  return VersionInfo(2, 0, 0, VersionInfo::RELEASE_ALPHA);
-}
-
-bool GameFallout76::isActive() const
-{
-  return qApp->property("managed_game").value<IPluginGame*>() == this;
+  return VersionInfo(3, 0, 0, VersionInfo::RELEASE_ALPHA);
 }
 
 QList<PluginSetting> GameFallout76::settings() const
@@ -128,6 +121,16 @@ QString GameFallout76::savegameExtension() const
 QString GameFallout76::savegameSEExtension() const
 {
   return "f76se";
+}
+
+std::vector<std::shared_ptr<const MOBase::ISaveGame>> GameFallout76::listSaves(QDir folder) const
+{
+  return {};
+}
+
+std::shared_ptr<const GamebryoSaveGame> GameFallout76::makeSaveGame(QString) const
+{
+  return nullptr;
 }
 
 QString GameFallout76::steamAPPId() const

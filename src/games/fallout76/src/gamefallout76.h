@@ -21,33 +21,35 @@ public:
 
 public: // IPluginGame interface
 
-  virtual QString gameName() const override;
-  virtual QList<MOBase::ExecutableInfo> executables() const override;
-  virtual QList<MOBase::ExecutableForcedLoadSetting> executableForcedLoads() const override;
-  virtual void initializeProfile(const QDir &path, ProfileSettings settings) const override;
-  virtual QString savegameExtension() const override;
-  virtual QString savegameSEExtension() const override;
-  virtual QString steamAPPId() const override;
-  virtual QStringList primaryPlugins() const override;
-  virtual QStringList gameVariants() const override;
-  virtual QString gameShortName() const override;
-  virtual QString gameNexusName() const override;
-  virtual QStringList iniFiles() const override;
-  virtual QStringList DLCPlugins() const override;
-  virtual QStringList CCPlugins() const override;
-  virtual LoadOrderMechanism loadOrderMechanism() const override;
-  virtual int nexusModOrganizerID() const override;
-  virtual int nexusGameID() const override;
+  QString gameName() const override;
+  QList<MOBase::ExecutableInfo> executables() const override;
+  QList<MOBase::ExecutableForcedLoadSetting> executableForcedLoads() const override;
+  void initializeProfile(const QDir &path, ProfileSettings settings) const override;
+  QString steamAPPId() const override;
+  QStringList primaryPlugins() const override;
+  QStringList gameVariants() const override;
+  QString gameShortName() const override;
+  QString gameNexusName() const override;
+  QStringList iniFiles() const override;
+  QStringList DLCPlugins() const override;
+  QStringList CCPlugins() const override;
+  LoadOrderMechanism loadOrderMechanism() const override;
+  int nexusModOrganizerID() const override;
+  int nexusGameID() const override;
+  std::vector<std::shared_ptr<const MOBase::ISaveGame>> listSaves(QDir folder) const override;
 
 public: // IPlugin interface
 
-  virtual QString name() const override;
-  virtual QString author() const override;
-  virtual QString description() const override;
-  virtual MOBase::VersionInfo version() const override;
-  virtual bool isActive() const override;
-  virtual QList<MOBase::PluginSetting> settings() const override;
+  QString name() const override;
+  QString author() const override;
+  QString description() const override;
+  MOBase::VersionInfo version() const override;
+  QList<MOBase::PluginSetting> settings() const override;
 
+protected:
+  std::shared_ptr<const GamebryoSaveGame> makeSaveGame(QString) const;
+  QString savegameExtension() const override;
+  QString savegameSEExtension() const override;
 };
 
 #endif // GAMEFallout76_H

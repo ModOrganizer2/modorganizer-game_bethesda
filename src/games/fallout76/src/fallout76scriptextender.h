@@ -12,9 +12,6 @@ public:
 
   virtual QString BinaryName() const override;
   virtual QString PluginPath() const override;
-
-  virtual QStringList saveGameAttachmentExtensions() const override;
-
 };
 
 #endif // FALLOUT76SCRIPTEXTENDER_H

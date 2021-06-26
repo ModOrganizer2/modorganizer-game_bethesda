@@ -1,14 +1,28 @@
 #ifndef FALLOUT76SAVEGAME_H
 #define FALLOUT76SAVEGAME_H
 
+#include <Windows.h
+
 #include "gamebryosavegame.h"
 
-namespace MOBase { class IPluginGame; }
+class GameFallout76;
 
 class Fallout76SaveGame : public GamebryoSaveGame
 {
 public:
-  Fallout76SaveGame(QString const &fileName, MOBase::IPluginGame const *game, bool const lightEnabled = true);
+  Fallout76SaveGame(QString const &fileName, GameFallout76 const *game);
+
+protected:
+
+  // Fetch easy-to-access information.
+  void fetchInformationFields(FileWrapper& wrapper,
+    QString& playerName,
+    unsigned short& playerLevel,
+    QString& playerLocation,
+    unsigned long& saveNumber,
+    FILETIME& creationTime) const;
+
+  std::unique_ptr<DataFields> fetchDataFields() const override;
 };
 
 #endif // FALLOUT76SAVEGAME_H
