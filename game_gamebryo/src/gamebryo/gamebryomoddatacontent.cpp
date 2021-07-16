@@ -22,7 +22,7 @@ std::vector<GamebryoModDataContent::Content> GamebryoModDataContent::getAllConte
     {CONTENT_TEXTURE,    QT_TR_NOOP("Textures"),               ":/MO/gui/content/texture"},
     {CONTENT_MCM,        QT_TR_NOOP("MCM Configuration"),      ":/MO/gui/content/menu"},
     {CONTENT_INI,        QT_TR_NOOP("INI Files"),              ":/MO/gui/content/inifile"},
-    {CONTENT_FACEGEN,    QT_TR_NOOP("FaceGen Data"),           "", true},
+    {CONTENT_FACEGEN,    QT_TR_NOOP("FaceGen Data"),           ":/MO/gui/content/facegen"},
     {CONTENT_MODGROUP,   QT_TR_NOOP("ModGroup Files"),         ":/MO/gui/content/modgroup"}
   };
 
