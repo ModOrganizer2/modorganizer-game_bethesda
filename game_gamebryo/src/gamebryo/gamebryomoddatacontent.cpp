@@ -22,6 +22,7 @@ std::vector<GamebryoModDataContent::Content> GamebryoModDataContent::getAllConte
     {CONTENT_TEXTURE,    QT_TR_NOOP("Textures"),               ":/MO/gui/content/texture"},
     {CONTENT_MCM,        QT_TR_NOOP("MCM Configuration"),      ":/MO/gui/content/menu"},
     {CONTENT_INI,        QT_TR_NOOP("INI Files"),              ":/MO/gui/content/inifile"},
+    {CONTENT_FACEGEN,    QT_TR_NOOP("FaceGen Data"),           ":/MO/gui/content/facegen"},
     {CONTENT_MODGROUP,   QT_TR_NOOP("ModGroup Files"),         ":/MO/gui/content/modgroup"}
   };
 
@@ -77,6 +78,19 @@ std::vector<int> GamebryoModDataContent::getContentsFor(std::shared_ptr<const MO
         contents.push_back(CONTENT_OPTIONAL);
       }
     }
+  }
+
+  if (m_Enabled[CONTENT_FACEGEN]) {
+      auto e1 = fileTree->findDirectory("meshes/actors/character/facegendata");
+      if (e1) {
+          contents.push_back(CONTENT_FACEGEN);
+      }
+      else {
+          auto e2 = fileTree->findDirectory("textures/actors/character/facegendata");
+          if (e2) {
+              contents.push_back(CONTENT_FACEGEN);
+          }
+      }
   }
 
   ScriptExtender* extender = m_GamePlugin->feature<ScriptExtender>();

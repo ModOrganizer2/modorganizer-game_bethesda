@@ -31,6 +31,7 @@ protected:
     CONTENT_SKYPROC,
     CONTENT_MCM,
     CONTENT_INI,
+    CONTENT_FACEGEN,
     CONTENT_MODGROUP
   };
 
