@@ -92,12 +92,14 @@ QString GameOblivion::description() const
 
 MOBase::VersionInfo GameOblivion::version() const
 {
-  return VersionInfo(1, 4, 1, VersionInfo::RELEASE_FINAL);
+  return VersionInfo(1, 5, 0, VersionInfo::RELEASE_FINAL);
 }
 
 QList<PluginSetting> GameOblivion::settings() const
 {
-  return QList<PluginSetting>();
+  return {
+      PluginSetting("nehrim_downloads", "allow Nehrim downloads", QVariant(false))
+  };
 }
 
 void GameOblivion::initializeProfile(const QDir &path, ProfileSettings settings) const
@@ -147,6 +149,15 @@ QStringList GameOblivion::primaryPlugins() const
 QString GameOblivion::gameShortName() const
 {
   return "Oblivion";
+}
+
+QStringList GameOblivion::validShortNames() const
+{
+  QStringList shortNames;
+  if (m_Organizer->pluginSetting(name(), "nehrim_downloads").toBool()) {
+    shortNames.append( "Nehrim" );
+  }
+  return shortNames;
 }
 
 QString GameOblivion::gameNexusName() const
