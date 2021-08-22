@@ -51,8 +51,8 @@ QString GameNehrim::gameName() const
 QList<ExecutableInfo> GameNehrim::executables() const
 {
   return QList<ExecutableInfo>()
-      << ExecutableInfo("Nehrim", findInGameFolder(binaryName()))
-      << ExecutableInfo("Nehrim Launcher", findInGameFolder(getLauncherName()))
+      << ExecutableInfo("Nehrim", findInGameFolder("Oblivion.exe"))
+      << ExecutableInfo("Nehrim Launcher", findInGameFolder("NehrimLauncher.exe"))
       << ExecutableInfo("Oblivion Mod Manager", findInGameFolder("OblivionModManager.exe"))
       << ExecutableInfo("BOSS", findInGameFolder("BOSS/BOSS.exe"))
       << ExecutableInfo("LOOT", getLootPath()).withArgument("--game=\"Oblivion\"")
@@ -163,7 +163,6 @@ QStringList GameNehrim::DLCPlugins() const
   return {};
 }
 
-
 int GameNehrim::nexusModOrganizerID() const
 {
   return -1;
@@ -192,10 +191,5 @@ QString GameNehrim::identifyGamePath() const
 
 QString GameNehrim::binaryName() const
 {
-    return "Oblivion.exe";
-}
-
-QIcon GameNehrim::gameIcon() const
-{
-  return MOBase::iconForExecutable(gameDirectory().absoluteFilePath("NehrimLauncher.exe"));
+    return "NehrimLauncher.exe";
 }

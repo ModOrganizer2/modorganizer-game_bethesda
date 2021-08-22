@@ -38,7 +38,6 @@ public: // IPluginGame interface
   // technically being in the Oblivion folder
   virtual QString identifyGamePath() const override;
   virtual QString binaryName() const override;
-  virtual QIcon gameIcon() const override;
 
 public: // IPlugin interface
 
