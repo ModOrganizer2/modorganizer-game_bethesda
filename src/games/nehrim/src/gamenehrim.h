@@ -31,6 +31,14 @@ public: // IPluginGame interface
   virtual QStringList DLCPlugins() const override;
   virtual int nexusModOrganizerID() const override;
   virtual int nexusGameID() const override;
+  virtual QStringList primarySources() const override;
+  virtual QStringList validShortNames() const override;
+
+  // Weird stuff happens in these functions due to Nehrim 
+  // technically being in the Oblivion folder
+  virtual QString identifyGamePath() const override;
+  virtual QString binaryName() const override;
+  virtual QIcon gameIcon() const override;
 
 public: // IPlugin interface
 

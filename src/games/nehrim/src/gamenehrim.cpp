@@ -153,7 +153,6 @@ QString GameNehrim::gameNexusName() const
   return "Nehrim";
 }
 
-
 QStringList GameNehrim::iniFiles() const
 {
   return { "oblivion.ini", "oblivionprefs.ini" };
@@ -173,4 +172,30 @@ int GameNehrim::nexusModOrganizerID() const
 int GameNehrim::nexusGameID() const
 {
   return 3312;
+}
+
+QStringList GameNehrim::primarySources() const
+{
+    return {"Oblivion"};
+}
+
+QStringList GameNehrim::validShortNames() const
+{
+    return {"Oblivion"};
+}
+
+QString GameNehrim::identifyGamePath() const
+{
+  QString path = "Software\\Bethesda Softworks\\Oblivion";
+  return findInRegistry(HKEY_LOCAL_MACHINE, path.toStdWString().c_str(), L"Installed Path");
+}
+
+QString GameNehrim::binaryName() const
+{
+    return "Oblivion.exe";
+}
+
+QIcon GameNehrim::gameIcon() const
+{
+  return MOBase::iconForExecutable(gameDirectory().absoluteFilePath("NehrimLauncher.exe"));
 }
