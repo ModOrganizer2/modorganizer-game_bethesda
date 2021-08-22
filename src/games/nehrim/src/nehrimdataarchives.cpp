@@ -14,7 +14,7 @@ QStringList NehrimDataArchives::vanillaArchives() const
           , "N - Misc.bsa"
           , "N - Sounds.bsa"
           , "L - Voices.bsa"
-		  , "L - Misc.bsa"
+          , "L - Misc.bsa"
   };
 }
 
