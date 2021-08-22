@@ -1,23 +1,24 @@
-#include "obliviondataarchives.h"
+#include "nehrimdataarchives.h"
 #include <utility.h>
 
-OblivionDataArchives::OblivionDataArchives(const QDir &myGamesDir) :
+NehrimDataArchives::NehrimDataArchives(const QDir &myGamesDir) :
   GamebryoDataArchives(myGamesDir)
 {
 }
 
-QStringList OblivionDataArchives::vanillaArchives() const
+QStringList NehrimDataArchives::vanillaArchives() const
 {
-  return  { "Oblivion - Misc.bsa"
-          , "Oblivion - Textures - Compressed.bsa"
-          , "Oblivion - Meshes.bsa"
-          , "Oblivion - Sounds.bsa"
-          , "Oblivion - Voices1.bsa"
-          , "Oblivion - Voices2.bsa"
+  return  { "N - Meshes.bsa"
+          , "N - Textures1.bsa"
+          , "N - Textures2.bsa"
+          , "N - Misc.bsa"
+          , "N - Sounds.bsa"
+          , "L - Voices.bsa"
+		  , "L - Misc.bsa"
   };
 }
 
-QStringList OblivionDataArchives::archives(const MOBase::IProfile *profile) const
+QStringList NehrimDataArchives::archives(const MOBase::IProfile *profile) const
 {
   QStringList result;
 
@@ -27,7 +28,7 @@ QStringList OblivionDataArchives::archives(const MOBase::IProfile *profile) cons
   return result;
 }
 
-void OblivionDataArchives::writeArchiveList(MOBase::IProfile *profile, const QStringList &before)
+void NehrimDataArchives::writeArchiveList(MOBase::IProfile *profile, const QStringList &before)
 {
   QString list = before.join(", ");
 

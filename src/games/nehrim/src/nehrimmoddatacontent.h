@@ -1,16 +1,16 @@
-#ifndef OBLIVION_MODDATACONTENT_H
-#define OBLIVION_MODDATACONTENT_H
+#ifndef NEHRIM_MODDATACONTENT_H
+#define NEHRIM_MODDATACONTENT_H
 
 #include <gamebryomoddatacontent.h>
 #include <ifiletree.h>
 
-class OblivionModDataContent : public GamebryoModDataContent {
+class NehrimModDataContent : public GamebryoModDataContent {
 public:
 
   /**
    *
    */
-  OblivionModDataContent(GameGamebryo const* gamePlugin) : GamebryoModDataContent(gamePlugin) {
+  NehrimModDataContent(GameGamebryo const* gamePlugin) : GamebryoModDataContent(gamePlugin) {
     // Just need to disable some contents:
     m_Enabled[CONTENT_MCM] = false;
     m_Enabled[CONTENT_SKYPROC] = false;
@@ -18,4 +18,4 @@ public:
 
 };
 
-#endif // OBLIVION_MODDATACONTENT_H
+#endif // NEHRIM_MODDATACONTENT_H

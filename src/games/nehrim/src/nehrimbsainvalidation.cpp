@@ -1,17 +1,17 @@
-#include "oblivionbsainvalidation.h"
+#include "nehrimbsainvalidation.h"
 
 
-OblivionBSAInvalidation::OblivionBSAInvalidation(DataArchives *dataArchives, MOBase::IPluginGame const *game)
+NehrimBSAInvalidation::NehrimBSAInvalidation(DataArchives *dataArchives, MOBase::IPluginGame const *game)
   : GamebryoBSAInvalidation(dataArchives, "oblivion.ini", game)
 {
 }
 
-QString OblivionBSAInvalidation::invalidationBSAName() const
+QString NehrimBSAInvalidation::invalidationBSAName() const
 {
-  return "Oblivion - Invalidation.bsa";
+  return "Nehrim - Invalidation.bsa";
 }
 
-unsigned long OblivionBSAInvalidation::bsaVersion() const
+unsigned long NehrimBSAInvalidation::bsaVersion() const
 {
   return 0x67;
 }

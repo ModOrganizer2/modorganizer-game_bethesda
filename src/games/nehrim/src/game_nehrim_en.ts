@@ -2,15 +2,15 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="en_US">
 <context>
-    <name>GameOblivion</name>
+    <name>GameNehrim</name>
     <message>
-        <location filename="gameoblivion.cpp" line="80"/>
-        <source>Oblivion Support Plugin</source>
+        <location filename="gamenehrim.cpp" line="80"/>
+        <source>Nehrim Support Plugin</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="gameoblivion.cpp" line="90"/>
-        <source>Adds support for the game Oblivion</source>
+        <location filename="gamenehrim.cpp" line="90"/>
+        <source>Adds support for the game Nehrim</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

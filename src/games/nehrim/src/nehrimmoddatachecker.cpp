@@ -1,6 +1,6 @@
-#include "oblivionmoddatachecker.h"
+#include "nehrimmoddatachecker.h"
 
-ModDataChecker::CheckReturn OblivionModDataChecker::dataLooksValid(
+ModDataChecker::CheckReturn NehrimModDataChecker::dataLooksValid(
   std::shared_ptr<const MOBase::IFileTree> fileTree) const
 {
   // Check with Gamebryo stuff:
@@ -19,7 +19,7 @@ ModDataChecker::CheckReturn OblivionModDataChecker::dataLooksValid(
   return CheckReturn::FIXABLE;
 }
 
-std::shared_ptr<MOBase::IFileTree> OblivionModDataChecker::fix(
+std::shared_ptr<MOBase::IFileTree> NehrimModDataChecker::fix(
   std::shared_ptr<MOBase::IFileTree> fileTree) const
 {
   // If we arrive here, it means all files starts with OBSE.

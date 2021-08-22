@@ -1,19 +1,19 @@
-#ifndef GAMEOBLIVION_H
-#define GAMEOBLIVION_H
+#ifndef GAMENEHRIM_H
+#define GAMENEHRIM_H
 
 #include "gamegamebryo.h"
 
 #include <QObject>
 #include <QtGlobal>
 
-class GameOblivion : public GameGamebryo
+class GameNehrim : public GameGamebryo
 {
   Q_OBJECT
-  Q_PLUGIN_METADATA(IID "org.tannin.GameOblivion" FILE "gameoblivion.json")
+  Q_PLUGIN_METADATA(IID "org.tannin.GameNehrim" FILE "gamenehrim.json")
 
 public:
 
-  GameOblivion();
+  GameNehrim();
 
   virtual bool init(MOBase::IOrganizer *moInfo) override;
 
@@ -49,4 +49,4 @@ protected:
 
 };
 
-#endif // GAMEOBLIVION_H
+#endif // GAMENEHRIM_H

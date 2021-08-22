@@ -1,8 +1,8 @@
-#include "oblivionsavegame.h"
+#include "nehrimsavegame.h"
 
 #include <Windows.h>
 
-OblivionSaveGame::OblivionSaveGame(QString const &fileName, GameOblivion const *game) :
+NehrimSaveGame::NehrimSaveGame(QString const &fileName, GameNehrim const *game) :
   GamebryoSaveGame(fileName, game)
 {
   FileWrapper file(getFilepath(), "TES4SAVEGAME");
@@ -13,7 +13,7 @@ OblivionSaveGame::OblivionSaveGame(QString const &fileName, GameOblivion const *
   setCreationTime(creationTime);
 }
 
-void OblivionSaveGame::fetchInformationFields(FileWrapper& file,
+void NehrimSaveGame::fetchInformationFields(FileWrapper& file,
   unsigned long& saveNumber,
   QString& playerName,
   unsigned short& playerLevel,
@@ -44,7 +44,7 @@ void OblivionSaveGame::fetchInformationFields(FileWrapper& file,
   file.read(creationTime);
 }
 
-std::unique_ptr<GamebryoSaveGame::DataFields> OblivionSaveGame::fetchDataFields() const
+std::unique_ptr<GamebryoSaveGame::DataFields> NehrimSaveGame::fetchDataFields() const
 {
   FileWrapper file(getFilepath(), "TES4SAVEGAME");
   file.setPluginString(GamebryoSaveGame::StringType::TYPE_BSTRING);

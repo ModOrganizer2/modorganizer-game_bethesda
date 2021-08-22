@@ -1,11 +1,11 @@
-#include "gameoblivion.h"
+#include "gamenehrim.h"
 
-#include "oblivionbsainvalidation.h"
-#include "obliviondataarchives.h"
-#include "oblivionscriptextender.h"
-#include "oblivionmoddatachecker.h"
-#include "oblivionmoddatacontent.h"
-#include "oblivionsavegame.h"
+#include "nehrimbsainvalidation.h"
+#include "nehrimdataarchives.h"
+#include "nehrimscriptextender.h"
+#include "nehrimmoddatachecker.h"
+#include "nehrimmoddatacontent.h"
+#include "nehrimsavegame.h"
 
 #include "pluginsetting.h"
 #include "executableinfo.h"
@@ -22,38 +22,37 @@
 
 using namespace MOBase;
 
-GameOblivion::GameOblivion()
+GameNehrim::GameNehrim()
 {
 }
 
-bool GameOblivion::init(IOrganizer *moInfo)
+bool GameNehrim::init(IOrganizer *moInfo)
 {
   if (!GameGamebryo::init(moInfo)) {
     return false;
   }
-  registerFeature<ScriptExtender>(new OblivionScriptExtender(this));
-  registerFeature<DataArchives>(new OblivionDataArchives(myGamesPath()));
-  registerFeature<BSAInvalidation>(new OblivionBSAInvalidation(feature<DataArchives>(), this));
+  registerFeature<ScriptExtender>(new NehrimScriptExtender(this));
+  registerFeature<DataArchives>(new NehrimDataArchives(myGamesPath()));
+  registerFeature<BSAInvalidation>(new NehrimBSAInvalidation(feature<DataArchives>(), this));
   registerFeature<SaveGameInfo>(new GamebryoSaveGameInfo(this));
   registerFeature<LocalSavegames>(new GamebryoLocalSavegames(myGamesPath(), "oblivion.ini"));
-  registerFeature<ModDataChecker>(new OblivionModDataChecker(this));
-  registerFeature<ModDataContent>(new OblivionModDataContent(this));
+  registerFeature<ModDataChecker>(new NehrimModDataChecker(this));
+  registerFeature<ModDataContent>(new NehrimModDataContent(this));
   registerFeature<GamePlugins>(new GamebryoGamePlugins(moInfo));
   registerFeature<UnmanagedMods>(new GamebryoUnmangedMods(this));
   return true;
 }
 
-QString GameOblivion::gameName() const
+QString GameNehrim::gameName() const
 {
-  return "Oblivion";
+  return "Nehrim";
 }
 
-QList<ExecutableInfo> GameOblivion::executables() const
+QList<ExecutableInfo> GameNehrim::executables() const
 {
   return QList<ExecutableInfo>()
-      << ExecutableInfo("OBSE", findInGameFolder(feature<ScriptExtender>()->loaderName()))
-      << ExecutableInfo("Oblivion", findInGameFolder(binaryName()))
-      << ExecutableInfo("Oblivion Launcher", findInGameFolder(getLauncherName()))
+      << ExecutableInfo("Nehrim", findInGameFolder(binaryName()))
+      << ExecutableInfo("Nehrim Launcher", findInGameFolder(getLauncherName()))
       << ExecutableInfo("Oblivion Mod Manager", findInGameFolder("OblivionModManager.exe"))
       << ExecutableInfo("BOSS", findInGameFolder("BOSS/BOSS.exe"))
       << ExecutableInfo("LOOT", getLootPath()).withArgument("--game=\"Oblivion\"")
@@ -61,50 +60,50 @@ QList<ExecutableInfo> GameOblivion::executables() const
   ;
 }
 
-QList<ExecutableForcedLoadSetting> GameOblivion::executableForcedLoads() const
+QList<ExecutableForcedLoadSetting> GameNehrim::executableForcedLoads() const
 {
   //TODO Search game directory for OBSE DLLs
   return QList<ExecutableForcedLoadSetting>()
-      << ExecutableForcedLoadSetting("Oblivion.exe", "obse_1_2_416.dll").withForced()
+      << ExecutableForcedLoadSetting("Oblvion.exe", "obse_1_2_416.dll").withForced()
       << ExecutableForcedLoadSetting("TESConstructionSet.exe", "obse_editor_1_2.dll").withForced()
   ;
 }
 
-QString GameOblivion::name() const
+QString GameNehrim::name() const
 {
-  return "Oblivion Support Plugin";
+  return "Nehrim Support Plugin";
 }
 
-QString GameOblivion::localizedName() const
+QString GameNehrim::localizedName() const
 {
-  return tr("Oblivion Support Plugin");
+  return tr("Nehrim Support Plugin");
 }
 
-QString GameOblivion::author() const
+QString GameNehrim::author() const
 {
   return "Tannin";
 }
 
-QString GameOblivion::description() const
+QString GameNehrim::description() const
 {
-  return tr("Adds support for the game Oblivion");
+  return tr("Adds support for the game Nehrim");
 }
 
-MOBase::VersionInfo GameOblivion::version() const
+MOBase::VersionInfo GameNehrim::version() const
 {
-  return VersionInfo(1, 4, 1, VersionInfo::RELEASE_FINAL);
+  return VersionInfo(1, 0, 0, VersionInfo::RELEASE_FINAL);
 }
 
-QList<PluginSetting> GameOblivion::settings() const
+QList<PluginSetting> GameNehrim::settings() const
 {
   return QList<PluginSetting>();
 }
 
-void GameOblivion::initializeProfile(const QDir &path, ProfileSettings settings) const
+void GameNehrim::initializeProfile(const QDir &path, ProfileSettings settings) const
 {
   if (settings.testFlag(IPluginGame::MODS)) {
-    copyToProfile(localAppFolder() + "/Oblivion", path, "plugins.txt");
-    copyToProfile(localAppFolder() + "/Oblivion", path, "loadorder.txt");
+    copyToProfile(localAppFolder() + "/Oblvion", path, "plugins.txt");
+    copyToProfile(localAppFolder() + "/Oblvion", path, "loadorder.txt");
   }
 
   if (settings.testFlag(IPluginGame::CONFIGURATION)) {
@@ -119,61 +118,59 @@ void GameOblivion::initializeProfile(const QDir &path, ProfileSettings settings)
   }
 }
 
-QString GameOblivion::savegameExtension() const
+QString GameNehrim::savegameExtension() const
 {
   return "ess";
 }
 
-QString GameOblivion::savegameSEExtension() const
+QString GameNehrim::savegameSEExtension() const
 {
   return "obse";
 }
 
-std::shared_ptr<const GamebryoSaveGame> GameOblivion::makeSaveGame(QString filePath) const
+std::shared_ptr<const GamebryoSaveGame> GameNehrim::makeSaveGame(QString filePath) const
 {
-  return std::make_shared<const OblivionSaveGame>(filePath, this);
+  return std::make_shared<const NehrimSaveGame>(filePath, this);
 }
 
-QString GameOblivion::steamAPPId() const
+QString GameNehrim::steamAPPId() const
 {
   return "22330";
 }
 
-QStringList GameOblivion::primaryPlugins() const
+QStringList GameNehrim::primaryPlugins() const
 {
-  return { "oblivion.esm", "update.esm" };
+  return { "Nehrim.esm", "Translation.esp" };
 }
 
-QString GameOblivion::gameShortName() const
+QString GameNehrim::gameShortName() const
 {
-  return "Oblivion";
+  return "Nehrim";
 }
 
-QString GameOblivion::gameNexusName() const
+QString GameNehrim::gameNexusName() const
 {
-  return "Oblivion";
+  return "Nehrim";
 }
 
 
-QStringList GameOblivion::iniFiles() const
+QStringList GameNehrim::iniFiles() const
 {
   return { "oblivion.ini", "oblivionprefs.ini" };
 }
 
-QStringList GameOblivion::DLCPlugins() const
+QStringList GameNehrim::DLCPlugins() const
 {
-  return { "DLCBattlehornCastle.esp", "DLCShiveringIsles.esp", "Knights.esp", "DLCFrostcrag.esp",
-           "DLCSpellTomes.esp", "DLCMehrunesRazor.esp", "DLCOrrery.esp",
-           "DLCThievesDen.esp", "DLCVileLair.esp", "DLCHorseArmor.esp"  };
+  return {};
 }
 
 
-int GameOblivion::nexusModOrganizerID() const
+int GameNehrim::nexusModOrganizerID() const
 {
-  return 38277;
+  return -1;
 }
 
-int GameOblivion::nexusGameID() const
+int GameNehrim::nexusGameID() const
 {
-  return 101;
+  return 3312;
 }

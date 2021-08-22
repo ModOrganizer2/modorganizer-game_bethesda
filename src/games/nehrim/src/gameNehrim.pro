@@ -5,27 +5,27 @@
 #-------------------------------------------------
 
 
-TARGET = gameOblivion
+TARGET = gameNehrim
 TEMPLATE = lib
 
 CONFIG += plugins
 CONFIG += dll
 
-DEFINES += GAMEOBLIVION_LIBRARY
+DEFINES += GAMENEHRIM_LIBRARY
 
-SOURCES += gameoblivion.cpp \
-    oblivionbsainvalidation.cpp \
-    oblivionscriptextender.cpp \
-    obliviondataarchives.cpp \
-    oblivionsavegame.cpp \
-    oblivionsavegameinfo.cpp
+SOURCES += gamenehrim.cpp \
+    nehrimbsainvalidation.cpp \
+    nehrimscriptextender.cpp \
+    nehrimdataarchives.cpp \
+    nehrimsavegame.cpp \
+    nehrimsavegameinfo.cpp
 
-HEADERS += gameoblivion.h \
-    oblivionbsainvalidation.h \
-    oblivionscriptextender.h \
-    obliviondataarchives.h \
-    oblivionsavegame.h \
-    oblivionsavegameinfo.h
+HEADERS += gamenehrim.h \
+    nehrimbsainvalidation.h \
+    nehrimscriptextender.h \
+    nehrimdataarchives.h \
+    nehrimsavegame.h \
+    nehrimsavegameinfo.h
 
 CONFIG(debug, debug|release) {
   LIBS += -L"$${OUT_PWD}/../gameGamebryo/debug"
@@ -44,7 +44,6 @@ INCLUDEPATH += "$${BOOSTPATH}" "$${PWD}/../gamefeatures" "$${PWD}/../gamegamebry
 LIBS += -ladvapi32 -lole32 -lgameGamebryo
 
 OTHER_FILES += \
-    gameoblivion.json\
+    gamenehrim.json\
     SConscript \
     CMakeLists.txt
-

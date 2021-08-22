@@ -1,23 +1,23 @@
-#include "oblivionscriptextender.h"
+#include "nehrimscriptextender.h"
 
 #include <QString>
 #include <QStringList>
 
-OblivionScriptExtender::OblivionScriptExtender(GameGamebryo const *game) :
+NehrimScriptExtender::NehrimScriptExtender(GameGamebryo const *game) :
   GamebryoScriptExtender(game)
 {
 }
 
-OblivionScriptExtender::~OblivionScriptExtender()
+NehrimScriptExtender::~NehrimScriptExtender()
 {
 }
 
-QString OblivionScriptExtender::BinaryName() const
+QString NehrimScriptExtender::BinaryName() const
 {
   return "obse_loader.exe";
 }
 
-QString OblivionScriptExtender::PluginPath() const
+QString NehrimScriptExtender::PluginPath() const
 {
   return "obse/plugins";
 }

@@ -1,13 +1,13 @@
-#ifndef OBLIVIONSAVEGAME_H
-#define OBLIVIONSAVEGAME_H
+#ifndef NEHRIMSAVEGAME_H
+#define NEHRIMSAVEGAME_H
 
 #include "gamebryosavegame.h"
-#include "gameoblivion.h"
+#include "gamenehrim.h"
 
-class OblivionSaveGame : public GamebryoSaveGame
+class NehrimSaveGame : public GamebryoSaveGame
 {
 public:
-  OblivionSaveGame(QString const &fileName, GameOblivion const *game);
+  NehrimSaveGame(QString const &fileName, GameNehrim const *game);
 
 protected:
 
@@ -22,4 +22,4 @@ protected:
   std::unique_ptr<DataFields> fetchDataFields() const override;
 };
 
-#endif // OBLIVIONSAVEGAME_H
+#endif // NEHRIMSAVEGAME_H

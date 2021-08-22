@@ -1,5 +1,5 @@
-#ifndef OBLIVIONDATAARCHIVES_H
-#define OBLIVIONDATAARCHIVES_H
+#ifndef NEHRIMDATAARCHIVES_H
+#define NEHRIMDATAARCHIVES_H
 
 
 #include <gamebryodataarchives.h>
@@ -8,11 +8,11 @@
 #include <QStringList>
 #include <QDir>
 
-class OblivionDataArchives : public GamebryoDataArchives
+class NehrimDataArchives : public GamebryoDataArchives
 {
 
 public:
-  OblivionDataArchives(const QDir &myGamesDir);
+  NehrimDataArchives(const QDir &myGamesDir);
 
 public:
 
@@ -25,4 +25,4 @@ private:
 
 };
 
-#endif // OBLIVIONDATAARCHIVES_H
+#endif // NEHRIMDATAARCHIVES_H

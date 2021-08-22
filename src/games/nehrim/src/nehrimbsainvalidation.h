@@ -1,17 +1,17 @@
-#ifndef OBLIVIONBSAINVALIDATION_H
-#define OBLIVIONBSAINVALIDATION_H
+#ifndef NEHRIMBSAINVALIDATION_H
+#define NEHRIMBSAINVALIDATION_H
 
 
 #include "gamebryobsainvalidation.h"
-#include "obliviondataarchives.h"
+#include "nehrimdataarchives.h"
 
 #include <memory>
 
-class OblivionBSAInvalidation : public GamebryoBSAInvalidation
+class NehrimBSAInvalidation : public GamebryoBSAInvalidation
 {
 public:
 
-  OblivionBSAInvalidation(DataArchives *dataArchives, MOBase::IPluginGame const *game);
+  NehrimBSAInvalidation(DataArchives *dataArchives, MOBase::IPluginGame const *game);
 
 private:
 
@@ -20,4 +20,4 @@ private:
 
 };
 
-#endif // OBLIVIONBSAINVALIDATION_H
+#endif // NEHRIMBSAINVALIDATION_H

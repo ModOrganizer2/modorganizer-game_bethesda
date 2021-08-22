@@ -1,19 +1,19 @@
-#ifndef OBLIVIONSCRIPTEXTENDER_H
-#define OBLIVIONSCRIPTEXTENDER_H
+#ifndef NEHRIMSCRIPTEXTENDER_H
+#define NEHRIMSCRIPTEXTENDER_H
 
 #include "gamebryoscriptextender.h"
 
 class GameGamebryo;
 
-class OblivionScriptExtender : public GamebryoScriptExtender
+class NehrimScriptExtender : public GamebryoScriptExtender
 {
 public:
-  OblivionScriptExtender(const GameGamebryo *game);
-  ~OblivionScriptExtender();
+  NehrimScriptExtender(const GameGamebryo *game);
+  ~NehrimScriptExtender();
 
   virtual QString BinaryName() const override;
   virtual QString PluginPath() const override;
 
 };
 
-#endif // OBLIVIONSCRIPTEXTENDER_H
+#endif // NEHRIMSCRIPTEXTENDER_H

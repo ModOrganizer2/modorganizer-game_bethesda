@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 
-project(game_oblivion)
+project(game_nehrim)
 set(project_type plugin)
 set(enable_warnings OFF)
 

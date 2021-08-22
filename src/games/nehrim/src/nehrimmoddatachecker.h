@@ -1,9 +1,9 @@
-#ifndef OBLIVION_MODATACHECKER_H
-#define OBLIVION_MODATACHECKER_H
+#ifndef NEHRIM_MODATACHECKER_H
+#define NEHRIM_MODATACHECKER_H
 
 #include <gamebryomoddatachecker.h>
 
-class OblivionModDataChecker : public GamebryoModDataChecker
+class NehrimModDataChecker : public GamebryoModDataChecker
 {
 public:
   using GamebryoModDataChecker::GamebryoModDataChecker;
@@ -16,7 +16,7 @@ protected:
     static FileNameSet result{
       "fonts", "interface", "menus", "meshes", "music", "scripts", "shaders",
       "sound", "strings", "textures", "trees", "video", "facegen",
-      "obse", "distantlod", "asi", "distantland", "mits", "dllplugins", "CalienteTools", 
+      "obse", "distantlod", "asi", "distantland", "mits", "dllplugins", "CalienteTools",
       "NetScriptFramework"
     };
     return result;
@@ -29,4 +29,4 @@ protected:
   }
 };
 
-#endif // OBLIVION_MODATACHECKER_H
+#endif // NEHRIM_MODATACHECKER_H
