@@ -51,7 +51,6 @@ QString GameOblivion::gameName() const
 QList<ExecutableInfo> GameOblivion::executables() const
 {
   return QList<ExecutableInfo>()
-      << ExecutableInfo("OBSE", findInGameFolder(feature<ScriptExtender>()->loaderName()))
       << ExecutableInfo("Oblivion", findInGameFolder(binaryName()))
       << ExecutableInfo("Oblivion Launcher", findInGameFolder(getLauncherName()))
       << ExecutableInfo("Oblivion Mod Manager", findInGameFolder("OblivionModManager.exe"))
@@ -63,10 +62,9 @@ QList<ExecutableInfo> GameOblivion::executables() const
 
 QList<ExecutableForcedLoadSetting> GameOblivion::executableForcedLoads() const
 {
-  //TODO Search game directory for OBSE DLLs
   return QList<ExecutableForcedLoadSetting>()
-      << ExecutableForcedLoadSetting("Oblivion.exe", "obse_1_2_416.dll").withForced()
-      << ExecutableForcedLoadSetting("TESConstructionSet.exe", "obse_editor_1_2.dll").withForced()
+      << ExecutableForcedLoadSetting("Oblivion.exe", "obse_1_2_416.dll").withForced().withEnabled()
+      << ExecutableForcedLoadSetting("TESConstructionSet.exe", "obse_editor_1_2.dll").withForced().withEnabled()
   ;
 }
 
@@ -92,12 +90,14 @@ QString GameOblivion::description() const
 
 MOBase::VersionInfo GameOblivion::version() const
 {
-  return VersionInfo(1, 4, 1, VersionInfo::RELEASE_FINAL);
+  return VersionInfo(1, 5, 0, VersionInfo::RELEASE_FINAL);
 }
 
 QList<PluginSetting> GameOblivion::settings() const
 {
-  return QList<PluginSetting>();
+  return {
+      PluginSetting("nehrim_downloads", "allow Nehrim downloads", QVariant(false))
+  };
 }
 
 void GameOblivion::initializeProfile(const QDir &path, ProfileSettings settings) const
@@ -147,6 +147,15 @@ QStringList GameOblivion::primaryPlugins() const
 QString GameOblivion::gameShortName() const
 {
   return "Oblivion";
+}
+
+QStringList GameOblivion::validShortNames() const
+{
+  QStringList shortNames;
+  if (m_Organizer->pluginSetting(name(), "nehrim_downloads").toBool()) {
+    shortNames.append( "Nehrim" );
+  }
+  return shortNames;
 }
 
 QString GameOblivion::gameNexusName() const
