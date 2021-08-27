@@ -53,6 +53,12 @@ QString GameFallout3::gameName() const
   return "Fallout 3";
 }
 
+void GameFallout3::detectGame()
+{
+  m_GamePath = identifyGamePath();
+  m_MyGamesPath = determineMyGamesPath("Fallout3");
+}
+
 QList<ExecutableInfo> GameFallout3::executables() const
 {
   return QList<ExecutableInfo>()
