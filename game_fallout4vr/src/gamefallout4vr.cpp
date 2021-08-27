@@ -53,6 +53,12 @@ QString GameFallout4VR::gameName() const
   return "Fallout 4 VR";
 }
 
+void GameFallout4VR::detectGame()
+{
+  m_GamePath = identifyGamePath();
+  m_MyGamesPath = determineMyGamesPath("Fallout4VR");
+}
+
 QList<ExecutableInfo> GameFallout4VR::executables() const
 {
   return QList<ExecutableInfo>()
@@ -91,7 +97,7 @@ QString GameFallout4VR::description() const
 
 MOBase::VersionInfo GameFallout4VR::version() const
 {
-  return VersionInfo(1, 4, 1, VersionInfo::RELEASE_FINAL);
+  return VersionInfo(1, 5, 0, VersionInfo::RELEASE_FINAL);
 }
 
 QList<PluginSetting> GameFallout4VR::settings() const
