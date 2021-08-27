@@ -55,6 +55,12 @@ QString GameFallout4::gameName() const
   return "Fallout 4";
 }
 
+void GameFallout4::detectGame()
+{
+  m_GamePath = identifyGamePath();
+  m_MyGamesPath = determineMyGamesPath("Fallout4");
+}
+
 QList<ExecutableInfo> GameFallout4::executables() const
 {
   return QList<ExecutableInfo>()
@@ -95,7 +101,7 @@ QString GameFallout4::description() const
 
 MOBase::VersionInfo GameFallout4::version() const
 {
-  return VersionInfo(1, 5, 0, VersionInfo::RELEASE_FINAL);
+  return VersionInfo(1, 6, 0, VersionInfo::RELEASE_FINAL);
 }
 
 QList<PluginSetting> GameFallout4::settings() const
