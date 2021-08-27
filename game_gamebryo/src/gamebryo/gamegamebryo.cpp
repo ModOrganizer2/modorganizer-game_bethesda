@@ -40,18 +40,7 @@ GameGamebryo::GameGamebryo()
 void GameGamebryo::detectGame()
 {
   m_GamePath = identifyGamePath();
-
-  // some games have the same short and long names, such as "Skyrim"; others
-  // have different values, such as "SkyrimSE" and "Skyrim Special Edition"
-  //
-  // games with different short/long names typically use the long name in
-  // "My Games", so that's tried first; if it fails, the short name is tried
   m_MyGamesPath = determineMyGamesPath(gameName());
-  if (m_MyGamesPath.isEmpty()) {
-    if (gameName() != gameShortName()) {
-      m_MyGamesPath = determineMyGamesPath(gameShortName());
-    }
-  }
 }
 
 bool GameGamebryo::init(MOBase::IOrganizer *moInfo)
