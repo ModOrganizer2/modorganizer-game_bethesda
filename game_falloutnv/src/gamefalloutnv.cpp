@@ -53,6 +53,12 @@ QString GameFalloutNV::gameName() const
   return "New Vegas";
 }
 
+void GameFalloutNV::detectGame()
+{
+  m_GamePath = identifyGamePath();
+  m_MyGamesPath = determineMyGamesPath("FalloutNV");
+}
+
 QList<ExecutableInfo> GameFalloutNV::executables() const
 {
   return QList<ExecutableInfo>()
