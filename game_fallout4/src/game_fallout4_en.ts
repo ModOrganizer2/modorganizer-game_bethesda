@@ -4,12 +4,12 @@
 <context>
     <name>GameFallout4</name>
     <message>
-        <location filename="gamefallout4.cpp" line="81"/>
+        <location filename="gamefallout4.cpp" line="87"/>
         <source>Fallout 4 Support Plugin</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="gamefallout4.cpp" line="92"/>
+        <location filename="gamefallout4.cpp" line="98"/>
         <source>Adds support for the game Fallout 4.
 Splash by %1</source>
         <translation type="unfinished"></translation>
