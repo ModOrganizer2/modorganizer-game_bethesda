@@ -70,6 +70,11 @@
     </message>
     <message>
         <location filename="gamebryo/gamebryomoddatacontent.cpp" line="25"/>
+        <source>FaceGen Data</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="gamebryo/gamebryomoddatacontent.cpp" line="26"/>
         <source>ModGroup Files</source>
         <translation type="unfinished"></translation>
     </message>
@@ -146,12 +151,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="gamebryo/gamegamebryo.cpp" line="334"/>
+        <location filename="gamebryo/gamegamebryo.cpp" line="323"/>
         <source>failed to query registry path (preflight): %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="gamebryo/gamegamebryo.cpp" line="341"/>
+        <location filename="gamebryo/gamegamebryo.cpp" line="330"/>
         <source>failed to query registry path (read): %1</source>
         <translation type="unfinished"></translation>
     </message>
