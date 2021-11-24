@@ -4,12 +4,12 @@
 <context>
     <name>GameFalloutNV</name>
     <message>
-        <location filename="gamefalloutnv.cpp" line="81"/>
+        <location filename="gamefalloutnv.cpp" line="87"/>
         <source>Fallout NV Support Plugin</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="gamefalloutnv.cpp" line="92"/>
+        <location filename="gamefalloutnv.cpp" line="98"/>
         <source>Adds support for the game Fallout New Vegas</source>
         <translation type="unfinished"></translation>
     </message>
