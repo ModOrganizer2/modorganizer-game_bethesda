@@ -21,8 +21,7 @@ QStringList Fallout4VRUnmangedMods::mods(bool onlyOfficial) const {
   for (const QString &fileName : dataDir.entryList({ "*.esp", "*.esl", "*.esm" })) {
     if (!pluginList.contains(fileName, Qt::CaseInsensitive)) {
       if (!onlyOfficial || pluginList.contains(fileName, Qt::CaseInsensitive)) {
-        QFileInfo file(fileName);
-        result.append(file.baseName());
+        result.append(fileName.chopped(4)); // trims the extension off
       }
     }
   }
