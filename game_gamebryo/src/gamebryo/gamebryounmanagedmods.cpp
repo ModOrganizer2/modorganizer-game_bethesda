@@ -20,8 +20,7 @@ QStringList GamebryoUnmangedMods::mods(bool onlyOfficial) const {
   for (const QString &fileName : dataDir.entryList({ "*.esp", "*.esl", "*.esm"})) {
     if (!mainPlugins.contains(fileName, Qt::CaseInsensitive) &&
         (!onlyOfficial || dlcPlugins.contains(fileName, Qt::CaseInsensitive))) {
-      QFileInfo file(fileName);
-      result.append(file.baseName());
+      result.append(fileName.chopped(4)); // trims the extension off
     }
   }
 
@@ -51,4 +50,3 @@ QStringList GamebryoUnmangedMods::secondaryFiles(const QString &modName) const {
   }
   return archives;
 }
-
