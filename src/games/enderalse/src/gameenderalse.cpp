@@ -80,7 +80,7 @@ QList<ExecutableInfo> GameEnderalSE::executables() const
   return {
     ExecutableInfo("Enderal Special Edition (SKSE)", findInGameFolder(feature<ScriptExtender>()->loaderName())),
     ExecutableInfo("Enderal Special Edition Launcher", findInGameFolder(getLauncherName())),
-    // ExecutableInfo("LOOT", getLootPath()).withArgument("--game=\"Skyrim Special Edition\""),
+    // ExecutableInfo("LOOT", QFileInfo(getLootPath())).withArgument("--game=\"Skyrim Special Edition\""),
     ExecutableInfo("Creation Kit", findInGameFolder("CreationKit.exe"))
   };
 }

@@ -28,8 +28,10 @@ void EnderalSEGamePlugins::writePluginList(const MOBase::IPluginList* pluginList
     });
 
   QStringList PrimaryPlugins = organizer()->managedGame()->primaryPlugins();
-  QSet<QString> ManagedMods = PrimaryPlugins.toSet().subtract(organizer()->managedGame()->DLCPlugins().toSet());
-  PrimaryPlugins.append(ManagedMods.toList());
+  QSet<QString> ManagedMods = QSet<QString>(PrimaryPlugins.begin(), PrimaryPlugins.end()).subtract(
+      QSet<QString>(organizer()->managedGame()->DLCPlugins().begin(), organizer()->managedGame()->DLCPlugins().begin())
+  );
+  PrimaryPlugins.append(QList<QString>(ManagedMods.begin(), ManagedMods.end()));
 
   // we need to force some plugins because those are not force-loaded
   // by the game but are considered primary plugins for users
