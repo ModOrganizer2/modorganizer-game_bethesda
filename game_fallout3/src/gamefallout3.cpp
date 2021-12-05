@@ -68,7 +68,7 @@ QList<ExecutableInfo> GameFallout3::executables() const
       << ExecutableInfo("Construction Kit", findInGameFolder("geck.exe"))
       << ExecutableInfo("Fallout Launcher", findInGameFolder(getLauncherName()))
       << ExecutableInfo("BOSS", findInGameFolder("BOSS/BOSS.exe"))
-      << ExecutableInfo("LOOT", getLootPath()).withArgument("--game=\"Fallout3\"")
+      << ExecutableInfo("LOOT", QFileInfo(getLootPath())).withArgument("--game=\"Fallout3\"")
          ;
 }
 
