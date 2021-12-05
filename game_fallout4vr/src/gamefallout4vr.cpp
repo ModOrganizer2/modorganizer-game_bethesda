@@ -64,7 +64,7 @@ QList<ExecutableInfo> GameFallout4VR::executables() const
   return QList<ExecutableInfo>()
       << ExecutableInfo("Fallout 4 VR", findInGameFolder(binaryName()))
       << ExecutableInfo("Creation Kit", findInGameFolder("CreationKit.exe"))
-      << ExecutableInfo("LOOT", getLootPath()).withArgument("--game=\"Fallout4VR\"")
+      << ExecutableInfo("LOOT", QFileInfo(getLootPath())).withArgument("--game=\"Fallout4VR\"")
          ;
 }
 
