@@ -73,7 +73,7 @@ QList<ExecutableInfo> GameEnderal::executables() const
       << ExecutableInfo("Enderal (SKSE)", findInGameFolder(binaryName()))
       << ExecutableInfo("Enderal Launcher", findInGameFolder(getLauncherName()))
       << ExecutableInfo("BOSS", findInGameFolder("BOSS/BOSS.exe"))
-      //<< ExecutableInfo("LOOT", getLootPath()).withArgument("--game=\"Skyrim\"")
+      //<< ExecutableInfo("LOOT", QFileInfo(getLootPath())).withArgument("--game=\"Skyrim\"")
       << ExecutableInfo("Creation Kit", findInGameFolder("CreationKit.exe")).withSteamAppId("202480")
   ;
 }
