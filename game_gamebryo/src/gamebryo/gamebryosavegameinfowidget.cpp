@@ -34,7 +34,7 @@ GamebryoSaveGameInfoWidget::GamebryoSaveGameInfoWidget(GamebryoSaveGameInfo cons
     ui->gameFrame->setStyleSheet("background-color: transparent;");
 
     QVBoxLayout *gameLayout = new QVBoxLayout();
-    gameLayout->setMargin(0);
+    gameLayout->setContentsMargins(0, 0, 0, 0);
     gameLayout->setSpacing(2);
     ui->gameFrame->setLayout(gameLayout);
 }
@@ -52,8 +52,8 @@ void GamebryoSaveGameInfoWidget::setSave(MOBase::ISaveGame const& save) {
     //This somewhat contorted code is because on my system at least, the
     //old way of doing this appears to give short date and long time.
     QDateTime t = gamebryoSave.getCreationTime();
-    ui->dateLabel->setText(t.date().toString(Qt::DefaultLocaleShortDate) + " " +
-                           t.time().toString(Qt::DefaultLocaleLongDate));
+    ui->dateLabel->setText(QLocale::system().toString(t.date(), QLocale::FormatType::ShortFormat) + " " +
+        QLocale::system().toString(t.time()));
     ui->screenshotLabel->setPixmap(QPixmap::fromImage(gamebryoSave.getScreenshot()));
     if (ui->gameFrame->layout() != nullptr) {
         QLayoutItem *item = nullptr;
