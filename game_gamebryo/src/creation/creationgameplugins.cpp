@@ -61,9 +61,10 @@ void CreationGamePlugins::writePluginList(const IPluginList *pluginList,
             });
 
   QStringList PrimaryPlugins = organizer()->managedGame()->primaryPlugins();
-  QSet<QString> ManagedMods = QSet<QString>(PrimaryPlugins.begin(), PrimaryPlugins.end()).subtract(
-      QSet<QString>(organizer()->managedGame()->DLCPlugins().begin(), organizer()->managedGame()->DLCPlugins().end())
-  );
+  QStringList DLCPlugins = organizer()->managedGame()->DLCPlugins();
+  QSet<QString> ManagedMods = QSet<QString>(PrimaryPlugins.begin(), PrimaryPlugins.end());
+  QSet<QString> DLCSet = QSet<QString>(DLCPlugins.begin(), DLCPlugins.end());
+  ManagedMods.subtract(DLCSet);
   PrimaryPlugins.append(QList<QString>(ManagedMods.begin(), ManagedMods.end()));
 
   //TODO: do not write plugins in OFFICIAL_FILES container
