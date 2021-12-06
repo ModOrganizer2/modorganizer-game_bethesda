@@ -29,7 +29,7 @@ void EnderalSEGamePlugins::writePluginList(const MOBase::IPluginList* pluginList
 
   QStringList PrimaryPlugins = organizer()->managedGame()->primaryPlugins();
   QSet<QString> ManagedMods = QSet<QString>(PrimaryPlugins.begin(), PrimaryPlugins.end()).subtract(
-      QSet<QString>(organizer()->managedGame()->DLCPlugins().begin(), organizer()->managedGame()->DLCPlugins().begin())
+      QSet<QString>(organizer()->managedGame()->DLCPlugins().begin(), organizer()->managedGame()->DLCPlugins().end())
   );
   PrimaryPlugins.append(QList<QString>(ManagedMods.begin(), ManagedMods.end()));
 
