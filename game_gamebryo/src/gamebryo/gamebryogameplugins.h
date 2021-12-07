@@ -4,7 +4,6 @@
 
 #include <gameplugins.h>
 #include <imoinfo.h>
-#include <QTextCodec>
 #include <QDateTime>
 #include <QStringList>
 
@@ -18,9 +17,6 @@ public:
   virtual bool lightPluginsAreSupported() override;
 
 protected:
-  QTextCodec *utf8Codec() const { return m_Utf8Codec; }
-  QTextCodec *localCodec() const { return m_LocalCodec; }
-
   MOBase::IOrganizer *organizer() const { return m_Organizer; }
 
   virtual void writePluginList(const MOBase::IPluginList *pluginList,
@@ -40,9 +36,6 @@ private:
                  bool loadOrder);
 
 private:
-  QTextCodec *m_Utf8Codec;
-  QTextCodec *m_LocalCodec;
-
   std::map<QString, QByteArray> m_LastSaveHash;
 };
 
