@@ -9,7 +9,6 @@
 #include "registry.h"
 
 #include <QDir>
-#include <QTextCodec>
 #include <QStringList>
 #include <QString>
 #include <QDateTime>
@@ -83,7 +82,7 @@ void MorrowindGamePlugins::writePluginList(const MOBase::IPluginList *pluginList
 
 void MorrowindGamePlugins::writeList(const IPluginList *pluginList,
                                     const QString &filePath, bool loadOrder) {
-  QTextCodec *textCodec = loadOrder ? utf8Codec() : localCodec();
+  QStringEncoder encoder = loadOrder ? QStringEncoder(QStringConverter::Encoding::Utf8) : QStringEncoder(QStringConverter::Encoding::System);
 
   ::WritePrivateProfileSectionW(L"Game Files", NULL, filePath.toStdWString().c_str());
 
@@ -99,7 +98,8 @@ void MorrowindGamePlugins::writeList(const IPluginList *pluginList,
   for (const QString &pluginName : plugins) {
     if (loadOrder ||
         (pluginList->state(pluginName) == IPluginList::STATE_ACTIVE)) {
-      if (!textCodec->canEncode(pluginName)) {
+      auto result = encoder.encode(pluginName);
+      if (encoder.hasError()) {
         invalidFileNames = true;
         qCritical("invalid plugin name %s", qUtf8Printable(pluginName));
       } else {
