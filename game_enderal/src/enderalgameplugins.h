@@ -20,9 +20,6 @@ protected:
 
 private:
     std::map<QString, QByteArray> m_LastSaveHash;
-
-private:
-    QTextCodec *m_LocalCodec;
 };
 
 #endif // _ENDERALSEGAMEPLUGINS_H

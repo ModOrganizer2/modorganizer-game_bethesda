@@ -6,7 +6,6 @@
 #include <scopeguard.h>
 
 #include <QDir>
-#include <QTextCodec>
 #include <QStringList>
 
 
@@ -18,9 +17,7 @@ using MOBase::reportError;
 
 EnderalGamePlugins::EnderalGamePlugins(IOrganizer *organizer)
     : GamebryoGamePlugins(organizer)
-{
-    m_LocalCodec = QTextCodec::codecForName("Windows-1252");
-}
+{}
 
 void EnderalGamePlugins::readPluginLists(MOBase::IPluginList *pluginList) {
   QString loadOrderPath =
@@ -97,7 +94,7 @@ QStringList EnderalGamePlugins::readPluginList(MOBase::IPluginList *pluginList)
             QByteArray line = file.readLine();
             QString pluginName;
             if ((line.size() > 0) && (line.at(0) != '#')) {
-                pluginName = m_LocalCodec->toUnicode(line.trimmed().constData());
+                pluginName = QStringEncoder(QStringConverter::Encoding::System).encode(line.trimmed().constData());
             }
             if (pluginName.size() > 0) {
                 pluginList->setState(pluginName, IPluginList::STATE_ACTIVE);
