@@ -130,7 +130,6 @@ void GameMorrowind::initializeProfile(const QDir &path, ProfileSettings settings
 {
   if (settings.testFlag(IPluginGame::MODS)) {
     copyToProfile(localAppFolder() + "/Morrowind", path, "plugins.txt");
-    copyToProfile(localAppFolder() + "/Morrowind", path, "loadorder.txt");
   }
 
   if (settings.testFlag(IPluginGame::CONFIGURATION)) {
