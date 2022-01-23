@@ -101,7 +101,7 @@ QString GameFallout4::description() const
 
 MOBase::VersionInfo GameFallout4::version() const
 {
-  return VersionInfo(1, 6, 0, VersionInfo::RELEASE_FINAL);
+  return VersionInfo(1, 7, 0, VersionInfo::RELEASE_FINAL);
 }
 
 QList<PluginSetting> GameFallout4::settings() const
