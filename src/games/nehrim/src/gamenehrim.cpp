@@ -91,7 +91,7 @@ QString GameNehrim::description() const
 
 MOBase::VersionInfo GameNehrim::version() const
 {
-  return VersionInfo(1, 0, 0, VersionInfo::RELEASE_FINAL);
+  return VersionInfo(1, 1, 0, VersionInfo::RELEASE_FINAL);
 }
 
 QList<PluginSetting> GameNehrim::settings() const
