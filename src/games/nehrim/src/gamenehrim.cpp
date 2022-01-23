@@ -91,7 +91,7 @@ QString GameNehrim::description() const
 
 MOBase::VersionInfo GameNehrim::version() const
 {
-  return VersionInfo(1, 0, 0, VersionInfo::RELEASE_FINAL);
+  return VersionInfo(1, 1, 0, VersionInfo::RELEASE_FINAL);
 }
 
 QList<PluginSetting> GameNehrim::settings() const
@@ -103,7 +103,6 @@ void GameNehrim::initializeProfile(const QDir &path, ProfileSettings settings) c
 {
   if (settings.testFlag(IPluginGame::MODS)) {
     copyToProfile(localAppFolder() + "/Oblvion", path, "plugins.txt");
-    copyToProfile(localAppFolder() + "/Oblvion", path, "loadorder.txt");
   }
 
   if (settings.testFlag(IPluginGame::CONFIGURATION)) {
