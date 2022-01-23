@@ -105,7 +105,7 @@ QString GameEnderal::description() const
 
 MOBase::VersionInfo GameEnderal::version() const
 {
-  return VersionInfo(1, 2, 0, VersionInfo::RELEASE_FINAL);
+  return VersionInfo(1, 3, 0, VersionInfo::RELEASE_FINAL);
 }
 
 QList<PluginSetting> GameEnderal::settings() const
