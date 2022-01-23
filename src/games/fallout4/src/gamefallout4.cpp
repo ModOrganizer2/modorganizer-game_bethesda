@@ -113,7 +113,6 @@ void GameFallout4::initializeProfile(const QDir &path, ProfileSettings settings)
 {
   if (settings.testFlag(IPluginGame::MODS)) {
     copyToProfile(localAppFolder() + "/Fallout4", path, "plugins.txt");
-    copyToProfile(localAppFolder() + "/Fallout4", path, "loadorder.txt");
   }
 
   if (settings.testFlag(IPluginGame::CONFIGURATION)) {
