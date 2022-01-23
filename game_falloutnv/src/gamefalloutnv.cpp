@@ -112,7 +112,6 @@ void GameFalloutNV::initializeProfile(const QDir &path, ProfileSettings settings
 {
   if (settings.testFlag(IPluginGame::MODS)) {
     copyToProfile(localAppFolder() + "/FalloutNV", path, "plugins.txt");
-    copyToProfile(localAppFolder() + "/FalloutNV", path, "loadorder.txt");
   }
 
   if (settings.testFlag(IPluginGame::CONFIGURATION)) {
