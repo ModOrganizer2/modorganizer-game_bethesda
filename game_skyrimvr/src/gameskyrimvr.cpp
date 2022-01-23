@@ -143,7 +143,6 @@ void GameSkyrimVR::initializeProfile(const QDir &path, ProfileSettings settings)
 {
   if (settings.testFlag(IPluginGame::MODS)) {
     copyToProfile(localAppFolder() + "/Skyrim VR", path, "plugins.txt");
-    copyToProfile(localAppFolder() + "/Skyrim VR", path, "loadorder.txt");
   }
 
   if (settings.testFlag(IPluginGame::CONFIGURATION)) {
