@@ -104,7 +104,6 @@ void GameOblivion::initializeProfile(const QDir &path, ProfileSettings settings)
 {
   if (settings.testFlag(IPluginGame::MODS)) {
     copyToProfile(localAppFolder() + "/Oblivion", path, "plugins.txt");
-    copyToProfile(localAppFolder() + "/Oblivion", path, "loadorder.txt");
   }
 
   if (settings.testFlag(IPluginGame::CONFIGURATION)) {
