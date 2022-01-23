@@ -119,7 +119,6 @@ void GameEnderal::initializeProfile(const QDir &path, ProfileSettings settings) 
 {
   if (settings.testFlag(IPluginGame::MODS)) {
     copyToProfile(localAppFolder() + "/enderal", path, "plugins.txt");
-    copyToProfile(localAppFolder() + "/enderal", path, "loadorder.txt");
   }
 
   if (settings.testFlag(IPluginGame::CONFIGURATION)) {
@@ -283,4 +282,3 @@ QString GameEnderal::identifyGamePath() const
   }
   return result;
 }
-
