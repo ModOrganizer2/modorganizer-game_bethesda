@@ -146,7 +146,6 @@ void GameEnderalSE::initializeProfile(const QDir &path, ProfileSettings settings
 {
   if (settings.testFlag(IPluginGame::MODS)) {
     copyToProfile(localAppFolder() + "/Enderal Special Edition", path, "plugins.txt");
-    copyToProfile(localAppFolder() + "/Enderal Special Edition", path, "loadorder.txt");
   }
 
   if (settings.testFlag(IPluginGame::CONFIGURATION)) {
@@ -282,4 +281,3 @@ MappingType GameEnderalSE::mappings() const
 
   return result;
 }
-
