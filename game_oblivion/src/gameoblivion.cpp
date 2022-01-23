@@ -90,7 +90,7 @@ QString GameOblivion::description() const
 
 MOBase::VersionInfo GameOblivion::version() const
 {
-  return VersionInfo(1, 5, 0, VersionInfo::RELEASE_FINAL);
+  return VersionInfo(1, 6, 0, VersionInfo::RELEASE_FINAL);
 }
 
 QList<PluginSetting> GameOblivion::settings() const
