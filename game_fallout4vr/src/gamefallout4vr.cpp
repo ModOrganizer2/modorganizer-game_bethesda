@@ -109,7 +109,6 @@ void GameFallout4VR::initializeProfile(const QDir &path, ProfileSettings setting
 {
   if (settings.testFlag(IPluginGame::MODS)) {
     copyToProfile(localAppFolder() + "/Fallout4VR", path, "plugins.txt");
-    copyToProfile(localAppFolder() + "/Fallout4VR", path, "loadorder.txt");
   }
 
   if (settings.testFlag(IPluginGame::CONFIGURATION)) {
