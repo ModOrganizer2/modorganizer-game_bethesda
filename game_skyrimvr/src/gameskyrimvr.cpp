@@ -129,7 +129,7 @@ QString GameSkyrimVR::description() const
 
 MOBase::VersionInfo GameSkyrimVR::version() const
 {
-  return VersionInfo(1, 4, 1, VersionInfo::RELEASE_FINAL);
+  return VersionInfo(1, 5, 0, VersionInfo::RELEASE_FINAL);
 }
 
 QList<PluginSetting> GameSkyrimVR::settings() const
@@ -143,7 +143,6 @@ void GameSkyrimVR::initializeProfile(const QDir &path, ProfileSettings settings)
 {
   if (settings.testFlag(IPluginGame::MODS)) {
     copyToProfile(localAppFolder() + "/Skyrim VR", path, "plugins.txt");
-    copyToProfile(localAppFolder() + "/Skyrim VR", path, "loadorder.txt");
   }
 
   if (settings.testFlag(IPluginGame::CONFIGURATION)) {
