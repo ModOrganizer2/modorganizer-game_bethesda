@@ -103,7 +103,6 @@ void GameNehrim::initializeProfile(const QDir &path, ProfileSettings settings) c
 {
   if (settings.testFlag(IPluginGame::MODS)) {
     copyToProfile(localAppFolder() + "/Oblvion", path, "plugins.txt");
-    copyToProfile(localAppFolder() + "/Oblvion", path, "loadorder.txt");
   }
 
   if (settings.testFlag(IPluginGame::CONFIGURATION)) {
