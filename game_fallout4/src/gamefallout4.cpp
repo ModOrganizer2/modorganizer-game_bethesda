@@ -101,7 +101,7 @@ QString GameFallout4::description() const
 
 MOBase::VersionInfo GameFallout4::version() const
 {
-  return VersionInfo(1, 6, 0, VersionInfo::RELEASE_FINAL);
+  return VersionInfo(1, 7, 0, VersionInfo::RELEASE_FINAL);
 }
 
 QList<PluginSetting> GameFallout4::settings() const
@@ -113,7 +113,6 @@ void GameFallout4::initializeProfile(const QDir &path, ProfileSettings settings)
 {
   if (settings.testFlag(IPluginGame::MODS)) {
     copyToProfile(localAppFolder() + "/Fallout4", path, "plugins.txt");
-    copyToProfile(localAppFolder() + "/Fallout4", path, "loadorder.txt");
   }
 
   if (settings.testFlag(IPluginGame::CONFIGURATION)) {
