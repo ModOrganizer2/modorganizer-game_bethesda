@@ -134,7 +134,7 @@ QString GameEnderalSE::description() const
 
 MOBase::VersionInfo GameEnderalSE::version() const
 {
-  return VersionInfo(1, 0, 0, VersionInfo::RELEASE_BETA);
+  return VersionInfo(1, 1, 0, VersionInfo::RELEASE_FINAL);
 }
 
 QList<PluginSetting> GameEnderalSE::settings() const
@@ -146,7 +146,6 @@ void GameEnderalSE::initializeProfile(const QDir &path, ProfileSettings settings
 {
   if (settings.testFlag(IPluginGame::MODS)) {
     copyToProfile(localAppFolder() + "/Enderal Special Edition", path, "plugins.txt");
-    copyToProfile(localAppFolder() + "/Enderal Special Edition", path, "loadorder.txt");
   }
 
   if (settings.testFlag(IPluginGame::CONFIGURATION)) {
@@ -282,4 +281,3 @@ MappingType GameEnderalSE::mappings() const
 
   return result;
 }
-
