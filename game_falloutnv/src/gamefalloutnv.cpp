@@ -153,19 +153,7 @@ QString GameFalloutNV::steamAPPId() const
 
 QStringList GameFalloutNV::primaryPlugins() const
 {
-  QStringList plugins = { "falloutnv.esm" };
-
-  // DLC are force-loaded through .NAM files so look for those
-  for (QString dlcFile : DLCPlugins())
-  {
-    QString namFile = dlcFile.toLower().replace(".esm", ".nam");
-    if (dataDirectory().exists(namFile))
-    {
-        plugins << dlcFile;
-    }
-  }
-
-  return plugins;
+  return { "falloutnv.esm" };
 }
 
 QString GameFalloutNV::gameShortName() const
