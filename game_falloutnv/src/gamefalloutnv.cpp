@@ -100,7 +100,7 @@ QString GameFalloutNV::description() const
 
 MOBase::VersionInfo GameFalloutNV::version() const
 {
-  return VersionInfo(1, 5, 0, VersionInfo::RELEASE_FINAL);
+  return VersionInfo(1, 5, 1, VersionInfo::RELEASE_FINAL);
 }
 
 QList<PluginSetting> GameFalloutNV::settings() const
