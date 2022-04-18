@@ -118,7 +118,7 @@ QString GameMorrowind::description() const
 
 MOBase::VersionInfo GameMorrowind::version() const
 {
-  return VersionInfo(1, 4, 0, VersionInfo::RELEASE_FINAL);
+  return VersionInfo(1, 5, 0, VersionInfo::RELEASE_FINAL);
 }
 
 QList<PluginSetting> GameMorrowind::settings() const
@@ -130,7 +130,6 @@ void GameMorrowind::initializeProfile(const QDir &path, ProfileSettings settings
 {
   if (settings.testFlag(IPluginGame::MODS)) {
     copyToProfile(localAppFolder() + "/Morrowind", path, "plugins.txt");
-    copyToProfile(localAppFolder() + "/Morrowind", path, "loadorder.txt");
   }
 
   if (settings.testFlag(IPluginGame::CONFIGURATION)) {
