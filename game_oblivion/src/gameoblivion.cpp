@@ -90,7 +90,7 @@ QString GameOblivion::description() const
 
 MOBase::VersionInfo GameOblivion::version() const
 {
-  return VersionInfo(1, 5, 0, VersionInfo::RELEASE_FINAL);
+  return VersionInfo(1, 6, 0, VersionInfo::RELEASE_FINAL);
 }
 
 QList<PluginSetting> GameOblivion::settings() const
@@ -104,7 +104,6 @@ void GameOblivion::initializeProfile(const QDir &path, ProfileSettings settings)
 {
   if (settings.testFlag(IPluginGame::MODS)) {
     copyToProfile(localAppFolder() + "/Oblivion", path, "plugins.txt");
-    copyToProfile(localAppFolder() + "/Oblivion", path, "loadorder.txt");
   }
 
   if (settings.testFlag(IPluginGame::CONFIGURATION)) {
