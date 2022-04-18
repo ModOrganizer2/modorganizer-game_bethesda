@@ -100,7 +100,7 @@ QString GameFalloutNV::description() const
 
 MOBase::VersionInfo GameFalloutNV::version() const
 {
-  return VersionInfo(1, 4, 1, VersionInfo::RELEASE_FINAL);
+  return VersionInfo(1, 5, 1, VersionInfo::RELEASE_FINAL);
 }
 
 QList<PluginSetting> GameFalloutNV::settings() const
@@ -112,7 +112,6 @@ void GameFalloutNV::initializeProfile(const QDir &path, ProfileSettings settings
 {
   if (settings.testFlag(IPluginGame::MODS)) {
     copyToProfile(localAppFolder() + "/FalloutNV", path, "plugins.txt");
-    copyToProfile(localAppFolder() + "/FalloutNV", path, "loadorder.txt");
   }
 
   if (settings.testFlag(IPluginGame::CONFIGURATION)) {
