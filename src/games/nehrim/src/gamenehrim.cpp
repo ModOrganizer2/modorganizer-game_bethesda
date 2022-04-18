@@ -55,7 +55,7 @@ QList<ExecutableInfo> GameNehrim::executables() const
       << ExecutableInfo("Nehrim Launcher", findInGameFolder("NehrimLauncher.exe"))
       << ExecutableInfo("Oblivion Mod Manager", findInGameFolder("OblivionModManager.exe"))
       << ExecutableInfo("BOSS", findInGameFolder("BOSS/BOSS.exe"))
-      << ExecutableInfo("LOOT", getLootPath()).withArgument("--game=\"Oblivion\"")
+      << ExecutableInfo("LOOT", QFileInfo(getLootPath())).withArgument("--game=\"Oblivion\"")
       << ExecutableInfo("Construction Set", findInGameFolder("TESConstructionSet.exe"))
   ;
 }
