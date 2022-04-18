@@ -105,7 +105,7 @@ QString GameEnderal::description() const
 
 MOBase::VersionInfo GameEnderal::version() const
 {
-  return VersionInfo(1, 2, 0, VersionInfo::RELEASE_FINAL);
+  return VersionInfo(1, 3, 0, VersionInfo::RELEASE_FINAL);
 }
 
 QList<PluginSetting> GameEnderal::settings() const
@@ -119,7 +119,6 @@ void GameEnderal::initializeProfile(const QDir &path, ProfileSettings settings) 
 {
   if (settings.testFlag(IPluginGame::MODS)) {
     copyToProfile(localAppFolder() + "/enderal", path, "plugins.txt");
-    copyToProfile(localAppFolder() + "/enderal", path, "loadorder.txt");
   }
 
   if (settings.testFlag(IPluginGame::CONFIGURATION)) {
@@ -283,4 +282,3 @@ QString GameEnderal::identifyGamePath() const
   }
   return result;
 }
-
