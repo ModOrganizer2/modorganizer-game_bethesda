@@ -1,10 +1,10 @@
 cmake_minimum_required(VERSION 3.16)
-# appveyor does not build modorganizer in its standard location, so use
-# DEPENDENCIES_DIR to find cmake_common
-if(DEFINED DEPENDENCIES_DIR)
-	include(${DEPENDENCIES_DIR}/modorganizer_super/cmake_common/src.cmake)
-else()
-	include(../../../cmake_common/src.cmake)
-endif()
 
-requires_project(game_features)
+add_library(game_gamebryo STATIC)
+mo2_configure_library(game_gamebryo
+	WARNINGS OFF
+	TRANSLATIONS ON
+	AUTOMOC ON
+	PUBLIC_DEPENDS uibase
+	PRIVATE_DEPENDS lz4)
+mo2_install_target(game_gamebryo)
