@@ -10,6 +10,7 @@
 #include <QDir>
 #include <QStringList>
 #include <QString>
+#include <QStringEncoder>
 #include <QDateTime>
 
 using MOBase::IOrganizer;
