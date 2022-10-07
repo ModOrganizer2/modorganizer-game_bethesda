@@ -7,6 +7,7 @@
 
 #include <QDir>
 #include <QStringList>
+#include <QStringEncoder>
 
 
 using MOBase::IPluginGame;
