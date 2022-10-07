@@ -5,6 +5,8 @@
 #include <log.h>
 #include <safewritefile.h>
 
+#include <QStringEncoder>
+
 using namespace MOBase;
 
 void EnderalSEGamePlugins::writePluginList(const MOBase::IPluginList* pluginList, const QString& filePath)
