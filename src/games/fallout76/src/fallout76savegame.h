@@ -1,7 +1,7 @@
 #ifndef FALLOUT76SAVEGAME_H
 #define FALLOUT76SAVEGAME_H
 
-#include <Windows.h
+#include <Windows.h>
 
 #include "gamebryosavegame.h"
 
@@ -16,10 +16,10 @@ protected:
 
   // Fetch easy-to-access information.
   void fetchInformationFields(FileWrapper& wrapper,
-    QString& playerName,
-    unsigned short& playerLevel,
-    QString& playerLocation,
-    unsigned long& saveNumber,
+    QString playerName,
+    unsigned short playerLevel,
+    QString playerLocation,
+    unsigned long saveNumber,
     FILETIME& creationTime) const;
 
   std::unique_ptr<DataFields> fetchDataFields() const override;

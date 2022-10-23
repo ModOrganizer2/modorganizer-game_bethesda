@@ -59,7 +59,7 @@ QList<ExecutableInfo> GameFallout76::executables() const
       << ExecutableInfo("Fallout 76", findInGameFolder(binaryName()))
       << ExecutableInfo("Fallout Launcher", findInGameFolder(getLauncherName()))
       << ExecutableInfo("Creation Kit", findInGameFolder("CreationKit.exe"))
-      << ExecutableInfo("LOOT", getLootPath()).withArgument("--game=\"Fallout76\"")
+      << ExecutableInfo("LOOT", QFileInfo(getLootPath())).withArgument("--game=\"Fallout76\"")
          ;
 }
 
@@ -74,7 +74,7 @@ QString GameFallout76::name() const
 
 QString GameFallout76::author() const
 {
-  return "EntranceJew & Holt59";
+  return "Mod Organizer Team; EntranceJew";
 }
 
 QString GameFallout76::description() const
@@ -85,7 +85,7 @@ QString GameFallout76::description() const
 
 MOBase::VersionInfo GameFallout76::version() const
 {
-  return VersionInfo(3, 0, 0, VersionInfo::RELEASE_ALPHA);
+  return VersionInfo(3, 0, 1, VersionInfo::RELEASE_ALPHA);
 }
 
 QList<PluginSetting> GameFallout76::settings() const

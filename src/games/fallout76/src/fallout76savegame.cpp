@@ -20,10 +20,10 @@ Fallout76SaveGame::Fallout76SaveGame(QString const& fileName, GameFallout76 cons
 }
 
 void Fallout76SaveGame::fetchInformationFields(FileWrapper& file,
-  QString& playerName,
-  unsigned short& playerLevel,
-  QString& playerLocation,
-  unsigned long& saveNumber,
+  QString playerName,
+  unsigned short playerLevel,
+  QString playerLocation,
+  unsigned long saveNumber,
   FILETIME& creationTime) const {
 
   file.skip<unsigned long>(); // header size
@@ -64,6 +64,7 @@ std::unique_ptr<GamebryoSaveGame::DataFields> Fallout76SaveGame::fetchDataFields
   file.readImage(384, true);
 
   uint8_t saveGameVersion = file.readChar();
+  QString ignore;
   file.read(ignore);     // game version
   file.skip<uint32_t>(); // plugin info size
 

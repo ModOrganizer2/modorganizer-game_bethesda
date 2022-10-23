@@ -3,6 +3,8 @@
 #include "iprofile.h"
 #include <utility.h>
 
+#include <QRegularExpression>
+
 Fallout76DataArchives::Fallout76DataArchives(const QDir &myGamesDir) :
   GamebryoDataArchives(myGamesDir)
 {}
@@ -117,17 +119,17 @@ void Fallout76DataArchives::writeArchiveList(MOBase::IProfile *profile, const QS
 
   for (int i = 0; i < before.size(); ++i) {
     QString archive = before[i];
-    if (archive.contains(QRegExp(" - Textures(\\d{2})\\.ba2$"))) {
+    if (archive.contains(QRegularExpression(" - Textures(\\d{2})\\.ba2$"))) {
       sResourceIndexFileList.append(archive);
-    } else if (archive.contains(QRegExp(" - (Interface|Localization|Shaders|Startup)\\.ba2$"))) {
+    } else if (archive.contains(QRegularExpression(" - (Interface|Localization|Shaders|Startup)\\.ba2$"))) {
       sResourceStartUpArchiveList.append(archive);
-    } else if (archive.contains(QRegExp(" - (Interface|Materials|MiscClient|Shaders)\\.ba2$"))) {
+    } else if (archive.contains(QRegularExpression(" - (Interface|Materials|MiscClient|Shaders)\\.ba2$"))) {
       SResourceArchiveMemoryCacheList.append(archive);
-    } else if (archive.contains(QRegExp(" - (GeneratedMeshes|Materials|Meshes(\\d{2}|\\w+)?|MiscClient|Sounds\\d{2}|Startup|Voices)\\.ba2$"))) {
+    } else if (archive.contains(QRegularExpression(" - (GeneratedMeshes|Materials|Meshes(\\d{2}|\\w+)?|MiscClient|Sounds\\d{2}|Startup|Voices)\\.ba2$"))) {
       SResourceArchiveList.append(archive);
-    } else if (archive.contains(QRegExp(" - (Animations|Enlighten(Interiors|Exteriors\\d{2})|GeneratedTextures)\\.ba2$"))) {
+    } else if (archive.contains(QRegularExpression(" - (Animations|Enlighten(Interiors|Exteriors\\d{2})|GeneratedTextures)\\.ba2$"))) {
       SResourceArchiveList2.append(archive);
-    } else if (archive.contains(QRegExp(" - ATX_.*\\.ba2$"))) {
+    } else if (archive.contains(QRegularExpression(" - ATX_.*\\.ba2$"))) {
       // if it is named after DLC, it has to go here
       sResourceArchive2List.append(archive);
     } else {
