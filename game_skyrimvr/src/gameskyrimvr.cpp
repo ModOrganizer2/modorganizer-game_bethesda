@@ -6,12 +6,12 @@
 #include "skyrimvrmoddatachecker.h"
 #include "skyrimvrmoddatacontent.h"
 #include "skyrimvrsavegame.h"
+#include "skyrimvrgameplugins.h"
 
 #include <pluginsetting.h>
 #include <executableinfo.h>
 #include <gamebryolocalsavegames.h>
 #include <gamebryosavegameinfo.h>
-#include <creationgameplugins.h>
 #include "versioninfo.h"
 
 #include <QCoreApplication>
@@ -74,7 +74,7 @@ bool GameSkyrimVR::init(IOrganizer *moInfo)
   registerFeature<ModDataChecker>(new SkyrimVRModDataChecker(this));
   registerFeature<SaveGameInfo>(new GamebryoSaveGameInfo(this));
   registerFeature<ModDataContent>(new SkyrimVRModDataContent(this));
-  registerFeature<GamePlugins>(new CreationGamePlugins(moInfo));
+  registerFeature<GamePlugins>(new SkyrimVRGamePlugins(moInfo));
   registerFeature<UnmanagedMods>(new SkyrimVRUnmangedMods(this));
 
   return true;
