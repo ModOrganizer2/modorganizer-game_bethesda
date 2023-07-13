@@ -15,19 +15,22 @@
 
 struct _SYSTEMTIME;
 
-namespace MOBase { class IPluginGame; }
+namespace MOBase
+{
+class IPluginGame;
+}
 
 class GameGamebryo;
 
 class GamebryoSaveGame : public MOBase::ISaveGame
 {
 public:
-  GamebryoSaveGame(QString const &file, GameGamebryo const *game, bool const lightEnabled = false);
+  GamebryoSaveGame(QString const& file, GameGamebryo const* game,
+                   bool const lightEnabled = false);
 
   virtual ~GamebryoSaveGame();
 
-public: // ISaveGame interface
-
+public:  // ISaveGame interface
   virtual QString getFilepath() const override;
   virtual QDateTime getCreationTime() const override;
   virtual QString getName() const override;
@@ -35,18 +38,20 @@ public: // ISaveGame interface
   virtual QStringList allFiles() const override;
 
 public:
-
   bool hasScriptExtenderFile() const;
 
-  //Simple getters
+  // Simple getters
   virtual QString getPCName() const { return m_PCName; }
   virtual unsigned short getPCLevel() const { return m_PCLevel; }
   virtual QString getPCLocation() const { return m_PCLocation; }
   virtual unsigned long getSaveNumber() const { return m_SaveNumber; }
 
-  QStringList const &getPlugins() const { return m_DataFields.value()->Plugins; }
-  QStringList const &getLightPlugins() const { return m_DataFields.value()->LightPlugins; }
-  QImage const &getScreenshot() const { return m_DataFields.value()->Screenshot; }
+  QStringList const& getPlugins() const { return m_DataFields.value()->Plugins; }
+  QStringList const& getLightPlugins() const
+  {
+    return m_DataFields.value()->LightPlugins;
+  }
+  QImage const& getScreenshot() const { return m_DataFields.value()->Screenshot; }
 
   bool isLightEnabled() const { return m_LightEnabled; }
 
@@ -58,7 +63,6 @@ public:
   };
 
 protected:
-
   friend class FileWrapper;
 
   class FileWrapper
@@ -71,25 +75,27 @@ protected:
      * @params expected Expecte bytes at start of file.
      *
      **/
-    FileWrapper(QString const& filepath, QString const &expected);
+    FileWrapper(QString const& filepath, QString const& expected);
 
     /** Set this for save games that have a marker at the end of each
-    * field. Specifically fallout
-    **/
+     * field. Specifically fallout
+     **/
     void setHasFieldMarkers(bool);
 
     /** Set bz string mode (1 byte length, null terminated)
-    **/
+     **/
     void setPluginString(StringType);
 
-    template <typename T> void skip(int count = 1)
+    template <typename T>
+    void skip(int count = 1)
     {
       if (!m_File.seek(m_File.pos() + count * sizeof(T))) {
         throw std::runtime_error("unexpected end of file");
       }
     }
 
-    template <typename T> void read(T &value)
+    template <typename T>
+    void read(T& value)
     {
       int read = m_File.read(reinterpret_cast<char*>(&value), sizeof(T));
       if (read != sizeof(T)) {
@@ -107,15 +113,16 @@ protected:
       }
     }
 
-    void read(void *buff, std::size_t length);
+    void read(void* buff, std::size_t length);
 
     /* Reads RGB image from save
-    * Assumes picture dimentions come immediately before the save
-    */
+     * Assumes picture dimentions come immediately before the save
+     */
     QImage readImage(int scale = 0, bool alpha = false);
 
     /* Reads RGB image from save */
-    QImage readImage(unsigned long width, unsigned long height, int scale = 0, bool alpha = false);
+    QImage readImage(unsigned long width, unsigned long height, int scale = 0,
+                     bool alpha = false);
 
     /* Sets the compression type. */
     void setCompressionType(uint16_t type);
@@ -145,11 +152,11 @@ protected:
     QFile m_File;
     bool m_HasFieldMarkers;
     StringType m_PluginString;
-    QDataStream *m_Data;
+    QDataStream* m_Data;
     uint16_t m_CompressionType = 0;
   };
 
-  void setCreationTime(_SYSTEMTIME const &time);
+  void setCreationTime(_SYSTEMTIME const& time);
 
   GameGamebryo const* m_Game;
   bool m_LightEnabled;
@@ -166,23 +173,23 @@ protected:
   //
   // This is virtual so child class can add fields if those are
   // hard to access.
-  struct DataFields {
+  struct DataFields
+  {
     QStringList Plugins;
     QStringList LightPlugins;
     QImage Screenshot;
 
     // We need this constructor.
-    DataFields() { }
-    virtual ~DataFields() { }
+    DataFields() {}
+    virtual ~DataFields() {}
   };
   MOBase::MemoizedLocked<std::unique_ptr<DataFields>> m_DataFields;
 
   // Fetch the field.
   virtual std::unique_ptr<DataFields> fetchDataFields() const = 0;
-
 };
 
+template <>
+void GamebryoSaveGame::FileWrapper::read<QString>(QString&);
 
-template <> void GamebryoSaveGame::FileWrapper::read<QString>(QString &);
-
-#endif // GAMEBRYOSAVEGAME_H
+#endif  // GAMEBRYOSAVEGAME_H

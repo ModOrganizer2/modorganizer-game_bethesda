@@ -3,23 +3,25 @@
 #include <Windows.h>
 #include <utility.h>
 
-
-GamebryoDataArchives::GamebryoDataArchives(const QDir &myGamesDir):
-  m_LocalGameDir(myGamesDir.absolutePath())
+GamebryoDataArchives::GamebryoDataArchives(const QDir& myGamesDir)
+    : m_LocalGameDir(myGamesDir.absolutePath())
 {}
 
-QStringList GamebryoDataArchives::getArchivesFromKey(const QString &iniFile, const QString &key, const int size) const
+QStringList GamebryoDataArchives::getArchivesFromKey(const QString& iniFile,
+                                                     const QString& key,
+                                                     const int size) const
 {
-  wchar_t * buffer = new wchar_t[size];
+  wchar_t* buffer = new wchar_t[size];
   QStringList result;
   std::wstring iniFileW = QDir::toNativeSeparators(iniFile).toStdWString();
 
-  // epic ms fail: GetPrivateProfileString uses errno (for whatever reason) to signal a fail since the return value
-  // has a different meaning (number of bytes copied). HOWEVER, it will not set errno to 0 if NO error occured
+  // epic ms fail: GetPrivateProfileString uses errno (for whatever reason) to signal a
+  // fail since the return value has a different meaning (number of bytes copied).
+  // HOWEVER, it will not set errno to 0 if NO error occured
   errno = 0;
 
-  if (::GetPrivateProfileStringW(L"Archive", key.toStdWString().c_str(),
-                                 L"", buffer, size, iniFileW.c_str()) != 0) {
+  if (::GetPrivateProfileStringW(L"Archive", key.toStdWString().c_str(), L"", buffer,
+                                 size, iniFileW.c_str()) != 0) {
     result.append(QString::fromStdWString(buffer).split(','));
   }
 
@@ -30,14 +32,18 @@ QStringList GamebryoDataArchives::getArchivesFromKey(const QString &iniFile, con
   return result;
 }
 
-void GamebryoDataArchives::setArchivesToKey(const QString &iniFile, const QString &key, const QString &value)
+void GamebryoDataArchives::setArchivesToKey(const QString& iniFile, const QString& key,
+                                            const QString& value)
 {
-  if (!MOBase::WriteRegistryValue(L"Archive", key.toStdWString().c_str(), value.toStdWString().c_str(), iniFile.toStdWString().c_str())) {
+  if (!MOBase::WriteRegistryValue(L"Archive", key.toStdWString().c_str(),
+                                  value.toStdWString().c_str(),
+                                  iniFile.toStdWString().c_str())) {
     qWarning("failed to set archives in \"%s\"", qUtf8Printable(iniFile));
   }
 }
 
-void GamebryoDataArchives::addArchive(MOBase::IProfile *profile, int index, const QString &archiveName)
+void GamebryoDataArchives::addArchive(MOBase::IProfile* profile, int index,
+                                      const QString& archiveName)
 {
   QStringList current = archives(profile);
   if (current.contains(archiveName, Qt::CaseInsensitive)) {
@@ -49,7 +55,8 @@ void GamebryoDataArchives::addArchive(MOBase::IProfile *profile, int index, cons
   writeArchiveList(profile, current);
 }
 
-void GamebryoDataArchives::removeArchive(MOBase::IProfile *profile, const QString &archiveName)
+void GamebryoDataArchives::removeArchive(MOBase::IProfile* profile,
+                                         const QString& archiveName)
 {
   QStringList current = archives(profile);
   if (!current.contains(archiveName, Qt::CaseInsensitive)) {
