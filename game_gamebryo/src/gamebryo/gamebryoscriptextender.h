@@ -8,7 +8,7 @@ class GameGamebryo;
 class GamebryoScriptExtender : public ScriptExtender
 {
 public:
-  GamebryoScriptExtender(GameGamebryo const *game);
+  GamebryoScriptExtender(GameGamebryo const* game);
 
   virtual ~GamebryoScriptExtender();
 
@@ -25,7 +25,7 @@ public:
   virtual WORD getArch() const override;
 
 protected:
-  GameGamebryo const * const m_Game;
+  GameGamebryo const* const m_Game;
 };
 
-#endif // GAMEBRYOSCRIPTEXTENDER_H
+#endif  // GAMEBRYOSCRIPTEXTENDER_H
