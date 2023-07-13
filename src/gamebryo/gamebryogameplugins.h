@@ -1,42 +1,42 @@
 #ifndef GAMEBRYOGAMEPLUGINS_H
 #define GAMEBRYOGAMEPLUGINS_H
 
-
-#include <gameplugins.h>
-#include <imoinfo.h>
 #include <QDateTime>
 #include <QStringList>
+#include <gameplugins.h>
+#include <imoinfo.h>
 
-class GamebryoGamePlugins : public GamePlugins {
+class GamebryoGamePlugins : public GamePlugins
+{
 public:
-  GamebryoGamePlugins(MOBase::IOrganizer *organizer);
+  GamebryoGamePlugins(MOBase::IOrganizer* organizer);
 
-  virtual void writePluginLists(const MOBase::IPluginList *pluginList) override;
-  virtual void readPluginLists(MOBase::IPluginList *pluginList) override;
+  virtual void writePluginLists(const MOBase::IPluginList* pluginList) override;
+  virtual void readPluginLists(MOBase::IPluginList* pluginList) override;
   virtual QStringList getLoadOrder() override;
   virtual bool lightPluginsAreSupported() override;
 
 protected:
-  MOBase::IOrganizer *organizer() const { return m_Organizer; }
+  MOBase::IOrganizer* organizer() const { return m_Organizer; }
 
-  virtual void writePluginList(const MOBase::IPluginList *pluginList,
-                               const QString &filePath);
-  virtual void writeLoadOrderList(const MOBase::IPluginList *pluginList,
-                                  const QString &filePath);
-  virtual QStringList readLoadOrderList(MOBase::IPluginList *pluginList,
-                                 const QString &filePath);
-  virtual QStringList readPluginList(MOBase::IPluginList *pluginList);
+  virtual void writePluginList(const MOBase::IPluginList* pluginList,
+                               const QString& filePath);
+  virtual void writeLoadOrderList(const MOBase::IPluginList* pluginList,
+                                  const QString& filePath);
+  virtual QStringList readLoadOrderList(MOBase::IPluginList* pluginList,
+                                        const QString& filePath);
+  virtual QStringList readPluginList(MOBase::IPluginList* pluginList);
 
 protected:
-  MOBase::IOrganizer *m_Organizer;
+  MOBase::IOrganizer* m_Organizer;
   QDateTime m_LastRead;
 
 private:
-  void writeList(const MOBase::IPluginList *pluginList, const QString &filePath,
+  void writeList(const MOBase::IPluginList* pluginList, const QString& filePath,
                  bool loadOrder);
 
 private:
   std::map<QString, QByteArray> m_LastSaveHash;
 };
 
-#endif // GAMEBRYOGAMEPLUGINS_H
+#endif  // GAMEBRYOGAMEPLUGINS_H
