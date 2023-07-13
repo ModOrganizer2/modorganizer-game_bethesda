@@ -8,16 +8,16 @@ class GameGamebryo;
 class GamebryoSaveGameInfo : public SaveGameInfo
 {
 public:
-  GamebryoSaveGameInfo(GameGamebryo const *game);
+  GamebryoSaveGameInfo(GameGamebryo const* game);
   ~GamebryoSaveGameInfo();
 
   virtual MissingAssets getMissingAssets(MOBase::ISaveGame const& save) const override;
 
-  virtual MOBase::ISaveGameInfoWidget *getSaveGameWidget(QWidget *) const override;
+  virtual MOBase::ISaveGameInfoWidget* getSaveGameWidget(QWidget*) const override;
 
 protected:
   friend class GamebryoSaveGameInfoWidget;
-  GameGamebryo const *m_Game;
+  GameGamebryo const* m_Game;
 };
 
-#endif // GAMEBRYOSAVEGAMEINFO_H
+#endif  // GAMEBRYOSAVEGAMEINFO_H
