@@ -16,20 +16,18 @@ License along with this library; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-
 #include "morrowindlocalsavegames.h"
-#include <iprofile.h>
 #include <QtDebug>
-#include <windows.h>
+#include <iprofile.h>
 #include <stddef.h>
 #include <string>
+#include <windows.h>
 
-
-MorrowindLocalSavegames::MorrowindLocalSavegames(const MOBase::IPluginGame *game)
-  : m_GamePlugin(game)
+MorrowindLocalSavegames::MorrowindLocalSavegames(const MOBase::IPluginGame* game)
+    : m_GamePlugin(game)
 {}
 
-bool MorrowindLocalSavegames::prepareProfile(MOBase::IProfile *profile)
+bool MorrowindLocalSavegames::prepareProfile(MOBase::IProfile* profile)
 {
   bool dirty = false;
 
@@ -52,13 +50,8 @@ bool MorrowindLocalSavegames::prepareProfile(MOBase::IProfile *profile)
   return dirty;
 }
 
-
-MappingType MorrowindLocalSavegames::mappings(const QDir &profileSaveDir) const
+MappingType MorrowindLocalSavegames::mappings(const QDir& profileSaveDir) const
 {
-  return {{
-           profileSaveDir.absolutePath(),
-           m_GamePlugin->gameDirectory().absoluteFilePath("Saves"),
-           true,
-           true
-    }};
+  return {{profileSaveDir.absolutePath(),
+           m_GamePlugin->gameDirectory().absoluteFilePath("Saves"), true, true}};
 }

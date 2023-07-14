@@ -12,17 +12,17 @@ class GameOblivion : public GameGamebryo
   Q_PLUGIN_METADATA(IID "org.tannin.GameOblivion" FILE "gameoblivion.json")
 
 public:
-
   GameOblivion();
 
-  virtual bool init(MOBase::IOrganizer *moInfo) override;
+  virtual bool init(MOBase::IOrganizer* moInfo) override;
 
-public: // IPluginGame interface
-
+public:  // IPluginGame interface
   virtual QString gameName() const override;
   virtual QList<MOBase::ExecutableInfo> executables() const override;
-  virtual QList<MOBase::ExecutableForcedLoadSetting> executableForcedLoads() const override;
-  virtual void initializeProfile(const QDir &path, ProfileSettings settings) const override;
+  virtual QList<MOBase::ExecutableForcedLoadSetting>
+  executableForcedLoads() const override;
+  virtual void initializeProfile(const QDir& path,
+                                 ProfileSettings settings) const override;
   virtual QString steamAPPId() const override;
   virtual QStringList primaryPlugins() const override;
   virtual QString gameShortName() const override;
@@ -33,8 +33,7 @@ public: // IPluginGame interface
   virtual int nexusModOrganizerID() const override;
   virtual int nexusGameID() const override;
 
-public: // IPlugin interface
-
+public:  // IPlugin interface
   virtual QString name() const override;
   virtual QString localizedName() const override;
   virtual QString author() const override;
@@ -43,11 +42,9 @@ public: // IPlugin interface
   virtual QList<MOBase::PluginSetting> settings() const override;
 
 protected:
-
   std::shared_ptr<const GamebryoSaveGame> makeSaveGame(QString filePath) const override;
   QString savegameExtension() const override;
   QString savegameSEExtension() const override;
-
 };
 
-#endif // GAMEOBLIVION_H
+#endif  // GAMEOBLIVION_H

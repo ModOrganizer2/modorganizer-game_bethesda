@@ -2,34 +2,32 @@
 
 #include "gamefalloutnv.h"
 
-FalloutNVSaveGame::FalloutNVSaveGame(QString const &fileName, GameFalloutNV const *game) :
-  GamebryoSaveGame(fileName, game)
+FalloutNVSaveGame::FalloutNVSaveGame(QString const& fileName, GameFalloutNV const* game)
+    : GamebryoSaveGame(fileName, game)
 {
   FileWrapper file(getFilepath(), "FO3SAVEGAME");
   unsigned long width, height;
-  fetchInformationFields(file, width, height, m_SaveNumber, m_PCName, m_PCLevel, m_PCLocation);
-
+  fetchInformationFields(file, width, height, m_SaveNumber, m_PCName, m_PCLevel,
+                         m_PCLocation);
 }
 
-void FalloutNVSaveGame::fetchInformationFields(
-  FileWrapper& file,
-  unsigned long& width,
-  unsigned long& height,
-  unsigned long& saveNumber,
-  QString& playerName,
-  unsigned short& playerLevel,
-  QString& playerLocation) const
+void FalloutNVSaveGame::fetchInformationFields(FileWrapper& file, unsigned long& width,
+                                               unsigned long& height,
+                                               unsigned long& saveNumber,
+                                               QString& playerName,
+                                               unsigned short& playerLevel,
+                                               QString& playerLocation) const
 {
-  file.skip<unsigned long>(); //Save header size
+  file.skip<unsigned long>();  // Save header size
 
-  file.skip<unsigned long>(); //File version?
-  file.skip<unsigned char>(); //Delimiter
+  file.skip<unsigned long>();  // File version?
+  file.skip<unsigned char>();  // Delimiter
 
-  //A huge wodge of text with no length but a delimiter. Given the null bytes
-  //in it I presume it's fixed length (64 bytes + delim) but I have no
-  //definite spec
-  for (unsigned char ignore = 0; ignore != 0x7c; ) {
-    file.read(ignore); // unknown
+  // A huge wodge of text with no length but a delimiter. Given the null bytes
+  // in it I presume it's fixed length (64 bytes + delim) but I have no
+  // definite spec
+  for (unsigned char ignore = 0; ignore != 0x7c;) {
+    file.read(ignore);  // unknown
   }
 
   file.setHasFieldMarkers(true);
@@ -61,8 +59,8 @@ std::unique_ptr<GamebryoSaveGame::DataFields> FalloutNVSaveGame::fetchDataFields
     unsigned short dummyLevel;
     unsigned long dummySaveNumber;
 
-    fetchInformationFields(file, width, height,
-      dummySaveNumber, dummyName, dummyLevel, dummyLocation);
+    fetchInformationFields(file, width, height, dummySaveNumber, dummyName, dummyLevel,
+                           dummyLocation);
   }
 
   QString playtime;
@@ -70,7 +68,7 @@ std::unique_ptr<GamebryoSaveGame::DataFields> FalloutNVSaveGame::fetchDataFields
 
   fields->Screenshot = file.readImage(width, height, 256);
 
-  file.skip<char>(5); // unknown (1 byte), plugin size (4 bytes)
+  file.skip<char>(5);  // unknown (1 byte), plugin size (4 bytes)
 
   file.setPluginString(GamebryoSaveGame::StringType::TYPE_BSTRING);
   fields->Plugins = file.readPlugins();

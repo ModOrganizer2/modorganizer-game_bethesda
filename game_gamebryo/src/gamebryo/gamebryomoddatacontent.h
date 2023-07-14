@@ -1,8 +1,8 @@
 #ifndef GAMEBRYO_MODDATACONTENT_H
 #define GAMEBRYO_MODDATACONTENT_H
 
-#include <moddatacontent.h>
 #include <ifiletree.h>
+#include <moddatacontent.h>
 
 class GameGamebryo;
 
@@ -10,14 +10,15 @@ class GameGamebryo;
  * @brief ModDataContent for GameBryo games.
  *
  */
-class GamebryoModDataContent : public ModDataContent {
+class GamebryoModDataContent : public ModDataContent
+{
 protected:
-
   /**
    * Note: These are used to index m_Enabled so should have standard
    * enum values, not custom ones.
    */
-  enum EContent {
+  enum EContent
+  {
     CONTENT_PLUGIN,
     CONTENT_OPTIONAL,
     CONTENT_TEXTURE,
@@ -41,7 +42,6 @@ protected:
   constexpr static auto CONTENT_NEXT_VALUE = CONTENT_MODGROUP + 1;
 
 public:
-
   /**
    *
    */
@@ -59,15 +59,14 @@ public:
    *
    * @return the IDs of the content in the given tree.
    */
-  virtual std::vector<int> getContentsFor(std::shared_ptr<const MOBase::IFileTree> fileTree) const override;
+  virtual std::vector<int>
+  getContentsFor(std::shared_ptr<const MOBase::IFileTree> fileTree) const override;
 
 protected:
-
   GameGamebryo const* const m_GamePlugin;
 
   // List of enabled contents:
   std::vector<bool> m_Enabled;
-
 };
 
-#endif // GAMEBRYO_MODDATACONTENT_H
+#endif  // GAMEBRYO_MODDATACONTENT_H

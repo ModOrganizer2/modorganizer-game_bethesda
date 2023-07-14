@@ -2,31 +2,30 @@
 
 #include "gamefallout3.h"
 
-Fallout3SaveGame::Fallout3SaveGame(QString const &fileName, GameFallout3 const *game) :
-  GamebryoSaveGame(fileName, game)
+Fallout3SaveGame::Fallout3SaveGame(QString const& fileName, GameFallout3 const* game)
+    : GamebryoSaveGame(fileName, game)
 {
   FileWrapper file(getFilepath(), "FO3SAVEGAME");
 
   unsigned long width, height;
-  fetchInformationFields(file, width, height, m_SaveNumber, m_PCName, m_PCLevel, m_PCLocation);
+  fetchInformationFields(file, width, height, m_SaveNumber, m_PCName, m_PCLevel,
+                         m_PCLocation);
 }
 
-void Fallout3SaveGame::fetchInformationFields(
-  FileWrapper& file,
-  unsigned long& width,
-  unsigned long& height,
-  unsigned long& saveNumber,
-  QString& playerName,
-  unsigned short& playerLevel,
-  QString& playerLocation) const
+void Fallout3SaveGame::fetchInformationFields(FileWrapper& file, unsigned long& width,
+                                              unsigned long& height,
+                                              unsigned long& saveNumber,
+                                              QString& playerName,
+                                              unsigned short& playerLevel,
+                                              QString& playerLocation) const
 {
-  file.skip<unsigned long>(); //Save header size
+  file.skip<unsigned long>();  // Save header size
 
   file.setHasFieldMarkers(true);
   file.setPluginString(GamebryoSaveGame::StringType::TYPE_BZSTRING);
 
-  file.skip<unsigned long>(); //File version ?
-  file.skip<unsigned char>(); //delimiter
+  file.skip<unsigned long>();  // File version ?
+  file.skip<unsigned char>();  // delimiter
 
   file.read(width);
   file.read(height);
@@ -55,8 +54,8 @@ std::unique_ptr<GamebryoSaveGame::DataFields> Fallout3SaveGame::fetchDataFields(
     unsigned short dummyLevel;
     unsigned long dummySaveNumber;
 
-    fetchInformationFields(file, width, height,
-      dummySaveNumber, dummyName, dummyLevel, dummyLocation);
+    fetchInformationFields(file, width, height, dummySaveNumber, dummyName, dummyLevel,
+                           dummyLocation);
   }
 
   QString playtime;
@@ -64,7 +63,7 @@ std::unique_ptr<GamebryoSaveGame::DataFields> Fallout3SaveGame::fetchDataFields(
 
   fields->Screenshot = file.readImage(width, height, 256);
 
-  file.skip<char>(5); // unknown (1 byte), plugin size (4 bytes)
+  file.skip<char>(5);  // unknown (1 byte), plugin size (4 bytes)
 
   file.setPluginString(GamebryoSaveGame::StringType::TYPE_BSTRING);
   fields->Plugins = file.readPlugins();

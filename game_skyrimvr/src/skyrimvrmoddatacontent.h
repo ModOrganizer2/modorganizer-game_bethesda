@@ -4,17 +4,18 @@
 #include <gamebryomoddatacontent.h>
 #include <ifiletree.h>
 
-class SkyrimVRModDataContent : public GamebryoModDataContent {
+class SkyrimVRModDataContent : public GamebryoModDataContent
+{
 public:
-
   /**
    *
    */
-  SkyrimVRModDataContent(GameGamebryo const* gamePlugin) : GamebryoModDataContent(gamePlugin) {
+  SkyrimVRModDataContent(GameGamebryo const* gamePlugin)
+      : GamebryoModDataContent(gamePlugin)
+  {
     // Just need to disable some contents:
     m_Enabled[CONTENT_SKYPROC] = false;
   }
-
 };
 
-#endif // SKYRIMVR_MODDATACONTENT_H
+#endif  // SKYRIMVR_MODDATACONTENT_H

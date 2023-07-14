@@ -3,10 +3,9 @@
 #include <QString>
 #include <QStringList>
 
-FalloutTTWScriptExtender::FalloutTTWScriptExtender(GameGamebryo const *game) :
-  GamebryoScriptExtender(game)
-{
-}
+FalloutTTWScriptExtender::FalloutTTWScriptExtender(GameGamebryo const* game)
+    : GamebryoScriptExtender(game)
+{}
 
 QString FalloutTTWScriptExtender::BinaryName() const
 {

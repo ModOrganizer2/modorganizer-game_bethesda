@@ -1,44 +1,41 @@
 #include "morrowindgameplugins.h"
-#include <Windows.h>
-#include <utility.h>
-#include <report.h>
-#include <ipluginlist.h>
-#include <iplugingame.h>
-#include <imodinterface.h>
-#include <scopeguard.h>
 #include "registry.h"
+#include <Windows.h>
+#include <imodinterface.h>
+#include <iplugingame.h>
+#include <ipluginlist.h>
+#include <report.h>
+#include <scopeguard.h>
+#include <utility.h>
 
+#include <QDateTime>
 #include <QDir>
-#include <QStringList>
 #include <QString>
 #include <QStringEncoder>
-#include <QDateTime>
+#include <QStringList>
 
 using MOBase::IOrganizer;
 using MOBase::IPluginList;
 using MOBase::reportError;
 
-MorrowindGamePlugins::MorrowindGamePlugins(IOrganizer *organizer) :
-  GamebryoGamePlugins(organizer)
-{
-}
+MorrowindGamePlugins::MorrowindGamePlugins(IOrganizer* organizer)
+    : GamebryoGamePlugins(organizer)
+{}
 
-void MorrowindGamePlugins::writePluginLists(const IPluginList *pluginList) {
+void MorrowindGamePlugins::writePluginLists(const IPluginList* pluginList)
+{
   if (!m_LastRead.isValid()) {
     // attempt to write uninitialized plugin lists
     return;
   }
 
   if (organizer()->profile()->localSettingsEnabled()) {
-    writePluginList(
-      pluginList,
-      organizer()->profile()->absolutePath() + "/Morrowind.ini"
-    );
+    writePluginList(pluginList,
+                    organizer()->profile()->absolutePath() + "/Morrowind.ini");
   } else {
-    writePluginList(
-      pluginList,
-      organizer()->managedGame()->gameDirectory().absolutePath() + "/Morrowind.ini"
-    );
+    writePluginList(pluginList,
+                    organizer()->managedGame()->gameDirectory().absolutePath() +
+                        "/Morrowind.ini");
   }
 
   writeLoadOrderList(pluginList,
@@ -47,20 +44,20 @@ void MorrowindGamePlugins::writePluginLists(const IPluginList *pluginList) {
   m_LastRead = QDateTime::currentDateTime();
 }
 
-void MorrowindGamePlugins::readPluginLists(MOBase::IPluginList *pluginList) {
-  QString loadOrderPath =
-      organizer()->profile()->absolutePath() + "/loadorder.txt";
+void MorrowindGamePlugins::readPluginLists(MOBase::IPluginList* pluginList)
+{
+  QString loadOrderPath = organizer()->profile()->absolutePath() + "/loadorder.txt";
 
   QString pluginsPath = organizer()->profile()->absolutePath() + "/Morrowind.ini";
   if (!organizer()->profile()->localSettingsEnabled()) {
-    pluginsPath = organizer()->managedGame()->gameDirectory().absolutePath() + "/Morrowind.ini";
+    pluginsPath =
+        organizer()->managedGame()->gameDirectory().absolutePath() + "/Morrowind.ini";
   }
 
-  bool loadOrderIsNew = !m_LastRead.isValid() ||
-      !QFileInfo(loadOrderPath).exists() ||
-      QFileInfo(loadOrderPath).lastModified() > m_LastRead;
-  bool pluginsIsNew = !m_LastRead.isValid() ||
-      QFileInfo(pluginsPath).lastModified() > m_LastRead;
+  bool loadOrderIsNew = !m_LastRead.isValid() || !QFileInfo(loadOrderPath).exists() ||
+                        QFileInfo(loadOrderPath).lastModified() > m_LastRead;
+  bool pluginsIsNew =
+      !m_LastRead.isValid() || QFileInfo(pluginsPath).lastModified() > m_LastRead;
 
   if (loadOrderIsNew || !pluginsIsNew) {
     // read both files if they are both new or both older than the last read
@@ -68,7 +65,8 @@ void MorrowindGamePlugins::readPluginLists(MOBase::IPluginList *pluginList) {
     pluginList->setLoadOrder(loadOrder);
     readPluginList(pluginList);
   } else {
-      // If the plugins is new but not loadorder, we must reparse the load order from the plugin files
+    // If the plugins is new but not loadorder, we must reparse the load order from the
+    // plugin files
     QStringList loadOrder = readPluginList(pluginList);
     pluginList->setLoadOrder(loadOrder);
   }
@@ -76,35 +74,41 @@ void MorrowindGamePlugins::readPluginLists(MOBase::IPluginList *pluginList) {
   m_LastRead = QDateTime::currentDateTime();
 }
 
-void MorrowindGamePlugins::writePluginList(const MOBase::IPluginList *pluginList,
-                                          const QString &filePath) {
+void MorrowindGamePlugins::writePluginList(const MOBase::IPluginList* pluginList,
+                                           const QString& filePath)
+{
   return writeList(pluginList, filePath, false);
 }
 
-void MorrowindGamePlugins::writeList(const IPluginList *pluginList,
-                                    const QString &filePath, bool loadOrder) {
-  QStringEncoder encoder = loadOrder ? QStringEncoder(QStringConverter::Encoding::Utf8) : QStringEncoder(QStringConverter::Encoding::System);
+void MorrowindGamePlugins::writeList(const IPluginList* pluginList,
+                                     const QString& filePath, bool loadOrder)
+{
+  QStringEncoder encoder = loadOrder
+                               ? QStringEncoder(QStringConverter::Encoding::Utf8)
+                               : QStringEncoder(QStringConverter::Encoding::System);
 
   ::WritePrivateProfileSectionW(L"Game Files", NULL, filePath.toStdWString().c_str());
 
   bool invalidFileNames = false;
-  int writtenCount = 0;
+  int writtenCount      = 0;
 
   QStringList plugins = pluginList->pluginNames();
   std::sort(plugins.begin(), plugins.end(),
-            [pluginList](const QString &lhs, const QString &rhs) {
+            [pluginList](const QString& lhs, const QString& rhs) {
               return pluginList->priority(lhs) < pluginList->priority(rhs);
             });
   QString key = "GameFile";
-  for (const QString &pluginName : plugins) {
-    if (loadOrder ||
-        (pluginList->state(pluginName) == IPluginList::STATE_ACTIVE)) {
+  for (const QString& pluginName : plugins) {
+    if (loadOrder || (pluginList->state(pluginName) == IPluginList::STATE_ACTIVE)) {
       auto result = encoder.encode(pluginName);
       if (encoder.hasError()) {
         invalidFileNames = true;
         qCritical("invalid plugin name %s", qUtf8Printable(pluginName));
       } else {
-	    if (!MOBase::WriteRegistryValue(L"Game Files", (key+QString::number(writtenCount)).toStdWString().c_str(), pluginName.toStdWString().c_str(), filePath.toStdWString().c_str())) {
+        if (!MOBase::WriteRegistryValue(
+                L"Game Files",
+                (key + QString::number(writtenCount)).toStdWString().c_str(),
+                pluginName.toStdWString().c_str(), filePath.toStdWString().c_str())) {
           qWarning("failed to set game files in \"%s\"", qUtf8Printable(filePath));
         }
       }
@@ -125,15 +129,17 @@ void MorrowindGamePlugins::writeList(const IPluginList *pluginList,
   }
 }
 
-QStringList MorrowindGamePlugins::readPluginList(MOBase::IPluginList *pluginList) {
+QStringList MorrowindGamePlugins::readPluginList(MOBase::IPluginList* pluginList)
+{
   QStringList primary = organizer()->managedGame()->primaryPlugins();
-  for (const QString &pluginName : primary) {
+  for (const QString& pluginName : primary) {
     if (pluginList->state(pluginName) != IPluginList::STATE_MISSING) {
       pluginList->setState(pluginName, IPluginList::STATE_ACTIVE);
     }
   }
   QStringList plugins = pluginList->pluginNames();
-  // Do not sort the primary plugins. Their load order should be locked as defined in "primaryPlugins".
+  // Do not sort the primary plugins. Their load order should be locked as defined in
+  // "primaryPlugins".
   const QStringList pluginsClone(plugins);
   for (QString plugin : pluginsClone) {
     if (primary.contains(plugin, Qt::CaseInsensitive))
@@ -141,24 +147,27 @@ QStringList MorrowindGamePlugins::readPluginList(MOBase::IPluginList *pluginList
   }
 
   // Always use filetime loadorder to get the actual load order
-  std::sort(plugins.begin(), plugins.end(), [&](const QString &lhs, const QString &rhs) {
-    MOBase::IModInterface *lhm = organizer()->modList()->getMod(pluginList->origin(lhs));
-    MOBase::IModInterface *rhm = organizer()->modList()->getMod(pluginList->origin(rhs));
-    QDir lhd = organizer()->managedGame()->dataDirectory();
-    QDir rhd = organizer()->managedGame()->dataDirectory();
-    if (lhm != nullptr)
-      lhd = lhm->absolutePath();
-    if (rhm != nullptr)
-      rhd = rhm->absolutePath();
-    QString lhp = lhd.absoluteFilePath(lhs);
-    QString rhp = rhd.absoluteFilePath(rhs);
-    return QFileInfo(lhp).lastModified() <
-      QFileInfo(rhp).lastModified();
-  });
+  std::sort(plugins.begin(), plugins.end(),
+            [&](const QString& lhs, const QString& rhs) {
+              MOBase::IModInterface* lhm =
+                  organizer()->modList()->getMod(pluginList->origin(lhs));
+              MOBase::IModInterface* rhm =
+                  organizer()->modList()->getMod(pluginList->origin(rhs));
+              QDir lhd = organizer()->managedGame()->dataDirectory();
+              QDir rhd = organizer()->managedGame()->dataDirectory();
+              if (lhm != nullptr)
+                lhd = lhm->absolutePath();
+              if (rhm != nullptr)
+                rhd = rhm->absolutePath();
+              QString lhp = lhd.absoluteFilePath(lhs);
+              QString rhp = rhd.absoluteFilePath(rhs);
+              return QFileInfo(lhp).lastModified() < QFileInfo(rhp).lastModified();
+            });
 
   QString filePath = organizer()->profile()->absolutePath() + "/Morrowind.ini";
   if (!organizer()->profile()->localSettingsEnabled()) {
-    filePath = organizer()->managedGame()->gameDirectory().absolutePath() + "/Morrowind.ini";
+    filePath =
+        organizer()->managedGame()->gameDirectory().absolutePath() + "/Morrowind.ini";
   }
   wchar_t buffer[256];
   QStringList result;
@@ -169,9 +178,10 @@ QStringList MorrowindGamePlugins::readPluginList(MOBase::IPluginList *pluginList
   QStringList activePlugins;
   QStringList inactivePlugins;
   QString key = "GameFile";
-  int i = 0;
-  while (::GetPrivateProfileStringW(L"Game Files", (key + QString::number(i)).toStdWString().c_str(),
-    L"", buffer, 256, iniFileW.c_str()) != 0) {
+  int i       = 0;
+  while (::GetPrivateProfileStringW(L"Game Files",
+                                    (key + QString::number(i)).toStdWString().c_str(),
+                                    L"", buffer, 256, iniFileW.c_str()) != 0) {
     QString pluginName;
     pluginName = QString::fromStdWString(buffer).trimmed();
     pluginList->setState(pluginName, IPluginList::STATE_ACTIVE);
@@ -180,11 +190,11 @@ QStringList MorrowindGamePlugins::readPluginList(MOBase::IPluginList *pluginList
   }
 
   // we removed each plugin found in the file, so what's left are inactive mods
-  for (const QString &pluginName : plugins)
+  for (const QString& pluginName : plugins)
     if (!activePlugins.contains(pluginName))
       inactivePlugins.push_back(pluginName);
 
-  for (const QString &pluginName : inactivePlugins)
+  for (const QString& pluginName : inactivePlugins)
     pluginList->setState(pluginName, IPluginList::STATE_INACTIVE);
 
   return primary + plugins;

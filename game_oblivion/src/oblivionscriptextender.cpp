@@ -3,14 +3,11 @@
 #include <QString>
 #include <QStringList>
 
-OblivionScriptExtender::OblivionScriptExtender(GameGamebryo const *game) :
-  GamebryoScriptExtender(game)
-{
-}
+OblivionScriptExtender::OblivionScriptExtender(GameGamebryo const* game)
+    : GamebryoScriptExtender(game)
+{}
 
-OblivionScriptExtender::~OblivionScriptExtender()
-{
-}
+OblivionScriptExtender::~OblivionScriptExtender() {}
 
 QString OblivionScriptExtender::BinaryName() const
 {

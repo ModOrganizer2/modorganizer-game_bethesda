@@ -5,11 +5,10 @@
 #include <ifiletree.h>
 
 // Like Skyrim, Enderal does not need any change from the default feature:
-class EnderalModDataContent : public GamebryoModDataContent {
+class EnderalModDataContent : public GamebryoModDataContent
+{
 public:
-
   using GamebryoModDataContent::GamebryoModDataContent;
-
 };
 
-#endif // ENDERAL_MODDATACONTENT_H
+#endif  // ENDERAL_MODDATACONTENT_H

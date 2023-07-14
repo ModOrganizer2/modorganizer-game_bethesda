@@ -2,11 +2,11 @@
 
 using namespace MOBase;
 
-SkyrimVRGamePlugins::SkyrimVRGamePlugins(MOBase::IOrganizer* organizer) : CreationGamePlugins(organizer)
-{
-}
+SkyrimVRGamePlugins::SkyrimVRGamePlugins(MOBase::IOrganizer* organizer)
+    : CreationGamePlugins(organizer)
+{}
 
 bool SkyrimVRGamePlugins::lightPluginsAreSupported()
 {
-    return false;
+  return false;
 }

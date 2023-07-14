@@ -4,17 +4,19 @@
 
 #include "gamefallout4vr.h"
 
-Fallout4VRSaveGame::Fallout4VRSaveGame(QString const &fileName, GameFallout4VR const *game) :
-  GamebryoSaveGame(fileName, game, true)
+Fallout4VRSaveGame::Fallout4VRSaveGame(QString const& fileName,
+                                       GameFallout4VR const* game)
+    : GamebryoSaveGame(fileName, game, true)
 {
   FileWrapper file(getFilepath(), "FO4_SAVEGAME");
 
   FILETIME creationTime;
-  fetchInformationFields(file, m_SaveNumber, m_PCName, m_PCLevel, m_PCLocation, creationTime);
+  fetchInformationFields(file, m_SaveNumber, m_PCName, m_PCLevel, m_PCLocation,
+                         creationTime);
 
-  //A file time is a 64-bit value that represents the number of 100-nanosecond
-  //intervals that have elapsed since 12:00 A.M. January 1, 1601 Coordinated Universal Time (UTC).
-  //So we need to convert that to something useful
+  // A file time is a 64-bit value that represents the number of 100-nanosecond
+  // intervals that have elapsed since 12:00 A.M. January 1, 1601 Coordinated Universal
+  // Time (UTC). So we need to convert that to something useful
   SYSTEMTIME ctime;
   ::FileTimeToSystemTime(&creationTime, &ctime);
 
@@ -22,15 +24,11 @@ Fallout4VRSaveGame::Fallout4VRSaveGame(QString const &fileName, GameFallout4VR c
 }
 
 void Fallout4VRSaveGame::fetchInformationFields(
-  FileWrapper& file,
-  unsigned long& saveNumber,
-  QString& playerName,
-  unsigned short& playerLevel,
-  QString& playerLocation,
-  FILETIME& creationTime) const
+    FileWrapper& file, unsigned long& saveNumber, QString& playerName,
+    unsigned short& playerLevel, QString& playerLocation, FILETIME& creationTime) const
 {
-  file.skip<unsigned long>(); // header size
-  file.skip<uint32_t>(); // header version
+  file.skip<unsigned long>();  // header size
+  file.skip<uint32_t>();       // header version
   file.read(saveNumber);
 
   file.read(playerName);
@@ -41,18 +39,19 @@ void Fallout4VRSaveGame::fetchInformationFields(
   file.read(playerLocation);
 
   QString ignore;
-  file.read(ignore);   // playtime as ascii hh.mm.ss
-  file.read(ignore);   // race name (i.e. BretonRace)
+  file.read(ignore);  // playtime as ascii hh.mm.ss
+  file.read(ignore);  // race name (i.e. BretonRace)
 
-  file.skip<unsigned short>(); // Player gender (0 = male)
-  file.skip<float>(2);         // experience gathered, experience required
+  file.skip<unsigned short>();  // Player gender (0 = male)
+  file.skip<float>(2);          // experience gathered, experience required
 
   file.read(creationTime);
 }
 
-std::unique_ptr<GamebryoSaveGame::DataFields> Fallout4VRSaveGame::fetchDataFields() const
+std::unique_ptr<GamebryoSaveGame::DataFields>
+Fallout4VRSaveGame::fetchDataFields() const
 {
-  FileWrapper file(getFilepath(), "FO4_SAVEGAME"); //10bytes
+  FileWrapper file(getFilepath(), "FO4_SAVEGAME");  // 10bytes
 
   {
     QString dummyName, dummyLocation;
@@ -60,8 +59,8 @@ std::unique_ptr<GamebryoSaveGame::DataFields> Fallout4VRSaveGame::fetchDataField
     unsigned long dummySaveNumber;
     FILETIME dummyTime;
 
-    fetchInformationFields(file, dummySaveNumber, dummyName, dummyLevel,
-      dummyLocation, dummyTime);
+    fetchInformationFields(file, dummySaveNumber, dummyName, dummyLevel, dummyLocation,
+                           dummyTime);
   }
 
   QString ignore;
@@ -70,8 +69,8 @@ std::unique_ptr<GamebryoSaveGame::DataFields> Fallout4VRSaveGame::fetchDataField
   fields->Screenshot = file.readImage(384, true);
 
   uint8_t saveGameVersion = file.readChar();
-  file.read(ignore);     // game version
-  file.skip<uint32_t>(); // plugin info size
+  file.read(ignore);      // game version
+  file.skip<uint32_t>();  // plugin info size
 
   fields->Plugins = file.readPlugins();
   if (saveGameVersion >= 68) {

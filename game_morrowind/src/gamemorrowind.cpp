@@ -4,10 +4,10 @@
 #include "morrowinddataarchives.h"
 #include "morrowindgameplugins.h"
 #include "morrowindlocalsavegames.h"
-#include "morrowindsavegame.h"
-#include "morrowindsavegameinfo.h"
 #include "morrowindmoddatachecker.h"
 #include "morrowindmoddatacontent.h"
+#include "morrowindsavegame.h"
+#include "morrowindsavegameinfo.h"
 
 #include "executableinfo.h"
 #include "pluginsetting.h"
@@ -32,17 +32,16 @@
 
 using namespace MOBase;
 
-GameMorrowind::GameMorrowind()
-{
-}
+GameMorrowind::GameMorrowind() {}
 
-bool GameMorrowind::init(IOrganizer *moInfo)
+bool GameMorrowind::init(IOrganizer* moInfo)
 {
   if (!GameGamebryo::init(moInfo)) {
     return false;
   }
   registerFeature<DataArchives>(new MorrowindDataArchives(this));
-  registerFeature<BSAInvalidation>(new MorrowindBSAInvalidation(feature<DataArchives>(), this));
+  registerFeature<BSAInvalidation>(
+      new MorrowindBSAInvalidation(feature<DataArchives>(), this));
   registerFeature<SaveGameInfo>(new MorrowindSaveGameInfo(this));
   registerFeature<LocalSavegames>(new MorrowindLocalSavegames(this));
   registerFeature<ModDataChecker>(new MorrowindModDataChecker(this));
@@ -81,12 +80,13 @@ QDir GameMorrowind::documentsDirectory() const
 QList<ExecutableInfo> GameMorrowind::executables() const
 {
   return QList<ExecutableInfo>()
-    << ExecutableInfo("MWSE (Launcher Method)", findInGameFolder("MWSE Launcher.exe"))
-    << ExecutableInfo("Morrowind", findInGameFolder(binaryName()))
-    << ExecutableInfo("Morrowind Launcher", findInGameFolder(getLauncherName()))
-    << ExecutableInfo("MGE XE", findInGameFolder("MGEXEgui.exe"))
-    << ExecutableInfo("LOOT", QFileInfo(getLootPath())).withArgument("--game=\"Morrowind\"")
-  ;
+         << ExecutableInfo("MWSE (Launcher Method)",
+                           findInGameFolder("MWSE Launcher.exe"))
+         << ExecutableInfo("Morrowind", findInGameFolder(binaryName()))
+         << ExecutableInfo("Morrowind Launcher", findInGameFolder(getLauncherName()))
+         << ExecutableInfo("MGE XE", findInGameFolder("MGEXEgui.exe"))
+         << ExecutableInfo("LOOT", QFileInfo(getLootPath()))
+                .withArgument("--game=\"Morrowind\"");
 }
 
 QList<ExecutableForcedLoadSetting> GameMorrowind::executableForcedLoads() const
@@ -104,7 +104,6 @@ QString GameMorrowind::localizedName() const
   return tr("Morrowind Support Plugin");
 }
 
-
 QString GameMorrowind::author() const
 {
   return "Schilduin";
@@ -113,7 +112,8 @@ QString GameMorrowind::author() const
 QString GameMorrowind::description() const
 {
   return tr("Adds support for the game Morrowind.\n"
-            "Splash by %1").arg("AnyOldName3");
+            "Splash by %1")
+      .arg("AnyOldName3");
 }
 
 MOBase::VersionInfo GameMorrowind::version() const
@@ -126,7 +126,7 @@ QList<PluginSetting> GameMorrowind::settings() const
   return QList<PluginSetting>();
 }
 
-void GameMorrowind::initializeProfile(const QDir &path, ProfileSettings settings) const
+void GameMorrowind::initializeProfile(const QDir& path, ProfileSettings settings) const
 {
   if (settings.testFlag(IPluginGame::MODS)) {
     copyToProfile(localAppFolder() + "/Morrowind", path, "plugins.txt");
@@ -147,7 +147,8 @@ QString GameMorrowind::savegameSEExtension() const
   return "mwse";
 }
 
-std::shared_ptr<const GamebryoSaveGame> GameMorrowind::makeSaveGame(QString filePath) const
+std::shared_ptr<const GamebryoSaveGame>
+GameMorrowind::makeSaveGame(QString filePath) const
 {
   return std::make_shared<const MorrowindSaveGame>(filePath, this);
 }
@@ -159,7 +160,7 @@ QString GameMorrowind::steamAPPId() const
 
 QStringList GameMorrowind::primaryPlugins() const
 {
-  return { "morrowind.esm" };
+  return {"morrowind.esm"};
 }
 
 QString GameMorrowind::binaryName() const
@@ -177,15 +178,14 @@ QString GameMorrowind::gameNexusName() const
   return "Morrowind";
 }
 
-
 QStringList GameMorrowind::iniFiles() const
 {
-  return { "morrowind.ini" };
+  return {"morrowind.ini"};
 }
 
 QStringList GameMorrowind::DLCPlugins() const
 {
-  return { "Tribunal.esm", "Bloodmoon.esm" };
+  return {"Tribunal.esm", "Bloodmoon.esm"};
 }
 
 MOBase::IPluginGame::SortMechanism GameMorrowind::sortMechanism() const
@@ -193,15 +193,16 @@ MOBase::IPluginGame::SortMechanism GameMorrowind::sortMechanism() const
   return SortMechanism::LOOT;
 }
 
-namespace {
-//Note: This is ripped off from shared/util. And in an upcoming move, the fomod
-//installer requires something similar. I suspect I should abstract this out
-//into gamebryo (or lower level)
+namespace
+{
+// Note: This is ripped off from shared/util. And in an upcoming move, the fomod
+// installer requires something similar. I suspect I should abstract this out
+// into gamebryo (or lower level)
 
-VS_FIXEDFILEINFO GetFileVersion(const std::wstring &fileName)
+VS_FIXEDFILEINFO GetFileVersion(const std::wstring& fileName)
 {
   DWORD handle = 0UL;
-  DWORD size = ::GetFileVersionInfoSizeW(fileName.c_str(), &handle);
+  DWORD size   = ::GetFileVersionInfoSizeW(fileName.c_str(), &handle);
   if (size == 0) {
     throw std::runtime_error("failed to determine file version info size");
   }
@@ -212,7 +213,7 @@ VS_FIXEDFILEINFO GetFileVersion(const std::wstring &fileName)
     throw std::runtime_error("failed to determine file version info");
   }
 
-  void *versionInfoPtr = nullptr;
+  void* versionInfoPtr   = nullptr;
   UINT versionInfoLength = 0;
   if (!::VerQueryValue(buffer.data(), L"\\", &versionInfoPtr, &versionInfoLength)) {
     throw std::runtime_error("failed to determine file version");
@@ -221,7 +222,7 @@ VS_FIXEDFILEINFO GetFileVersion(const std::wstring &fileName)
   return *static_cast<VS_FIXEDFILEINFO*>(versionInfoPtr);
 }
 
-}
+}  // namespace
 
 int GameMorrowind::nexusModOrganizerID() const
 {

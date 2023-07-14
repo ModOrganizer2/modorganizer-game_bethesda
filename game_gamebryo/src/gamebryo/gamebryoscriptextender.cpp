@@ -7,14 +7,10 @@
 #include <QDir>
 #include <QString>
 
-GamebryoScriptExtender::GamebryoScriptExtender(const GameGamebryo *game) :
-  m_Game(game)
-{
-}
+GamebryoScriptExtender::GamebryoScriptExtender(const GameGamebryo* game) : m_Game(game)
+{}
 
-GamebryoScriptExtender::~GamebryoScriptExtender()
-{
-}
+GamebryoScriptExtender::~GamebryoScriptExtender() {}
 
 QString GamebryoScriptExtender::loaderName() const
 {
@@ -33,11 +29,10 @@ QString GamebryoScriptExtender::savegameExtension() const
 
 bool GamebryoScriptExtender::isInstalled() const
 {
-  //A note: It is possibly also OK if xxse_steam_loader.dll exists, but it's
-  //not clear why that would exist and the exe not if you'd installed it per
-  //instructions, and it'd mess up NCC installs a treat.
+  // A note: It is possibly also OK if xxse_steam_loader.dll exists, but it's
+  // not clear why that would exist and the exe not if you'd installed it per
+  // instructions, and it'd mess up NCC installs a treat.
   return m_Game->gameDirectory().exists(loaderName());
-
 }
 
 QString GamebryoScriptExtender::getExtenderVersion() const
@@ -47,6 +42,5 @@ QString GamebryoScriptExtender::getExtenderVersion() const
 
 WORD GamebryoScriptExtender::getArch() const
 {
-	return m_Game->getArch(loaderName());
+  return m_Game->getArch(loaderName());
 }
-

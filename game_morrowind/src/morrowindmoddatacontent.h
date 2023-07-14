@@ -4,20 +4,21 @@
 #include <gamebryomoddatacontent.h>
 #include <ifiletree.h>
 
-class MorrowindModDataContent : public GamebryoModDataContent {
+class MorrowindModDataContent : public GamebryoModDataContent
+{
 public:
-
   /**
    *
    */
-  MorrowindModDataContent(GameGamebryo const* gamePlugin) : GamebryoModDataContent(gamePlugin) {
+  MorrowindModDataContent(GameGamebryo const* gamePlugin)
+      : GamebryoModDataContent(gamePlugin)
+  {
     // Just need to disable some contents:
-    m_Enabled[CONTENT_MCM] = false;
-    m_Enabled[CONTENT_SKYPROC] = false;
+    m_Enabled[CONTENT_MCM]       = false;
+    m_Enabled[CONTENT_SKYPROC]   = false;
     m_Enabled[CONTENT_INTERFACE] = false;
-    m_Enabled[CONTENT_SCRIPT] = false;
+    m_Enabled[CONTENT_SCRIPT]    = false;
   }
-
 };
 
-#endif // MORROWIND_MODDATACONTENT_H
+#endif  // MORROWIND_MODDATACONTENT_H
