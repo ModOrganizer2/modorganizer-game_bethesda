@@ -6,10 +6,7 @@ else()
 	include(${CMAKE_CURRENT_LIST_DIR}/cmake_common/mo2.cmake)
 endif()
 
-project(game_bethesda)
-
-# add this first
-add_subdirectory(game_gamebryo)
+project(game-bethesda)
 
 file(GLOB game_directories
     RELATIVE ${CMAKE_CURRENT_LIST_DIR}
@@ -17,6 +14,12 @@ file(GLOB game_directories
     "game_*")
 list(REMOVE_ITEM game_directories "game_gamebryo")
 
+# add this first
+add_subdirectory(game_gamebryo)
+
 foreach(game_directory ${game_directories})
     add_subdirectory(${game_directory})
 endforeach()
+
+install(FILES ${CMAKE_CURRENT_LIST_DIR}/metadata.json
+    DESTINATION bin/extensions/${CMAKE_PROJECT_NAME}/)
