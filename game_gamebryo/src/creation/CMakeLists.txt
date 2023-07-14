@@ -7,4 +7,3 @@ mo2_configure_library(game_creation
 	PUBLIC_DEPENDS uibase
 	PRIVATE_DEPENDS lz4)
 target_link_libraries(game_creation PUBLIC game_gamebryo)
-mo2_install_target(game_creation)

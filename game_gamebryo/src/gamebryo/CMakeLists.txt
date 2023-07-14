@@ -7,4 +7,3 @@ mo2_configure_library(game_gamebryo
 	AUTOMOC ON
 	PUBLIC_DEPENDS uibase
 	PRIVATE_DEPENDS zlib lz4)
-mo2_install_target(game_gamebryo)
