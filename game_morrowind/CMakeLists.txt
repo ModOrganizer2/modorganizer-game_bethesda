@@ -1,4 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 
-project(game_morrowind)
+
+message(STATUS ${CMAKE_PROJECT_NAME})
+
 add_subdirectory(src)
