@@ -118,21 +118,6 @@ QString GameSkyrimVR::localizedName() const
   return tr("Skyrim VR Support Plugin");
 }
 
-QString GameSkyrimVR::author() const
-{
-  return "Brixified & MO2 Team";
-}
-
-QString GameSkyrimVR::description() const
-{
-  return tr("Adds support for the game Skyrim VR.");
-}
-
-MOBase::VersionInfo GameSkyrimVR::version() const
-{
-  return VersionInfo(1, 5, 1, VersionInfo::RELEASE_FINAL);
-}
-
 QList<PluginSetting> GameSkyrimVR::settings() const
 {
   return {PluginSetting("enderal_downloads", "allow Enderal and Enderal SE downloads",

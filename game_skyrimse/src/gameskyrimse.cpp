@@ -180,21 +180,6 @@ QString GameSkyrimSE::localizedName() const
   return tr("Skyrim Special Edition Support Plugin");
 }
 
-QString GameSkyrimSE::author() const
-{
-  return "MO2 Team, Orig: Archost & ZachHaber";
-}
-
-QString GameSkyrimSE::description() const
-{
-  return tr("Adds support for the game Skyrim Special Edition.");
-}
-
-MOBase::VersionInfo GameSkyrimSE::version() const
-{
-  return VersionInfo(1, 7, 1, VersionInfo::RELEASE_FINAL);
-}
-
 QList<PluginSetting> GameSkyrimSE::settings() const
 {
   return {PluginSetting("enderal_downloads", "allow Enderal and Enderal SE downloads",

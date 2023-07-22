@@ -94,23 +94,6 @@ QString GameFallout4::localizedName() const
   return tr("Fallout 4 Support Plugin");
 }
 
-QString GameFallout4::author() const
-{
-  return "Tannin & MO2 Team";
-}
-
-QString GameFallout4::description() const
-{
-  return tr("Adds support for the game Fallout 4.\n"
-            "Splash by %1")
-      .arg("nekoyoubi");
-}
-
-MOBase::VersionInfo GameFallout4::version() const
-{
-  return VersionInfo(1, 8, 0, VersionInfo::RELEASE_FINAL);
-}
-
 QList<PluginSetting> GameFallout4::settings() const
 {
   return QList<PluginSetting>();
