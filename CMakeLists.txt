@@ -15,3 +15,9 @@ mo2_add_subdirectories(
     FOLDER games
     GLOB src/games/*
 )
+
+install(
+FILES
+    ${CMAKE_CURRENT_LIST_DIR}/icon.png
+    ${CMAKE_CURRENT_LIST_DIR}/metadata.json
+DESTINATION bin/extensions/${CMAKE_PROJECT_NAME}/)
