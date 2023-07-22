@@ -88,21 +88,6 @@ QString GameFalloutNV::localizedName() const
   return tr("Fallout NV Support Plugin");
 }
 
-QString GameFalloutNV::author() const
-{
-  return "Tannin";
-}
-
-QString GameFalloutNV::description() const
-{
-  return tr("Adds support for the game Fallout New Vegas");
-}
-
-MOBase::VersionInfo GameFalloutNV::version() const
-{
-  return VersionInfo(1, 5, 1, VersionInfo::RELEASE_FINAL);
-}
-
 QList<PluginSetting> GameFalloutNV::settings() const
 {
   return QList<PluginSetting>();

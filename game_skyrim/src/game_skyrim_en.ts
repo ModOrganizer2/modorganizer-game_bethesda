@@ -8,10 +8,5 @@
         <source>Skyrim Support Plugin</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <location filename="gameskyrim.cpp" line="99"/>
-        <source>Adds support for the game Skyrim</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 </TS>

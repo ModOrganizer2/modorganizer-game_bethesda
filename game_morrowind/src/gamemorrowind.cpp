@@ -104,23 +104,6 @@ QString GameMorrowind::localizedName() const
   return tr("Morrowind Support Plugin");
 }
 
-QString GameMorrowind::author() const
-{
-  return "Schilduin";
-}
-
-QString GameMorrowind::description() const
-{
-  return tr("Adds support for the game Morrowind.\n"
-            "Splash by %1")
-      .arg("AnyOldName3");
-}
-
-MOBase::VersionInfo GameMorrowind::version() const
-{
-  return VersionInfo(1, 5, 0, VersionInfo::RELEASE_FINAL);
-}
-
 QList<PluginSetting> GameMorrowind::settings() const
 {
   return QList<PluginSetting>();

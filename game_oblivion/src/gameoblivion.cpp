@@ -83,21 +83,6 @@ QString GameOblivion::localizedName() const
   return tr("Oblivion Support Plugin");
 }
 
-QString GameOblivion::author() const
-{
-  return "Tannin";
-}
-
-QString GameOblivion::description() const
-{
-  return tr("Adds support for the game Oblivion");
-}
-
-MOBase::VersionInfo GameOblivion::version() const
-{
-  return VersionInfo(1, 6, 0, VersionInfo::RELEASE_FINAL);
-}
-
 QList<PluginSetting> GameOblivion::settings() const
 {
   return {PluginSetting("nehrim_downloads", "allow Nehrim downloads", QVariant(false))};
