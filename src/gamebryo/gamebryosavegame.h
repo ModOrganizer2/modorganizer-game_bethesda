@@ -102,7 +102,7 @@ protected:
 
     void seek(unsigned long pos)
     {
-      if (!m_File.seek(pos - m_File.pos())) {
+      if (!m_File.seek(pos)) {
         throw std::runtime_error("unexpected end of file");
       }
     }
@@ -132,6 +132,10 @@ protected:
     uint16_t readShort(int bytesToIgnore = 0);
 
     uint32_t readInt(int bytesToIgnore = 0);
+
+    uint64_t readLong(int bytesToIgnore = 0);
+
+    float_t readFloat(int bytesToIgnore = 0);
 
     /* Read the plugin list */
     QStringList readPlugins(int bytesToIgnore = 0);
