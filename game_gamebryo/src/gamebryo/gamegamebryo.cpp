@@ -311,7 +311,7 @@ std::unique_ptr<BYTE[]> GameGamebryo::getRegValue(HKEY key, LPCWSTR path, LPCWST
   DWORD size = 0;
   HKEY subKey;
   LONG res = ::RegOpenKeyExW(key, path, 0,
-    KEY_QUERY_VALUE | KEY_WOW64_32KEY, &subKey);
+    KEY_QUERY_VALUE | KEY_WOW64_32KEY | KEY_WOW64_64KEY, &subKey);
   if (res != ERROR_SUCCESS) {
     return std::unique_ptr<BYTE[]>();
   }
