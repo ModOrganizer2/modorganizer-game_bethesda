@@ -185,15 +185,9 @@ template <> void GamebryoSaveGame::FileWrapper::read(QString &value)
 
 void GamebryoSaveGame::FileWrapper::read(void *buff, std::size_t length)
 {
-  if (m_CompressionType == 0) {
-    int read = m_File.read(static_cast<char*>(buff), length);
-    if (read != length) {
-      throw std::runtime_error("unexpected end of file");
-    }
-  } else if (m_CompressionType == 1 || m_CompressionType == 2) {
-    readQDataStream(*m_Data, buff, length);
-  }  else {
-    MOBase::log::warn("Please create an issue on the MO github labeled \"Found unknown Compressed\" with your savefile attached");
+  int read = m_File.read(static_cast<char*>(buff), length);
+  if (read != length) {
+    throw std::runtime_error("unexpected end of file");
   }
 }
 
