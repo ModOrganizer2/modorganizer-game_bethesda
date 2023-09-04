@@ -14,6 +14,7 @@
 
 #include <QDir>
 #include <QDirIterator>
+#include <QList>
 #include <QIcon>
 #include <QFile>
 #include <QFileInfo>
@@ -69,6 +70,11 @@ QDir GameGamebryo::gameDirectory() const
 QDir GameGamebryo::dataDirectory() const
 {
   return gameDirectory().absoluteFilePath("data");
+}
+
+QList<QDir> GameGamebryo::secondaryDataDirectories() const
+{
+  return QList<QDir>();
 }
 
 void GameGamebryo::setGamePath(const QString &path)
