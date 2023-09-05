@@ -251,3 +251,8 @@ bool GamebryoGamePlugins::lightPluginsAreSupported()
 {
   return false;
 }
+
+bool GamebryoGamePlugins::overridePluginsAreSupported()
+{
+  return false;
+}

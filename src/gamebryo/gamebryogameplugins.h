@@ -15,6 +15,7 @@ public:
   virtual void readPluginLists(MOBase::IPluginList* pluginList) override;
   virtual QStringList getLoadOrder() override;
   virtual bool lightPluginsAreSupported() override;
+  virtual bool overridePluginsAreSupported() override;
 
 protected:
   MOBase::IOrganizer* organizer() const { return m_Organizer; }
