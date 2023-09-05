@@ -72,9 +72,9 @@ QDir GameGamebryo::dataDirectory() const
   return gameDirectory().absoluteFilePath("data");
 }
 
-QList<QDir> GameGamebryo::secondaryDataDirectories() const
+QMap<QString, QDir> GameGamebryo::secondaryDataDirectories() const
 {
-  return QList<QDir>();
+  return QMap<QString, QDir>();
 }
 
 void GameGamebryo::setGamePath(const QString &path)
