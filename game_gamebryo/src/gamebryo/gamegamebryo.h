@@ -56,6 +56,7 @@ public:  // IPluginGame interface
   virtual QIcon gameIcon() const override;
   virtual QDir gameDirectory() const override;
   virtual QDir dataDirectory() const override;
+  virtual QMap<QString, QDir> secondaryDataDirectories() const override;
   virtual void setGamePath(const QString& path) override;
   virtual QDir documentsDirectory() const override;
   virtual QDir savesDirectory() const override;
