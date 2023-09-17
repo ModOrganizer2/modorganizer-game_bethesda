@@ -56,7 +56,7 @@ void GamebryoSaveGameInfoWidget::setSave(MOBase::ISaveGame const& save)
   ui->levelLabel->setText(QString("%1").arg(gamebryoSave.getPCLevel()));
   // This somewhat contorted code is because on my system at least, the
   // old way of doing this appears to give short date and long time.
-  QDateTime t = gamebryoSave.getCreationTime();
+  QDateTime t = gamebryoSave.getCreationTime().toLocalTime();
   ui->dateLabel->setText(
       QLocale::system().toString(t.date(), QLocale::FormatType::ShortFormat) + " " +
       QLocale::system().toString(t.time()));
