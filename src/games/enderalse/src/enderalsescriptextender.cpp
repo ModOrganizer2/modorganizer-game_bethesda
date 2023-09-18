@@ -3,10 +3,9 @@
 #include <QString>
 #include <QStringList>
 
-EnderalSEScriptExtender::EnderalSEScriptExtender(GameGamebryo const *game) :
-  GamebryoScriptExtender(game)
-{
-}
+EnderalSEScriptExtender::EnderalSEScriptExtender(GameGamebryo const* game)
+    : GamebryoScriptExtender(game)
+{}
 
 QString EnderalSEScriptExtender::BinaryName() const
 {

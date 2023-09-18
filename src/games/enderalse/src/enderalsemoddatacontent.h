@@ -4,17 +4,18 @@
 #include <gamebryomoddatacontent.h>
 #include <ifiletree.h>
 
-class EnderalSEModDataContent : public GamebryoModDataContent {
+class EnderalSEModDataContent : public GamebryoModDataContent
+{
 public:
-
   /**
    *
    */
-  EnderalSEModDataContent(GameGamebryo const* gamePlugin) : GamebryoModDataContent(gamePlugin) {
+  EnderalSEModDataContent(GameGamebryo const* gamePlugin)
+      : GamebryoModDataContent(gamePlugin)
+  {
     // Just need to disable some contents:
     m_Enabled[CONTENT_SKYPROC] = false;
   }
-
 };
 
-#endif // SKYRIMSE_MODDATACONTENT_H
+#endif  // SKYRIMSE_MODDATACONTENT_H
