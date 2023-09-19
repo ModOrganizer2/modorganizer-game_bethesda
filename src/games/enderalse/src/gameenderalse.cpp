@@ -214,7 +214,7 @@ QList<PluginSetting> GameEnderalSE::settings() const
 void GameEnderalSE::initializeProfile(const QDir& path, ProfileSettings settings) const
 {
   if (settings.testFlag(IPluginGame::MODS)) {
-    copyToProfile(localAppFolder() + "/Enderal Special Edition", path, "plugins.txt");
+    copyToProfile(localAppFolder() + gameDirectoryName(), path, "plugins.txt");
   }
 
   if (settings.testFlag(IPluginGame::CONFIGURATION)) {
@@ -334,7 +334,7 @@ MappingType GameEnderalSE::mappings() const
 
   for (const QString& profileFile : {"plugins.txt", "loadorder.txt"}) {
     result.push_back({m_Organizer->profilePath() + "/" + profileFile,
-                      localAppFolder() + "/Enderal Special Edition/" + profileFile,
+                      localAppFolder() + "/" + gameDirectoryName() + "/" + profileFile,
                       false});
   }
 
