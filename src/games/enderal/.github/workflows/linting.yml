@@ -1,4 +1,4 @@
-name: Lint Nehrim Plugin
+name: Lint Enderal Plugin
 
 on:
   push:
