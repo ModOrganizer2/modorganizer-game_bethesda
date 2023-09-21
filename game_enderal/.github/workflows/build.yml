@@ -1,4 +1,4 @@
-name: Build Nehrim Plugin
+name: Build Enderal Plugin
 
 on:
   push:
@@ -10,7 +10,7 @@ jobs:
   build:
     runs-on: windows-2022
     steps:
-      - name: Build Nehrim Plugin
+      - name: Build Enderal Plugin
         uses: ModOrganizer2/build-with-mob-action@master
         with:
           mo2-third-parties: fmt gtest spdlog boost lz4
