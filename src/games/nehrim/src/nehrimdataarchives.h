@@ -1,28 +1,25 @@
 #ifndef NEHRIMDATAARCHIVES_H
 #define NEHRIMDATAARCHIVES_H
 
-
-#include <gamebryodataarchives.h>
-#include <iprofile.h>
+#include <QDir>
 #include <QString>
 #include <QStringList>
-#include <QDir>
+#include <gamebryodataarchives.h>
+#include <iprofile.h>
 
 class NehrimDataArchives : public GamebryoDataArchives
 {
 
 public:
-  NehrimDataArchives(const QDir &myGamesDir);
+  NehrimDataArchives(const QDir& myGamesDir);
 
 public:
-
   virtual QStringList vanillaArchives() const override;
-  virtual QStringList archives(const MOBase::IProfile *profile) const override;
+  virtual QStringList archives(const MOBase::IProfile* profile) const override;
 
 private:
-
-  virtual void writeArchiveList(MOBase::IProfile *profile, const QStringList &before) override;
-
+  virtual void writeArchiveList(MOBase::IProfile* profile,
+                                const QStringList& before) override;
 };
 
-#endif // NEHRIMDATAARCHIVES_H
+#endif  // NEHRIMDATAARCHIVES_H

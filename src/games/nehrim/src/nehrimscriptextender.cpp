@@ -3,14 +3,11 @@
 #include <QString>
 #include <QStringList>
 
-NehrimScriptExtender::NehrimScriptExtender(GameGamebryo const *game) :
-  GamebryoScriptExtender(game)
-{
-}
+NehrimScriptExtender::NehrimScriptExtender(GameGamebryo const* game)
+    : GamebryoScriptExtender(game)
+{}
 
-NehrimScriptExtender::~NehrimScriptExtender()
-{
-}
+NehrimScriptExtender::~NehrimScriptExtender() {}
 
 QString NehrimScriptExtender::BinaryName() const
 {

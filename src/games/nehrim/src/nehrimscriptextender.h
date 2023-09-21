@@ -8,12 +8,11 @@ class GameGamebryo;
 class NehrimScriptExtender : public GamebryoScriptExtender
 {
 public:
-  NehrimScriptExtender(const GameGamebryo *game);
+  NehrimScriptExtender(const GameGamebryo* game);
   ~NehrimScriptExtender();
 
   virtual QString BinaryName() const override;
   virtual QString PluginPath() const override;
-
 };
 
-#endif // NEHRIMSCRIPTEXTENDER_H
+#endif  // NEHRIMSCRIPTEXTENDER_H

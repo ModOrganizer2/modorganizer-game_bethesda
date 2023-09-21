@@ -1,7 +1,6 @@
 #ifndef NEHRIMBSAINVALIDATION_H
 #define NEHRIMBSAINVALIDATION_H
 
-
 #include "gamebryobsainvalidation.h"
 #include "nehrimdataarchives.h"
 
@@ -10,14 +9,11 @@
 class NehrimBSAInvalidation : public GamebryoBSAInvalidation
 {
 public:
-
-  NehrimBSAInvalidation(DataArchives *dataArchives, MOBase::IPluginGame const *game);
+  NehrimBSAInvalidation(DataArchives* dataArchives, MOBase::IPluginGame const* game);
 
 private:
-
   virtual QString invalidationBSAName() const override;
   virtual unsigned long bsaVersion() const override;
-
 };
 
-#endif // NEHRIMBSAINVALIDATION_H
+#endif  // NEHRIMBSAINVALIDATION_H
