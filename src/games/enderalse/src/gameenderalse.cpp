@@ -302,11 +302,6 @@ QStringList GameEnderalSE::CCPlugins() const
   return {};
 }
 
-MOBase::IPluginGame::SortMechanism GameEnderalSE::sortMechanism() const
-{
-  return SortMechanism::LOOT;
-}
-
 IPluginGame::LoadOrderMechanism GameEnderalSE::loadOrderMechanism() const
 {
   return IPluginGame::LoadOrderMechanism::PluginsTxt;
