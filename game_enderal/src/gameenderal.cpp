@@ -1,31 +1,29 @@
 #include "gameenderal.h"
 
 #include "enderalbsainvalidation.h"
-#include "enderalscriptextender.h"
 #include "enderaldataarchives.h"
 #include "enderalgameplugins.h"
 #include "enderallocalsavegames.h"
 #include "enderalmoddatachecker.h"
 #include "enderalmoddatacontent.h"
 #include "enderalsavegame.h"
-
+#include "enderalscriptextender.h"
 
 #include "executableinfo.h"
 #include "pluginsetting.h"
-#include "utility.h"
 #include "steamutility.h"
+#include "utility.h"
 
 #include <gamebryogameplugins.h>
-#include <gamebryounmanagedmods.h>
 #include <gamebryosavegameinfo.h>
+#include <gamebryounmanagedmods.h>
 
 #include <QCoreApplication>
 #include <QDebug>
 #include <QFileInfo>
 
-#include <QtDebug>
 #include <QIcon>
-
+#include <QtDebug>
 
 #include <Windows.h>
 #include <winver.h>
@@ -38,11 +36,9 @@
 
 using namespace MOBase;
 
-GameEnderal::GameEnderal()
-{
-}
+GameEnderal::GameEnderal() {}
 
-bool GameEnderal::init(IOrganizer *moInfo)
+bool GameEnderal::init(IOrganizer* moInfo)
 {
   if (!GameGamebryo::init(moInfo)) {
     return false;
@@ -50,9 +46,11 @@ bool GameEnderal::init(IOrganizer *moInfo)
 
   registerFeature<ScriptExtender>(new EnderalScriptExtender(this));
   registerFeature<DataArchives>(new EnderalDataArchives(myGamesPath()));
-  registerFeature<BSAInvalidation>(new EnderalBSAInvalidation(feature<DataArchives>(), this));
+  registerFeature<BSAInvalidation>(
+      new EnderalBSAInvalidation(feature<DataArchives>(), this));
   registerFeature<SaveGameInfo>(new GamebryoSaveGameInfo(this));
-  registerFeature<LocalSavegames>(new EnderalLocalSavegames(myGamesPath(), "enderal.ini"));
+  registerFeature<LocalSavegames>(
+      new EnderalLocalSavegames(myGamesPath(), "enderal.ini"));
   registerFeature<ModDataChecker>(new EnderalModDataChecker(this));
   registerFeature<ModDataContent>(new EnderalModDataContent(this));
   registerFeature<GamePlugins>(new EnderalGamePlugins(moInfo));
@@ -68,14 +66,16 @@ QString GameEnderal::gameName() const
 QList<ExecutableInfo> GameEnderal::executables() const
 {
   return QList<ExecutableInfo>()
-      //<< ExecutableInfo("SKSE", findInGameFolder(feature<ScriptExtender>()->loaderName()))
-      //<< ExecutableInfo("SBW", findInGameFolder("SBW.exe"))
-      << ExecutableInfo("Enderal (SKSE)", findInGameFolder(binaryName()))
-      << ExecutableInfo("Enderal Launcher", findInGameFolder(getLauncherName()))
-      << ExecutableInfo("BOSS", findInGameFolder("BOSS/BOSS.exe"))
-      //<< ExecutableInfo("LOOT", QFileInfo(getLootPath())).withArgument("--game=\"Skyrim\"")
-      << ExecutableInfo("Creation Kit", findInGameFolder("CreationKit.exe")).withSteamAppId("202480")
-  ;
+         //<< ExecutableInfo("SKSE",
+         // findInGameFolder(feature<ScriptExtender>()->loaderName()))
+         //<< ExecutableInfo("SBW", findInGameFolder("SBW.exe"))
+         << ExecutableInfo("Enderal (SKSE)", findInGameFolder(binaryName()))
+         << ExecutableInfo("Enderal Launcher", findInGameFolder(getLauncherName()))
+         << ExecutableInfo("BOSS", findInGameFolder("BOSS/BOSS.exe"))
+         << ExecutableInfo("LOOT", QFileInfo(getLootPath()))
+                .withArgument("--game=\"Enderal\"")
+         << ExecutableInfo("Creation Kit", findInGameFolder("CreationKit.exe"))
+                .withSteamAppId("202480");
 }
 
 QList<ExecutableForcedLoadSetting> GameEnderal::executableForcedLoads() const
@@ -111,23 +111,26 @@ MOBase::VersionInfo GameEnderal::version() const
 QList<PluginSetting> GameEnderal::settings() const
 {
   QList<PluginSetting> results;
-  results.push_back(PluginSetting("sse_downloads", "allow Skyrim SE downloads", QVariant(false)));
+  results.push_back(
+      PluginSetting("sse_downloads", "allow Skyrim SE downloads", QVariant(false)));
   return results;
 }
 
-void GameEnderal::initializeProfile(const QDir &path, ProfileSettings settings) const
+void GameEnderal::initializeProfile(const QDir& path, ProfileSettings settings) const
 {
   if (settings.testFlag(IPluginGame::MODS)) {
     copyToProfile(localAppFolder() + "/enderal", path, "plugins.txt");
   }
 
   if (settings.testFlag(IPluginGame::CONFIGURATION)) {
-    if (settings.testFlag(IPluginGame::PREFER_DEFAULTS)
-        || !QFileInfo(myGamesPath() + "/enderal.ini").exists()) {
+    if (settings.testFlag(IPluginGame::PREFER_DEFAULTS) ||
+        !QFileInfo(myGamesPath() + "/enderal.ini").exists()) {
 
-	    //there is no default ini, actually they are going to put them in for us!
-      copyToProfile(gameDirectory().absolutePath(), path, "enderal_default.ini", "enderal.ini");
-      copyToProfile(gameDirectory().absolutePath(), path, "enderalprefs_default.ini", "enderalprefs.ini");
+      // there is no default ini, actually they are going to put them in for us!
+      copyToProfile(gameDirectory().absolutePath(), path, "enderal_default.ini",
+                    "enderal.ini");
+      copyToProfile(gameDirectory().absolutePath(), path, "enderalprefs_default.ini",
+                    "enderalprefs.ini");
     } else {
       copyToProfile(myGamesPath(), path, "enderal.ini");
       copyToProfile(myGamesPath(), path, "enderalprefs.ini");
@@ -135,7 +138,7 @@ void GameEnderal::initializeProfile(const QDir &path, ProfileSettings settings) 
   }
 }
 
-bool GameEnderal::looksValid(QDir const &path) const
+bool GameEnderal::looksValid(QDir const& path) const
 {
   // we need to check both launcher and binary because the binary also exists for
   // Skyrim and the launcher for Enderal SE
@@ -157,25 +160,20 @@ QString GameEnderal::savegameSEExtension() const
   return "skse";
 }
 
-std::shared_ptr<const GamebryoSaveGame> GameEnderal::makeSaveGame(QString filepath) const
+std::shared_ptr<const GamebryoSaveGame>
+GameEnderal::makeSaveGame(QString filepath) const
 {
   return std::make_shared<const EnderalSaveGame>(filepath, this);
 }
-
 
 QString GameEnderal::steamAPPId() const
 {
   return "933480";
 }
 
-MOBase::IPluginGame::SortMechanism GameEnderal::sortMechanism() const
-{
-  return SortMechanism::NONE;
-}
-
 QStringList GameEnderal::primaryPlugins() const
 {
-  return { "Skyrim.esm", "Enderal - Forgotten Stories.esm", "Update.esm" };
+  return {"Skyrim.esm", "Enderal - Forgotten Stories.esm", "Update.esm"};
 }
 
 QString GameEnderal::binaryName() const
@@ -206,17 +204,16 @@ QStringList GameEnderal::primarySources() const
 QStringList GameEnderal::validShortNames() const
 {
   QStringList results;
-  results.push_back( "Skyrim" );
-  if (m_Organizer->pluginSetting(name(), "sse_downloads").toBool())
-  {
-    results.push_back( "SkyrimSE" );
+  results.push_back("Skyrim");
+  if (m_Organizer->pluginSetting(name(), "sse_downloads").toBool()) {
+    results.push_back("SkyrimSE");
   }
   return results;
 }
 
 QStringList GameEnderal::iniFiles() const
 {
-  return { "enderal.ini", "enderalprefs.ini" };
+  return {"enderal.ini", "enderalprefs.ini"};
 }
 
 QStringList GameEnderal::DLCPlugins() const
@@ -224,16 +221,17 @@ QStringList GameEnderal::DLCPlugins() const
   return {};
 }
 
-namespace {
-//Note: This is ripped off from shared/util. And in an upcoming move, the fomod
-//installer requires something similar. I suspect I should abstract this out
-//into gamebryo (or lower level)
-//Unused for Enderal
+namespace
+{
+// Note: This is ripped off from shared/util. And in an upcoming move, the fomod
+// installer requires something similar. I suspect I should abstract this out
+// into gamebryo (or lower level)
+// Unused for Enderal
 
-VS_FIXEDFILEINFO GetFileVersion(const std::wstring &fileName)
+VS_FIXEDFILEINFO GetFileVersion(const std::wstring& fileName)
 {
   DWORD handle = 0UL;
-  DWORD size = ::GetFileVersionInfoSizeW(fileName.c_str(), &handle);
+  DWORD size   = ::GetFileVersionInfoSizeW(fileName.c_str(), &handle);
   if (size == 0) {
     throw std::runtime_error("failed to determine file version info size");
   }
@@ -244,7 +242,7 @@ VS_FIXEDFILEINFO GetFileVersion(const std::wstring &fileName)
     throw std::runtime_error("failed to determine file version info");
   }
 
-  void *versionInfoPtr = nullptr;
+  void* versionInfoPtr   = nullptr;
   UINT versionInfoLength = 0;
   if (!::VerQueryValue(buffer.data(), L"\\", &versionInfoPtr, &versionInfoLength)) {
     throw std::runtime_error("failed to determine file version");
@@ -253,13 +251,12 @@ VS_FIXEDFILEINFO GetFileVersion(const std::wstring &fileName)
   return *static_cast<VS_FIXEDFILEINFO*>(versionInfoPtr);
 }
 
-}
+}  // namespace
 
 IPluginGame::LoadOrderMechanism GameEnderal::loadOrderMechanism() const
 {
   return LoadOrderMechanism::PluginsTxt;
 }
-
 
 int GameEnderal::nexusModOrganizerID() const
 {
@@ -276,9 +273,10 @@ QString GameEnderal::identifyGamePath() const
   QString path = "Software\\SureAI\\Enderal";
   QString result;
   try {
-      result = findInRegistry(HKEY_CURRENT_USER, path.toStdWString().c_str(), L"Install_Path");
+    result =
+        findInRegistry(HKEY_CURRENT_USER, path.toStdWString().c_str(), L"Install_Path");
   } catch (MOBase::MyException) {
-      result = MOBase::findSteamGame("Enderal", "Data\\Enderal - Forgotten Stories.esm");
+    result = MOBase::findSteamGame("Enderal", "Data\\Enderal - Forgotten Stories.esm");
   }
   return result;
 }
