@@ -8,11 +8,10 @@ class GameGamebryo;
 class EnderalScriptExtender : public GamebryoScriptExtender
 {
 public:
-  EnderalScriptExtender(const GameGamebryo *game);
+  EnderalScriptExtender(const GameGamebryo* game);
 
   virtual QString BinaryName() const override;
   virtual QString PluginPath() const override;
-
 };
 
-#endif // ENDERALSCRIPTEXTENDER_H
+#endif  // ENDERALSCRIPTEXTENDER_H

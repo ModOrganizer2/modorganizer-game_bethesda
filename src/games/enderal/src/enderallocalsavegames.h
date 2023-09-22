@@ -16,10 +16,8 @@ License along with this library; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-
 #ifndef ENDERALLOCALSAVEGAMES_H
 #define ENDERALLOCALSAVEGAMES_H
-
 
 #include <localsavegames.h>
 
@@ -30,18 +28,15 @@ class EnderalLocalSavegames : public LocalSavegames
 {
 
 public:
-  EnderalLocalSavegames(const QDir &myGamesDir, const QString &iniFileName);
+  EnderalLocalSavegames(const QDir& myGamesDir, const QString& iniFileName);
 
-  virtual MappingType mappings(const QDir &profileSaveDir) const override;
-  virtual bool prepareProfile(MOBase::IProfile *profile) override;
+  virtual MappingType mappings(const QDir& profileSaveDir) const override;
+  virtual bool prepareProfile(MOBase::IProfile* profile) override;
 
 private:
-
   QDir m_LocalSavesDir;
   QDir m_LocalGameDir;
   QString m_IniFileName;
-
 };
 
-
-#endif // ENDERALLOCALSAVEGAMES_H
+#endif  // ENDERALLOCALSAVEGAMES_H
