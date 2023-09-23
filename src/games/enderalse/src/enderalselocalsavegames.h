@@ -1,7 +1,6 @@
 #ifndef ENDERALSELOCALSAVEGAMES_H
 #define ENDERALSELOCALSAVEGAMES_H
 
-
 #include <localsavegames.h>
 
 #include <QDir>
@@ -17,12 +16,9 @@ public:
   virtual bool prepareProfile(MOBase::IProfile* profile) override;
 
 private:
-
   QDir m_LocalSavesDir;
   QDir m_LocalGameDir;
   QString m_IniFileName;
-
 };
 
-
-#endif // ENDERALSELOCALSAVEGAMES_H
+#endif  // ENDERALSELOCALSAVEGAMES_H
