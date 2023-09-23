@@ -12,17 +12,17 @@ class GameNehrim : public GameGamebryo
   Q_PLUGIN_METADATA(IID "org.tannin.GameNehrim" FILE "gamenehrim.json")
 
 public:
-
   GameNehrim();
 
-  virtual bool init(MOBase::IOrganizer *moInfo) override;
+  virtual bool init(MOBase::IOrganizer* moInfo) override;
 
-public: // IPluginGame interface
-
+public:  // IPluginGame interface
   virtual QString gameName() const override;
   virtual QList<MOBase::ExecutableInfo> executables() const override;
-  virtual QList<MOBase::ExecutableForcedLoadSetting> executableForcedLoads() const override;
-  virtual void initializeProfile(const QDir &path, ProfileSettings settings) const override;
+  virtual QList<MOBase::ExecutableForcedLoadSetting>
+  executableForcedLoads() const override;
+  virtual void initializeProfile(const QDir& path,
+                                 ProfileSettings settings) const override;
   virtual QString steamAPPId() const override;
   virtual QStringList primaryPlugins() const override;
   virtual QString gameShortName() const override;
@@ -34,13 +34,12 @@ public: // IPluginGame interface
   virtual QStringList primarySources() const override;
   virtual QStringList validShortNames() const override;
 
-  // Weird stuff happens in these functions due to Nehrim 
+  // Weird stuff happens in these functions due to Nehrim
   // technically being in the Oblivion folder
   virtual QString identifyGamePath() const override;
   virtual QString binaryName() const override;
 
-public: // IPlugin interface
-
+public:  // IPlugin interface
   virtual QString name() const override;
   virtual QString localizedName() const override;
   virtual QString author() const override;
@@ -49,11 +48,9 @@ public: // IPlugin interface
   virtual QList<MOBase::PluginSetting> settings() const override;
 
 protected:
-
   std::shared_ptr<const GamebryoSaveGame> makeSaveGame(QString filePath) const override;
   QString savegameExtension() const override;
   QString savegameSEExtension() const override;
-
 };
 
-#endif // GAMENEHRIM_H
+#endif  // GAMENEHRIM_H

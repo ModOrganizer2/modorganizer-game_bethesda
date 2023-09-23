@@ -2,17 +2,17 @@
 
 #include "nehrimbsainvalidation.h"
 #include "nehrimdataarchives.h"
-#include "nehrimscriptextender.h"
 #include "nehrimmoddatachecker.h"
 #include "nehrimmoddatacontent.h"
 #include "nehrimsavegame.h"
+#include "nehrimscriptextender.h"
 
-#include "pluginsetting.h"
 #include "executableinfo.h"
-#include <gamebryolocalsavegames.h>
+#include "pluginsetting.h"
 #include <gamebryogameplugins.h>
-#include <gamebryounmanagedmods.h>
+#include <gamebryolocalsavegames.h>
 #include <gamebryosavegameinfo.h>
+#include <gamebryounmanagedmods.h>
 
 #include <QCoreApplication>
 #include <QDir>
@@ -22,20 +22,20 @@
 
 using namespace MOBase;
 
-GameNehrim::GameNehrim()
-{
-}
+GameNehrim::GameNehrim() {}
 
-bool GameNehrim::init(IOrganizer *moInfo)
+bool GameNehrim::init(IOrganizer* moInfo)
 {
   if (!GameGamebryo::init(moInfo)) {
     return false;
   }
   registerFeature<ScriptExtender>(new NehrimScriptExtender(this));
   registerFeature<DataArchives>(new NehrimDataArchives(myGamesPath()));
-  registerFeature<BSAInvalidation>(new NehrimBSAInvalidation(feature<DataArchives>(), this));
+  registerFeature<BSAInvalidation>(
+      new NehrimBSAInvalidation(feature<DataArchives>(), this));
   registerFeature<SaveGameInfo>(new GamebryoSaveGameInfo(this));
-  registerFeature<LocalSavegames>(new GamebryoLocalSavegames(myGamesPath(), "oblivion.ini"));
+  registerFeature<LocalSavegames>(
+      new GamebryoLocalSavegames(myGamesPath(), "oblivion.ini"));
   registerFeature<ModDataChecker>(new NehrimModDataChecker(this));
   registerFeature<ModDataContent>(new NehrimModDataContent(this));
   registerFeature<GamePlugins>(new GamebryoGamePlugins(moInfo));
@@ -51,22 +51,27 @@ QString GameNehrim::gameName() const
 QList<ExecutableInfo> GameNehrim::executables() const
 {
   return QList<ExecutableInfo>()
-      << ExecutableInfo("Nehrim", findInGameFolder("Oblivion.exe"))
-      << ExecutableInfo("Nehrim Launcher", findInGameFolder("NehrimLauncher.exe"))
-      << ExecutableInfo("Oblivion Mod Manager", findInGameFolder("OblivionModManager.exe"))
-      << ExecutableInfo("BOSS", findInGameFolder("BOSS/BOSS.exe"))
-      << ExecutableInfo("LOOT", QFileInfo(getLootPath())).withArgument("--game=\"Oblivion\"")
-      << ExecutableInfo("Construction Set", findInGameFolder("TESConstructionSet.exe"))
-  ;
+         << ExecutableInfo("Nehrim", findInGameFolder("Oblivion.exe"))
+         << ExecutableInfo("Nehrim Launcher", findInGameFolder("NehrimLauncher.exe"))
+         << ExecutableInfo("Oblivion Mod Manager",
+                           findInGameFolder("OblivionModManager.exe"))
+         << ExecutableInfo("BOSS", findInGameFolder("BOSS/BOSS.exe"))
+         << ExecutableInfo("LOOT", QFileInfo(getLootPath()))
+                .withArgument("--game=\"Nehrim\"")
+         << ExecutableInfo("Construction Set",
+                           findInGameFolder("TESConstructionSet.exe"));
 }
 
 QList<ExecutableForcedLoadSetting> GameNehrim::executableForcedLoads() const
 {
-  //TODO Search game directory for OBSE DLLs
+  // TODO Search game directory for OBSE DLLs
   return QList<ExecutableForcedLoadSetting>()
-      << ExecutableForcedLoadSetting("Oblvion.exe", "obse_1_2_416.dll").withForced().withEnabled()
-      << ExecutableForcedLoadSetting("TESConstructionSet.exe", "obse_editor_1_2.dll").withForced().withEnabled()
-  ;
+         << ExecutableForcedLoadSetting("Oblvion.exe", "obse_1_2_416.dll")
+                .withForced()
+                .withEnabled()
+         << ExecutableForcedLoadSetting("TESConstructionSet.exe", "obse_editor_1_2.dll")
+                .withForced()
+                .withEnabled();
 }
 
 QString GameNehrim::name() const
@@ -99,16 +104,17 @@ QList<PluginSetting> GameNehrim::settings() const
   return QList<PluginSetting>();
 }
 
-void GameNehrim::initializeProfile(const QDir &path, ProfileSettings settings) const
+void GameNehrim::initializeProfile(const QDir& path, ProfileSettings settings) const
 {
   if (settings.testFlag(IPluginGame::MODS)) {
     copyToProfile(localAppFolder() + "/Oblvion", path, "plugins.txt");
   }
 
   if (settings.testFlag(IPluginGame::CONFIGURATION)) {
-    if (settings.testFlag(IPluginGame::PREFER_DEFAULTS)
-        || !QFileInfo(myGamesPath() + "/oblivion.ini").exists()) {
-      copyToProfile(gameDirectory().absolutePath(), path, "oblivion_default.ini", "oblivion.ini");
+    if (settings.testFlag(IPluginGame::PREFER_DEFAULTS) ||
+        !QFileInfo(myGamesPath() + "/oblivion.ini").exists()) {
+      copyToProfile(gameDirectory().absolutePath(), path, "oblivion_default.ini",
+                    "oblivion.ini");
     } else {
       copyToProfile(myGamesPath(), path, "oblivion.ini");
     }
@@ -139,7 +145,7 @@ QString GameNehrim::steamAPPId() const
 
 QStringList GameNehrim::primaryPlugins() const
 {
-  return { "Nehrim.esm", "Translation.esp" };
+  return {"Nehrim.esm", "Translation.esp"};
 }
 
 QString GameNehrim::gameShortName() const
@@ -154,7 +160,7 @@ QString GameNehrim::gameNexusName() const
 
 QStringList GameNehrim::iniFiles() const
 {
-  return { "oblivion.ini", "oblivionprefs.ini" };
+  return {"oblivion.ini", "oblivionprefs.ini"};
 }
 
 QStringList GameNehrim::DLCPlugins() const
@@ -174,21 +180,22 @@ int GameNehrim::nexusGameID() const
 
 QStringList GameNehrim::primarySources() const
 {
-    return {"Oblivion"};
+  return {"Oblivion"};
 }
 
 QStringList GameNehrim::validShortNames() const
 {
-    return {"Oblivion"};
+  return {"Oblivion"};
 }
 
 QString GameNehrim::identifyGamePath() const
 {
   QString path = "Software\\Bethesda Softworks\\Oblivion";
-  return findInRegistry(HKEY_LOCAL_MACHINE, path.toStdWString().c_str(), L"Installed Path");
+  return findInRegistry(HKEY_LOCAL_MACHINE, path.toStdWString().c_str(),
+                        L"Installed Path");
 }
 
 QString GameNehrim::binaryName() const
 {
-    return "NehrimLauncher.exe";
+  return "NehrimLauncher.exe";
 }
