@@ -126,29 +126,50 @@ void GamebryoSaveGame::FileWrapper::setPluginString(StringType type)
 void GamebryoSaveGame::FileWrapper::readQDataStream(QDataStream& data, void* buff,
                                                     std::size_t length)
 {
-  int read = data.readRawData(static_cast<char*>(buff), static_cast<int>(length));
-  if (read != length) {
+  int read    = data.readRawData(static_cast<char*>(buff), static_cast<int>(length));
+  bool result = true;
+  if (read != length && m_CompressionType == 1) {
     bool result = readNextChunk();
     if (result) {
-      read = data.readRawData(static_cast<char*>(buff) + read,
-                              static_cast<int>(length - read));
-    } else {
-      throw std::runtime_error("unexpected end of file");
+      read += data.readRawData(static_cast<char*>(buff) + read,
+                               static_cast<int>(length - read));
     }
+  }
+  if (read != length || !result) {
+    throw std::runtime_error("unexpected end of file");
   }
 }
 
 template <typename T>
 void GamebryoSaveGame::FileWrapper::readQDataStream(QDataStream& data, T& value)
 {
-  int read = data.readRawData(reinterpret_cast<char*>(&value), sizeof(T));
-  if (read != sizeof(T)) {
-    bool result = readNextChunk();
+  int read    = data.readRawData(reinterpret_cast<char*>(&value), sizeof(T));
+  bool result = true;
+  if (read != sizeof(T) && m_CompressionType == 1) {
+    result = readNextChunk();
     if (result) {
-      read = data.readRawData(reinterpret_cast<char*>(&value) + read, sizeof(T) - read);
-    } else {
-      throw std::runtime_error("unexpected end of file");
+      read +=
+          data.readRawData(reinterpret_cast<char*>(&value) + read, sizeof(T) - read);
     }
+  }
+  if (read != sizeof(T) || !result) {
+    throw std::runtime_error("unexpected end of file");
+  }
+}
+
+void GamebryoSaveGame::FileWrapper::qDataStreamSkip(QDataStream& data,
+                                                    std::size_t length)
+{
+  int skip    = data.skipRawData(static_cast<int>(length));
+  bool result = true;
+  if (skip != length && m_CompressionType == 1) {
+    result = readNextChunk();
+    if (result) {
+      skip += data.skipRawData(static_cast<int>(length - skip));
+    }
+  }
+  if (skip != length || !result) {
+    throw std::runtime_error("unexpected end of file");
   }
 }
 
@@ -286,7 +307,7 @@ bool GamebryoSaveGame::FileWrapper::openCompressedData(int bytesToIgnore)
     m_Data      = new QDataStream(placeholder);
     bool result = readNextChunk();
     if (result)
-      m_Data->skipRawData(bytesToIgnore);
+      qDataStreamSkip(*m_Data, bytesToIgnore);
     return result;
   } else if (m_CompressionType == 2) {
     uint32_t uncompressedSize;
@@ -303,7 +324,7 @@ bool GamebryoSaveGame::FileWrapper::openCompressedData(int bytesToIgnore)
     compressed.clear();
 
     m_Data = new QDataStream(decompressed);
-    m_Data->skipRawData(bytesToIgnore);
+    qDataStreamSkip(*m_Data, bytesToIgnore);
 
     return true;
   } else {
@@ -382,7 +403,7 @@ uint8_t GamebryoSaveGame::FileWrapper::readChar(int bytesToIgnore)
     return version;
   } else if (m_CompressionType == 1 || m_CompressionType == 2) {
     // decompression already done by readSaveGameVersion
-    m_Data->skipRawData(bytesToIgnore);
+    qDataStreamSkip(*m_Data, bytesToIgnore);
 
     uint8_t version;
     readQDataStream(*m_Data, version);
@@ -405,7 +426,7 @@ uint16_t GamebryoSaveGame::FileWrapper::readShort(int bytesToIgnore)
     return size;
   } else if (m_CompressionType == 1 || m_CompressionType == 2) {
     // decompression already done by readSaveGameVersion
-    m_Data->skipRawData(bytesToIgnore);
+    qDataStreamSkip(*m_Data, bytesToIgnore);
 
     uint16_t size;
     readQDataStream(*m_Data, size);
@@ -427,7 +448,7 @@ uint32_t GamebryoSaveGame::FileWrapper::readInt(int bytesToIgnore)
     return size;
   } else if (m_CompressionType == 1 || m_CompressionType == 2) {
     // decompression already done by readSaveGameVersion
-    m_Data->skipRawData(bytesToIgnore);
+    qDataStreamSkip(*m_Data, bytesToIgnore);
 
     uint32_t size;
     readQDataStream(*m_Data, size);
@@ -449,7 +470,7 @@ uint64_t GamebryoSaveGame::FileWrapper::readLong(int bytesToIgnore)
     return size;
   } else if (m_CompressionType == 1 || m_CompressionType == 2) {
     // decompression already done by readSaveGameVersion
-    m_Data->skipRawData(bytesToIgnore);
+    qDataStreamSkip(*m_Data, bytesToIgnore);
 
     uint64_t size;
     readQDataStream(*m_Data, size);
@@ -471,7 +492,7 @@ float_t GamebryoSaveGame::FileWrapper::readFloat(int bytesToIgnore)
     return value;
   } else if (m_CompressionType == 1 || m_CompressionType == 2) {
     // decompression already done by readSaveGameVersion
-    m_Data->skipRawData(bytesToIgnore);
+    qDataStreamSkip(*m_Data, bytesToIgnore);
 
     float_t value;
     readQDataStream(*m_Data, value);
@@ -499,7 +520,7 @@ QStringList GamebryoSaveGame::FileWrapper::readPlugins(int bytesToIgnore)
       plugins.push_back(name);
     }
   } else if (m_CompressionType == 1 || m_CompressionType == 2) {
-    m_Data->skipRawData(bytesToIgnore);
+    qDataStreamSkip(*m_Data, bytesToIgnore);
     uint8_t count;
     readQDataStream(*m_Data, count);
     uint16_t finalCount = count;
@@ -528,7 +549,7 @@ QStringList GamebryoSaveGame::FileWrapper::readLightPlugins(int bytesToIgnore)
       plugins.push_back(name);
     }
   } else if (m_CompressionType == 1 || m_CompressionType == 2) {
-    m_Data->skipRawData(bytesToIgnore);
+    qDataStreamSkip(*m_Data, bytesToIgnore);
 
     uint16_t count;
     readQDataStream(*m_Data, count);
