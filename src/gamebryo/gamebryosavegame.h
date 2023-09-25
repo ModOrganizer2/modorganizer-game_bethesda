@@ -115,11 +115,6 @@ protected:
 
     void read(void* buff, std::size_t length);
 
-    template <typename T>
-    void readQDataStream(QDataStream& data, T& value);
-    void readQDataStream(QDataStream& data, void* buff, std::size_t length);
-    void qDataStreamSkip(QDataStream& data, std::size_t length);
-
     /* Reads RGB image from save
      * Assumes picture dimentions come immediately before the save
      */
@@ -168,6 +163,14 @@ protected:
     StringType m_PluginString;
     QDataStream* m_Data;
     uint16_t m_CompressionType = 0;
+
+  private:
+    template <typename T>
+    void readQDataStream(QDataStream& data, T& value);
+
+    void readQDataStream(QDataStream& data, void* buff, std::size_t length);
+
+    void qDataStreamSkip(QDataStream& data, std::size_t length);
   };
 
   void setCreationTime(_SYSTEMTIME const& time);
