@@ -115,6 +115,10 @@ protected:
 
     void read(void* buff, std::size_t length);
 
+    template <typename T>
+    void readQDataStream(QDataStream& data, T& value);
+    void readQDataStream(QDataStream& data, void* buff, std::size_t length);
+
     /* Reads RGB image from save
      * Assumes picture dimentions come immediately before the save
      */
@@ -129,6 +133,9 @@ protected:
 
     /* uncompress the begining of the compressed block */
     bool openCompressedData(int bytesToIgnore = 0);
+
+    /* read the next compressed block */
+    bool readNextChunk();
 
     /* frees the uncompressed block */
     void closeCompressedData();
@@ -154,6 +161,8 @@ protected:
 
   private:
     QFile m_File;
+    uint64_t m_NextChunk;
+    uint64_t m_UncompressedSize;
     bool m_HasFieldMarkers;
     StringType m_PluginString;
     QDataStream* m_Data;
