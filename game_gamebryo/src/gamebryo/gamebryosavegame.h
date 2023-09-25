@@ -118,6 +118,7 @@ protected:
     template <typename T>
     void readQDataStream(QDataStream& data, T& value);
     void readQDataStream(QDataStream& data, void* buff, std::size_t length);
+    void qDataStreamSkip(QDataStream& data, std::size_t length);
 
     /* Reads RGB image from save
      * Assumes picture dimentions come immediately before the save
