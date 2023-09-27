@@ -170,7 +170,7 @@ protected:
 
     void readQDataStream(QDataStream& data, void* buff, std::size_t length);
 
-    void qDataStreamSkip(QDataStream& data, std::size_t length);
+    void skipQDataStream(QDataStream& data, std::size_t length);
   };
 
   void setCreationTime(_SYSTEMTIME const& time);
