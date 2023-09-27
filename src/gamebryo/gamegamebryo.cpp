@@ -43,9 +43,10 @@ void GameGamebryo::detectGame()
 
 bool GameGamebryo::init(MOBase::IOrganizer* moInfo)
 {
-  using namespace std::placeholders;
   m_Organizer = moInfo;
-  m_Organizer->onAboutToRun(std::bind(&GameGamebryo::prepareIni, this, _1));
+  m_Organizer->onAboutToRun([this](const auto& binary) {
+    return prepareIni(binary);
+  });
   return true;
 }
 
