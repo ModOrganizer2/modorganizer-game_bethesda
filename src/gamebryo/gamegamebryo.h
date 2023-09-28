@@ -126,6 +126,10 @@ protected:
 
   static QString determineMyGamesPath(const QString& gameName);
 
+  static QString parseEpicGamesLocation(const QStringList& manifests);
+
+  static QString parseSteamLocation(const QString& appid);
+
 protected:
   std::map<std::type_index, std::any> featureList() const override;
 
