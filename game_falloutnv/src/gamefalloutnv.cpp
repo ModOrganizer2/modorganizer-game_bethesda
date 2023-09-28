@@ -118,31 +118,35 @@ QString GameFalloutNV::gameName() const
 
 QString GameFalloutNV::gameDirectoryName() const
 {
-	if (selectedVariant() == "GOG")
-		return "Skyrim Special Edition GOG";
-	else if (selectedVariant() == "Epic Games")
-		return "Skyrim Special Edition EPIC";
-	else
-		return "Skyrim Special Edition";
+  if (selectedVariant() == "Epic Games")
+    return "FalloutNV_Epic";
+  else
+    return "FalloutNV_Epic";
 }
 
 void GameFalloutNV::detectGame()
 {
-	m_GamePath = identifyGamePath();
-	m_MyGamesPath = determineMyGamesPath("FalloutNV");
+  m_GamePath = identifyGamePath();
+  checkVariants();
+  m_MyGamesPath = determineMyGamesPath(gameDirectoryName());
 }
 
 QList<ExecutableInfo> GameFalloutNV::executables() const
 {
-	return QList<ExecutableInfo>()
-		<< ExecutableInfo("NVSE", findInGameFolder(feature<ScriptExtender>()->loaderName()))
-		<< ExecutableInfo("New Vegas", findInGameFolder(binaryName()))
-		<< ExecutableInfo("Fallout Mod Manager", findInGameFolder("fomm/fomm.exe"))
-		<< ExecutableInfo("Construction Kit", findInGameFolder("geck.exe"))
-		<< ExecutableInfo("Fallout Launcher", findInGameFolder(getLauncherName()))
-		<< ExecutableInfo("BOSS", findInGameFolder("BOSS/BOSS.exe"))
-		<< ExecutableInfo("LOOT", QFileInfo(getLootPath())).withArgument("--game=\"FalloutNV\"")
-		;
+  QList<ExecutableInfo> executables =
+      QList<ExecutableInfo>()
+      << ExecutableInfo("New Vegas", findInGameFolder(binaryName()))
+      << ExecutableInfo("Fallout Mod Manager", findInGameFolder("fomm/fomm.exe"))
+      << ExecutableInfo("Construction Kit", findInGameFolder("geck.exe"))
+      << ExecutableInfo("Fallout Launcher", findInGameFolder(getLauncherName()))
+      << ExecutableInfo("BOSS", findInGameFolder("BOSS/BOSS.exe"))
+      << ExecutableInfo("LOOT", QFileInfo(getLootPath()))
+             .withArgument("--game=\"FalloutNV\"");
+  if (selectedVariant() == "Epic Games") {
+    executables.append(ExecutableInfo(
+        "NVSE", findInGameFolder(feature<ScriptExtender>()->loaderName())));
+  }
+  return executables;
 }
 
 QList<ExecutableForcedLoadSetting> GameFalloutNV::executableForcedLoads() const
@@ -173,7 +177,7 @@ QString GameFalloutNV::description() const
 
 MOBase::VersionInfo GameFalloutNV::version() const
 {
-	return VersionInfo(1, 5, 1, VersionInfo::RELEASE_FINAL);
+  return VersionInfo(1, 5, 2, VersionInfo::RELEASE_FINAL);
 }
 
 QList<PluginSetting> GameFalloutNV::settings() const
@@ -183,9 +187,9 @@ QList<PluginSetting> GameFalloutNV::settings() const
 
 void GameFalloutNV::initializeProfile(const QDir& path, ProfileSettings settings) const
 {
-	if (settings.testFlag(IPluginGame::MODS)) {
-		copyToProfile(localAppFolder() + "/FalloutNV", path, "plugins.txt");
-	}
+  if (settings.testFlag(IPluginGame::MODS)) {
+    copyToProfile(localAppFolder() + "/" + gameDirectoryName(), path, "plugins.txt");
+  }
 
 	if (settings.testFlag(IPluginGame::CONFIGURATION)) {
 		if (settings.testFlag(IPluginGame::PREFER_DEFAULTS)
