@@ -55,7 +55,6 @@ void GameFalloutNV::setVariant(QString variant)
 
 void GameFalloutNV::checkVariants()
 {
-  QFileInfo gog_dll(m_GamePath + "\\Galaxy64.dll");
   QFileInfo epic_dll(m_GamePath + "\\EOSSDK-Win32-Shipping.dll");
   if (epic_dll.exists())
     setVariant("Epic Games");
@@ -279,6 +278,14 @@ int GameFalloutNV::nexusGameID() const
 
 QDir GameFalloutNV::gameDirectory() const
 {
+  if (selectedVariant() == "Epic Games") {
+    if (QFileInfo(m_GamePath).isDir()) {
+    }
+    QDir startPath = QDir(m_GamePath);
+    auto subDirs   = startPath.entryList(QDir::Dirs);
+    if (!subDirs.isEmpty())
+      return subDirs.first();
+  }
   return QDir(m_GamePath);
 }
 
