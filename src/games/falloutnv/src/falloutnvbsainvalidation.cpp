@@ -1,9 +1,9 @@
 #include "falloutnvbsainvalidation.h"
 
-FalloutNVBSAInvalidation::FalloutNVBSAInvalidation(DataArchives *dataArchives, MOBase::IPluginGame const *game)
-  : GamebryoBSAInvalidation(dataArchives, "fallout.ini", game)
-{
-}
+FalloutNVBSAInvalidation::FalloutNVBSAInvalidation(DataArchives* dataArchives,
+                                                   MOBase::IPluginGame const* game)
+    : GamebryoBSAInvalidation(dataArchives, "fallout.ini", game)
+{}
 
 QString FalloutNVBSAInvalidation::invalidationBSAName() const
 {

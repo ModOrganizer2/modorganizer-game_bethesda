@@ -8,11 +8,10 @@ class GameGamebryo;
 class FalloutNVScriptExtender : public GamebryoScriptExtender
 {
 public:
-  FalloutNVScriptExtender(const GameGamebryo *game);
+  FalloutNVScriptExtender(const GameGamebryo* game);
 
   virtual QString BinaryName() const override;
   virtual QString PluginPath() const override;
-
 };
 
-#endif // FALLOUTNVSCRIPTEXTENDER_H
+#endif  // FALLOUTNVSCRIPTEXTENDER_H
