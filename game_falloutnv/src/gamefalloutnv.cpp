@@ -82,6 +82,12 @@ QString GameFalloutNV::identifyGamePath() const
      * Courier's Stash: ee9a44b4530942499ef1c8c390731fce
      */
     result = parseEpicGamesLocation({"5daeb974a22a435988892319b3a4f476"});
+    if (QFileInfo(result).isDir()) {
+      QDir startPath = QDir(result);
+      auto subDirs   = startPath.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
+      if (!subDirs.isEmpty())
+        result = subDirs.first();
+    }
   }
   return result;
 }
@@ -278,14 +284,6 @@ int GameFalloutNV::nexusGameID() const
 
 QDir GameFalloutNV::gameDirectory() const
 {
-  if (selectedVariant() == "Epic Games") {
-    if (QFileInfo(m_GamePath).isDir()) {
-    }
-    QDir startPath = QDir(m_GamePath);
-    auto subDirs   = startPath.entryList(QDir::Dirs);
-    if (!subDirs.isEmpty())
-      return subDirs.first();
-  }
   return QDir(m_GamePath);
 }
 
