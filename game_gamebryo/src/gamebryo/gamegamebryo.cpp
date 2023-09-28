@@ -11,12 +11,14 @@
 #include "scopeguard.h"
 #include "scriptextender.h"
 #include "utility.h"
+#include "vdf_parser.h"
 
 #include <QDir>
 #include <QDirIterator>
 #include <QFile>
 #include <QFileInfo>
 #include <QIcon>
+#include <QJsonDocument>
 
 #include <QtDebug>
 #include <QtGlobal>
@@ -424,4 +426,72 @@ QString GameGamebryo::determineMyGamesPath(const QString& gameName)
   }
 
   return {};
+}
+
+QString GameGamebryo::parseEpicGamesLocation(const QStringList& manifests)
+{
+  // Use the registry entry to find the EGL Data dir first, just in case something
+  // changes
+  QString manifestDir = findInRegistry(
+      HKEY_LOCAL_MACHINE, L"SOFTWARE\\WOW6432Node\\Epic Games\\EpicGamesLauncher",
+      L"AppDataPath");
+  if (manifestDir.isEmpty())
+    manifestDir = getKnownFolderPath(FOLDERID_ProgramData, false) +
+                  "\\Epic\\EpicGamesLauncher\\Data\\";
+  manifestDir += "Manifests";
+  QDir epicManifests(manifestDir, "*.item",
+                     QDir::SortFlags(QDir::Name | QDir::IgnoreCase), QDir::Files);
+  if (epicManifests.exists()) {
+    QDirIterator it(epicManifests);
+    while (it.hasNext()) {
+      QString manifestFile = it.next();
+      QFile manifest(manifestFile);
+
+      if (!manifest.open(QIODevice::ReadOnly)) {
+        qWarning("Couldn't open Epic Games manifest file.");
+        continue;
+      }
+
+      QByteArray manifestData = manifest.readAll();
+
+      QJsonDocument manifestJson(QJsonDocument::fromJson(manifestData));
+
+      if (manifests.contains(manifestJson["AppName"].toString())) {
+        return manifestJson["InstallLocation"].toString();
+      }
+    }
+  }
+  return "";
+}
+
+QString GameGamebryo::parseSteamLocation(const QString& appid)
+{
+  QString path = "Software\\Valve\\Steam";
+  QString steamLocation =
+      findInRegistry(HKEY_CURRENT_USER, path.toStdWString().c_str(), L"SteamPath");
+  if (!steamLocation.isEmpty()) {
+    QString steamLibraryLocation;
+    QString steamLibraries(steamLocation + "\\" + "config" + "\\" +
+                           "libraryfolders.vdf");
+    if (QFile(steamLibraries).exists()) {
+      std::ifstream file(steamLibraries.toStdString());
+      auto root = tyti::vdf::read(file);
+      for (auto child : root.childs) {
+        tyti::vdf::object* library = child.second.get();
+        auto apps                  = library->childs["apps"];
+        if (apps->attribs.contains(appid.toStdString())) {
+          steamLibraryLocation = QString::fromStdString(library->attribs["path"]);
+          break;
+        }
+      }
+    }
+    if (!steamLibraryLocation.isEmpty()) {
+      QString gameLocation = steamLibraryLocation + "\\" + "steamapps" + "\\" +
+                             "common" + "\\" + "Starfield";
+      if (QDir(gameLocation).exists() &&
+          QFile(gameLocation + "\\" + "Starfield.exe").exists())
+        return gameLocation;
+    }
+  }
+  return "";
 }
