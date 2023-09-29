@@ -98,6 +98,8 @@ void GameFalloutNV::setGamePath(const QString& path)
   checkVariants();
   m_MyGamesPath = determineMyGamesPath(gameDirectoryName());
   registerFeature<DataArchives>(new FalloutNVDataArchives(myGamesPath()));
+  registerFeature<BSAInvalidation>(
+      new FalloutNVBSAInvalidation(feature<DataArchives>(), this));
   registerFeature<LocalSavegames>(
       new GamebryoLocalSavegames(myGamesPath(), "fallout.ini"));
 }
@@ -127,7 +129,7 @@ QString GameFalloutNV::gameDirectoryName() const
   if (selectedVariant() == "Epic Games")
     return "FalloutNV_Epic";
   else
-    return "FalloutNV_Epic";
+    return "FalloutNV";
 }
 
 void GameFalloutNV::detectGame()
