@@ -464,7 +464,8 @@ QString GameGamebryo::parseEpicGamesLocation(const QStringList& manifests)
   return "";
 }
 
-QString GameGamebryo::parseSteamLocation(const QString& appid)
+QString GameGamebryo::parseSteamLocation(const QString& appid,
+                                         const QString& directoryName)
 {
   QString path = "Software\\Valve\\Steam";
   QString steamLocation =
@@ -487,9 +488,8 @@ QString GameGamebryo::parseSteamLocation(const QString& appid)
     }
     if (!steamLibraryLocation.isEmpty()) {
       QString gameLocation = steamLibraryLocation + "\\" + "steamapps" + "\\" +
-                             "common" + "\\" + "Starfield";
-      if (QDir(gameLocation).exists() &&
-          QFile(gameLocation + "\\" + "Starfield.exe").exists())
+                             "common" + "\\" + directoryName;
+      if (QDir(gameLocation).exists())
         return gameLocation;
     }
   }

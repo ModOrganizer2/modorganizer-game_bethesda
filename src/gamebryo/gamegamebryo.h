@@ -128,7 +128,7 @@ protected:
 
   static QString parseEpicGamesLocation(const QStringList& manifests);
 
-  static QString parseSteamLocation(const QString& appid);
+  static QString parseSteamLocation(const QString& appid, const QString& directoryName);
 
 protected:
   std::map<std::type_index, std::any> featureList() const override;
