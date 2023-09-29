@@ -433,8 +433,7 @@ QString GameGamebryo::parseEpicGamesLocation(const QStringList& manifests)
   // Use the registry entry to find the EGL Data dir first, just in case something
   // changes
   QString manifestDir = findInRegistry(
-      HKEY_LOCAL_MACHINE, L"SOFTWARE\\WOW6432Node\\Epic Games\\EpicGamesLauncher",
-      L"AppDataPath");
+      HKEY_LOCAL_MACHINE, L"Software\\Epic Games\\EpicGamesLauncher", L"AppDataPath");
   if (manifestDir.isEmpty())
     manifestDir = getKnownFolderPath(FOLDERID_ProgramData, false) +
                   "\\Epic\\EpicGamesLauncher\\Data\\";
