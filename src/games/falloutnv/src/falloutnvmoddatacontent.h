@@ -4,18 +4,19 @@
 #include <gamebryomoddatacontent.h>
 #include <ifiletree.h>
 
-class FalloutNVModDataContent : public GamebryoModDataContent {
+class FalloutNVModDataContent : public GamebryoModDataContent
+{
 public:
-
   /**
    *
    */
-  FalloutNVModDataContent(GameGamebryo const* gamePlugin) : GamebryoModDataContent(gamePlugin) {
+  FalloutNVModDataContent(GameGamebryo const* gamePlugin)
+      : GamebryoModDataContent(gamePlugin)
+  {
     // Just need to disable some contents:
-    m_Enabled[CONTENT_MCM] = false;
+    m_Enabled[CONTENT_MCM]     = false;
     m_Enabled[CONTENT_SKYPROC] = false;
   }
-
 };
 
-#endif // FALLOUTNV_MODDATACONTENT_H
+#endif  // FALLOUTNV_MODDATACONTENT_H
