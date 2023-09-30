@@ -64,8 +64,8 @@ public:
 
   enum StringFormat
   {
-      UTF8,
-      LOCAL8BIT
+    UTF8,
+    LOCAL8BIT
   };
 
 protected:
@@ -93,7 +93,7 @@ protected:
     void setPluginString(StringType);
 
     /** Set string format (utf-8, windows local 8 bit strings)
-    **/
+     **/
     void setPluginStringFormat(StringFormat);
 
     template <typename T>
