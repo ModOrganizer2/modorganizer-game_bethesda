@@ -8,6 +8,7 @@ SkyrimSaveGame::SkyrimSaveGame(QString const& fileName, GameSkyrim const* game) 
 	GamebryoSaveGame(fileName, game)
 {
 	FileWrapper file(getFilepath(), "TESV_SAVEGAME");
+	file.setPluginStringFormat(GamebryoSaveGame::LOCAL8BIT);
 
 	FILETIME ftime;
 	fetchInformationFields(file, m_SaveNumber, m_PCName, m_PCLevel, m_PCLocation, ftime);
@@ -32,19 +33,19 @@ void SkyrimSaveGame::fetchInformationFields(FileWrapper& file,
 	file.skip<unsigned long>(); // header version
 	file.read(saveNumber);
 
-	file.read(playerName, false);
+	file.read(playerName);
 
 	unsigned long temp;
 	file.read(temp);
 	playerLevel = static_cast<unsigned short>(temp);
 
-	file.read(playerLocation, false);
+	file.read(playerLocation);
 
 	QString timeOfDay;
-	file.read(timeOfDay, false);
+	file.read(timeOfDay);
 
 	QString race;
-	file.read(race, false); // race name (i.e. BretonRace)
+	file.read(race); // race name (i.e. BretonRace)
 
 	file.skip<unsigned short>(); // Player gender (0 = male)
 	file.skip<float>(2); // experience gathered, experience required
@@ -55,6 +56,7 @@ void SkyrimSaveGame::fetchInformationFields(FileWrapper& file,
 std::unique_ptr<GamebryoSaveGame::DataFields> SkyrimSaveGame::fetchDataFields() const
 {
 	FileWrapper file(getFilepath(), "TESV_SAVEGAME");
+	file.setPluginStringFormat(GamebryoSaveGame::LOCAL8BIT);
 	std::unique_ptr<DataFields> fields = std::make_unique<DataFields>();
 
 	{
