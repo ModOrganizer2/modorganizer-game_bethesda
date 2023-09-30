@@ -8,7 +8,6 @@ SkyrimSaveGame::SkyrimSaveGame(QString const& fileName, GameSkyrim const* game) 
 	GamebryoSaveGame(fileName, game)
 {
 	FileWrapper file(getFilepath(), "TESV_SAVEGAME");
-	file.setPluginStringFormat(GamebryoSaveGame::LOCAL8BIT);
 
 	FILETIME ftime;
 	fetchInformationFields(file, m_SaveNumber, m_PCName, m_PCLevel, m_PCLocation, ftime);
@@ -39,7 +38,9 @@ void SkyrimSaveGame::fetchInformationFields(FileWrapper& file,
 	file.read(temp);
 	playerLevel = static_cast<unsigned short>(temp);
 
+	file.setPluginStringFormat(GamebryoSaveGame::LOCAL8BIT);
 	file.read(playerLocation);
+	file.setPluginStringFormat(GamebryoSaveGame::UTF8);
 
 	QString timeOfDay;
 	file.read(timeOfDay);
@@ -56,7 +57,6 @@ void SkyrimSaveGame::fetchInformationFields(FileWrapper& file,
 std::unique_ptr<GamebryoSaveGame::DataFields> SkyrimSaveGame::fetchDataFields() const
 {
 	FileWrapper file(getFilepath(), "TESV_SAVEGAME");
-	file.setPluginStringFormat(GamebryoSaveGame::LOCAL8BIT);
 	std::unique_ptr<DataFields> fields = std::make_unique<DataFields>();
 
 	{
