@@ -62,6 +62,12 @@ public:
     TYPE_WSTRING
   };
 
+  enum StringFormat
+  {
+      UTF8,
+      LOCAL8BIT
+  };
+
 protected:
   friend class FileWrapper;
 
@@ -86,6 +92,10 @@ protected:
      **/
     void setPluginString(StringType);
 
+    /** Set string format (utf-8, windows local 8 bit strings)
+    **/
+    void setPluginStringFormat(StringFormat);
+
     template <typename T>
     void skip(int count = 1)
     {
@@ -108,8 +118,6 @@ protected:
 
     template <>
     void read<QString>(QString& value);
-
-    void read(QString& value, bool isUtf8);
 
     void seek(unsigned long pos)
     {
@@ -166,6 +174,7 @@ protected:
     uint64_t m_UncompressedSize;
     bool m_HasFieldMarkers;
     StringType m_PluginString;
+    StringFormat m_PluginStringFormat;
     QDataStream* m_Data;
     uint16_t m_CompressionType = 0;
 

@@ -92,7 +92,8 @@ void GamebryoSaveGame::setCreationTime(_SYSTEMTIME const& ctime)
 GamebryoSaveGame::FileWrapper::FileWrapper(QString const& filepath,
                                            QString const& expected)
     : m_File(filepath), m_HasFieldMarkers(false),
-      m_PluginString(StringType::TYPE_WSTRING), m_NextChunk(0)
+      m_PluginString(StringType::TYPE_WSTRING),
+      m_PluginStringFormat(StringFormat::UTF8), m_NextChunk(0)
 {
   if (!m_File.open(QIODevice::ReadOnly)) {
     throw std::runtime_error(
@@ -121,6 +122,11 @@ void GamebryoSaveGame::FileWrapper::setHasFieldMarkers(bool state)
 void GamebryoSaveGame::FileWrapper::setPluginString(StringType type)
 {
   m_PluginString = type;
+}
+
+void GamebryoSaveGame::FileWrapper::setPluginStringFormat(StringFormat type)
+{
+  m_PluginStringFormat = type;
 }
 
 void GamebryoSaveGame::FileWrapper::readQDataStream(QDataStream& data, void* buff,
@@ -163,7 +169,8 @@ void GamebryoSaveGame::FileWrapper::skipQDataStream(QDataStream& data,
   }
 }
 
-void GamebryoSaveGame::FileWrapper::read(QString& value, bool isUtf8)
+template <>
+void GamebryoSaveGame::FileWrapper::read<QString>(QString& value)
 {
   if (m_CompressionType == 0) {
     unsigned short length;
@@ -222,7 +229,7 @@ void GamebryoSaveGame::FileWrapper::read(QString& value, bool isUtf8)
       m_Data->skipRawData(1);
     }
 
-    if (isUtf8)
+    if (m_PluginStringFormat == StringFormat::UTF8)
       value = QString::fromUtf8(buffer.constData());
     else
       value = QString::fromLocal8Bit(buffer.constData());
@@ -230,12 +237,6 @@ void GamebryoSaveGame::FileWrapper::read(QString& value, bool isUtf8)
     MOBase::log::warn("Please create an issue on the MO github labeled \"Found unknown "
                       "Compressed\" with your savefile attached");
   }
-}
-
-template <>
-void GamebryoSaveGame::FileWrapper::read<QString>(QString& value)
-{
-  read(value, true);
 }
 
 void GamebryoSaveGame::FileWrapper::read(void* buff, std::size_t length)
