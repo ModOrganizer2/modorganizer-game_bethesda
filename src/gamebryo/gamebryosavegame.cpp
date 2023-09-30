@@ -200,7 +200,10 @@ void GamebryoSaveGame::FileWrapper::read<QString>(QString& value)
       skip<char>();
     }
 
-    value = QString::fromUtf8(buffer.constData());
+    if (m_PluginStringFormat == StringFormat::UTF8)
+      value = QString::fromUtf8(buffer.constData());
+    else
+      value = QString::fromLocal8Bit(buffer.constData());
   } else if (m_CompressionType == 1 || m_CompressionType == 2) {
     unsigned short length;
     if (m_PluginString == StringType::TYPE_BSTRING ||
