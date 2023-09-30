@@ -106,6 +106,11 @@ protected:
       }
     }
 
+    template <>
+    void read<QString>(QString& value);
+
+    void read(QString& value, bool isUtf8);
+
     void seek(unsigned long pos)
     {
       if (!m_File.seek(pos)) {
@@ -205,8 +210,5 @@ protected:
   // Fetch the field.
   virtual std::unique_ptr<DataFields> fetchDataFields() const = 0;
 };
-
-template <>
-void GamebryoSaveGame::FileWrapper::read<QString>(QString&);
 
 #endif  // GAMEBRYOSAVEGAME_H
