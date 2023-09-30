@@ -163,8 +163,7 @@ void GamebryoSaveGame::FileWrapper::skipQDataStream(QDataStream& data,
   }
 }
 
-template <>
-void GamebryoSaveGame::FileWrapper::read(QString& value)
+void GamebryoSaveGame::FileWrapper::read(QString& value, bool isUtf8)
 {
   if (m_CompressionType == 0) {
     unsigned short length;
@@ -223,11 +222,20 @@ void GamebryoSaveGame::FileWrapper::read(QString& value)
       m_Data->skipRawData(1);
     }
 
-    value = QString::fromUtf8(buffer.constData());
+    if (isUtf8)
+      value = QString::fromUtf8(buffer.constData());
+    else
+      value = QString::fromLocal8Bit(buffer.constData());
   } else {
     MOBase::log::warn("Please create an issue on the MO github labeled \"Found unknown "
                       "Compressed\" with your savefile attached");
   }
+}
+
+template <>
+void GamebryoSaveGame::FileWrapper::read<QString>(QString& value)
+{
+  read(value, true);
 }
 
 void GamebryoSaveGame::FileWrapper::read(void* buff, std::size_t length)
