@@ -92,7 +92,8 @@ void GamebryoSaveGame::setCreationTime(_SYSTEMTIME const& ctime)
 GamebryoSaveGame::FileWrapper::FileWrapper(QString const& filepath,
                                            QString const& expected)
     : m_File(filepath), m_HasFieldMarkers(false),
-      m_PluginString(StringType::TYPE_WSTRING), m_NextChunk(0)
+      m_PluginString(StringType::TYPE_WSTRING),
+      m_PluginStringFormat(StringFormat::UTF8), m_NextChunk(0)
 {
   if (!m_File.open(QIODevice::ReadOnly)) {
     throw std::runtime_error(
@@ -121,6 +122,11 @@ void GamebryoSaveGame::FileWrapper::setHasFieldMarkers(bool state)
 void GamebryoSaveGame::FileWrapper::setPluginString(StringType type)
 {
   m_PluginString = type;
+}
+
+void GamebryoSaveGame::FileWrapper::setPluginStringFormat(StringFormat type)
+{
+  m_PluginStringFormat = type;
 }
 
 void GamebryoSaveGame::FileWrapper::readQDataStream(QDataStream& data, void* buff,
@@ -164,7 +170,7 @@ void GamebryoSaveGame::FileWrapper::skipQDataStream(QDataStream& data,
 }
 
 template <>
-void GamebryoSaveGame::FileWrapper::read(QString& value)
+void GamebryoSaveGame::FileWrapper::read<QString>(QString& value)
 {
   if (m_CompressionType == 0) {
     unsigned short length;
@@ -194,7 +200,10 @@ void GamebryoSaveGame::FileWrapper::read(QString& value)
       skip<char>();
     }
 
-    value = QString::fromUtf8(buffer.constData());
+    if (m_PluginStringFormat == StringFormat::UTF8)
+      value = QString::fromUtf8(buffer.constData());
+    else
+      value = QString::fromLocal8Bit(buffer.constData());
   } else if (m_CompressionType == 1 || m_CompressionType == 2) {
     unsigned short length;
     if (m_PluginString == StringType::TYPE_BSTRING ||
@@ -223,7 +232,10 @@ void GamebryoSaveGame::FileWrapper::read(QString& value)
       m_Data->skipRawData(1);
     }
 
-    value = QString::fromUtf8(buffer.constData());
+    if (m_PluginStringFormat == StringFormat::UTF8)
+      value = QString::fromUtf8(buffer.constData());
+    else
+      value = QString::fromLocal8Bit(buffer.constData());
   } else {
     MOBase::log::warn("Please create an issue on the MO github labeled \"Found unknown "
                       "Compressed\" with your savefile attached");
