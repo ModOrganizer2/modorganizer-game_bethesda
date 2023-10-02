@@ -55,14 +55,14 @@ public:
 
   bool isLightEnabled() const { return m_LightEnabled; }
 
-  enum StringType
+  enum class StringType
   {
     TYPE_BZSTRING,
     TYPE_BSTRING,
     TYPE_WSTRING
   };
 
-  enum StringFormat
+  enum class StringFormat
   {
     UTF8,
     LOCAL8BIT
