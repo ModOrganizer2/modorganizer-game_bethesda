@@ -63,6 +63,7 @@ public:  // IPluginGame interface
   // executables
   // steamAPPId
   // primaryPlugins
+  virtual QStringList enabledPlugins() const override { return {}; }
   virtual QStringList gameVariants() const override;
   virtual void setGameVariant(const QString& variant) override;
   virtual QString binaryName() const override;
