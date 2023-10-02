@@ -55,11 +55,17 @@ public:
 
   bool isLightEnabled() const { return m_LightEnabled; }
 
-  enum StringType
+  enum class StringType
   {
     TYPE_BZSTRING,
     TYPE_BSTRING,
     TYPE_WSTRING
+  };
+
+  enum class StringFormat
+  {
+    UTF8,
+    LOCAL8BIT
   };
 
 protected:
@@ -86,6 +92,10 @@ protected:
      **/
     void setPluginString(StringType);
 
+    /** Set string format (utf-8, windows local 8 bit strings)
+     **/
+    void setPluginStringFormat(StringFormat);
+
     template <typename T>
     void skip(int count = 1)
     {
@@ -105,6 +115,9 @@ protected:
         skip<char>();
       }
     }
+
+    template <>
+    void read<QString>(QString& value);
 
     void seek(unsigned long pos)
     {
@@ -161,6 +174,7 @@ protected:
     uint64_t m_UncompressedSize;
     bool m_HasFieldMarkers;
     StringType m_PluginString;
+    StringFormat m_PluginStringFormat;
     QDataStream* m_Data;
     uint16_t m_CompressionType = 0;
 
@@ -205,8 +219,5 @@ protected:
   // Fetch the field.
   virtual std::unique_ptr<DataFields> fetchDataFields() const = 0;
 };
-
-template <>
-void GamebryoSaveGame::FileWrapper::read<QString>(QString&);
 
 #endif  // GAMEBRYOSAVEGAME_H
