@@ -38,9 +38,9 @@ void SkyrimSaveGame::fetchInformationFields(FileWrapper& file,
 	file.read(temp);
 	playerLevel = static_cast<unsigned short>(temp);
 
-	file.setPluginStringFormat(GamebryoSaveGame::LOCAL8BIT);
+	file.setPluginStringFormat(GamebryoSaveGame::StringFormat::LOCAL8BIT);
 	file.read(playerLocation);
-	file.setPluginStringFormat(GamebryoSaveGame::UTF8);
+	file.setPluginStringFormat(GamebryoSaveGame::StringFormat::UTF8);
 
 	QString timeOfDay;
 	file.read(timeOfDay);
