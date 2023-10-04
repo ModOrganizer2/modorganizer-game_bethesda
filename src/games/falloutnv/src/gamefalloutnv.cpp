@@ -55,8 +55,11 @@ void GameFalloutNV::setVariant(QString variant)
 
 void GameFalloutNV::checkVariants()
 {
+  QFileInfo gog_dll(m_GamePath + "\\Galaxy.dll");
   QFileInfo epic_dll(m_GamePath + "\\EOSSDK-Win32-Shipping.dll");
-  if (epic_dll.exists())
+  if (gog_dll.exists())
+    setVariant("GOG");
+  else if (epic_dll.exists())
     setVariant("Epic Games");
   else
     setVariant("Steam");
@@ -84,7 +87,8 @@ QString GameFalloutNV::identifyGamePath() const
     result = parseEpicGamesLocation({"5daeb974a22a435988892319b3a4f476"});
     if (QFileInfo(result).isDir()) {
       QDir startPath = QDir(result);
-      auto subDirs   = startPath.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
+      auto subDirs   = startPath.entryList({"Fallout New Vegas*"},
+                                           QDir::Dirs | QDir::NoDotAndDotDot);
       if (!subDirs.isEmpty())
         result = subDirs.first();
     }
@@ -141,19 +145,24 @@ void GameFalloutNV::detectGame()
 
 QList<ExecutableInfo> GameFalloutNV::executables() const
 {
-  QList<ExecutableInfo> executables =
+  ExecutableInfo game("New Vegas", findInGameFolder(binaryName()));
+  ExecutableInfo launcher("Fallout Launcher", findInGameFolder(getLauncherName()));
+  QList<ExecutableInfo> extraExecutables =
       QList<ExecutableInfo>()
-      << ExecutableInfo("New Vegas", findInGameFolder(binaryName()))
       << ExecutableInfo("Fallout Mod Manager", findInGameFolder("fomm/fomm.exe"))
       << ExecutableInfo("Construction Kit", findInGameFolder("geck.exe"))
-      << ExecutableInfo("Fallout Launcher", findInGameFolder(getLauncherName()))
       << ExecutableInfo("BOSS", findInGameFolder("BOSS/BOSS.exe"))
       << ExecutableInfo("LOOT", QFileInfo(getLootPath()))
              .withArgument("--game=\"FalloutNV\"");
-  if (selectedVariant() == "Epic Games") {
-    executables.append(ExecutableInfo(
+  if (selectedVariant() != "Epic Games") {
+    extraExecutables.prepend(ExecutableInfo(
         "NVSE", findInGameFolder(feature<ScriptExtender>()->loaderName())));
+  } else {
+    game.withArgument("-EpicPortal");
+    launcher.withArgument("-EpicPortal");
   }
+  QList<ExecutableInfo> executables = {game, launcher};
+  executables += extraExecutables;
   return executables;
 }
 
@@ -243,7 +252,7 @@ QStringList GameFalloutNV::primaryPlugins() const
 
 QStringList GameFalloutNV::gameVariants() const
 {
-  return {"Steam", "Epic Games"};
+  return {"Steam", "GOG", "Epic Games"};
 }
 
 QString GameFalloutNV::gameShortName() const
@@ -289,15 +298,19 @@ QDir GameFalloutNV::gameDirectory() const
   return QDir(m_GamePath);
 }
 
-// Not to delete all the spaces...
 MappingType GameFalloutNV::mappings() const
 {
   MappingType result;
 
   for (const QString& profileFile : {"plugins.txt", "loadorder.txt"}) {
     result.push_back({m_Organizer->profilePath() + "/" + profileFile,
-                      localAppFolder() + "/" + gameDirectoryName() + "/" + profileFile,
+                      localAppFolder() + "/" + gameShortName() + "/" + profileFile,
                       false});
+    if (selectedVariant() == "Epic Games") {
+      result.push_back(
+          {m_Organizer->profilePath() + "/" + profileFile,
+           localAppFolder() + "/" + gameDirectoryName() + "/" + profileFile, false});
+    }
   }
 
   return result;
