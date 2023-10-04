@@ -72,11 +72,6 @@ QDir GameGamebryo::dataDirectory() const
   return gameDirectory().absoluteFilePath("data");
 }
 
-QMap<QString, QDir> GameGamebryo::secondaryDataDirectories() const
-{
-  return QMap<QString, QDir>();
-}
-
 void GameGamebryo::setGamePath(const QString& path)
 {
   m_GamePath = path;
@@ -106,11 +101,6 @@ GameGamebryo::listSaves(QDir folder) const
   return saves;
 }
 
-QStringList GameGamebryo::gameVariants() const
-{
-  return QStringList();
-}
-
 void GameGamebryo::setGameVariant(const QString& variant)
 {
   m_GameVariant = variant;
@@ -119,21 +109,6 @@ void GameGamebryo::setGameVariant(const QString& variant)
 QString GameGamebryo::binaryName() const
 {
   return gameShortName() + ".exe";
-}
-
-QStringList GameGamebryo::primarySources() const
-{
-  return {};
-}
-
-QStringList GameGamebryo::validShortNames() const
-{
-  return {};
-}
-
-QStringList GameGamebryo::CCPlugins() const
-{
-  return {};
 }
 
 MOBase::IPluginGame::LoadOrderMechanism GameGamebryo::loadOrderMechanism() const
