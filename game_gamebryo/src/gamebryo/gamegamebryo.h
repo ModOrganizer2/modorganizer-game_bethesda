@@ -56,22 +56,23 @@ public:  // IPluginGame interface
   virtual QIcon gameIcon() const override;
   virtual QDir gameDirectory() const override;
   virtual QDir dataDirectory() const override;
-  virtual QMap<QString, QDir> secondaryDataDirectories() const override;
+  // secondaryDataDirectories
   virtual void setGamePath(const QString& path) override;
   virtual QDir documentsDirectory() const override;
   virtual QDir savesDirectory() const override;
   // executables
   // steamAPPId
   // primaryPlugins
-  virtual QStringList gameVariants() const override;
+  // enabledPlugins
+  // gameVariants
   virtual void setGameVariant(const QString& variant) override;
   virtual QString binaryName() const override;
   // gameShortName
-  virtual QStringList primarySources() const override;
-  virtual QStringList validShortNames() const override;
+  // primarySources
+  // validShortNames
   // iniFiles
   // DLCPlugins
-  virtual QStringList CCPlugins() const override;
+  // CCPlugins
   virtual LoadOrderMechanism loadOrderMechanism() const override;
   virtual SortMechanism sortMechanism() const override;
   // nexusModOrganizerID
