@@ -90,7 +90,7 @@ QString GameFalloutNV::identifyGamePath() const
       auto subDirs   = startPath.entryList({"Fallout New Vegas*"},
                                            QDir::Dirs | QDir::NoDotAndDotDot);
       if (!subDirs.isEmpty())
-        result = subDirs.first();
+        result = startPath.absoluteFilePath(subDirs.first());
     }
   }
   return result;
