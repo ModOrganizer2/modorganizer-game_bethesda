@@ -73,7 +73,8 @@ QDir GameFalloutTTW::documentsDirectory() const
 
 QString GameFalloutTTW::identifyGamePath() const
 {
-  auto result = GameGamebryo::identifyGamePath();  // Default registry path
+  QString path = "Software\\Bethesda Softworks\\FalloutNV";
+  auto result = findInRegistry(HKEY_LOCAL_MACHINE, path.toStdWString().c_str(), L"Installed Path");
   // EPIC Game Store
   if (result.isEmpty()) {
     /**
