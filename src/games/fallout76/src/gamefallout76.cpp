@@ -85,7 +85,7 @@ QString GameFallout76::description() const
 
 MOBase::VersionInfo GameFallout76::version() const
 {
-  return VersionInfo(3, 0, 1, VersionInfo::RELEASE_ALPHA);
+  return VersionInfo(1, 0, 0, VersionInfo::RELEASE_FINAL);
 }
 
 QList<PluginSetting> GameFallout76::settings() const
