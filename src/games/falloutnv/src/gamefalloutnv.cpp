@@ -183,7 +183,7 @@ QString GameFalloutNV::localizedName() const
 
 QString GameFalloutNV::author() const
 {
-  return "Tannin";
+  return "Tannin & MO2 Team";
 }
 
 QString GameFalloutNV::description() const
@@ -193,7 +193,7 @@ QString GameFalloutNV::description() const
 
 MOBase::VersionInfo GameFalloutNV::version() const
 {
-  return VersionInfo(1, 5, 2, VersionInfo::RELEASE_FINAL);
+  return VersionInfo(1, 6, 0, VersionInfo::RELEASE_FINAL);
 }
 
 QList<PluginSetting> GameFalloutNV::settings() const
