@@ -107,7 +107,7 @@ QString GameMorrowind::localizedName() const
 
 QString GameMorrowind::author() const
 {
-  return "Schilduin";
+  return "Schilduin & MO2 Team";
 }
 
 QString GameMorrowind::description() const
@@ -118,7 +118,7 @@ QString GameMorrowind::description() const
 
 MOBase::VersionInfo GameMorrowind::version() const
 {
-  return VersionInfo(1, 5, 0, VersionInfo::RELEASE_FINAL);
+  return VersionInfo(1, 5, 1, VersionInfo::RELEASE_FINAL);
 }
 
 QList<PluginSetting> GameMorrowind::settings() const
