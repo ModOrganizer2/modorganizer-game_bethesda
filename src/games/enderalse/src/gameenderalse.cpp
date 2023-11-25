@@ -193,7 +193,7 @@ QString GameEnderalSE::localizedName() const
 
 QString GameEnderalSE::author() const
 {
-  return "Holt59, Archost & ZachHaber";
+  return "Archost, ZachHaber & MO2 Team";
 }
 
 QString GameEnderalSE::description() const
@@ -203,7 +203,7 @@ QString GameEnderalSE::description() const
 
 MOBase::VersionInfo GameEnderalSE::version() const
 {
-  return VersionInfo(1, 1, 0, VersionInfo::RELEASE_FINAL);
+  return VersionInfo(1, 2, 0, VersionInfo::RELEASE_FINAL);
 }
 
 QList<PluginSetting> GameEnderalSE::settings() const
