@@ -86,7 +86,7 @@ QString GameNehrim::localizedName() const
 
 QString GameNehrim::author() const
 {
-  return "Tannin";
+  return "Tannin & MO2 Team";
 }
 
 QString GameNehrim::description() const
@@ -96,7 +96,7 @@ QString GameNehrim::description() const
 
 MOBase::VersionInfo GameNehrim::version() const
 {
-  return VersionInfo(1, 1, 0, VersionInfo::RELEASE_FINAL);
+  return VersionInfo(1, 1, 1, VersionInfo::RELEASE_FINAL);
 }
 
 QList<PluginSetting> GameNehrim::settings() const
