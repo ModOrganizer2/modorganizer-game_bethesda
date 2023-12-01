@@ -1,5 +1,6 @@
 #include "gameFallout4.h"
 
+#include "fallout4bsainvalidation.h"
 #include "fallout4dataarchives.h"
 #include "fallout4scriptextender.h"
 #include "fallout4unmanagedmods.h"
@@ -46,6 +47,8 @@ bool GameFallout4::init(IOrganizer *moInfo)
   registerFeature<SaveGameInfo>(new GamebryoSaveGameInfo(this));
   registerFeature<GamePlugins>(new CreationGamePlugins(moInfo));
   registerFeature<UnmanagedMods>(new Fallout4UnmangedMods(this));
+  registerFeature<BSAInvalidation>(
+    new Fallout4BSAInvalidation(feature<DataArchives>(), this));
 
   return true;
 }
