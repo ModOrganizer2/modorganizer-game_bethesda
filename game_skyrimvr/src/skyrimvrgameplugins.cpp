@@ -8,7 +8,7 @@ SkyrimVRGamePlugins::SkyrimVRGamePlugins(MOBase::IOrganizer* organizer) : Creati
 
 bool SkyrimVRGamePlugins::lightPluginsAreSupported()
 {
-    auto files = m_Organizer->findFiles("sfse\\plugins", { "skyrimvresl.dll" });
+    auto files = m_Organizer->findFiles("skse\\plugins", { "skyrimvresl.dll" });
     if (files.isEmpty())
         return false;
     return true;
