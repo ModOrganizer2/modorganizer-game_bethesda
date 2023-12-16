@@ -185,7 +185,7 @@ QString GameFalloutTTW::localizedName() const
 
 QString GameFalloutTTW::author() const
 {
-  return "SuperSandro2000";
+  return "SuperSandro2000 & MO2 Team";
 }
 
 QString GameFalloutTTW::description() const
@@ -195,7 +195,7 @@ QString GameFalloutTTW::description() const
 
 MOBase::VersionInfo GameFalloutTTW::version() const
 {
-  return VersionInfo(1, 5, 0, VersionInfo::RELEASE_FINAL);
+  return VersionInfo(1, 6, 0, VersionInfo::RELEASE_FINAL);
 }
 
 QList<PluginSetting> GameFalloutTTW::settings() const
