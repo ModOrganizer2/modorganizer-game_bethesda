@@ -90,7 +90,7 @@ QString GameFallout4::localizedName() const
 
 QString GameFallout4::author() const
 {
-  return "Tannin";
+  return "Tannin & MO2 Team";
 }
 
 QString GameFallout4::description() const
@@ -101,7 +101,7 @@ QString GameFallout4::description() const
 
 MOBase::VersionInfo GameFallout4::version() const
 {
-  return VersionInfo(1, 7, 0, VersionInfo::RELEASE_FINAL);
+  return VersionInfo(1, 8, 0, VersionInfo::RELEASE_FINAL);
 }
 
 QList<PluginSetting> GameFallout4::settings() const
