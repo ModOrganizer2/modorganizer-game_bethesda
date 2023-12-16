@@ -284,7 +284,7 @@ QStringList GameFalloutTTW::validShortNames() const
 
 QString GameFalloutTTW::gameNexusName() const
 {
-  return QString();
+  return "newvegas";
 }
 
 QStringList GameFalloutTTW::iniFiles() const
@@ -310,7 +310,7 @@ int GameFalloutTTW::nexusModOrganizerID() const
 
 int GameFalloutTTW::nexusGameID() const
 {
-  return 0;
+  return 130;
 }
 
 QDir GameFalloutTTW::gameDirectory() const
