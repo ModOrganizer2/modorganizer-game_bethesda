@@ -1,5 +1,6 @@
 #include "gameFallout4.h"
 
+#include "fallout4bsainvalidation.h"
 #include "fallout4dataarchives.h"
 #include "fallout4scriptextender.h"
 #include "fallout4unmanagedmods.h"
@@ -46,6 +47,8 @@ bool GameFallout4::init(IOrganizer *moInfo)
   registerFeature<SaveGameInfo>(new GamebryoSaveGameInfo(this));
   registerFeature<GamePlugins>(new CreationGamePlugins(moInfo));
   registerFeature<UnmanagedMods>(new Fallout4UnmangedMods(this));
+  registerFeature<BSAInvalidation>(
+    new Fallout4BSAInvalidation(feature<DataArchives>(), this));
 
   return true;
 }
@@ -109,6 +112,19 @@ QList<PluginSetting> GameFallout4::settings() const
   return QList<PluginSetting>();
 }
 
+MappingType GameFallout4::mappings() const
+{
+  MappingType result;
+  if (testFilePlugins().isEmpty()) {
+    for (const QString& profileFile : { "plugins.txt", "loadorder.txt" }) {
+      result.push_back({ m_Organizer->profilePath() + "/" + profileFile,
+                        localAppFolder() + "/" + gameShortName() + "/" + profileFile,
+                        false });
+    }
+  }
+  return result;
+}
+
 void GameFallout4::initializeProfile(const QDir &path, ProfileSettings settings) const
 {
   if (settings.testFlag(IPluginGame::MODS)) {
@@ -148,11 +164,44 @@ QString GameFallout4::steamAPPId() const
   return "377160";
 }
 
-QStringList GameFallout4::primaryPlugins() const {
-  QStringList plugins = {"fallout4.esm", "dlcrobot.esm", "dlcworkshop01.esm", "dlccoast.esm", "dlcworkshop02.esm",
-          "dlcworkshop03.esm", "dlcnukaworld.esm", "dlcultrahighresolution.esm"};
+QStringList GameFallout4::testFilePlugins() const
+{
+  QStringList plugins;
+  if (m_Organizer != nullptr && m_Organizer->profile() != nullptr) {
+    QString customIni(
+      m_Organizer->profile()->absoluteIniFilePath("Fallout4Custom.ini"));
+    if (QFile(customIni).exists()) {
+      for (int i = 1; i <= 10; ++i) {
+        QString setting("sTestFile");
+        setting += std::to_string(i);
+        WCHAR value[MAX_PATH];
+        DWORD length = ::GetPrivateProfileStringW(
+          L"General", setting.toStdWString().c_str(), L"", value, MAX_PATH,
+          customIni.toStdWString().c_str());
+        if (length && wcscmp(value, L"") != 0) {
+          QString plugin = QString::fromWCharArray(value, length);
+          if (!plugin.isEmpty() && !plugins.contains(plugin))
+            plugins.append(plugin);
+        }
+      }
+    }
+  }
+  return plugins;
+}
 
-  plugins.append(CCPlugins());
+QStringList GameFallout4::primaryPlugins() const
+{
+  QStringList plugins = {"fallout4.esm",      "dlcrobot.esm",
+                         "dlcworkshop01.esm", "dlccoast.esm",
+                         "dlcworkshop02.esm", "dlcworkshop03.esm",
+                         "dlcnukaworld.esm",  "dlcultrahighresolution.esm"};
+
+  auto testPlugins = testFilePlugins();
+  if (loadOrderMechanism() == LoadOrderMechanism::None) {
+    plugins << testPlugins;
+  } else {
+    plugins << CCPlugins();
+  }
 
   return plugins;
 }
@@ -210,9 +259,18 @@ QStringList GameFallout4::CCPlugins() const
   return plugins;
 }
 
+IPluginGame::SortMechanism GameFallout4::sortMechanism() const
+{
+  if (!testFilePresent())
+    return IPluginGame::SortMechanism::LOOT;
+  return IPluginGame::SortMechanism::NONE;
+}
+
 IPluginGame::LoadOrderMechanism GameFallout4::loadOrderMechanism() const
 {
-  return IPluginGame::LoadOrderMechanism::PluginsTxt;
+  if (!testFilePresent())
+    return IPluginGame::LoadOrderMechanism::PluginsTxt;
+  return IPluginGame::LoadOrderMechanism::None;
 }
 
 int GameFallout4::nexusModOrganizerID() const
@@ -223,4 +281,41 @@ int GameFallout4::nexusModOrganizerID() const
 int GameFallout4::nexusGameID() const
 {
   return 1151;
+}
+
+// Start Diagnose
+std::vector<unsigned int> GameFallout4::activeProblems() const
+{
+  std::vector<unsigned int> result;
+  if (m_Organizer->managedGame() == this) {
+    if (testFilePresent())
+      result.push_back(PROBLEM_TEST_FILE);
+  }
+  return result;
+}
+
+bool GameFallout4::testFilePresent() const
+{
+  if (!testFilePlugins().isEmpty())
+    return true;
+  return false;
+}
+
+QString GameFallout4::shortDescription(unsigned int key) const
+{
+  switch (key) {
+  case PROBLEM_TEST_FILE:
+    return tr("sTestFile entries are present");
+  }
+}
+
+QString GameFallout4::fullDescription(unsigned int key) const {
+  switch (key) {
+  case PROBLEM_TEST_FILE: {
+    return tr("<p>You have sTestFile settings in your "
+              "Fallout4Custom.ini. These must be removed or "
+              "the game will not read the plugins.txt file. "
+              "Management is disabled.</p>");
+  }
+  }
 }
