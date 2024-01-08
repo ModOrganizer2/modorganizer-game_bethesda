@@ -220,7 +220,6 @@ void GameFalloutTTW::initializeProfile(const QDir& path, ProfileSettings setting
 
     copyToProfile(myGamesPath(), path, "falloutprefs.ini");
     copyToProfile(myGamesPath(), path, "falloutcustom.ini");
-    copyToProfile(myGamesPath(), path, "custom.ini");
     copyToProfile(myGamesPath(), path, "GECKCustom.ini");
     copyToProfile(myGamesPath(), path, "GECKPrefs.ini");
   }
@@ -289,8 +288,8 @@ QString GameFalloutTTW::gameNexusName() const
 
 QStringList GameFalloutTTW::iniFiles() const
 {
-  return {"fallout.ini", "falloutprefs.ini", "falloutcustom.ini",
-          "custom.ini",  "GECKCustom.ini",   "GECKPrefs.ini"};
+  return {"fallout.ini", "falloutprefs.ini", "falloutcustom.ini", "GECKCustom.ini",
+          "GECKPrefs.ini"};
 }
 
 QStringList GameFalloutTTW::DLCPlugins() const
