@@ -48,6 +48,24 @@ bool GameFallout3::init(IOrganizer *moInfo)
   return true;
 }
 
+QString GameFallout3::identifyGamePath() const
+{
+  auto result = GameGamebryo::identifyGamePath();  // Default registry path
+  // EPIC Game Store
+  if (result.isEmpty()) {
+    // Fallout 3: Game of the Year Edition: adeae8bbfc94427db57c7dfecce3f1d4
+    result = parseEpicGamesLocation({ "adeae8bbfc94427db57c7dfecce3f1d4" });
+    if (QFileInfo(result).isDir()) {
+      QDir startPath = QDir(result);
+      auto subDirs = startPath.entryList({ "Fallout 3 GOTY*" },
+        QDir::Dirs | QDir::NoDotAndDotDot);
+      if (!subDirs.isEmpty())
+        result = startPath.absoluteFilePath(subDirs.first());
+    }
+  }
+  return result;
+}
+
 QString GameFallout3::gameName() const
 {
   return "Fallout 3";
