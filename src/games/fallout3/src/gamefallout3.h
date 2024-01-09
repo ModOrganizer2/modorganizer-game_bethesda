@@ -46,7 +46,7 @@ public: // IPlugin interface
   virtual QList<MOBase::PluginSetting> settings() const override;
 
 protected:
-
+  virtual QString identifyGamePath() const override;
   virtual QString savegameExtension() const override;
   virtual QString savegameSEExtension() const override;
   std::shared_ptr<const GamebryoSaveGame> makeSaveGame(QString filePath) const override;
