@@ -265,7 +265,7 @@ int GameEnderal::nexusModOrganizerID() const
 
 int GameEnderal::nexusGameID() const
 {
-  return 0;
+  return 2736;
 }
 
 QString GameEnderal::identifyGamePath() const
