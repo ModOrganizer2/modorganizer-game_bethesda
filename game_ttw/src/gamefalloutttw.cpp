@@ -253,7 +253,7 @@ QStringList GameFalloutTTW::primaryPlugins() const
           "fallout3.esm",      "anchorage.esm",          "thepitt.esm",
           "brokensteel.esm",   "pointlookout.esm",       "zeta.esm",
           "caravanpack.esm",   "classicpack.esm",        "mercenarypack.esm",
-          "tribalpack.esm",    "taleoftwowastelands.esm"};
+          "tribalpack.esm",    "taleoftwowastelands.esm","YUPTTW.esm"};
 }
 
 QStringList GameFalloutTTW::gameVariants() const
