@@ -149,7 +149,7 @@ QList<ExecutableInfo> GameFalloutNV::executables() const
   ExecutableInfo launcher("Fallout Launcher", findInGameFolder(getLauncherName()));
   QList<ExecutableInfo> extraExecutables =
       QList<ExecutableInfo>()
-      << ExecutableInfo("Construction Kit", findInGameFolder("geck.exe"))
+      << ExecutableInfo("GECK", findInGameFolder("geck.exe"))
       << ExecutableInfo("LOOT", QFileInfo(getLootPath()))
              .withArgument("--game=\"FalloutNV\"");
   if (selectedVariant() != "Epic Games") {
