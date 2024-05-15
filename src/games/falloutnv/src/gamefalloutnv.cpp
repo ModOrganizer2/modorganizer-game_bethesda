@@ -244,7 +244,7 @@ QString GameFalloutNV::steamAPPId() const
 
 QStringList GameFalloutNV::primaryPlugins() const
 {
-  return { "falloutnv.esm" };
+  return {"falloutnv.esm"};
 }
 
 QStringList GameFalloutNV::gameVariants() const
