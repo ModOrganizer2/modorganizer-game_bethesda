@@ -6,6 +6,7 @@
 #include "gamebryosavegame.h"
 #include "gameplugins.h"
 #include "iprofile.h"
+#include "log.h"
 #include "registry.h"
 #include "savegameinfo.h"
 #include "scopeguard.h"
@@ -95,7 +96,12 @@ GameGamebryo::listSaves(QDir folder) const
 
   std::vector<std::shared_ptr<const MOBase::ISaveGame>> saves;
   for (auto info : folder.entryInfoList(filters, QDir::Files)) {
-    saves.push_back(makeSaveGame(info.filePath()));
+    try {
+      saves.push_back(makeSaveGame(info.filePath()));
+    } catch (std::exception& e) {
+      MOBase::log::error("{}", e.what());
+      continue;
+    }
   }
 
   return saves;
