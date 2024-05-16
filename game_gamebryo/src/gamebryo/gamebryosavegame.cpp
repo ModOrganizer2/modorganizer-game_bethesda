@@ -106,11 +106,13 @@ GamebryoSaveGame::FileWrapper::FileWrapper(QString const& filepath,
 
   QString id(fileID.data());
   if (expected != id) {
-    throw std::runtime_error(QObject::tr("wrong file format - expected %1 got %2")
-                                 .arg(expected)
-                                 .arg(id)
-                                 .toUtf8()
-                                 .constData());
+    throw std::runtime_error(
+        QObject::tr("wrong file format - expected %1 got \'%2\' for %3")
+            .arg(expected)
+            .arg(id)
+            .arg(filepath)
+            .toUtf8()
+            .constData());
   }
 }
 
