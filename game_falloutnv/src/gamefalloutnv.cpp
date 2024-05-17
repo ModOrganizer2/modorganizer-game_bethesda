@@ -148,12 +148,13 @@ QList<ExecutableInfo> GameFalloutNV::executables() const
   ExecutableInfo game("New Vegas", findInGameFolder(binaryName()));
   ExecutableInfo launcher("Fallout Launcher", findInGameFolder(getLauncherName()));
   QList<ExecutableInfo> extraExecutables =
-      QList<ExecutableInfo>()
-      << ExecutableInfo("Fallout Mod Manager", findInGameFolder("fomm/fomm.exe"))
-      << ExecutableInfo("Construction Kit", findInGameFolder("geck.exe"))
-      << ExecutableInfo("BOSS", findInGameFolder("BOSS/BOSS.exe"))
-      << ExecutableInfo("LOOT", QFileInfo(getLootPath()))
-             .withArgument("--game=\"FalloutNV\"");
+      QList<ExecutableInfo>() << ExecutableInfo("Fallout Mod Manager",
+                                                findInGameFolder("fomm/fomm.exe"))
+                              << ExecutableInfo("BOSS",
+                                                findInGameFolder("BOSS/BOSS.exe"))
+                              << ExecutableInfo("GECK", findInGameFolder("geck.exe"))
+                              << ExecutableInfo("LOOT", QFileInfo(getLootPath()))
+                                     .withArgument("--game=\"FalloutNV\"");
   if (selectedVariant() != "Epic Games") {
     extraExecutables.prepend(ExecutableInfo(
         "NVSE", findInGameFolder(feature<ScriptExtender>()->loaderName())));
