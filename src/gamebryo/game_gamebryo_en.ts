@@ -136,7 +136,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="gamebryosavegame.cpp" line="47"/>
+        <location filename="gamebryosavegame.cpp" line="46"/>
         <source>%1, #%2, Level %3, %4</source>
         <translation type="unfinished"></translation>
     </message>
@@ -146,17 +146,17 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="gamebryosavegame.cpp" line="109"/>
-        <source>wrong file format - expected %1 got %2</source>
+        <location filename="gamebryosavegame.cpp" line="110"/>
+        <source>wrong file format - expected %1 got &apos;%2&apos; for %3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="gamegamebryo.cpp" line="339"/>
+        <location filename="gamegamebryo.cpp" line="323"/>
         <source>failed to query registry path (preflight): %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="gamegamebryo.cpp" line="347"/>
+        <location filename="gamegamebryo.cpp" line="331"/>
         <source>failed to query registry path (read): %1</source>
         <translation type="unfinished"></translation>
     </message>
