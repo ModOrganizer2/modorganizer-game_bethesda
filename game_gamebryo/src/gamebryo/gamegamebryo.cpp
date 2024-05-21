@@ -34,8 +34,6 @@
 #include <string>
 #include <vector>
 
-#include <fmt/format.h>
-
 GameGamebryo::GameGamebryo() {}
 
 void GameGamebryo::detectGame()
