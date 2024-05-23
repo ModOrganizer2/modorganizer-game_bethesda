@@ -199,7 +199,11 @@ MOBase::VersionInfo GameFalloutNV::version() const
 
 QList<PluginSetting> GameFalloutNV::settings() const
 {
-  return QList<PluginSetting>();
+  return QList<PluginSetting>()
+         << PluginSetting("enable_loot_sorting",
+                          tr("While not recommended by the FNV modding community, "
+                             "enables LOOT sorting"),
+                          false);
 }
 
 void GameFalloutNV::initializeProfile(const QDir& path, ProfileSettings settings) const
@@ -281,6 +285,13 @@ QStringList GameFalloutNV::DLCPlugins() const
   return {"DeadMoney.esm",    "HonestHearts.esm",      "OldWorldBlues.esm",
           "LonesomeRoad.esm", "GunRunnersArsenal.esm", "CaravanPack.esm",
           "ClassicPack.esm",  "MercenaryPack.esm",     "TribalPack.esm"};
+}
+
+MOBase::IPluginGame::SortMechanism GameFalloutNV::sortMechanism() const
+{
+  if (m_Organizer->pluginSetting(name(), "enable_loot_sorting").toBool())
+    return IPluginGame::SortMechanism::LOOT;
+  return IPluginGame::SortMechanism::NONE;
 }
 
 int GameFalloutNV::nexusModOrganizerID() const
