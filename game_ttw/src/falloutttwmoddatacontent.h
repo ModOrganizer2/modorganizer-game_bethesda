@@ -4,18 +4,19 @@
 #include <gamebryomoddatacontent.h>
 #include <ifiletree.h>
 
-class FalloutTTWModDataContent : public GamebryoModDataContent {
+class FalloutTTWModDataContent : public GamebryoModDataContent
+{
 public:
-
   /**
    *
    */
-  FalloutTTWModDataContent(GameGamebryo const* gamePlugin) : GamebryoModDataContent(gamePlugin) {
+  FalloutTTWModDataContent(GameGamebryo const* gamePlugin)
+      : GamebryoModDataContent(gamePlugin)
+  {
     // Just need to disable some contents:
-    m_Enabled[CONTENT_MCM] = false;
+    m_Enabled[CONTENT_MCM]     = false;
     m_Enabled[CONTENT_SKYPROC] = false;
   }
-
 };
 
-#endif // FALLOUTTTW_MODDATACONTENT_H
+#endif  // FALLOUTTTW_MODDATACONTENT_H
