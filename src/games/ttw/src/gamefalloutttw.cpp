@@ -74,7 +74,8 @@ QDir GameFalloutTTW::documentsDirectory() const
 QString GameFalloutTTW::identifyGamePath() const
 {
   QString path = "Software\\Bethesda Softworks\\FalloutNV";
-  auto result = findInRegistry(HKEY_LOCAL_MACHINE, path.toStdWString().c_str(), L"Installed Path");
+  auto result  = findInRegistry(HKEY_LOCAL_MACHINE, path.toStdWString().c_str(),
+                                L"Installed Path");
   // EPIC Game Store
   if (result.isEmpty()) {
     /**
@@ -130,6 +131,11 @@ QString GameFalloutTTW::gameName() const
   return "TTW";
 }
 
+QString GameFalloutTTW::displayGameName() const
+{
+  return "Tale of Two Wastelands";
+}
+
 QString GameFalloutTTW::gameDirectoryName() const
 {
   if (selectedVariant() == "Epic Games")
@@ -150,10 +156,9 @@ QList<ExecutableInfo> GameFalloutTTW::executables() const
   ExecutableInfo game("Tale of Two Wastelands", findInGameFolder(binaryName()));
   ExecutableInfo launcher("Fallout Launcher", findInGameFolder(getLauncherName()));
   QList<ExecutableInfo> extraExecutables =
-      QList<ExecutableInfo>()
-      << ExecutableInfo("GECK", findInGameFolder("geck.exe"))
-      << ExecutableInfo("LOOT", QFileInfo(getLootPath()))
-             .withArgument("--game=\"FalloutNV\"");
+      QList<ExecutableInfo>() << ExecutableInfo("GECK", findInGameFolder("geck.exe"))
+                              << ExecutableInfo("LOOT", QFileInfo(getLootPath()))
+                                     .withArgument("--game=\"FalloutNV\"");
   if (selectedVariant() != "Epic Games") {
     extraExecutables.prepend(ExecutableInfo(
         "NVSE", findInGameFolder(feature<ScriptExtender>()->loaderName())));
@@ -198,7 +203,11 @@ MOBase::VersionInfo GameFalloutTTW::version() const
 
 QList<PluginSetting> GameFalloutTTW::settings() const
 {
-  return QList<PluginSetting>();
+  return QList<PluginSetting>()
+         << PluginSetting("enable_loot_sorting",
+                          tr("While not recommended by the TTW modding community, "
+                             "enables LOOT sorting"),
+                          false);
 }
 
 void GameFalloutTTW::initializeProfile(const QDir& path, ProfileSettings settings) const
@@ -246,12 +255,12 @@ QString GameFalloutTTW::steamAPPId() const
 
 QStringList GameFalloutTTW::primaryPlugins() const
 {
-  return {"falloutnv.esm",     "deadmoney.esm",          "honesthearts.esm",
-          "oldworldblues.esm", "lonesomeroad.esm",       "gunrunnersarsenal.esm",
-          "fallout3.esm",      "anchorage.esm",          "thepitt.esm",
-          "brokensteel.esm",   "pointlookout.esm",       "zeta.esm",
-          "caravanpack.esm",   "classicpack.esm",        "mercenarypack.esm",
-          "tribalpack.esm",    "taleoftwowastelands.esm","YUPTTW.esm"};
+  return {"falloutnv.esm",     "deadmoney.esm",           "honesthearts.esm",
+          "oldworldblues.esm", "lonesomeroad.esm",        "gunrunnersarsenal.esm",
+          "fallout3.esm",      "anchorage.esm",           "thepitt.esm",
+          "brokensteel.esm",   "pointlookout.esm",        "zeta.esm",
+          "caravanpack.esm",   "classicpack.esm",         "mercenarypack.esm",
+          "tribalpack.esm",    "taleoftwowastelands.esm", "YUPTTW.esm"};
 }
 
 QStringList GameFalloutTTW::gameVariants() const
@@ -297,7 +306,14 @@ QStringList GameFalloutTTW::DLCPlugins() const
 
 MOBase::IPluginGame::SortMechanism GameFalloutTTW::sortMechanism() const
 {
-  return SortMechanism::NONE;
+  if (m_Organizer->pluginSetting(name(), "enable_loot_sorting").toBool())
+    return IPluginGame::SortMechanism::LOOT;
+  return IPluginGame::SortMechanism::NONE;
+}
+
+QString GameFalloutTTW::lootGameName() const
+{
+  return "FalloutNV";
 }
 
 int GameFalloutTTW::nexusModOrganizerID() const

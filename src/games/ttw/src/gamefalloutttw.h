@@ -20,6 +20,7 @@ public:
 
 public:  // IPluginGame interface
   virtual QString gameName() const override;
+  virtual QString displayGameName() const override;
   virtual void detectGame() override;
   virtual QList<MOBase::ExecutableInfo> executables() const override;
   virtual QList<MOBase::ExecutableForcedLoadSetting>
@@ -39,6 +40,7 @@ public:  // IPluginGame interface
   virtual int nexusGameID() const override;
   virtual QStringList primarySources() const override;
   virtual SortMechanism sortMechanism() const override;
+  virtual QString lootGameName() const override;
   virtual QString getLauncherName() const override;
 
   virtual bool isInstalled() const override;
