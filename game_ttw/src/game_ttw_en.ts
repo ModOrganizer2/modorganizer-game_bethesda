@@ -4,12 +4,12 @@
 <context>
     <name>GameFalloutTTW</name>
     <message>
-        <location filename="gamefalloutttw.cpp" line="88"/>
+        <location filename="gamefalloutttw.cpp" line="186"/>
         <source>Fallout TTW Support Plugin</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="gamefalloutttw.cpp" line="98"/>
+        <location filename="gamefalloutttw.cpp" line="196"/>
         <source>Adds support for the game Fallout TTW</source>
         <translation type="unfinished"></translation>
     </message>
@@ -172,6 +172,8 @@
     <message>
         <location filename="../../game_gamebryo/src/gamebryo/gamegamebryo.cpp" line="330"/>
         <source>failed to query registry path (read): %1</source>
+        <location filename="gamefalloutttw.cpp" line="208"/>
+        <source>While not recommended by the TTW modding community, enables LOOT sorting</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
