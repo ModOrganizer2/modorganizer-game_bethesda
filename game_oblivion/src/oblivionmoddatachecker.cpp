@@ -1,7 +1,7 @@
 #include "oblivionmoddatachecker.h"
 
 MOBase::ModDataChecker::CheckReturn OblivionModDataChecker::dataLooksValid(
-  std::shared_ptr<const MOBase::IFileTree> fileTree) const
+    std::shared_ptr<const MOBase::IFileTree> fileTree) const
 {
   // Check with Gamebryo stuff:
   auto check = GamebryoModDataChecker::dataLooksValid(fileTree);
@@ -19,8 +19,8 @@ MOBase::ModDataChecker::CheckReturn OblivionModDataChecker::dataLooksValid(
   return CheckReturn::FIXABLE;
 }
 
-std::shared_ptr<MOBase::IFileTree> OblivionModDataChecker::fix(
-  std::shared_ptr<MOBase::IFileTree> fileTree) const
+std::shared_ptr<MOBase::IFileTree>
+OblivionModDataChecker::fix(std::shared_ptr<MOBase::IFileTree> fileTree) const
 {
   // If we arrive here, it means all files starts with OBSE.
   auto data = fileTree->createOrphanTree();
