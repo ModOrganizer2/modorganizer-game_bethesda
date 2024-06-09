@@ -7,7 +7,7 @@
 #include <imoinfo.h>
 #include <utility.h>
 
-Fallout4BSAInvalidation::Fallout4BSAInvalidation(DataArchives* dataArchives,
+Fallout4BSAInvalidation::Fallout4BSAInvalidation(MOBase::DataArchives* dataArchives,
                                                  MOBase::IPluginGame const* game)
     : GamebryoBSAInvalidation(dataArchives, "Fallout4Custom.ini", game)
 {

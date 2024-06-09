@@ -39,16 +39,17 @@ bool GameFallout4::init(IOrganizer *moInfo)
     return false;
   }
 
-  registerFeature<ScriptExtender>(new Fallout4ScriptExtender(this));
-  registerFeature<DataArchives>(new Fallout4DataArchives(myGamesPath()));
-  registerFeature<LocalSavegames>(new GamebryoLocalSavegames(myGamesPath(), "fallout4custom.ini"));
-  registerFeature<ModDataChecker>(new Fallout4ModDataChecker(this));
-  registerFeature<ModDataContent>(new Fallout4ModDataContent(this));
-  registerFeature<SaveGameInfo>(new GamebryoSaveGameInfo(this));
-  registerFeature<GamePlugins>(new CreationGamePlugins(moInfo));
-  registerFeature<UnmanagedMods>(new Fallout4UnmangedMods(this));
-  registerFeature<BSAInvalidation>(
-    new Fallout4BSAInvalidation(feature<DataArchives>(), this));
+  auto dataArchives = std::make_shared<Fallout4DataArchives>(myGamesPath());
+
+  registerFeature(std::make_shared<Fallout4ScriptExtender>(this));
+  registerFeature(dataArchives);
+  registerFeature(std::make_shared<GamebryoLocalSavegames>(myGamesPath(), "fallout4custom.ini"));
+  registerFeature(std::make_shared<Fallout4ModDataChecker>(this));
+  registerFeature(std::make_shared<Fallout4ModDataContent>(m_Organizer->gameFeatures()));
+  registerFeature(std::make_shared<GamebryoSaveGameInfo>(this));
+  registerFeature(std::make_shared<CreationGamePlugins>(moInfo));
+  registerFeature(std::make_shared<Fallout4UnmangedMods>(this));
+  registerFeature(std::make_shared<Fallout4BSAInvalidation>(dataArchives.get(), this));
 
   return true;
 }
@@ -67,7 +68,7 @@ void GameFallout4::detectGame()
 QList<ExecutableInfo> GameFallout4::executables() const
 {
   return QList<ExecutableInfo>()
-      << ExecutableInfo("F4SE", findInGameFolder(feature<ScriptExtender>()->loaderName()))
+      << ExecutableInfo("F4SE", findInGameFolder(m_Organizer->gameFeatures()->gameFeature<MOBase::ScriptExtender>()->loaderName()))
       << ExecutableInfo("Fallout 4", findInGameFolder(binaryName()))
       << ExecutableInfo("Fallout Launcher", findInGameFolder(getLauncherName()))
       << ExecutableInfo("Creation Kit", findInGameFolder("CreationKit.exe")).withSteamAppId("1946160")
