@@ -8,8 +8,8 @@ class GameGamebryo;
 class Fallout76SaveGameInfo : public GamebryoSaveGameInfo
 {
 public:
-  Fallout76SaveGameInfo(GameGamebryo const *game);
+  Fallout76SaveGameInfo(GameGamebryo const* game);
   ~Fallout76SaveGameInfo();
 };
 
-#endif // FALLOUT76SAVEGAMEINFO_H
+#endif  // FALLOUT76SAVEGAMEINFO_H
