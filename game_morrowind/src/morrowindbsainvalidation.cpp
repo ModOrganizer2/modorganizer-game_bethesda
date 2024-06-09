@@ -1,9 +1,9 @@
 #include "morrowindbsainvalidation.h"
 
-MorrowindBSAInvalidation::MorrowindBSAInvalidation(MOBase::DataArchives *dataArchives, MOBase::IPluginGame const *game)
-  : GamebryoBSAInvalidation(dataArchives, "morrowind.ini", game)
-{
-}
+MorrowindBSAInvalidation::MorrowindBSAInvalidation(MOBase::DataArchives* dataArchives,
+                                                   MOBase::IPluginGame const* game)
+    : GamebryoBSAInvalidation(dataArchives, "morrowind.ini", game)
+{}
 
 QString MorrowindBSAInvalidation::invalidationBSAName() const
 {

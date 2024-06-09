@@ -16,31 +16,26 @@ License along with this library; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-
 #ifndef MORROWINDLOCALSAVEGAMES_H
 #define MORROWINDLOCALSAVEGAMES_H
 
-
 #include <localsavegames.h>
 
+#include "iplugingame.h"
 #include <QDir>
 #include <QString>
-#include "iplugingame.h"
 
 class MorrowindLocalSavegames : public MOBase::LocalSavegames
 {
 
 public:
-  MorrowindLocalSavegames(const MOBase::IPluginGame *game);
+  MorrowindLocalSavegames(const MOBase::IPluginGame* game);
 
-  virtual MappingType mappings(const QDir &profileSaveDir) const override;
-  virtual bool prepareProfile(MOBase::IProfile *profile) override;
+  virtual MappingType mappings(const QDir& profileSaveDir) const override;
+  virtual bool prepareProfile(MOBase::IProfile* profile) override;
 
 private:
-
-  const MOBase::IPluginGame *m_GamePlugin;
-
+  const MOBase::IPluginGame* m_GamePlugin;
 };
 
-
-#endif // MORROWINDLOCALSAVEGAMES_H
+#endif  // MORROWINDLOCALSAVEGAMES_H
