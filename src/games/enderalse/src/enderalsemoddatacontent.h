@@ -10,8 +10,8 @@ public:
   /**
    *
    */
-  EnderalSEModDataContent(GameGamebryo const* gamePlugin)
-      : GamebryoModDataContent(gamePlugin)
+  EnderalSEModDataContent(MOBase::IGameFeatures* gameFeatures)
+      : GamebryoModDataContent(gameFeatures)
   {
     // Just need to disable some contents:
     m_Enabled[CONTENT_SKYPROC] = false;

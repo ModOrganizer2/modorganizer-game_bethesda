@@ -6,7 +6,7 @@
 #include <QDir>
 #include <QString>
 
-class EnderalSELocalSavegames : public LocalSavegames
+class EnderalSELocalSavegames : public MOBase::LocalSavegames
 {
 
 public:

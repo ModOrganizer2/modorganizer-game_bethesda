@@ -84,9 +84,9 @@ void GameEnderalSE::setGamePath(const QString& path)
   m_GamePath = path;
   checkVariants();
   m_MyGamesPath = determineMyGamesPath(gameDirectoryName());
-  registerFeature<DataArchives>(new EnderalSEDataArchives(myGamesPath()));
-  registerFeature<LocalSavegames>(
-      new EnderalSELocalSavegames(myGamesPath(), "Enderal.ini"));
+  registerFeature(std::make_shared<EnderalSEDataArchives>(myGamesPath()));
+  registerFeature(
+      std::make_shared<EnderalSELocalSavegames>(myGamesPath(), "Enderal.ini"));
 }
 
 QDir GameEnderalSE::savesDirectory() const
@@ -110,15 +110,16 @@ bool GameEnderalSE::init(IOrganizer* moInfo)
     return false;
   }
 
-  registerFeature<ScriptExtender>(new EnderalSEScriptExtender(this));
-  registerFeature<DataArchives>(new EnderalSEDataArchives(myGamesPath()));
-  registerFeature<LocalSavegames>(
-      new EnderalSELocalSavegames(myGamesPath(), "Enderal.ini"));
-  registerFeature<ModDataChecker>(new EnderalSEModDataChecker(this));
-  registerFeature<ModDataContent>(new EnderalSEModDataContent(this));
-  registerFeature<SaveGameInfo>(new GamebryoSaveGameInfo(this));
-  registerFeature<GamePlugins>(new EnderalSEGamePlugins(moInfo));
-  registerFeature<UnmanagedMods>(new EnderalSEUnmangedMods(this));
+  auto dataArchives = std::make_shared<EnderalSEDataArchives>(myGamesPath());
+  registerFeature(std::make_shared<EnderalSEScriptExtender>(this));
+  registerFeature(dataArchives);
+  registerFeature(
+      std::make_shared<EnderalSELocalSavegames>(myGamesPath(), "enderal.ini"));
+  registerFeature(std::make_shared<EnderalSEModDataChecker>(this));
+  registerFeature(std::make_shared<EnderalSEModDataContent>(moInfo->gameFeatures()));
+  registerFeature(std::make_shared<GamebryoSaveGameInfo>(this));
+  registerFeature(std::make_shared<EnderalSEGamePlugins>(moInfo));
+  registerFeature(std::make_shared<EnderalSEUnmangedMods>(this));
 
   return true;
 }
@@ -145,7 +146,9 @@ QList<ExecutableInfo> GameEnderalSE::executables() const
 {
   return QList<ExecutableInfo>()
          << ExecutableInfo("Enderal Special Edition (SKSE)",
-                           findInGameFolder(feature<ScriptExtender>()->loaderName()))
+                           findInGameFolder(m_Organizer->gameFeatures()
+                                                ->gameFeature<MOBase::ScriptExtender>()
+                                                ->loaderName()))
          << ExecutableInfo("Enderal Special Edition Launcher",
                            findInGameFolder(getLauncherName()))
          << ExecutableInfo("Creation Kit", findInGameFolder("CreationKit.exe"))
