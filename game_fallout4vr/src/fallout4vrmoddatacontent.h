@@ -11,8 +11,8 @@ protected:
   };
 
 public:
-  Fallout4VRModDataContent(GameGamebryo const* gamePlugin) :
-    GamebryoModDataContent(gamePlugin)
+  Fallout4VRModDataContent(MOBase::IGameFeatures const* gameFeatures) :
+    GamebryoModDataContent(gameFeatures)
   {
     m_Enabled[CONTENT_SKYPROC] = false;
   }
