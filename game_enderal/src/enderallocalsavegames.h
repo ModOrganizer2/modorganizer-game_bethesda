@@ -24,7 +24,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 #include <QDir>
 #include <QString>
 
-class EnderalLocalSavegames : public LocalSavegames
+class EnderalLocalSavegames : public MOBase::LocalSavegames
 {
 
 public:

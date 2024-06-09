@@ -9,7 +9,8 @@
 class EnderalBSAInvalidation : public GamebryoBSAInvalidation
 {
 public:
-  EnderalBSAInvalidation(DataArchives* dataArchives, MOBase::IPluginGame const* game);
+  EnderalBSAInvalidation(MOBase::DataArchives* dataArchives,
+                         MOBase::IPluginGame const* game);
 
 private:
   virtual QString invalidationBSAName() const override;
