@@ -42,15 +42,18 @@ bool GameSkyrim::init(IOrganizer *moInfo)
   if (!GameGamebryo::init(moInfo)) {
     return false;
   }
-  registerFeature<ScriptExtender>(new SkyrimScriptExtender(this));
-  registerFeature<DataArchives>(new SkyrimDataArchives(myGamesPath()));
-  registerFeature<BSAInvalidation>(new SkyrimBSAInvalidation(feature<DataArchives>(), this));
-  registerFeature<SaveGameInfo>(new GamebryoSaveGameInfo(this));
-  registerFeature<LocalSavegames>(new GamebryoLocalSavegames(myGamesPath(), "skyrim.ini"));
-  registerFeature<ModDataChecker>(new SkyrimModDataChecker(this));
-  registerFeature<ModDataContent>(new SkyrimModDataContent(this));
-  registerFeature<GamePlugins>(new SkyrimGamePlugins(moInfo));
-  registerFeature<UnmanagedMods>(new GamebryoUnmangedMods(this));
+
+  auto dataArchives = std::make_shared<SkyrimDataArchives>(myGamesPath());
+  registerFeature(std::make_shared<SkyrimScriptExtender>(this));
+  registerFeature(dataArchives);
+  registerFeature(std::make_shared<SkyrimBSAInvalidation>(dataArchives.get(), this));
+  registerFeature(std::make_shared<GamebryoSaveGameInfo>(this));
+  registerFeature(std::make_shared<GamebryoLocalSavegames>(myGamesPath(), "skyrim.ini"));
+  registerFeature(std::make_shared<SkyrimModDataChecker>(this));
+  registerFeature(std::make_shared<SkyrimModDataContent>(m_Organizer->gameFeatures()));
+  registerFeature(std::make_shared<SkyrimGamePlugins>(moInfo));
+  registerFeature(std::make_shared<GamebryoUnmangedMods>(this));
+
   return true;
 }
 
@@ -62,7 +65,7 @@ QString GameSkyrim::gameName() const
 QList<ExecutableInfo> GameSkyrim::executables() const
 {
   return QList<ExecutableInfo>()
-      << ExecutableInfo("SKSE", findInGameFolder(feature<ScriptExtender>()->loaderName()))
+      << ExecutableInfo("SKSE", findInGameFolder(m_Organizer->gameFeatures()->gameFeature<MOBase::ScriptExtender>()->loaderName()))
       << ExecutableInfo("SBW", findInGameFolder("SBW.exe"))
       << ExecutableInfo("Skyrim", findInGameFolder(binaryName()))
       << ExecutableInfo("Skyrim Launcher", findInGameFolder(getLauncherName()))
