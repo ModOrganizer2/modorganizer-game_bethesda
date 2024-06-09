@@ -37,12 +37,12 @@ bool GameFallout76::init(IOrganizer *moInfo)
     return false;
   }
 
-  registerFeature<ScriptExtender>(new Fallout76ScriptExtender(this));
-  registerFeature<DataArchives>(new Fallout76DataArchives(myGamesPath()));
-  registerFeature<ModDataChecker>(new Fallout76ModDataChecker(this));
-  registerFeature<ModDataContent>(new Fallout76ModDataContent(this));
-  registerFeature<GamePlugins>(new CreationGamePlugins(moInfo));
-  registerFeature<UnmanagedMods>(new Fallout76UnmangedMods(this));
+  registerFeature(std::make_shared<Fallout76ScriptExtender>(this));
+  registerFeature(std::make_shared<Fallout76DataArchives>(myGamesPath()));
+  registerFeature(std::make_shared<Fallout76ModDataChecker>(this));
+  registerFeature(std::make_shared<Fallout76ModDataContent>(m_Organizer->gameFeatures()));
+  registerFeature(std::make_shared<CreationGamePlugins>(moInfo));
+  registerFeature(std::make_shared<Fallout76UnmangedMods>(this));
 
   return true;
 }
@@ -55,7 +55,7 @@ QString GameFallout76::gameName() const
 QList<ExecutableInfo> GameFallout76::executables() const
 {
   return QList<ExecutableInfo>()
-      << ExecutableInfo("F76SE", findInGameFolder(feature<ScriptExtender>()->loaderName()))
+      << ExecutableInfo("F76SE", findInGameFolder(m_Organizer->gameFeatures()->gameFeature<MOBase::ScriptExtender>()->loaderName()))
       << ExecutableInfo("Fallout 76", findInGameFolder(binaryName()))
       << ExecutableInfo("Fallout Launcher", findInGameFolder(getLauncherName()))
       << ExecutableInfo("Creation Kit", findInGameFolder("CreationKit.exe"))

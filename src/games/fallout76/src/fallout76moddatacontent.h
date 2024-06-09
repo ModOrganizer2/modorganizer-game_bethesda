@@ -11,8 +11,8 @@ protected:
   };
 
 public:
-  Fallout76ModDataContent(GameGamebryo const* gamePlugin) :
-    GamebryoModDataContent(gamePlugin)
+  Fallout76ModDataContent(MOBase::IGameFeatures const* gameFeatures) :
+    GamebryoModDataContent(gameFeatures)
   {
     m_Enabled[CONTENT_SKYPROC] = false;
   }
