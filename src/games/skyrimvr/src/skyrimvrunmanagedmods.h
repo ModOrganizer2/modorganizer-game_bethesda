@@ -4,12 +4,13 @@
 #include "gamebryounmanagedmods.h"
 #include <gamegamebryo.h>
 
-class SkyrimVRUnmangedMods : public GamebryoUnmangedMods {
+class SkyrimVRUnmangedMods : public GamebryoUnmangedMods
+{
 public:
-  SkyrimVRUnmangedMods(const GameGamebryo *game);
+  SkyrimVRUnmangedMods(const GameGamebryo* game);
   ~SkyrimVRUnmangedMods();
 
   virtual QStringList mods(bool onlyOfficial) const override;
 };
 
-#endif // _SKYRIMVRUNMANAGEDMODS_H
+#endif  // _SKYRIMVRUNMANAGEDMODS_H

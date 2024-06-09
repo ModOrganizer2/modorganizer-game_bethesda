@@ -10,13 +10,10 @@ class SkyrimVRGamePlugins : public CreationGamePlugins
 {
 
 public:
-
-    SkyrimVRGamePlugins(MOBase::IOrganizer* organizer);
+  SkyrimVRGamePlugins(MOBase::IOrganizer* organizer);
 
 protected:
-
-    virtual bool lightPluginsAreSupported() override;
-
+  virtual bool lightPluginsAreSupported() override;
 };
 
-#endif // _SKYRIMVRGAMEPLUGINS_H
+#endif  // _SKYRIMVRGAMEPLUGINS_H

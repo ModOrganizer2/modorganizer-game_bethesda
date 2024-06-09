@@ -3,10 +3,9 @@
 #include <QString>
 #include <QStringList>
 
-SkyrimVRScriptExtender::SkyrimVRScriptExtender(GameGamebryo const *game) :
-  GamebryoScriptExtender(game)
-{
-}
+SkyrimVRScriptExtender::SkyrimVRScriptExtender(GameGamebryo const* game)
+    : GamebryoScriptExtender(game)
+{}
 
 QString SkyrimVRScriptExtender::BinaryName() const
 {

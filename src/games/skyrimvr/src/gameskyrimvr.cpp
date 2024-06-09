@@ -1,18 +1,18 @@
 #include "gameskyrimvr.h"
 
 #include "skyrimvrdataarchives.h"
-#include "skyrimvrscriptextender.h"
-#include "skyrimvrunmanagedmods.h"
+#include "skyrimvrgameplugins.h"
 #include "skyrimvrmoddatachecker.h"
 #include "skyrimvrmoddatacontent.h"
 #include "skyrimvrsavegame.h"
-#include "skyrimvrgameplugins.h"
+#include "skyrimvrscriptextender.h"
+#include "skyrimvrunmanagedmods.h"
 
-#include <pluginsetting.h>
+#include "versioninfo.h"
 #include <executableinfo.h>
 #include <gamebryolocalsavegames.h>
 #include <gamebryosavegameinfo.h>
-#include "versioninfo.h"
+#include <pluginsetting.h>
 
 #include <QCoreApplication>
 #include <QDir>
@@ -22,16 +22,14 @@
 #include <QString>
 #include <QStringList>
 
-#include <memory>
 #include "scopeguard.h"
+#include <memory>
 
 using namespace MOBase;
 
-GameSkyrimVR::GameSkyrimVR()
-{
-}
+GameSkyrimVR::GameSkyrimVR() {}
 
-void GameSkyrimVR::setGamePath(const QString &path)
+void GameSkyrimVR::setGamePath(const QString& path)
 {
   m_GamePath = path;
 }
@@ -44,7 +42,8 @@ QDir GameSkyrimVR::documentsDirectory() const
 QString GameSkyrimVR::identifyGamePath() const
 {
   QString path = "Software\\Bethesda Softworks\\" + gameName();
-  return findInRegistry(HKEY_LOCAL_MACHINE, path.toStdWString().c_str(), L"Installed Path");
+  return findInRegistry(HKEY_LOCAL_MACHINE, path.toStdWString().c_str(),
+                        L"Installed Path");
 }
 
 QDir GameSkyrimVR::savesDirectory() const
@@ -62,7 +61,7 @@ bool GameSkyrimVR::isInstalled() const
   return !m_GamePath.isEmpty();
 }
 
-bool GameSkyrimVR::init(IOrganizer *moInfo)
+bool GameSkyrimVR::init(IOrganizer* moInfo)
 {
   if (!GameGamebryo::init(moInfo)) {
     return false;
@@ -70,17 +69,17 @@ bool GameSkyrimVR::init(IOrganizer *moInfo)
 
   registerFeature(std::make_shared<SkyrimVRScriptExtender>(this));
   registerFeature(std::make_shared<SkyrimVRDataArchives>(myGamesPath()));
-  registerFeature(std::make_shared<GamebryoLocalSavegames>(myGamesPath(), "SkyrimVR.ini"));
+  registerFeature(
+      std::make_shared<GamebryoLocalSavegames>(myGamesPath(), "SkyrimVR.ini"));
   registerFeature(std::make_shared<SkyrimVRModDataChecker>(this));
   registerFeature(std::make_shared<GamebryoSaveGameInfo>(this));
-  registerFeature(std::make_shared<SkyrimVRModDataContent>(m_Organizer->gameFeatures()));
+  registerFeature(
+      std::make_shared<SkyrimVRModDataContent>(m_Organizer->gameFeatures()));
   registerFeature(std::make_shared<SkyrimVRGamePlugins>(moInfo));
   registerFeature(std::make_shared<SkyrimVRUnmangedMods>(this));
 
   return true;
 }
-
-
 
 QString GameSkyrimVR::gameName() const
 {
@@ -90,11 +89,14 @@ QString GameSkyrimVR::gameName() const
 QList<ExecutableInfo> GameSkyrimVR::executables() const
 {
   return QList<ExecutableInfo>()
-    << ExecutableInfo("SKSE", findInGameFolder(m_Organizer->gameFeatures()->gameFeature<MOBase::ScriptExtender>()->loaderName()))
-    << ExecutableInfo("Skyrim VR", findInGameFolder(binaryName()))
-    << ExecutableInfo("Creation Kit", findInGameFolder("CreationKit.exe"))
-    << ExecutableInfo("LOOT", QFileInfo(getLootPath())).withArgument("--game=\"Skyrim VR\"")
-    ;
+         << ExecutableInfo("SKSE",
+                           findInGameFolder(m_Organizer->gameFeatures()
+                                                ->gameFeature<MOBase::ScriptExtender>()
+                                                ->loaderName()))
+         << ExecutableInfo("Skyrim VR", findInGameFolder(binaryName()))
+         << ExecutableInfo("Creation Kit", findInGameFolder("CreationKit.exe"))
+         << ExecutableInfo("LOOT", QFileInfo(getLootPath()))
+                .withArgument("--game=\"Skyrim VR\"");
 }
 
 QList<ExecutableForcedLoadSetting> GameSkyrimVR::executableForcedLoads() const
@@ -102,7 +104,7 @@ QList<ExecutableForcedLoadSetting> GameSkyrimVR::executableForcedLoads() const
   return QList<ExecutableForcedLoadSetting>();
 }
 
-QFileInfo GameSkyrimVR::findInGameFolder(const QString &relativePath) const
+QFileInfo GameSkyrimVR::findInGameFolder(const QString& relativePath) const
 {
   return QFileInfo(m_GamePath + "/" + relativePath);
 }
@@ -134,20 +136,19 @@ MOBase::VersionInfo GameSkyrimVR::version() const
 
 QList<PluginSetting> GameSkyrimVR::settings() const
 {
-  return {
-    PluginSetting("enderal_downloads", "allow Enderal and Enderal SE downloads", QVariant(false))
-  };
+  return {PluginSetting("enderal_downloads", "allow Enderal and Enderal SE downloads",
+                        QVariant(false))};
 }
 
-void GameSkyrimVR::initializeProfile(const QDir &path, ProfileSettings settings) const
+void GameSkyrimVR::initializeProfile(const QDir& path, ProfileSettings settings) const
 {
   if (settings.testFlag(IPluginGame::MODS)) {
     copyToProfile(localAppFolder() + "/Skyrim VR", path, "plugins.txt");
   }
 
   if (settings.testFlag(IPluginGame::CONFIGURATION)) {
-    if (settings.testFlag(IPluginGame::PREFER_DEFAULTS)
-      || !QFileInfo(myGamesPath() + "/skyrimvr.ini").exists()) {
+    if (settings.testFlag(IPluginGame::PREFER_DEFAULTS) ||
+        !QFileInfo(myGamesPath() + "/skyrimvr.ini").exists()) {
       copyToProfile(gameDirectory().absolutePath(), path, "skyrim.ini", "skyrimvr.ini");
     } else {
       copyToProfile(myGamesPath(), path, "skyrimvr.ini");
@@ -167,19 +168,21 @@ QString GameSkyrimVR::savegameSEExtension() const
   return "skse";
 }
 
-std::shared_ptr<const GamebryoSaveGame> GameSkyrimVR::makeSaveGame(QString filePath) const
+std::shared_ptr<const GamebryoSaveGame>
+GameSkyrimVR::makeSaveGame(QString filePath) const
 {
   return std::make_shared<const SkyrimVRSaveGame>(filePath, this);
 }
-
 
 QString GameSkyrimVR::steamAPPId() const
 {
   return "611670";
 }
 
-QStringList GameSkyrimVR::primaryPlugins() const {
-  QStringList plugins = { "skyrim.esm", "update.esm", "dawnguard.esm", "hearthfires.esm", "dragonborn.esm", "skyrimvr.esm" };
+QStringList GameSkyrimVR::primaryPlugins() const
+{
+  QStringList plugins = {"skyrim.esm",      "update.esm",     "dawnguard.esm",
+                         "hearthfires.esm", "dragonborn.esm", "skyrimvr.esm"};
 
   plugins.append(CCPlugins());
 
@@ -188,7 +191,7 @@ QStringList GameSkyrimVR::primaryPlugins() const {
 
 QStringList GameSkyrimVR::gameVariants() const
 {
-  return{ "Regular" };
+  return {"Regular"};
 }
 
 QString GameSkyrimVR::gameShortName() const
@@ -198,14 +201,14 @@ QString GameSkyrimVR::gameShortName() const
 
 QStringList GameSkyrimVR::primarySources() const
 {
-  return { "SkyrimSE" };
+  return {"SkyrimSE"};
 }
 
 QStringList GameSkyrimVR::validShortNames() const
 {
-  QStringList shortNames{ "Skyrim", "SkyrimSE" };
+  QStringList shortNames{"Skyrim", "SkyrimSE"};
   if (m_Organizer->pluginSetting(name(), "enderal_downloads").toBool()) {
-    shortNames.append({ "Enderal", "EnderalSE" });
+    shortNames.append({"Enderal", "EnderalSE"});
   }
   return shortNames;
 }
@@ -215,15 +218,14 @@ QString GameSkyrimVR::gameNexusName() const
   return QString();
 }
 
-
 QStringList GameSkyrimVR::iniFiles() const
 {
-  return{ "skyrimvr.ini", "skyrimprefs.ini" };
+  return {"skyrimvr.ini", "skyrimprefs.ini"};
 }
 
 QStringList GameSkyrimVR::DLCPlugins() const
 {
-  return{ "dawnguard.esm", "hearthfires.esm", "dragonborn.esm" };
+  return {"dawnguard.esm", "hearthfires.esm", "dragonborn.esm"};
 }
 
 QStringList GameSkyrimVR::CCPlugins() const
@@ -231,7 +233,9 @@ QStringList GameSkyrimVR::CCPlugins() const
   QStringList plugins = {};
   QFile file(gameDirectory().filePath("Skyrim.ccc"));
   if (file.open(QIODevice::ReadOnly)) {
-    ON_BLOCK_EXIT([&file]() { file.close(); });
+    ON_BLOCK_EXIT([&file]() {
+      file.close();
+    });
 
     if (file.size() == 0) {
       return plugins;
@@ -275,7 +279,8 @@ int GameSkyrimVR::nexusGameID() const
 
 QString GameSkyrimVR::getLauncherName() const
 {
-  return binaryName(); // Skyrim VR has no Launcher, so we just return the name of the game binary
+  return binaryName();  // Skyrim VR has no Launcher, so we just return the name of the
+                        // game binary
 }
 
 QDir GameSkyrimVR::gameDirectory() const
@@ -288,10 +293,9 @@ MappingType GameSkyrimVR::mappings() const
 {
   MappingType result;
 
-  for (const QString &profileFile : { "plugins.txt", "loadorder.txt" }) {
-    result.push_back({ m_Organizer->profilePath() + "/" + profileFile,
-      localAppFolder() + "/" + gameName() + "/" + profileFile,
-      false });
+  for (const QString& profileFile : {"plugins.txt", "loadorder.txt"}) {
+    result.push_back({m_Organizer->profilePath() + "/" + profileFile,
+                      localAppFolder() + "/" + gameName() + "/" + profileFile, false});
   }
 
   return result;
