@@ -1,6 +1,6 @@
 #include "skyrimbsainvalidation.h"
 
-SkyrimBSAInvalidation::SkyrimBSAInvalidation(DataArchives *dataArchives, MOBase::IPluginGame const *game)
+SkyrimBSAInvalidation::SkyrimBSAInvalidation(MOBase::DataArchives *dataArchives, MOBase::IPluginGame const *game)
   : GamebryoBSAInvalidation(dataArchives, "skyrim.ini", game)
 {
 }

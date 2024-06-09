@@ -11,7 +11,7 @@ class SkyrimBSAInvalidation : public GamebryoBSAInvalidation
 {
 public:
 
-  SkyrimBSAInvalidation(DataArchives *dataArchives, MOBase::IPluginGame const *game);
+  SkyrimBSAInvalidation(MOBase::DataArchives *dataArchives, MOBase::IPluginGame const *game);
 
 private:
 
