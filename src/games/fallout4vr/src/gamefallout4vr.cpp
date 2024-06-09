@@ -37,13 +37,13 @@ bool GameFallout4VR::init(IOrganizer *moInfo)
     return false;
   }
 
-  registerFeature<DataArchives>(new Fallout4VRDataArchives(myGamesPath()));
-  registerFeature<LocalSavegames>(new GamebryoLocalSavegames(myGamesPath(), "fallout4custom.ini"));
-  registerFeature<ModDataChecker>(new Fallout4VRModDataChecker(this));
-  registerFeature<ModDataContent>(new Fallout4VRModDataContent(this));
-  registerFeature<SaveGameInfo>(new GamebryoSaveGameInfo(this));
-  registerFeature<GamePlugins>(new Fallout4VRGamePlugins(moInfo));
-  registerFeature<UnmanagedMods>(new Fallout4VRUnmangedMods(this));
+  registerFeature(std::make_shared<Fallout4VRDataArchives>(myGamesPath()));
+  registerFeature(std::make_shared<GamebryoLocalSavegames>(myGamesPath(), "fallout4custom.ini"));
+  registerFeature(std::make_shared<Fallout4VRModDataChecker>(this));
+  registerFeature(std::make_shared<Fallout4VRModDataContent>(m_Organizer->gameFeatures()));
+  registerFeature(std::make_shared<GamebryoSaveGameInfo>(this));
+  registerFeature(std::make_shared<Fallout4VRGamePlugins>(moInfo));
+  registerFeature(std::make_shared<Fallout4VRUnmangedMods>(this));
 
   return true;
 }
