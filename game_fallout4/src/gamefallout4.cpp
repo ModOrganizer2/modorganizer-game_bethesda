@@ -2,18 +2,18 @@
 
 #include "fallout4bsainvalidation.h"
 #include "fallout4dataarchives.h"
-#include "fallout4scriptextender.h"
-#include "fallout4unmanagedmods.h"
 #include "fallout4moddatachecker.h"
 #include "fallout4moddatacontent.h"
 #include "fallout4savegame.h"
+#include "fallout4scriptextender.h"
+#include "fallout4unmanagedmods.h"
 
-#include <pluginsetting.h>
+#include "versioninfo.h"
+#include <creationgameplugins.h>
 #include <executableinfo.h>
 #include <gamebryolocalsavegames.h>
 #include <gamebryosavegameinfo.h>
-#include <creationgameplugins.h>
-#include "versioninfo.h"
+#include <pluginsetting.h>
 
 #include <QCoreApplication>
 #include <QDir>
@@ -29,11 +29,9 @@
 
 using namespace MOBase;
 
-GameFallout4::GameFallout4()
-{
-}
+GameFallout4::GameFallout4() {}
 
-bool GameFallout4::init(IOrganizer *moInfo)
+bool GameFallout4::init(IOrganizer* moInfo)
 {
   if (!GameGamebryo::init(moInfo)) {
     return false;
@@ -43,9 +41,11 @@ bool GameFallout4::init(IOrganizer *moInfo)
 
   registerFeature(std::make_shared<Fallout4ScriptExtender>(this));
   registerFeature(dataArchives);
-  registerFeature(std::make_shared<GamebryoLocalSavegames>(myGamesPath(), "fallout4custom.ini"));
+  registerFeature(
+      std::make_shared<GamebryoLocalSavegames>(myGamesPath(), "fallout4custom.ini"));
   registerFeature(std::make_shared<Fallout4ModDataChecker>(this));
-  registerFeature(std::make_shared<Fallout4ModDataContent>(m_Organizer->gameFeatures()));
+  registerFeature(
+      std::make_shared<Fallout4ModDataContent>(m_Organizer->gameFeatures()));
   registerFeature(std::make_shared<GamebryoSaveGameInfo>(this));
   registerFeature(std::make_shared<CreationGamePlugins>(moInfo));
   registerFeature(std::make_shared<Fallout4UnmangedMods>(this));
@@ -61,19 +61,23 @@ QString GameFallout4::gameName() const
 
 void GameFallout4::detectGame()
 {
-  m_GamePath = identifyGamePath();
+  m_GamePath    = identifyGamePath();
   m_MyGamesPath = determineMyGamesPath("Fallout4");
 }
 
 QList<ExecutableInfo> GameFallout4::executables() const
 {
   return QList<ExecutableInfo>()
-      << ExecutableInfo("F4SE", findInGameFolder(m_Organizer->gameFeatures()->gameFeature<MOBase::ScriptExtender>()->loaderName()))
-      << ExecutableInfo("Fallout 4", findInGameFolder(binaryName()))
-      << ExecutableInfo("Fallout Launcher", findInGameFolder(getLauncherName()))
-      << ExecutableInfo("Creation Kit", findInGameFolder("CreationKit.exe")).withSteamAppId("1946160")
-      << ExecutableInfo("LOOT", QFileInfo(getLootPath())).withArgument("--game=\"Fallout4\"")
-         ;
+         << ExecutableInfo("F4SE",
+                           findInGameFolder(m_Organizer->gameFeatures()
+                                                ->gameFeature<MOBase::ScriptExtender>()
+                                                ->loaderName()))
+         << ExecutableInfo("Fallout 4", findInGameFolder(binaryName()))
+         << ExecutableInfo("Fallout Launcher", findInGameFolder(getLauncherName()))
+         << ExecutableInfo("Creation Kit", findInGameFolder("CreationKit.exe"))
+                .withSteamAppId("1946160")
+         << ExecutableInfo("LOOT", QFileInfo(getLootPath()))
+                .withArgument("--game=\"Fallout4\"");
 }
 
 QList<ExecutableForcedLoadSetting> GameFallout4::executableForcedLoads() const
@@ -91,7 +95,6 @@ QString GameFallout4::localizedName() const
   return tr("Fallout 4 Support Plugin");
 }
 
-
 QString GameFallout4::author() const
 {
   return "Tannin & MO2 Team";
@@ -100,7 +103,8 @@ QString GameFallout4::author() const
 QString GameFallout4::description() const
 {
   return tr("Adds support for the game Fallout 4.\n"
-            "Splash by %1").arg("nekoyoubi");
+            "Splash by %1")
+      .arg("nekoyoubi");
 }
 
 MOBase::VersionInfo GameFallout4::version() const
@@ -117,31 +121,32 @@ MappingType GameFallout4::mappings() const
 {
   MappingType result;
   if (testFilePlugins().isEmpty()) {
-    for (const QString& profileFile : { "plugins.txt", "loadorder.txt" }) {
-      result.push_back({ m_Organizer->profilePath() + "/" + profileFile,
+    for (const QString& profileFile : {"plugins.txt", "loadorder.txt"}) {
+      result.push_back({m_Organizer->profilePath() + "/" + profileFile,
                         localAppFolder() + "/" + gameShortName() + "/" + profileFile,
-                        false });
+                        false});
     }
   }
   return result;
 }
 
-void GameFallout4::initializeProfile(const QDir &path, ProfileSettings settings) const
+void GameFallout4::initializeProfile(const QDir& path, ProfileSettings settings) const
 {
   if (settings.testFlag(IPluginGame::MODS)) {
     copyToProfile(localAppFolder() + "/Fallout4", path, "plugins.txt");
   }
 
   if (settings.testFlag(IPluginGame::CONFIGURATION)) {
-    if (settings.testFlag(IPluginGame::PREFER_DEFAULTS)
-        || !QFileInfo(myGamesPath() + "/fallout4.ini").exists()) {
-      copyToProfile(gameDirectory().absolutePath(), path, "fallout4_default.ini", "fallout4.ini");
+    if (settings.testFlag(IPluginGame::PREFER_DEFAULTS) ||
+        !QFileInfo(myGamesPath() + "/fallout4.ini").exists()) {
+      copyToProfile(gameDirectory().absolutePath(), path, "fallout4_default.ini",
+                    "fallout4.ini");
     } else {
       copyToProfile(myGamesPath(), path, "fallout4.ini");
     }
 
     copyToProfile(myGamesPath(), path, "fallout4prefs.ini");
-	copyToProfile(myGamesPath(), path, "fallout4custom.ini");
+    copyToProfile(myGamesPath(), path, "fallout4custom.ini");
   }
 }
 
@@ -155,7 +160,8 @@ QString GameFallout4::savegameSEExtension() const
   return "f4se";
 }
 
-std::shared_ptr<const GamebryoSaveGame> GameFallout4::makeSaveGame(QString filePath) const
+std::shared_ptr<const GamebryoSaveGame>
+GameFallout4::makeSaveGame(QString filePath) const
 {
   return std::make_shared<const Fallout4SaveGame>(filePath, this);
 }
@@ -170,15 +176,15 @@ QStringList GameFallout4::testFilePlugins() const
   QStringList plugins;
   if (m_Organizer != nullptr && m_Organizer->profile() != nullptr) {
     QString customIni(
-      m_Organizer->profile()->absoluteIniFilePath("Fallout4Custom.ini"));
+        m_Organizer->profile()->absoluteIniFilePath("Fallout4Custom.ini"));
     if (QFile(customIni).exists()) {
       for (int i = 1; i <= 10; ++i) {
         QString setting("sTestFile");
         setting += std::to_string(i);
         WCHAR value[MAX_PATH];
         DWORD length = ::GetPrivateProfileStringW(
-          L"General", setting.toStdWString().c_str(), L"", value, MAX_PATH,
-          customIni.toStdWString().c_str());
+            L"General", setting.toStdWString().c_str(), L"", value, MAX_PATH,
+            customIni.toStdWString().c_str());
         if (length && wcscmp(value, L"") != 0) {
           QString plugin = QString::fromWCharArray(value, length);
           if (!plugin.isEmpty() && !plugins.contains(plugin))
@@ -209,7 +215,7 @@ QStringList GameFallout4::primaryPlugins() const
 
 QStringList GameFallout4::gameVariants() const
 {
-  return { "Regular" };
+  return {"Regular"};
 }
 
 QString GameFallout4::gameShortName() const
@@ -224,13 +230,18 @@ QString GameFallout4::gameNexusName() const
 
 QStringList GameFallout4::iniFiles() const
 {
-    return { "fallout4.ini", "fallout4prefs.ini", "fallout4custom.ini" };
+  return {"fallout4.ini", "fallout4prefs.ini", "fallout4custom.ini"};
 }
 
 QStringList GameFallout4::DLCPlugins() const
 {
-  return {"dlcrobot.esm", "dlcworkshop01.esm", "dlccoast.esm", "dlcworkshop02.esm", "dlcworkshop03.esm",
-	      "dlcnukaworld.esm", "dlcultrahighresolution.esm"};
+  return {"dlcrobot.esm",
+          "dlcworkshop01.esm",
+          "dlccoast.esm",
+          "dlcworkshop02.esm",
+          "dlcworkshop03.esm",
+          "dlcnukaworld.esm",
+          "dlcultrahighresolution.esm"};
 }
 
 QStringList GameFallout4::CCPlugins() const
@@ -238,7 +249,9 @@ QStringList GameFallout4::CCPlugins() const
   QStringList plugins = {};
   QFile file(gameDirectory().absoluteFilePath("Fallout4.ccc"));
   if (file.open(QIODevice::ReadOnly)) {
-    ON_BLOCK_EXIT([&file]() { file.close(); });
+    ON_BLOCK_EXIT([&file]() {
+      file.close();
+    });
 
     if (file.size() == 0) {
       return plugins;
@@ -310,7 +323,8 @@ QString GameFallout4::shortDescription(unsigned int key) const
   }
 }
 
-QString GameFallout4::fullDescription(unsigned int key) const {
+QString GameFallout4::fullDescription(unsigned int key) const
+{
   switch (key) {
   case PROBLEM_TEST_FILE: {
     return tr("<p>You have sTestFile settings in your "
