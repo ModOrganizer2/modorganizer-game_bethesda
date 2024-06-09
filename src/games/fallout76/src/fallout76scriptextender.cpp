@@ -3,10 +3,9 @@
 #include <QString>
 #include <QStringList>
 
-Fallout76ScriptExtender::Fallout76ScriptExtender(GameGamebryo const *game) :
-  GamebryoScriptExtender(game)
-{
-}
+Fallout76ScriptExtender::Fallout76ScriptExtender(GameGamebryo const* game)
+    : GamebryoScriptExtender(game)
+{}
 
 QString Fallout76ScriptExtender::BinaryName() const
 {

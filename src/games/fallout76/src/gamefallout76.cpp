@@ -3,15 +3,15 @@
 #include "fallout76dataarchives.h"
 #include "fallout76moddatachecker.h"
 #include "fallout76moddatacontent.h"
-#include "fallout76scriptextender.h"
 #include "fallout76savegameinfo.h"
+#include "fallout76scriptextender.h"
 #include "fallout76unmanagedmods.h"
 
-#include <pluginsetting.h>
+#include "versioninfo.h"
+#include <creationgameplugins.h>
 #include <executableinfo.h>
 #include <gamebryolocalsavegames.h>
-#include <creationgameplugins.h>
-#include "versioninfo.h"
+#include <pluginsetting.h>
 
 #include <QCoreApplication>
 #include <QDir>
@@ -27,11 +27,9 @@
 
 using namespace MOBase;
 
-GameFallout76::GameFallout76()
-{
-}
+GameFallout76::GameFallout76() {}
 
-bool GameFallout76::init(IOrganizer *moInfo)
+bool GameFallout76::init(IOrganizer* moInfo)
 {
   if (!GameGamebryo::init(moInfo)) {
     return false;
@@ -40,7 +38,8 @@ bool GameFallout76::init(IOrganizer *moInfo)
   registerFeature(std::make_shared<Fallout76ScriptExtender>(this));
   registerFeature(std::make_shared<Fallout76DataArchives>(myGamesPath()));
   registerFeature(std::make_shared<Fallout76ModDataChecker>(this));
-  registerFeature(std::make_shared<Fallout76ModDataContent>(m_Organizer->gameFeatures()));
+  registerFeature(
+      std::make_shared<Fallout76ModDataContent>(m_Organizer->gameFeatures()));
   registerFeature(std::make_shared<CreationGamePlugins>(moInfo));
   registerFeature(std::make_shared<Fallout76UnmangedMods>(this));
 
@@ -55,15 +54,19 @@ QString GameFallout76::gameName() const
 QList<ExecutableInfo> GameFallout76::executables() const
 {
   return QList<ExecutableInfo>()
-      << ExecutableInfo("F76SE", findInGameFolder(m_Organizer->gameFeatures()->gameFeature<MOBase::ScriptExtender>()->loaderName()))
-      << ExecutableInfo("Fallout 76", findInGameFolder(binaryName()))
-      << ExecutableInfo("Fallout Launcher", findInGameFolder(getLauncherName()))
-      << ExecutableInfo("Creation Kit", findInGameFolder("CreationKit.exe"))
-      << ExecutableInfo("LOOT", QFileInfo(getLootPath())).withArgument("--game=\"Fallout76\"")
-         ;
+         << ExecutableInfo("F76SE",
+                           findInGameFolder(m_Organizer->gameFeatures()
+                                                ->gameFeature<MOBase::ScriptExtender>()
+                                                ->loaderName()))
+         << ExecutableInfo("Fallout 76", findInGameFolder(binaryName()))
+         << ExecutableInfo("Fallout Launcher", findInGameFolder(getLauncherName()))
+         << ExecutableInfo("Creation Kit", findInGameFolder("CreationKit.exe"))
+         << ExecutableInfo("LOOT", QFileInfo(getLootPath()))
+                .withArgument("--game=\"Fallout76\"");
 }
 
-QList<ExecutableForcedLoadSetting> GameFallout76::executableForcedLoads() const {
+QList<ExecutableForcedLoadSetting> GameFallout76::executableForcedLoads() const
+{
   return {};
 }
 
@@ -80,7 +83,8 @@ QString GameFallout76::author() const
 QString GameFallout76::description() const
 {
   return tr("Adds support for the game Fallout 76.\n"
-            "Splash by %1").arg("nekoyoubi");
+            "Splash by %1")
+      .arg("nekoyoubi");
 }
 
 MOBase::VersionInfo GameFallout76::version() const
@@ -93,7 +97,7 @@ QList<PluginSetting> GameFallout76::settings() const
   return QList<PluginSetting>();
 }
 
-void GameFallout76::initializeProfile(const QDir &path, ProfileSettings settings) const
+void GameFallout76::initializeProfile(const QDir& path, ProfileSettings settings) const
 {
   if (settings.testFlag(IPluginGame::MODS)) {
     copyToProfile(localAppFolder() + "/Fallout76", path, "plugins.txt");
@@ -101,15 +105,16 @@ void GameFallout76::initializeProfile(const QDir &path, ProfileSettings settings
   }
 
   if (settings.testFlag(IPluginGame::CONFIGURATION)) {
-    if (settings.testFlag(IPluginGame::PREFER_DEFAULTS)
-        || !QFileInfo(myGamesPath() + "/Fallout76.ini").exists()) {
-      copyToProfile(gameDirectory().absolutePath(), path, "Fallout76_default.ini", "Fallout76.ini");
+    if (settings.testFlag(IPluginGame::PREFER_DEFAULTS) ||
+        !QFileInfo(myGamesPath() + "/Fallout76.ini").exists()) {
+      copyToProfile(gameDirectory().absolutePath(), path, "Fallout76_default.ini",
+                    "Fallout76.ini");
     } else {
       copyToProfile(myGamesPath(), path, "Fallout76.ini");
     }
 
     copyToProfile(myGamesPath(), path, "Fallout76Prefs.ini");
-	copyToProfile(myGamesPath(), path, "Fallout76Custom.ini");
+    copyToProfile(myGamesPath(), path, "Fallout76Custom.ini");
   }
 }
 
@@ -123,7 +128,8 @@ QString GameFallout76::savegameSEExtension() const
   return "f76se";
 }
 
-std::vector<std::shared_ptr<const MOBase::ISaveGame>> GameFallout76::listSaves(QDir folder) const
+std::vector<std::shared_ptr<const MOBase::ISaveGame>>
+GameFallout76::listSaves(QDir folder) const
 {
   return {};
 }
@@ -138,7 +144,8 @@ QString GameFallout76::steamAPPId() const
   return "n/a";
 }
 
-QStringList GameFallout76::primaryPlugins() const {
+QStringList GameFallout76::primaryPlugins() const
+{
   QStringList plugins = {"SeventySix.esm"};
 
   plugins.append(CCPlugins());
@@ -148,7 +155,7 @@ QStringList GameFallout76::primaryPlugins() const {
 
 QStringList GameFallout76::gameVariants() const
 {
-  return { "Regular" };
+  return {"Regular"};
 }
 
 QString GameFallout76::gameShortName() const
@@ -163,7 +170,7 @@ QString GameFallout76::gameNexusName() const
 
 QStringList GameFallout76::iniFiles() const
 {
-    return { "Fallout76.ini", "Fallout76Prefs.ini", "Fallout76Custom.ini" };
+  return {"Fallout76.ini", "Fallout76Prefs.ini", "Fallout76Custom.ini"};
 }
 
 QStringList GameFallout76::DLCPlugins() const
@@ -176,7 +183,9 @@ QStringList GameFallout76::CCPlugins() const
   QStringList plugins = {};
   QFile file(gameDirectory().absoluteFilePath("Fallout76.ccc"));
   if (file.open(QIODevice::ReadOnly)) {
-    ON_BLOCK_EXIT([&file]() { file.close(); });
+    ON_BLOCK_EXIT([&file]() {
+      file.close();
+    });
 
     if (file.size() == 0) {
       return plugins;
