@@ -10,8 +10,8 @@ public:
   /**
    *
    */
-  FalloutTTWModDataContent(GameGamebryo const* gamePlugin)
-      : GamebryoModDataContent(gamePlugin)
+  FalloutTTWModDataContent(MOBase::IGameFeatures const* gameFeatures)
+      : GamebryoModDataContent(gameFeatures)
   {
     // Just need to disable some contents:
     m_Enabled[CONTENT_MCM]     = false;

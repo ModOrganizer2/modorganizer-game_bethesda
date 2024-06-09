@@ -1,6 +1,6 @@
 #include "falloutttwbsainvalidation.h"
 
-FalloutTTWBSAInvalidation::FalloutTTWBSAInvalidation(DataArchives* dataArchives,
+FalloutTTWBSAInvalidation::FalloutTTWBSAInvalidation(MOBase::DataArchives* dataArchives,
                                                      MOBase::IPluginGame const* game)
     : GamebryoBSAInvalidation(dataArchives, "fallout.ini", game)
 {}

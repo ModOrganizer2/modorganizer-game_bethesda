@@ -35,17 +35,20 @@ bool GameFalloutTTW::init(IOrganizer* moInfo)
     return false;
   }
 
-  registerFeature<ScriptExtender>(new FalloutTTWScriptExtender(this));
-  registerFeature<DataArchives>(new FalloutTTWDataArchives(myGamesPath()));
-  registerFeature<BSAInvalidation>(
-      new FalloutTTWBSAInvalidation(feature<DataArchives>(), this));
-  registerFeature<SaveGameInfo>(new GamebryoSaveGameInfo(this));
-  registerFeature<LocalSavegames>(
-      new GamebryoLocalSavegames(myGamesPath(), "fallout.ini"));
-  registerFeature<ModDataChecker>(new FalloutTTWModDataChecker(this));
-  registerFeature<ModDataContent>(new FalloutTTWModDataContent(this));
-  registerFeature<GamePlugins>(new GamebryoGamePlugins(moInfo));
-  registerFeature<UnmanagedMods>(new GamebryoUnmangedMods(this));
+  auto dataArchives = std::make_shared<FalloutTTWDataArchives>(myGamesPath());
+  registerFeature(std::make_shared<FalloutTTWScriptExtender>(this));
+  registerFeature(dataArchives);
+  registerFeature(
+      std::make_shared<FalloutTTWBSAInvalidation>(dataArchives.get(), this));
+  registerFeature(std::make_shared<GamebryoSaveGameInfo>(this));
+  registerFeature(
+      std::make_shared<GamebryoLocalSavegames>(myGamesPath(), "fallout.ini"));
+  registerFeature(std::make_shared<FalloutTTWModDataChecker>(this));
+  registerFeature(
+      std::make_shared<FalloutTTWModDataContent>(m_Organizer->gameFeatures()));
+  registerFeature(std::make_shared<GamebryoGamePlugins>(moInfo));
+  registerFeature(std::make_shared<GamebryoUnmangedMods>(this));
+
   return true;
 }
 
@@ -104,11 +107,13 @@ void GameFalloutTTW::setGamePath(const QString& path)
   m_GamePath = path;
   checkVariants();
   m_MyGamesPath = determineMyGamesPath(gameDirectoryName());
-  registerFeature<DataArchives>(new FalloutTTWDataArchives(myGamesPath()));
-  registerFeature<BSAInvalidation>(
-      new FalloutTTWBSAInvalidation(feature<DataArchives>(), this));
-  registerFeature<LocalSavegames>(
-      new GamebryoLocalSavegames(myGamesPath(), "fallout.ini"));
+
+  auto dataArchives = std::make_shared<FalloutTTWDataArchives>(myGamesPath());
+  registerFeature(dataArchives);
+  registerFeature(
+      std::make_shared<FalloutTTWBSAInvalidation>(dataArchives.get(), this));
+  registerFeature(
+      std::make_shared<GamebryoLocalSavegames>(myGamesPath(), "fallout.ini"));
 }
 
 QDir GameFalloutTTW::savesDirectory() const
@@ -161,7 +166,9 @@ QList<ExecutableInfo> GameFalloutTTW::executables() const
                                      .withArgument("--game=\"FalloutNV\"");
   if (selectedVariant() != "Epic Games") {
     extraExecutables.prepend(ExecutableInfo(
-        "NVSE", findInGameFolder(feature<ScriptExtender>()->loaderName())));
+        "NVSE", findInGameFolder(m_Organizer->gameFeatures()
+                                     ->gameFeature<MOBase::ScriptExtender>()
+                                     ->loaderName())));
   } else {
     game.withArgument("-EpicPortal");
     launcher.withArgument("-EpicPortal");
