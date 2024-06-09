@@ -11,7 +11,7 @@ class OblivionBSAInvalidation : public GamebryoBSAInvalidation
 {
 public:
 
-  OblivionBSAInvalidation(DataArchives *dataArchives, MOBase::IPluginGame const *game);
+  OblivionBSAInvalidation(MOBase::DataArchives *dataArchives, MOBase::IPluginGame const *game);
 
 private:
 

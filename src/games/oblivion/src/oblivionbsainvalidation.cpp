@@ -1,7 +1,7 @@
 #include "oblivionbsainvalidation.h"
 
 
-OblivionBSAInvalidation::OblivionBSAInvalidation(DataArchives *dataArchives, MOBase::IPluginGame const *game)
+OblivionBSAInvalidation::OblivionBSAInvalidation(MOBase::DataArchives *dataArchives, MOBase::IPluginGame const *game)
   : GamebryoBSAInvalidation(dataArchives, "oblivion.ini", game)
 {
 }
