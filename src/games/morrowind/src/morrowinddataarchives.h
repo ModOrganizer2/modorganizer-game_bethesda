@@ -1,36 +1,32 @@
 #ifndef MORROWINDDATAARCHIVES_H
 #define MORROWINDDATAARCHIVES_H
 
-
-#include <gamebryodataarchives.h>
-#include <iprofile.h>
-#include <iplugingame.h>
+#include <QDir>
 #include <QString>
 #include <QStringList>
-#include <QDir>
+#include <gamebryodataarchives.h>
+#include <iplugingame.h>
+#include <iprofile.h>
 
 class MorrowindDataArchives : public GamebryoDataArchives
 {
 
 public:
-  MorrowindDataArchives(const MOBase::IPluginGame *game);
+  MorrowindDataArchives(const MOBase::IPluginGame* game);
 
 public:
-
   virtual QStringList vanillaArchives() const override;
-  virtual QStringList archives(const MOBase::IProfile *profile) const override;
+  virtual QStringList archives(const MOBase::IProfile* profile) const override;
 
 protected:
+  QStringList getArchives(const QString& iniFile) const;
+  void setArchives(const QString& iniFile, const QStringList& list);
 
-  QStringList getArchives(const QString &iniFile) const;
-  void setArchives(const QString &iniFile, const QStringList &list);
-  
 private:
+  virtual void writeArchiveList(MOBase::IProfile* profile,
+                                const QStringList& before) override;
 
-  virtual void writeArchiveList(MOBase::IProfile *profile, const QStringList &before) override;
-
-  const MOBase::IPluginGame *m_GamePlugin;
-
+  const MOBase::IPluginGame* m_GamePlugin;
 };
 
-#endif // MORROWINDDATAARCHIVES_H
+#endif  // MORROWINDDATAARCHIVES_H

@@ -9,14 +9,14 @@ class GameGamebryo;
 class MorrowindSaveGameInfo : public GamebryoSaveGameInfo
 {
 public:
-  MorrowindSaveGameInfo(GameGamebryo const *game);
+  MorrowindSaveGameInfo(GameGamebryo const* game);
   ~MorrowindSaveGameInfo();
 
-  virtual MOBase::ISaveGameInfoWidget *getSaveGameWidget(QWidget *) const override;
+  virtual MOBase::ISaveGameInfoWidget* getSaveGameWidget(QWidget*) const override;
 
 protected:
   friend class MorrowindSaveGameInfoWidget;
-  GameMorrowind const *m_Game;
+  GameMorrowind const* m_Game;
 };
 
-#endif // MORROWINDSAVEGAMEINFO_H
+#endif  // MORROWINDSAVEGAMEINFO_H
