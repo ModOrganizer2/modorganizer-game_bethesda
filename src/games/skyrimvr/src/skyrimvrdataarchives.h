@@ -2,28 +2,27 @@
 #define _SKYRIMVRDATAARCHIVES_H
 
 #include "gamebryodataarchives.h"
-#include <QStringList>
 #include <QDir>
+#include <QStringList>
 
-namespace MOBase { class IProfile; }
-
+namespace MOBase
+{
+class IProfile;
+}
 
 class SkyrimVRDataArchives : public GamebryoDataArchives
 {
 
 public:
-
-  SkyrimVRDataArchives(const QDir &myGamesDir);
+  SkyrimVRDataArchives(const QDir& myGamesDir);
 
 public:
-
   virtual QStringList vanillaArchives() const override;
-  virtual QStringList archives(const MOBase::IProfile *profile) const override;
+  virtual QStringList archives(const MOBase::IProfile* profile) const override;
 
 private:
-
-  virtual void writeArchiveList(MOBase::IProfile *profile, const QStringList &before) override;
-
+  virtual void writeArchiveList(MOBase::IProfile* profile,
+                                const QStringList& before) override;
 };
 
-#endif // _SKYRIMVRDATAARCHIVES_H
+#endif  // _SKYRIMVRDATAARCHIVES_H
