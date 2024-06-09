@@ -10,8 +10,8 @@ public:
   /**
    *
    */
-  NehrimModDataContent(GameGamebryo const* gamePlugin)
-      : GamebryoModDataContent(gamePlugin)
+  NehrimModDataContent(const MOBase::IGameFeatures* gameFeatures)
+      : GamebryoModDataContent(gameFeatures)
   {
     // Just need to disable some contents:
     m_Enabled[CONTENT_MCM]     = false;

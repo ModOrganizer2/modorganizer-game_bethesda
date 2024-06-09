@@ -1,6 +1,6 @@
 #include "nehrimmoddatachecker.h"
 
-ModDataChecker::CheckReturn NehrimModDataChecker::dataLooksValid(
+MOBase::ModDataChecker::CheckReturn NehrimModDataChecker::dataLooksValid(
     std::shared_ptr<const MOBase::IFileTree> fileTree) const
 {
   // Check with Gamebryo stuff:

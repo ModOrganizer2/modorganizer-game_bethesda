@@ -9,7 +9,8 @@
 class NehrimBSAInvalidation : public GamebryoBSAInvalidation
 {
 public:
-  NehrimBSAInvalidation(DataArchives* dataArchives, MOBase::IPluginGame const* game);
+  NehrimBSAInvalidation(MOBase::DataArchives* dataArchives,
+                        MOBase::IPluginGame const* game);
 
 private:
   virtual QString invalidationBSAName() const override;

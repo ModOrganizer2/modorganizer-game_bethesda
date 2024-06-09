@@ -1,6 +1,6 @@
 #include "nehrimbsainvalidation.h"
 
-NehrimBSAInvalidation::NehrimBSAInvalidation(DataArchives* dataArchives,
+NehrimBSAInvalidation::NehrimBSAInvalidation(MOBase::DataArchives* dataArchives,
                                              MOBase::IPluginGame const* game)
     : GamebryoBSAInvalidation(dataArchives, "oblivion.ini", game)
 {}

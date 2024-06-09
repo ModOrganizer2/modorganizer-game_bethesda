@@ -29,17 +29,18 @@ bool GameNehrim::init(IOrganizer* moInfo)
   if (!GameGamebryo::init(moInfo)) {
     return false;
   }
-  registerFeature<ScriptExtender>(new NehrimScriptExtender(this));
-  registerFeature<DataArchives>(new NehrimDataArchives(myGamesPath()));
-  registerFeature<BSAInvalidation>(
-      new NehrimBSAInvalidation(feature<DataArchives>(), this));
-  registerFeature<SaveGameInfo>(new GamebryoSaveGameInfo(this));
-  registerFeature<LocalSavegames>(
-      new GamebryoLocalSavegames(myGamesPath(), "oblivion.ini"));
-  registerFeature<ModDataChecker>(new NehrimModDataChecker(this));
-  registerFeature<ModDataContent>(new NehrimModDataContent(this));
-  registerFeature<GamePlugins>(new GamebryoGamePlugins(moInfo));
-  registerFeature<UnmanagedMods>(new GamebryoUnmangedMods(this));
+
+  auto dataArchives = std::make_shared<NehrimDataArchives>(myGamesPath());
+  registerFeature(std::make_shared<NehrimScriptExtender>(this));
+  registerFeature(dataArchives);
+  registerFeature(std::make_shared<NehrimBSAInvalidation>(dataArchives.get(), this));
+  registerFeature(std::make_shared<GamebryoSaveGameInfo>(this));
+  registerFeature(
+      std::make_shared<GamebryoLocalSavegames>(myGamesPath(), "oblivion.ini"));
+  registerFeature(std::make_shared<NehrimModDataChecker>(this));
+  registerFeature(std::make_shared<NehrimModDataContent>(m_Organizer->gameFeatures()));
+  registerFeature(std::make_shared<GamebryoGamePlugins>(moInfo));
+  registerFeature(std::make_shared<GamebryoUnmangedMods>(this));
   return true;
 }
 
