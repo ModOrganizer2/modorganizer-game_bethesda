@@ -41,15 +41,17 @@ bool GameMorrowind::init(IOrganizer *moInfo)
   if (!GameGamebryo::init(moInfo)) {
     return false;
   }
-  registerFeature<DataArchives>(new MorrowindDataArchives(this));
-  registerFeature<BSAInvalidation>(new MorrowindBSAInvalidation(feature<DataArchives>(), this));
-  registerFeature<SaveGameInfo>(new MorrowindSaveGameInfo(this));
-  registerFeature<LocalSavegames>(new MorrowindLocalSavegames(this));
-  registerFeature<ModDataChecker>(new MorrowindModDataChecker(this));
-  registerFeature<ModDataContent>(new MorrowindModDataContent(this));
-  registerFeature<GamePlugins>(new MorrowindGamePlugins(moInfo));
-  registerFeature<UnmanagedMods>(new GamebryoUnmangedMods(this));
-  m_Organizer = moInfo;
+  
+  auto dataArchives = std::make_shared<MorrowindDataArchives>(this);
+  registerFeature(dataArchives);
+  registerFeature(std::make_shared<MorrowindBSAInvalidation>(dataArchives.get(), this));
+  registerFeature(std::make_shared<MorrowindSaveGameInfo>(this));
+  registerFeature(std::make_shared<MorrowindLocalSavegames>(this));
+  registerFeature(std::make_shared<MorrowindModDataChecker>(this));
+  registerFeature(std::make_shared<MorrowindModDataContent>(m_Organizer->gameFeatures()));
+  registerFeature(std::make_shared<MorrowindGamePlugins>(moInfo));
+  registerFeature(std::make_shared<GamebryoUnmangedMods>(this));
+
   return true;
 }
 

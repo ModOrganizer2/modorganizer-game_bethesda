@@ -27,7 +27,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 #include <QString>
 #include "iplugingame.h"
 
-class MorrowindLocalSavegames : public LocalSavegames
+class MorrowindLocalSavegames : public MOBase::LocalSavegames
 {
 
 public:

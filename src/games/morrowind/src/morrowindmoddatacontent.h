@@ -10,7 +10,7 @@ public:
   /**
    *
    */
-  MorrowindModDataContent(GameGamebryo const* gamePlugin) : GamebryoModDataContent(gamePlugin) {
+  MorrowindModDataContent(MOBase::IGameFeatures const* gameFeatures) : GamebryoModDataContent(gameFeatures) {
     // Just need to disable some contents:
     m_Enabled[CONTENT_MCM] = false;
     m_Enabled[CONTENT_SKYPROC] = false;

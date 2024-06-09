@@ -58,10 +58,6 @@ protected:
   virtual QString savegameExtension() const override;
   virtual QString savegameSEExtension() const override;
   virtual std::shared_ptr<const GamebryoSaveGame> makeSaveGame(QString filepath) const override;
-
-private:
-
-  MOBase::IOrganizer *m_Organizer;
 };
 
 
