@@ -3,10 +3,9 @@
 #include <QString>
 #include <QStringList>
 
-Fallout4VRScriptExtender::Fallout4VRScriptExtender(GameGamebryo const *game) :
-  GamebryoScriptExtender(game)
-{
-}
+Fallout4VRScriptExtender::Fallout4VRScriptExtender(GameGamebryo const* game)
+    : GamebryoScriptExtender(game)
+{}
 
 QString Fallout4VRScriptExtender::BinaryName() const
 {
