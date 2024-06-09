@@ -68,14 +68,14 @@ bool GameSkyrimVR::init(IOrganizer *moInfo)
     return false;
   }
 
-  registerFeature<ScriptExtender>(new SkyrimVRScriptExtender(this));
-  registerFeature<DataArchives>(new SkyrimVRDataArchives(myGamesPath()));
-  registerFeature<LocalSavegames>(new GamebryoLocalSavegames(myGamesPath(), "SkyrimVR.ini"));
-  registerFeature<ModDataChecker>(new SkyrimVRModDataChecker(this));
-  registerFeature<SaveGameInfo>(new GamebryoSaveGameInfo(this));
-  registerFeature<ModDataContent>(new SkyrimVRModDataContent(this));
-  registerFeature<GamePlugins>(new SkyrimVRGamePlugins(moInfo));
-  registerFeature<UnmanagedMods>(new SkyrimVRUnmangedMods(this));
+  registerFeature(std::make_shared<SkyrimVRScriptExtender>(this));
+  registerFeature(std::make_shared<SkyrimVRDataArchives>(myGamesPath()));
+  registerFeature(std::make_shared<GamebryoLocalSavegames>(myGamesPath(), "SkyrimVR.ini"));
+  registerFeature(std::make_shared<SkyrimVRModDataChecker>(this));
+  registerFeature(std::make_shared<GamebryoSaveGameInfo>(this));
+  registerFeature(std::make_shared<SkyrimVRModDataContent>(m_Organizer->gameFeatures()));
+  registerFeature(std::make_shared<SkyrimVRGamePlugins>(moInfo));
+  registerFeature(std::make_shared<SkyrimVRUnmangedMods>(this));
 
   return true;
 }
@@ -90,7 +90,7 @@ QString GameSkyrimVR::gameName() const
 QList<ExecutableInfo> GameSkyrimVR::executables() const
 {
   return QList<ExecutableInfo>()
-    << ExecutableInfo("SKSE", findInGameFolder(feature<ScriptExtender>()->loaderName()))
+    << ExecutableInfo("SKSE", findInGameFolder(m_Organizer->gameFeatures()->gameFeature<MOBase::ScriptExtender>()->loaderName()))
     << ExecutableInfo("Skyrim VR", findInGameFolder(binaryName()))
     << ExecutableInfo("Creation Kit", findInGameFolder("CreationKit.exe"))
     << ExecutableInfo("LOOT", QFileInfo(getLootPath())).withArgument("--game=\"Skyrim VR\"")
