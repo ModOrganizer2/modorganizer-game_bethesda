@@ -1,10 +1,9 @@
 #include "oblivionbsainvalidation.h"
 
-
-OblivionBSAInvalidation::OblivionBSAInvalidation(MOBase::DataArchives *dataArchives, MOBase::IPluginGame const *game)
-  : GamebryoBSAInvalidation(dataArchives, "oblivion.ini", game)
-{
-}
+OblivionBSAInvalidation::OblivionBSAInvalidation(MOBase::DataArchives* dataArchives,
+                                                 MOBase::IPluginGame const* game)
+    : GamebryoBSAInvalidation(dataArchives, "oblivion.ini", game)
+{}
 
 QString OblivionBSAInvalidation::invalidationBSAName() const
 {
