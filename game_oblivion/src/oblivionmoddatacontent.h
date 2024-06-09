@@ -10,7 +10,7 @@ public:
   /**
    *
    */
-  OblivionModDataContent(GameGamebryo const* gamePlugin) : GamebryoModDataContent(gamePlugin) {
+  OblivionModDataContent(const MOBase::IGameFeatures* gameFeatures) : GamebryoModDataContent(gameFeatures) {
     // Just need to disable some contents:
     m_Enabled[CONTENT_MCM] = false;
     m_Enabled[CONTENT_SKYPROC] = false;

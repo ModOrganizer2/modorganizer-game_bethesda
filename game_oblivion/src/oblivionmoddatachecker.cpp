@@ -1,6 +1,6 @@
 #include "oblivionmoddatachecker.h"
 
-ModDataChecker::CheckReturn OblivionModDataChecker::dataLooksValid(
+MOBase::ModDataChecker::CheckReturn OblivionModDataChecker::dataLooksValid(
   std::shared_ptr<const MOBase::IFileTree> fileTree) const
 {
   // Check with Gamebryo stuff:
