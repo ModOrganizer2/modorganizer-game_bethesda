@@ -9,7 +9,8 @@
 class FalloutNVBSAInvalidation : public GamebryoBSAInvalidation
 {
 public:
-  FalloutNVBSAInvalidation(DataArchives* dataArchives, MOBase::IPluginGame const* game);
+  FalloutNVBSAInvalidation(MOBase::DataArchives* dataArchives,
+                           MOBase::IPluginGame const* game);
 
 private:
   virtual QString invalidationBSAName() const override;

@@ -34,17 +34,20 @@ bool GameFalloutNV::init(IOrganizer* moInfo)
   if (!GameGamebryo::init(moInfo)) {
     return false;
   }
-  registerFeature<ScriptExtender>(new FalloutNVScriptExtender(this));
-  registerFeature<DataArchives>(new FalloutNVDataArchives(myGamesPath()));
-  registerFeature<BSAInvalidation>(
-      new FalloutNVBSAInvalidation(feature<DataArchives>(), this));
-  registerFeature<SaveGameInfo>(new GamebryoSaveGameInfo(this));
-  registerFeature<LocalSavegames>(
-      new GamebryoLocalSavegames(myGamesPath(), "fallout.ini"));
-  registerFeature<ModDataChecker>(new FalloutNVModDataChecker(this));
-  registerFeature<ModDataContent>(new FalloutNVModDataContent(this));
-  registerFeature<GamePlugins>(new GamebryoGamePlugins(moInfo));
-  registerFeature<UnmanagedMods>(new GamebryoUnmangedMods(this));
+
+  auto dataArchives = std::make_shared<FalloutNVDataArchives>(myGamesPath());
+  registerFeature(std::make_shared<FalloutNVScriptExtender>(this));
+  registerFeature(dataArchives);
+  registerFeature(std::make_shared<FalloutNVBSAInvalidation>(dataArchives.get(), this));
+  registerFeature(std::make_shared<GamebryoSaveGameInfo>(this));
+  registerFeature(
+      std::make_shared<GamebryoLocalSavegames>(myGamesPath(), "fallout.ini"));
+  registerFeature(std::make_shared<FalloutNVModDataChecker>(this));
+  registerFeature(
+      std::make_shared<FalloutNVModDataContent>(m_Organizer->gameFeatures()));
+  registerFeature(std::make_shared<GamebryoGamePlugins>(moInfo));
+  registerFeature(std::make_shared<GamebryoUnmangedMods>(this));
+
   return true;
 }
 
@@ -101,11 +104,12 @@ void GameFalloutNV::setGamePath(const QString& path)
   m_GamePath = path;
   checkVariants();
   m_MyGamesPath = determineMyGamesPath(gameDirectoryName());
-  registerFeature<DataArchives>(new FalloutNVDataArchives(myGamesPath()));
-  registerFeature<BSAInvalidation>(
-      new FalloutNVBSAInvalidation(feature<DataArchives>(), this));
-  registerFeature<LocalSavegames>(
-      new GamebryoLocalSavegames(myGamesPath(), "fallout.ini"));
+
+  auto dataArchives = std::make_shared<FalloutNVDataArchives>(myGamesPath());
+  registerFeature(dataArchives);
+  registerFeature(std::make_shared<FalloutNVBSAInvalidation>(dataArchives.get(), this));
+  registerFeature(
+      std::make_shared<GamebryoLocalSavegames>(myGamesPath(), "fallout.ini"));
 }
 
 QDir GameFalloutNV::savesDirectory() const
@@ -157,7 +161,9 @@ QList<ExecutableInfo> GameFalloutNV::executables() const
                                      .withArgument("--game=\"FalloutNV\"");
   if (selectedVariant() != "Epic Games") {
     extraExecutables.prepend(ExecutableInfo(
-        "NVSE", findInGameFolder(feature<ScriptExtender>()->loaderName())));
+        "NVSE", findInGameFolder(m_Organizer->gameFeatures()
+                                     ->gameFeature<MOBase::ScriptExtender>()
+                                     ->loaderName())));
   } else {
     game.withArgument("-EpicPortal");
     launcher.withArgument("-EpicPortal");
