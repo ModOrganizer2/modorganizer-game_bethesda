@@ -31,20 +31,22 @@ GameFallout3::GameFallout3()
 {
 }
 
-bool GameFallout3::init(IOrganizer *moInfo)
+bool GameFallout3::init(IOrganizer* moInfo)
 {
   if (!GameGamebryo::init(moInfo)) {
     return false;
   }
-  registerFeature<ScriptExtender>(new Fallout3ScriptExtender(this));
-  registerFeature<DataArchives>(new Fallout3DataArchives(myGamesPath()));
-  registerFeature<BSAInvalidation>(new Fallout3BSAInvalidation(feature<DataArchives>(), this));
-  registerFeature<SaveGameInfo>(new GamebryoSaveGameInfo(this));
-  registerFeature<LocalSavegames>(new GamebryoLocalSavegames(myGamesPath(), "fallout.ini"));
-  registerFeature<ModDataChecker>(new Fallout3ModDataChecker(this));
-  registerFeature<ModDataContent>(new Fallout3ModDataContent(this));
-  registerFeature<GamePlugins>(new GamebryoGamePlugins(moInfo));
-  registerFeature<UnmanagedMods>(new GamebryoUnmangedMods(this));
+
+  auto dataArchives = std::make_shared<Fallout3DataArchives>(myGamesPath());
+  registerFeature(std::make_shared<Fallout3ScriptExtender>(this));
+  registerFeature(dataArchives);
+  registerFeature(std::make_shared<Fallout3BSAInvalidation>(dataArchives.get(), this));
+  registerFeature(std::make_shared<GamebryoSaveGameInfo>(this));
+  registerFeature(std::make_shared<GamebryoLocalSavegames>(myGamesPath(), "fallout.ini"));
+  registerFeature(std::make_shared<Fallout3ModDataChecker>(this));
+  registerFeature(std::make_shared<Fallout3ModDataContent>(m_Organizer->gameFeatures()));
+  registerFeature(std::make_shared<GamebryoGamePlugins>(moInfo));
+  registerFeature(std::make_shared<GamebryoUnmangedMods>(this));
   return true;
 }
 
@@ -80,14 +82,14 @@ void GameFallout3::detectGame()
 QList<ExecutableInfo> GameFallout3::executables() const
 {
   return QList<ExecutableInfo>()
-      << ExecutableInfo("FOSE", findInGameFolder(feature<ScriptExtender>()->loaderName()))
-      << ExecutableInfo("Fallout 3", findInGameFolder(binaryName()))
-      << ExecutableInfo("Fallout Mod Manager", findInGameFolder("fomm/fomm.exe"))
-      << ExecutableInfo("Construction Kit", findInGameFolder("geck.exe"))
-      << ExecutableInfo("Fallout Launcher", findInGameFolder(getLauncherName()))
-      << ExecutableInfo("BOSS", findInGameFolder("BOSS/BOSS.exe"))
-      << ExecutableInfo("LOOT", QFileInfo(getLootPath())).withArgument("--game=\"Fallout3\"")
-         ;
+    << ExecutableInfo("FOSE", findInGameFolder(m_Organizer->gameFeatures()->gameFeature<MOBase::ScriptExtender>()->loaderName()))
+    << ExecutableInfo("Fallout 3", findInGameFolder(binaryName()))
+    << ExecutableInfo("Fallout Mod Manager", findInGameFolder("fomm/fomm.exe"))
+    << ExecutableInfo("Construction Kit", findInGameFolder("geck.exe"))
+    << ExecutableInfo("Fallout Launcher", findInGameFolder(getLauncherName()))
+    << ExecutableInfo("BOSS", findInGameFolder("BOSS/BOSS.exe"))
+    << ExecutableInfo("LOOT", QFileInfo(getLootPath())).withArgument("--game=\"Fallout3\"")
+    ;
 }
 
 QList<ExecutableForcedLoadSetting> GameFallout3::executableForcedLoads() const

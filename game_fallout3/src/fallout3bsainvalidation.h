@@ -11,7 +11,7 @@ class Fallout3BSAInvalidation : public GamebryoBSAInvalidation
 {
 public:
 
-  Fallout3BSAInvalidation(DataArchives *dataArchives, MOBase::IPluginGame const *game);
+  Fallout3BSAInvalidation(MOBase::DataArchives* dataArchives, MOBase::IPluginGame const* game);
 
 private:
 
