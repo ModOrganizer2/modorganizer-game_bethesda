@@ -1,9 +1,9 @@
 #include "skyrimbsainvalidation.h"
 
-SkyrimBSAInvalidation::SkyrimBSAInvalidation(MOBase::DataArchives *dataArchives, MOBase::IPluginGame const *game)
-  : GamebryoBSAInvalidation(dataArchives, "skyrim.ini", game)
-{
-}
+SkyrimBSAInvalidation::SkyrimBSAInvalidation(MOBase::DataArchives* dataArchives,
+                                             MOBase::IPluginGame const* game)
+    : GamebryoBSAInvalidation(dataArchives, "skyrim.ini", game)
+{}
 
 QString SkyrimBSAInvalidation::invalidationBSAName() const
 {
