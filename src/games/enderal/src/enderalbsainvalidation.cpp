@@ -1,6 +1,6 @@
 #include "enderalbsainvalidation.h"
 
-EnderalBSAInvalidation::EnderalBSAInvalidation(DataArchives* dataArchives,
+EnderalBSAInvalidation::EnderalBSAInvalidation(MOBase::DataArchives* dataArchives,
                                                MOBase::IPluginGame const* game)
     : GamebryoBSAInvalidation(dataArchives, "enderal.ini", game)
 {}

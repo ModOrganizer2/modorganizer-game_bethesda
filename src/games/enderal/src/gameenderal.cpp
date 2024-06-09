@@ -44,17 +44,18 @@ bool GameEnderal::init(IOrganizer* moInfo)
     return false;
   }
 
-  registerFeature<ScriptExtender>(new EnderalScriptExtender(this));
-  registerFeature<DataArchives>(new EnderalDataArchives(myGamesPath()));
-  registerFeature<BSAInvalidation>(
-      new EnderalBSAInvalidation(feature<DataArchives>(), this));
-  registerFeature<SaveGameInfo>(new GamebryoSaveGameInfo(this));
-  registerFeature<LocalSavegames>(
-      new EnderalLocalSavegames(myGamesPath(), "enderal.ini"));
-  registerFeature<ModDataChecker>(new EnderalModDataChecker(this));
-  registerFeature<ModDataContent>(new EnderalModDataContent(this));
-  registerFeature<GamePlugins>(new EnderalGamePlugins(moInfo));
-  registerFeature<UnmanagedMods>(new GamebryoUnmangedMods(this));
+  auto dataArchives = std::make_shared<EnderalDataArchives>(myGamesPath());
+  registerFeature(std::make_shared<EnderalScriptExtender>(this));
+  registerFeature(dataArchives);
+  registerFeature(std::make_shared<EnderalBSAInvalidation>(dataArchives.get(), this));
+  registerFeature(std::make_shared<GamebryoSaveGameInfo>(this));
+  registerFeature(
+      std::make_shared<EnderalLocalSavegames>(myGamesPath(), "enderal.ini"));
+  registerFeature(std::make_shared<EnderalModDataChecker>(this));
+  registerFeature(std::make_shared<EnderalModDataContent>(moInfo->gameFeatures()));
+  registerFeature(std::make_shared<EnderalGamePlugins>(moInfo));
+  registerFeature(std::make_shared<GamebryoUnmangedMods>(this));
+
   return true;
 }
 
