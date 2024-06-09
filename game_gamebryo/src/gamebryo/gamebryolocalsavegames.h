@@ -24,7 +24,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 #include <QDir>
 #include <QString>
 
-class GamebryoLocalSavegames : public LocalSavegames
+class GamebryoLocalSavegames : public MOBase::LocalSavegames
 {
 
 public:

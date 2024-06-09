@@ -11,11 +11,11 @@ namespace MOBase
 class IPluginGame;
 }
 
-class GamebryoBSAInvalidation : public BSAInvalidation
+class GamebryoBSAInvalidation : public MOBase::BSAInvalidation
 {
 public:
-  GamebryoBSAInvalidation(DataArchives* dataArchives, const QString& iniFilename,
-                          MOBase::IPluginGame const* game);
+  GamebryoBSAInvalidation(MOBase::DataArchives* dataArchives,
+                          const QString& iniFilename, MOBase::IPluginGame const* game);
 
   virtual bool isInvalidationBSA(const QString& bsaName) override;
   virtual void deactivate(MOBase::IProfile* profile) override;
@@ -28,7 +28,7 @@ private:
   bsaVersion() const = 0;  // 0x67 for oblivion, 0x68 for everything else
 
 private:
-  DataArchives* m_DataArchives;
+  MOBase::DataArchives* m_DataArchives;
   QString m_IniFileName;
   MOBase::IPluginGame const* m_Game;
 };

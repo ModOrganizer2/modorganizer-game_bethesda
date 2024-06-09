@@ -5,7 +5,7 @@
 
 class GameGamebryo;
 
-class GamebryoSaveGameInfo : public SaveGameInfo
+class GamebryoSaveGameInfo : public MOBase::SaveGameInfo
 {
 public:
   GamebryoSaveGameInfo(GameGamebryo const* game);

@@ -12,7 +12,7 @@
 
 #include <Windows.h>
 
-GamebryoBSAInvalidation::GamebryoBSAInvalidation(DataArchives* dataArchives,
+GamebryoBSAInvalidation::GamebryoBSAInvalidation(MOBase::DataArchives* dataArchives,
                                                  const QString& iniFilename,
                                                  MOBase::IPluginGame const* game)
     : m_DataArchives(dataArchives), m_IniFileName(iniFilename), m_Game(game)

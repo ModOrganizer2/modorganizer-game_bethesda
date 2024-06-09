@@ -5,7 +5,7 @@
 
 class GameGamebryo;
 
-class GamebryoScriptExtender : public ScriptExtender
+class GamebryoScriptExtender : public MOBase::ScriptExtender
 {
 public:
   GamebryoScriptExtender(GameGamebryo const* game);

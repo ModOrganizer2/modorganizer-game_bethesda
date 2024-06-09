@@ -5,7 +5,7 @@
 
 class GameGamebryo;
 
-class GamebryoUnmangedMods : public UnmanagedMods
+class GamebryoUnmangedMods : public MOBase::UnmanagedMods
 {
 public:
   GamebryoUnmangedMods(const GameGamebryo* game);

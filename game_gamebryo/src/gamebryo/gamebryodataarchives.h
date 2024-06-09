@@ -4,7 +4,7 @@
 #include "dataarchives.h"
 #include <QDir>
 
-class GamebryoDataArchives : public DataArchives
+class GamebryoDataArchives : public MOBase::DataArchives
 {
 
 public:

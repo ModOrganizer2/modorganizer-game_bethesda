@@ -22,6 +22,7 @@ class UnmanagedMods;
 #include <memory>
 
 #include "gamebryosavegame.h"
+#include "igamefeatures.h"
 
 class GameGamebryo : public MOBase::IPluginGame, public MOBase::IPluginFileMapper
 {
@@ -132,37 +133,17 @@ protected:
   static QString parseSteamLocation(const QString& appid, const QString& directoryName);
 
 protected:
-  std::map<std::type_index, std::any> featureList() const override;
-
-  // These should be implemented by anything that uses gamebryo (I think)
-  //(and if they don't, it'll be a null pointer and won't look implemented,
-  // so that's fine too).
-  /*
-  std::shared_ptr<ScriptExtender> m_ScriptExtender { nullptr };
-  std::shared_ptr<DataArchives> m_DataArchives { nullptr };
-  std::shared_ptr<BSAInvalidation> m_BSAInvalidation { nullptr };
-  std::shared_ptr<SaveGameInfo> m_SaveGameInfo { nullptr };
-  std::shared_ptr<LocalSavegames> m_LocalSavegames { nullptr };
-  std::shared_ptr<GamePlugins> m_GamePlugins { nullptr };
-  std::shared_ptr<UnmanagedMods> m_UnmanagedMods { nullptr };*/
-
-  template <typename T>
-  void registerFeature(T* type)
-  {
-    auto index = std::type_index(typeid(T));
-    if (m_FeatureList.find(index) != m_FeatureList.end()) {
-      delete std::any_cast<T*>(m_FeatureList[index]);
-    }
-    m_FeatureList[index] = type;
-  }
+  void registerFeature(std::shared_ptr<MOBase::GameFeature> feature);
 
 protected:
+  // to access organizer for game features, avoid having to pass it to all saves since
+  // we already pass the game
+  friend class GamebryoSaveGame;
+
   QString m_GamePath;
   QString m_MyGamesPath;
   QString m_GameVariant;
   MOBase::IOrganizer* m_Organizer;
-
-  std::map<std::type_index, std::any> m_FeatureList;
 };
 
 #endif  // GAMEGAMEBRYO_H
