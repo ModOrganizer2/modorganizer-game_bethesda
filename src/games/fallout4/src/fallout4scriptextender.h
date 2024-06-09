@@ -8,11 +8,10 @@ class GameGamebryo;
 class Fallout4ScriptExtender : public GamebryoScriptExtender
 {
 public:
-  Fallout4ScriptExtender(GameGamebryo const *game);
+  Fallout4ScriptExtender(GameGamebryo const* game);
 
   virtual QString BinaryName() const override;
   virtual QString PluginPath() const override;
-
 };
 
-#endif // FALLOUT4SCRIPTEXTENDER_H
+#endif  // FALLOUT4SCRIPTEXTENDER_H
