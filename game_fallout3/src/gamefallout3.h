@@ -12,18 +12,18 @@ class GameFallout3 : public GameGamebryo
   Q_PLUGIN_METADATA(IID "org.tannin.GameFallout3" FILE "gamefallout3.json")
 
 public:
-
   GameFallout3();
 
-  virtual bool init(MOBase::IOrganizer *moInfo) override;
+  virtual bool init(MOBase::IOrganizer* moInfo) override;
 
-public: // IPluginGame interface
-
+public:  // IPluginGame interface
   virtual QString gameName() const override;
   virtual void detectGame() override;
   virtual QList<MOBase::ExecutableInfo> executables() const override;
-  virtual QList<MOBase::ExecutableForcedLoadSetting> executableForcedLoads() const override;
-  virtual void initializeProfile(const QDir &path, ProfileSettings settings) const override;
+  virtual QList<MOBase::ExecutableForcedLoadSetting>
+  executableForcedLoads() const override;
+  virtual void initializeProfile(const QDir& path,
+                                 ProfileSettings settings) const override;
   virtual QString steamAPPId() const override;
   virtual QStringList primaryPlugins() const override;
   virtual QStringList gameVariants() const;
@@ -36,8 +36,7 @@ public: // IPluginGame interface
   virtual int nexusModOrganizerID() const override;
   virtual int nexusGameID() const override;
 
-public: // IPlugin interface
-
+public:  // IPlugin interface
   virtual QString name() const override;
   virtual QString localizedName() const override;
   virtual QString author() const override;
@@ -50,7 +49,6 @@ protected:
   virtual QString savegameExtension() const override;
   virtual QString savegameSEExtension() const override;
   std::shared_ptr<const GamebryoSaveGame> makeSaveGame(QString filePath) const override;
-
 };
 
-#endif // GAMEFALLOUT3_H
+#endif  // GAMEFALLOUT3_H
