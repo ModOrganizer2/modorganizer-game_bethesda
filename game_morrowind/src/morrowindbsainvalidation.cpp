@@ -1,6 +1,6 @@
 #include "morrowindbsainvalidation.h"
 
-MorrowindBSAInvalidation::MorrowindBSAInvalidation(DataArchives *dataArchives, MOBase::IPluginGame const *game)
+MorrowindBSAInvalidation::MorrowindBSAInvalidation(MOBase::DataArchives *dataArchives, MOBase::IPluginGame const *game)
   : GamebryoBSAInvalidation(dataArchives, "morrowind.ini", game)
 {
 }

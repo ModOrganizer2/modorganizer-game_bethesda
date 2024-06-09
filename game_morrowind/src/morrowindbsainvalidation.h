@@ -11,7 +11,7 @@ class MorrowindBSAInvalidation : public GamebryoBSAInvalidation
 {
 public:
 
-  MorrowindBSAInvalidation(DataArchives *dataArchives, MOBase::IPluginGame const *game);
+  MorrowindBSAInvalidation(MOBase::DataArchives *dataArchives, MOBase::IPluginGame const *game);
 
 private:
 
