@@ -18,7 +18,7 @@ struct _SYSTEMTIME;
 namespace MOBase
 {
 class IPluginGame;
-}
+}  // namespace MOBase
 
 class GameGamebryo;
 

@@ -14,7 +14,7 @@ class GameGamebryo;
  * extensions that were used before the ModDataChecker feature was added. It is possible
  * to inherit the class to provide custom list of folders or filenames.
  */
-class GamebryoModDataChecker : public ModDataChecker
+class GamebryoModDataChecker : public MOBase::ModDataChecker
 {
 public:
   /**

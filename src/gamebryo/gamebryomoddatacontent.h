@@ -4,13 +4,16 @@
 #include <ifiletree.h>
 #include <moddatacontent.h>
 
-class GameGamebryo;
+namespace MOBase
+{
+class IGameFeatures;
+}
 
 /**
  * @brief ModDataContent for GameBryo games.
  *
  */
-class GamebryoModDataContent : public ModDataContent
+class GamebryoModDataContent : public MOBase::ModDataContent
 {
 protected:
   /**
@@ -45,7 +48,7 @@ public:
   /**
    *
    */
-  GamebryoModDataContent(GameGamebryo const* gamePlugin);
+  GamebryoModDataContent(const MOBase::IGameFeatures* gameFeatures);
 
   /**
    * @return the list of all possible contents for the corresponding game.
@@ -63,7 +66,7 @@ public:
   getContentsFor(std::shared_ptr<const MOBase::IFileTree> fileTree) const override;
 
 protected:
-  GameGamebryo const* const m_GamePlugin;
+  MOBase::IGameFeatures const* const m_GameFeatures;
 
   // List of enabled contents:
   std::vector<bool> m_Enabled;

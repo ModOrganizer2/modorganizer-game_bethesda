@@ -18,6 +18,7 @@
 #include <vector>
 
 #include "gamegamebryo.h"
+#include "imoinfo.h"
 
 #define CHUNK 16384
 
@@ -58,8 +59,8 @@ QString GamebryoSaveGame::getSaveGroupIdentifier() const
 QStringList GamebryoSaveGame::allFiles() const
 {
   // This returns all valid files associated with this game
-  QStringList res         = {m_FileName};
-  ScriptExtender const* e = m_Game->feature<ScriptExtender>();
+  QStringList res = {m_FileName};
+  auto e = m_Game->m_Organizer->gameFeatures()->gameFeature<MOBase::ScriptExtender>();
   if (e != nullptr) {
     QFileInfo file(m_FileName);
     QFileInfo SEfile(file.absolutePath() + "/" + file.completeBaseName() + "." +

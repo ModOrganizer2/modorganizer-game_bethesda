@@ -1,11 +1,11 @@
 #include "gamebryomoddatacontent.h"
 
+#include <igamefeatures.h>
 #include <scriptextender.h>
 
-#include "gamegamebryo.h"
-
-GamebryoModDataContent::GamebryoModDataContent(GameGamebryo const* gamePlugin)
-    : m_GamePlugin(gamePlugin), m_Enabled(CONTENT_MODGROUP + 1, true)
+GamebryoModDataContent::GamebryoModDataContent(
+    MOBase::IGameFeatures const* gameFeatures)
+    : m_GameFeatures(gameFeatures), m_Enabled(CONTENT_MODGROUP + 1, true)
 {}
 
 std::vector<GamebryoModDataContent::Content>
@@ -94,7 +94,7 @@ std::vector<int> GamebryoModDataContent::getContentsFor(
     }
   }
 
-  ScriptExtender* extender = m_GamePlugin->feature<ScriptExtender>();
+  auto extender = m_GameFeatures->gameFeature<MOBase::ScriptExtender>();
   if (extender != nullptr) {
     auto e = fileTree->findDirectory(extender->PluginPath());
     if (e) {

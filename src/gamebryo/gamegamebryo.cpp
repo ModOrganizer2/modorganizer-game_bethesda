@@ -254,11 +254,6 @@ QString GameGamebryo::myGamesPath() const
          "/Loot.exe";
 }
 
-std::map<std::type_index, std::any> GameGamebryo::featureList() const
-{
-  return m_FeatureList;
-}
-
 QString GameGamebryo::localAppFolder()
 {
   QString result = getKnownFolderPath(FOLDERID_LocalAppData, false);
@@ -473,4 +468,10 @@ QString GameGamebryo::parseSteamLocation(const QString& appid,
     }
   }
   return "";
+}
+
+void GameGamebryo::registerFeature(std::shared_ptr<MOBase::GameFeature> feature)
+{
+  // priority does not matter, this is a game plugin so will get lowest priority in MO2
+  m_Organizer->gameFeatures()->registerFeature(this, feature, 0, true);
 }

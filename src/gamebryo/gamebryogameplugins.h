@@ -6,7 +6,7 @@
 #include <gameplugins.h>
 #include <imoinfo.h>
 
-class GamebryoGamePlugins : public GamePlugins
+class GamebryoGamePlugins : public MOBase::GamePlugins
 {
 public:
   GamebryoGamePlugins(MOBase::IOrganizer* organizer);
