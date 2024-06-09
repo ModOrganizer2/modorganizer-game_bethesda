@@ -9,7 +9,7 @@
 class FalloutTTWBSAInvalidation : public GamebryoBSAInvalidation
 {
 public:
-  FalloutTTWBSAInvalidation(DataArchives* dataArchives,
+  FalloutTTWBSAInvalidation(MOBase::DataArchives* dataArchives,
                             MOBase::IPluginGame const* game);
 
 private:
