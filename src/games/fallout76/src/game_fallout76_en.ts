@@ -4,7 +4,7 @@
 <context>
     <name>GameFallout76</name>
     <message>
-        <location filename="gamefallout76.cpp" line="82"/>
+        <location filename="gamefallout76.cpp" line="85"/>
         <source>Adds support for the game Fallout 76.
 Splash by %1</source>
         <translation type="unfinished"></translation>
