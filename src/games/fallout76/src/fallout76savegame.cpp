@@ -72,4 +72,6 @@ std::unique_ptr<GamebryoSaveGame::DataFields> Fallout76SaveGame::fetchDataFields
   if (saveGameVersion >= 68) {
     file.readLightPlugins();
   }
+
+  return fields;
 }
