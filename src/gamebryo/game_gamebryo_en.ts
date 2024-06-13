@@ -119,11 +119,17 @@
     <message>
         <location filename="gamebryosavegameinfowidget.cpp" line="116"/>
         <location filename="gamebryosavegameinfowidget.cpp" line="154"/>
+        <location filename="gamebryosavegameinfowidget.cpp" line="193"/>
         <source>None</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="gamebryosavegameinfowidget.cpp" line="122"/>
+        <source>Missing ESHs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="gamebryosavegameinfowidget.cpp" line="161"/>
         <source>Missing ESLs</source>
         <translation type="unfinished"></translation>
     </message>
@@ -136,27 +142,27 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="gamebryosavegame.cpp" line="46"/>
+        <location filename="gamebryosavegame.cpp" line="48"/>
         <source>%1, #%2, Level %3, %4</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="gamebryosavegame.cpp" line="100"/>
+        <location filename="gamebryosavegame.cpp" line="102"/>
         <source>failed to open %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="gamebryosavegame.cpp" line="110"/>
+        <location filename="gamebryosavegame.cpp" line="112"/>
         <source>wrong file format - expected %1 got &apos;%2&apos; for %3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="gamegamebryo.cpp" line="323"/>
+        <location filename="gamegamebryo.cpp" line="318"/>
         <source>failed to query registry path (preflight): %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="gamegamebryo.cpp" line="331"/>
+        <location filename="gamegamebryo.cpp" line="326"/>
         <source>failed to query registry path (read): %1</source>
         <translation type="unfinished"></translation>
     </message>

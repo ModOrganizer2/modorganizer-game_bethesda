@@ -252,7 +252,7 @@ bool GamebryoGamePlugins::lightPluginsAreSupported()
   return false;
 }
 
-bool GamebryoGamePlugins::overridePluginsAreSupported()
+bool GamebryoGamePlugins::mediumPluginsAreSupported()
 {
   return false;
 }
