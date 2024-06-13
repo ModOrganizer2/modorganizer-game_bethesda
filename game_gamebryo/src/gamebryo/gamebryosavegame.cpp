@@ -23,9 +23,10 @@
 #define CHUNK 16384
 
 GamebryoSaveGame::GamebryoSaveGame(QString const& file, GameGamebryo const* game,
-                                   bool const lightEnabled)
+                                   bool const lightEnabled, bool const mediumEnabled)
     : m_FileName(file), m_CreationTime(QFileInfo(file).lastModified()), m_Game(game),
-      m_LightEnabled(lightEnabled), m_DataFields([this]() {
+      m_MediumEnabled(mediumEnabled), m_LightEnabled(lightEnabled),
+      m_DataFields([this]() {
         return fetchDataFields();
       })
 {}
@@ -508,60 +509,86 @@ float_t GamebryoSaveGame::FileWrapper::readFloat(int bytesToIgnore)
   }
 }
 
-QStringList GamebryoSaveGame::FileWrapper::readPlugins(int bytesToIgnore)
+QStringList GamebryoSaveGame::FileWrapper::readPlugins(int bytesToIgnore,
+                                                       bool extraData,
+                                                       const QStringList& corePlugins)
 {
-  QStringList plugins;
   if (m_CompressionType == 0) {
     if (bytesToIgnore > 0)  // Just to make certain
       skip<char>(bytesToIgnore);
     uint8_t count;
     read(count);
-    uint16_t finalCount = count;
-    plugins.reserve(finalCount);
-    for (std::size_t i = 0; i < finalCount; ++i) {
-      QString name;
-      read(name);
-      plugins.push_back(name);
-    }
+    return readPluginData(count, extraData, corePlugins);
   } else if (m_CompressionType == 1 || m_CompressionType == 2) {
     skipQDataStream(*m_Data, bytesToIgnore);
     uint8_t count;
     readQDataStream(*m_Data, count);
-    uint16_t finalCount = count;
-    plugins.reserve(finalCount);
-    for (std::size_t i = 0; i < finalCount; ++i) {
-      QString name;
-      read(name);
-      plugins.push_back(name);
-    }
+    return readPluginData(count, extraData, corePlugins);
   }
-  return plugins;
+  return {};
 }
 
-QStringList GamebryoSaveGame::FileWrapper::readLightPlugins(int bytesToIgnore)
+QStringList
+GamebryoSaveGame::FileWrapper::readLightPlugins(int bytesToIgnore, bool extraData,
+                                                const QStringList& corePlugins)
 {
-  QStringList plugins;
   if (m_CompressionType == 0) {
     if (bytesToIgnore > 0)  // Just to make certain
       skip<char>(bytesToIgnore);
     uint16_t count;
     read(count);
-    plugins.reserve(count);
+    return readPluginData(count, extraData, corePlugins);
+  } else if (m_CompressionType == 1 || m_CompressionType == 2) {
+    skipQDataStream(*m_Data, bytesToIgnore);
+    uint16_t count;
+    readQDataStream(*m_Data, count);
+    return readPluginData(count, extraData, corePlugins);
+  }
+  return {};
+}
+
+QStringList
+GamebryoSaveGame::FileWrapper::readMediumPlugins(int bytesToIgnore, bool extraData,
+                                                 const QStringList& corePlugins)
+{
+  if (m_CompressionType != 1) {
+    return {};
+  } else {
+    skipQDataStream(*m_Data, bytesToIgnore);
+    uint32_t count;
+    readQDataStream(*m_Data, count);
+    return readPluginData(count, extraData, corePlugins);
+  }
+}
+
+QStringList GamebryoSaveGame::FileWrapper::readPluginData(uint32_t count,
+                                                          bool extraData,
+                                                          const QStringList corePlugins)
+{
+  QStringList plugins;
+  plugins.reserve(count);
+  if (m_CompressionType == 0) {
     for (std::size_t i = 0; i < count; ++i) {
       QString name;
       read(name);
       plugins.push_back(name);
     }
-  } else if (m_CompressionType == 1 || m_CompressionType == 2) {
-    skipQDataStream(*m_Data, bytesToIgnore);
-
-    uint16_t count;
-    readQDataStream(*m_Data, count);
-    plugins.reserve(count);
+  } else {
     for (std::size_t i = 0; i < count; ++i) {
       QString name;
       read(name);
       plugins.push_back(name);
+      if (extraData && !corePlugins.contains(name)) {
+        QString creationName;
+        QString creationId;
+        uint16_t flagsSize;
+        uint8_t isCreation;
+        read(creationName);
+        read(creationId);
+        readQDataStream(*m_Data, flagsSize);
+        skipQDataStream(*m_Data, flagsSize);
+        readQDataStream(*m_Data, isCreation);
+      }
     }
   }
   return plugins;

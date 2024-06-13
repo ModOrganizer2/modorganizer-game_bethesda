@@ -118,6 +118,45 @@ void GamebryoSaveGameInfoWidget::setSave(MOBase::ISaveGame const& save)
     dotDotLabel->setFont(contentFont);
     layout->addWidget(dotDotLabel);
   }
+  if (gamebryoSave.isMediumEnabled()) {
+    QLabel* headerEsh    = new QLabel(tr("Missing ESHs"));
+    QFont headerEshFont  = headerEsh->font();
+    QFont contentEshFont = headerEshFont;
+    headerEshFont.setItalic(true);
+    contentEshFont.setBold(true);
+    contentEshFont.setPointSize(7);
+    headerEsh->setFont(headerEshFont);
+    layout->addWidget(headerEsh);
+    int countEsh = 0;
+    for (QString const& pluginName : gamebryoSave.getMediumPlugins()) {
+      if (pluginList->state(pluginName) == MOBase::IPluginList::STATE_ACTIVE) {
+        continue;
+      }
+
+      ++countEsh;
+
+      if (countEsh > 7) {
+        break;
+      }
+
+      QLabel* pluginLabel = new QLabel(pluginName);
+      pluginLabel->setIndent(10);
+      pluginLabel->setFont(contentFont);
+      layout->addWidget(pluginLabel);
+    }
+    if (countEsh > 7) {
+      QLabel* dotDotLabel = new QLabel("...");
+      dotDotLabel->setIndent(10);
+      dotDotLabel->setFont(contentFont);
+      layout->addWidget(dotDotLabel);
+    }
+    if (countEsh == 0) {
+      QLabel* dotDotLabel = new QLabel(tr("None"));
+      dotDotLabel->setIndent(10);
+      dotDotLabel->setFont(contentFont);
+      layout->addWidget(dotDotLabel);
+    }
+  }
   if (gamebryoSave.isLightEnabled()) {
     QLabel* headerEsl    = new QLabel(tr("Missing ESLs"));
     QFont headerEslFont  = headerEsl->font();

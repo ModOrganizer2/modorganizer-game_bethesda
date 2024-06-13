@@ -26,7 +26,7 @@ class GamebryoSaveGame : public MOBase::ISaveGame
 {
 public:
   GamebryoSaveGame(QString const& file, GameGamebryo const* game,
-                   bool const lightEnabled = false);
+                   bool const lightEnabled = false, bool const mediumEnabled = false);
 
   virtual ~GamebryoSaveGame();
 
@@ -47,11 +47,17 @@ public:
   virtual unsigned long getSaveNumber() const { return m_SaveNumber; }
 
   QStringList const& getPlugins() const { return m_DataFields.value()->Plugins; }
+  QStringList const& getMediumPlugins() const
+  {
+    return m_DataFields.value()->MediumPlugins;
+  }
   QStringList const& getLightPlugins() const
   {
     return m_DataFields.value()->LightPlugins;
   }
   QImage const& getScreenshot() const { return m_DataFields.value()->Screenshot; }
+
+  bool isMediumEnabled() const { return m_MediumEnabled; }
 
   bool isLightEnabled() const { return m_LightEnabled; }
 
@@ -161,10 +167,16 @@ protected:
     float_t readFloat(int bytesToIgnore = 0);
 
     /* Read the plugin list */
-    QStringList readPlugins(int bytesToIgnore = 0);
+    QStringList readPlugins(int bytesToIgnore = 0, bool extraData = false,
+                            const QStringList& corePlugins = {});
 
     /* Read the light plugin list */
-    QStringList readLightPlugins(int bytesToIgnore = 0);
+    QStringList readLightPlugins(int bytesToIgnore = 0, bool extraData = false,
+                                 const QStringList& corePlugins = {});
+
+    /* Read the medium plugin list */
+    QStringList readMediumPlugins(int bytesToIgnore = 0, bool extraData = false,
+                                  const QStringList& corePlugins = {});
 
     void close();
 
@@ -185,11 +197,15 @@ protected:
     void readQDataStream(QDataStream& data, void* buff, std::size_t length);
 
     void skipQDataStream(QDataStream& data, std::size_t length);
+
+    QStringList readPluginData(uint32_t count, bool extraData,
+                               const QStringList corePlugins);
   };
 
   void setCreationTime(_SYSTEMTIME const& time);
 
   GameGamebryo const* m_Game;
+  bool m_MediumEnabled;
   bool m_LightEnabled;
 
   QString m_FileName;
@@ -208,6 +224,7 @@ protected:
   {
     QStringList Plugins;
     QStringList LightPlugins;
+    QStringList MediumPlugins;
     QImage Screenshot;
 
     // We need this constructor.
