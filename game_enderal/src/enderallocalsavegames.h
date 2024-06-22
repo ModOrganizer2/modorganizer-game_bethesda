@@ -19,24 +19,17 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 #ifndef ENDERALLOCALSAVEGAMES_H
 #define ENDERALLOCALSAVEGAMES_H
 
-#include <localsavegames.h>
+#include <gamebryolocalsavegames.h>
 
-#include <QDir>
 #include <QString>
 
-class EnderalLocalSavegames : public MOBase::LocalSavegames
+class EnderalLocalSavegames : public GamebryoLocalSavegames
 {
-
 public:
-  EnderalLocalSavegames(const QDir& myGamesDir, const QString& iniFileName);
+  using GamebryoLocalSavegames::GamebryoLocalSavegames;
 
-  virtual MappingType mappings(const QDir& profileSaveDir) const override;
-  virtual bool prepareProfile(MOBase::IProfile* profile) override;
-
-private:
-  QDir m_LocalSavesDir;
-  QDir m_LocalGameDir;
-  QString m_IniFileName;
+protected:
+  QString localSavesDummy() const override;
 };
 
 #endif  // ENDERALLOCALSAVEGAMES_H
