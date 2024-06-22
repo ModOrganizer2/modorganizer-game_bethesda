@@ -35,14 +35,13 @@ bool GameFalloutTTW::init(IOrganizer* moInfo)
     return false;
   }
 
-  auto dataArchives = std::make_shared<FalloutTTWDataArchives>(myGamesPath());
+  auto dataArchives = std::make_shared<FalloutTTWDataArchives>(this);
   registerFeature(std::make_shared<FalloutTTWScriptExtender>(this));
   registerFeature(dataArchives);
   registerFeature(
       std::make_shared<FalloutTTWBSAInvalidation>(dataArchives.get(), this));
   registerFeature(std::make_shared<GamebryoSaveGameInfo>(this));
-  registerFeature(
-      std::make_shared<GamebryoLocalSavegames>(myGamesPath(), "fallout.ini"));
+  registerFeature(std::make_shared<GamebryoLocalSavegames>(this, "fallout.ini"));
   registerFeature(std::make_shared<FalloutTTWModDataChecker>(this));
   registerFeature(
       std::make_shared<FalloutTTWModDataContent>(m_Organizer->gameFeatures()));
@@ -107,13 +106,6 @@ void GameFalloutTTW::setGamePath(const QString& path)
   m_GamePath = path;
   checkVariants();
   m_MyGamesPath = determineMyGamesPath(gameDirectoryName());
-
-  auto dataArchives = std::make_shared<FalloutTTWDataArchives>(myGamesPath());
-  registerFeature(dataArchives);
-  registerFeature(
-      std::make_shared<FalloutTTWBSAInvalidation>(dataArchives.get(), this));
-  registerFeature(
-      std::make_shared<GamebryoLocalSavegames>(myGamesPath(), "fallout.ini"));
 }
 
 QDir GameFalloutTTW::savesDirectory() const
