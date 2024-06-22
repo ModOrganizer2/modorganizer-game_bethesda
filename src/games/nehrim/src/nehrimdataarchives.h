@@ -9,11 +9,9 @@
 
 class NehrimDataArchives : public GamebryoDataArchives
 {
-
 public:
-  NehrimDataArchives(const QDir& myGamesDir);
+  using GamebryoDataArchives::GamebryoDataArchives;
 
-public:
   virtual QStringList vanillaArchives() const override;
   virtual QStringList archives(const MOBase::IProfile* profile) const override;
 

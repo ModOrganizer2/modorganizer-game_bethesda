@@ -30,13 +30,12 @@ bool GameNehrim::init(IOrganizer* moInfo)
     return false;
   }
 
-  auto dataArchives = std::make_shared<NehrimDataArchives>(myGamesPath());
+  auto dataArchives = std::make_shared<NehrimDataArchives>(this);
   registerFeature(std::make_shared<NehrimScriptExtender>(this));
   registerFeature(dataArchives);
   registerFeature(std::make_shared<NehrimBSAInvalidation>(dataArchives.get(), this));
   registerFeature(std::make_shared<GamebryoSaveGameInfo>(this));
-  registerFeature(
-      std::make_shared<GamebryoLocalSavegames>(myGamesPath(), "oblivion.ini"));
+  registerFeature(std::make_shared<GamebryoLocalSavegames>(this, "oblivion.ini"));
   registerFeature(std::make_shared<NehrimModDataChecker>(this));
   registerFeature(std::make_shared<NehrimModDataContent>(m_Organizer->gameFeatures()));
   registerFeature(std::make_shared<GamebryoGamePlugins>(moInfo));
