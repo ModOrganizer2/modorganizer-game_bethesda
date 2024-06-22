@@ -65,7 +65,6 @@ protected:
   QDir documentsDirectory() const;
   QDir savesDirectory() const;
   QFileInfo findInGameFolder(const QString& relativePath) const;
-  QString myGamesPath() const;
 
   void checkVariants();
   void setVariant(QString variant);

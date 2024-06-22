@@ -3,10 +3,6 @@
 #include "iprofile.h"
 #include <utility.h>
 
-EnderalSEDataArchives::EnderalSEDataArchives(const QDir& myGamesDir)
-    : GamebryoDataArchives(myGamesDir)
-{}
-
 QStringList EnderalSEDataArchives::vanillaArchives() const
 {
   return {"Skyrim - Textures0.bsa",
@@ -43,7 +39,7 @@ QStringList EnderalSEDataArchives::archives(const MOBase::IProfile* profile) con
 
   QString iniFile = profile->localSettingsEnabled()
                         ? QDir(profile->absolutePath()).absoluteFilePath("enderal.ini")
-                        : m_LocalGameDir.absoluteFilePath("enderal.ini");
+                        : localGameDirectory().absoluteFilePath("enderal.ini");
   result.append(getArchivesFromKey(iniFile, "SResourceArchiveList", 512));
   result.append(getArchivesFromKey(iniFile, "SResourceArchiveList2", 512));
 
@@ -57,7 +53,7 @@ void EnderalSEDataArchives::writeArchiveList(MOBase::IProfile* profile,
 
   QString iniFile = profile->localSettingsEnabled()
                         ? QDir(profile->absolutePath()).absoluteFilePath("enderal.ini")
-                        : m_LocalGameDir.absoluteFilePath("enderal.ini");
+                        : localGameDirectory().absoluteFilePath("enderal.ini");
   if (list.length() > 511) {
     int splitIdx = list.lastIndexOf(",", 512);
     setArchivesToKey(iniFile, "SResourceArchiveList", list.mid(0, splitIdx));

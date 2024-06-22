@@ -84,19 +84,11 @@ void GameEnderalSE::setGamePath(const QString& path)
   m_GamePath = path;
   checkVariants();
   m_MyGamesPath = determineMyGamesPath(gameDirectoryName());
-  registerFeature(std::make_shared<EnderalSEDataArchives>(myGamesPath()));
-  registerFeature(
-      std::make_shared<EnderalSELocalSavegames>(myGamesPath(), "Enderal.ini"));
 }
 
 QDir GameEnderalSE::savesDirectory() const
 {
   return QDir(m_MyGamesPath + "/Saves");
-}
-
-QString GameEnderalSE::myGamesPath() const
-{
-  return m_MyGamesPath;
 }
 
 bool GameEnderalSE::isInstalled() const
@@ -110,11 +102,10 @@ bool GameEnderalSE::init(IOrganizer* moInfo)
     return false;
   }
 
-  auto dataArchives = std::make_shared<EnderalSEDataArchives>(myGamesPath());
+  auto dataArchives = std::make_shared<EnderalSEDataArchives>(this);
   registerFeature(std::make_shared<EnderalSEScriptExtender>(this));
   registerFeature(dataArchives);
-  registerFeature(
-      std::make_shared<EnderalSELocalSavegames>(myGamesPath(), "enderal.ini"));
+  registerFeature(std::make_shared<EnderalSELocalSavegames>(this, "enderal.ini"));
   registerFeature(std::make_shared<EnderalSEModDataChecker>(this));
   registerFeature(std::make_shared<EnderalSEModDataContent>(moInfo->gameFeatures()));
   registerFeature(std::make_shared<GamebryoSaveGameInfo>(this));

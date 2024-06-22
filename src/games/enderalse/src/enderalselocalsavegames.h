@@ -1,24 +1,17 @@
 #ifndef ENDERALSELOCALSAVEGAMES_H
 #define ENDERALSELOCALSAVEGAMES_H
 
-#include <localsavegames.h>
+#include <gamebryolocalsavegames.h>
 
-#include <QDir>
 #include <QString>
 
-class EnderalSELocalSavegames : public MOBase::LocalSavegames
+class EnderalSELocalSavegames : public GamebryoLocalSavegames
 {
-
 public:
-  EnderalSELocalSavegames(const QDir& myGamesDir, const QString& iniFileName);
+  using GamebryoLocalSavegames::GamebryoLocalSavegames;
 
-  virtual MappingType mappings(const QDir& profileSaveDir) const override;
-  virtual bool prepareProfile(MOBase::IProfile* profile) override;
-
-private:
-  QDir m_LocalSavesDir;
-  QDir m_LocalGameDir;
-  QString m_IniFileName;
+protected:
+  QString localSavesDummy() const override;
 };
 
 #endif  // ENDERALSELOCALSAVEGAMES_H
