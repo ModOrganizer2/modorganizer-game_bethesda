@@ -42,13 +42,17 @@ void MorrowindSaveGame::fetchInformationFields(FileWrapper& file, QString& saveN
   file.skip<float>();           // header version
   file.skip<uint32_t>();  // following data chunk size? seems to be 9 groupings of 32
                           // bytes
-  file.skip<unsigned char>(32);           // Author empty for save files
-  std::vector<char> saveNameBuffer(256);  // 31 char save name with a null terminator
-  file.read(saveNameBuffer.data(), 256);
-  saveName = QString::fromLatin1(saveNameBuffer.data(), 256)
-                 .trimmed();  // The defined save name. This is technically the
-                              // description, but is likely only 31+\0 chars max.
-  file.skip<uint32_t>();      // NumRecords (for the entire save)
+  file.skip<unsigned char>(32);  // Author empty for save files
+
+  // The defined save name. This is technically the description, but is likely only
+  // 31+\0 chars max.
+  {
+    std::vector<char> saveNameBuffer(256);  // 31 char save name with a null terminator
+    file.read(saveNameBuffer.data(), 256);
+    saveName = QString::fromLatin1(saveNameBuffer.data(), -1).trimmed();
+  }
+
+  file.skip<uint32_t>();  // NumRecords (for the entire save)
   std::vector<char> buffer(255);
   file.read(buffer.data(), 4);
   // Parse the MAST/DATA records
@@ -58,9 +62,10 @@ void MorrowindSaveGame::fetchInformationFields(FileWrapper& file, QString& saveN
     file.read(buffer.data(), len);  // Name of master
     QString name = QString::fromLatin1(buffer.data(), len - 1);
     file.skip<unsigned char>(4);  // DATA record
-    file.read(len);               // Length
-    file.skip<unsigned char>(
-        len);  // Typically size 8 - contains length of master data for version checking
+
+    // Typically size 8 - contains length of master data for version checking
+    file.read(len);  // Length
+    file.skip<unsigned char>(len);
 
     file.read(buffer.data(), 4);  // Get next record type
     plugins.push_back(name);
@@ -76,13 +81,15 @@ void MorrowindSaveGame::fetchInformationFields(FileWrapper& file, QString& saveN
   file.skip<double>();  // max stam?
   // file.skip<double>(2); // unknown values
 
+  std::fill(buffer.begin(), buffer.end(), '\0');
   file.read(buffer.data(), 64);
-  playerLocation = QString::fromLatin1(buffer.data(), 64).trimmed();
+  playerLocation = QString::fromLatin1(buffer.data(), -1).trimmed();
 
   file.read(gameDays);
 
+  std::fill(buffer.begin(), buffer.end(), '\0');
   file.read(buffer.data(), 32);
-  playerName = QString::fromLatin1(buffer.data(), 32).trimmed();
+  playerName = QString::fromLatin1(buffer.data(), -1).trimmed();
 
   // End of GMDT
 }
