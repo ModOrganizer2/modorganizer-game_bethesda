@@ -35,13 +35,12 @@ bool GameFalloutNV::init(IOrganizer* moInfo)
     return false;
   }
 
-  auto dataArchives = std::make_shared<FalloutNVDataArchives>(myGamesPath());
+  auto dataArchives = std::make_shared<FalloutNVDataArchives>(this);
   registerFeature(std::make_shared<FalloutNVScriptExtender>(this));
   registerFeature(dataArchives);
   registerFeature(std::make_shared<FalloutNVBSAInvalidation>(dataArchives.get(), this));
   registerFeature(std::make_shared<GamebryoSaveGameInfo>(this));
-  registerFeature(
-      std::make_shared<GamebryoLocalSavegames>(myGamesPath(), "fallout.ini"));
+  registerFeature(std::make_shared<GamebryoLocalSavegames>(this, "fallout.ini"));
   registerFeature(std::make_shared<FalloutNVModDataChecker>(this));
   registerFeature(
       std::make_shared<FalloutNVModDataContent>(m_Organizer->gameFeatures()));
@@ -104,12 +103,6 @@ void GameFalloutNV::setGamePath(const QString& path)
   m_GamePath = path;
   checkVariants();
   m_MyGamesPath = determineMyGamesPath(gameDirectoryName());
-
-  auto dataArchives = std::make_shared<FalloutNVDataArchives>(myGamesPath());
-  registerFeature(dataArchives);
-  registerFeature(std::make_shared<FalloutNVBSAInvalidation>(dataArchives.get(), this));
-  registerFeature(
-      std::make_shared<GamebryoLocalSavegames>(myGamesPath(), "fallout.ini"));
 }
 
 QDir GameFalloutNV::savesDirectory() const

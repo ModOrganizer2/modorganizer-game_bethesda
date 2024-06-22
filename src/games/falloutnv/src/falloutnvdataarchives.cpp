@@ -1,10 +1,6 @@
 #include "falloutnvdataarchives.h"
 #include <utility.h>
 
-FalloutNVDataArchives::FalloutNVDataArchives(const QDir& myGamesDir)
-    : GamebryoDataArchives(myGamesDir)
-{}
-
 QStringList FalloutNVDataArchives::vanillaArchives() const
 {
   return {"Fallout - Textures.bsa", "Fallout - Textures2.bsa", "Fallout - Meshes.bsa",
@@ -17,7 +13,7 @@ QStringList FalloutNVDataArchives::archives(const MOBase::IProfile* profile) con
 
   QString iniFile = profile->localSettingsEnabled()
                         ? QDir(profile->absolutePath()).absoluteFilePath("fallout.ini")
-                        : m_LocalGameDir.absoluteFilePath("fallout.ini");
+                        : localGameDirectory().absoluteFilePath("fallout.ini");
   result.append(getArchivesFromKey(iniFile, "SArchiveList",
                                    8192));  // NVAC expands the maximum string limit
 
@@ -31,6 +27,6 @@ void FalloutNVDataArchives::writeArchiveList(MOBase::IProfile* profile,
 
   QString iniFile = profile->localSettingsEnabled()
                         ? QDir(profile->absolutePath()).absoluteFilePath("fallout.ini")
-                        : m_LocalGameDir.absoluteFilePath("fallout.ini");
+                        : localGameDirectory().absoluteFilePath("fallout.ini");
   setArchivesToKey(iniFile, "SArchiveList", list);
 }
