@@ -44,13 +44,12 @@ bool GameEnderal::init(IOrganizer* moInfo)
     return false;
   }
 
-  auto dataArchives = std::make_shared<EnderalDataArchives>(myGamesPath());
+  auto dataArchives = std::make_shared<EnderalDataArchives>(this);
   registerFeature(std::make_shared<EnderalScriptExtender>(this));
   registerFeature(dataArchives);
   registerFeature(std::make_shared<EnderalBSAInvalidation>(dataArchives.get(), this));
   registerFeature(std::make_shared<GamebryoSaveGameInfo>(this));
-  registerFeature(
-      std::make_shared<EnderalLocalSavegames>(myGamesPath(), "enderal.ini"));
+  registerFeature(std::make_shared<EnderalLocalSavegames>(this, "enderal.ini"));
   registerFeature(std::make_shared<EnderalModDataChecker>(this));
   registerFeature(std::make_shared<EnderalModDataContent>(moInfo->gameFeatures()));
   registerFeature(std::make_shared<EnderalGamePlugins>(moInfo));
