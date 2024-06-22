@@ -36,7 +36,7 @@ bool GameFallout76::init(IOrganizer* moInfo)
   }
 
   registerFeature(std::make_shared<Fallout76ScriptExtender>(this));
-  registerFeature(std::make_shared<Fallout76DataArchives>(myGamesPath()));
+  registerFeature(std::make_shared<Fallout76DataArchives>(this));
   registerFeature(std::make_shared<Fallout76ModDataChecker>(this));
   registerFeature(
       std::make_shared<Fallout76ModDataContent>(m_Organizer->gameFeatures()));

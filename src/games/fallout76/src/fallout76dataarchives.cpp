@@ -5,10 +5,6 @@
 
 #include <QRegularExpression>
 
-Fallout76DataArchives::Fallout76DataArchives(const QDir& myGamesDir)
-    : GamebryoDataArchives(myGamesDir)
-{}
-
 QStringList Fallout76DataArchives::vanillaArchives() const
 {
   return {"SeventySix - Animations.ba2",
@@ -86,7 +82,7 @@ QStringList Fallout76DataArchives::archives(const MOBase::IProfile* profile) con
   QString iniFile =
       profile->localSettingsEnabled()
           ? QDir(profile->absolutePath()).absoluteFilePath("Fallout76.ini")
-          : m_LocalGameDir.absoluteFilePath("Fallout76.ini");
+          : localGameDirectory().absoluteFilePath("Fallout76.ini");
 
   result.append(getArchivesFromKey(iniFile, "sResourceIndexFileList"));
   result.append(getArchivesFromKey(iniFile, "sResourceStartUpArchiveList"));
@@ -104,7 +100,7 @@ void Fallout76DataArchives::writeArchiveList(MOBase::IProfile* profile,
   QString iniFile =
       profile->localSettingsEnabled()
           ? QDir(profile->absolutePath()).absoluteFilePath("Fallout76.ini")
-          : m_LocalGameDir.absoluteFilePath("Fallout76.ini");
+          : localGameDirectory().absoluteFilePath("Fallout76.ini");
 
   QStringList sResourceIndexFileList          = {};
   QStringList sResourceStartUpArchiveList     = {};

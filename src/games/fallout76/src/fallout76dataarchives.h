@@ -13,11 +13,9 @@ class IProfile;
 
 class Fallout76DataArchives : public GamebryoDataArchives
 {
-
 public:
-  Fallout76DataArchives(const QDir& myGamesDir);
+  using GamebryoDataArchives::GamebryoDataArchives;
 
-public:
   virtual QStringList vanillaArchives() const override;
   virtual QStringList sResourceIndexFileList() const;
   virtual QStringList sResourceStartUpArchiveList() const;
