@@ -30,13 +30,12 @@ bool GameOblivion::init(IOrganizer* moInfo)
     return false;
   }
 
-  auto dataArchives = std::make_shared<OblivionDataArchives>(myGamesPath());
+  auto dataArchives = std::make_shared<OblivionDataArchives>(this);
   registerFeature(std::make_shared<OblivionScriptExtender>(this));
   registerFeature(dataArchives);
   registerFeature(std::make_shared<OblivionBSAInvalidation>(dataArchives.get(), this));
   registerFeature(std::make_shared<GamebryoSaveGameInfo>(this));
-  registerFeature(
-      std::make_shared<GamebryoLocalSavegames>(myGamesPath(), "oblivion.ini"));
+  registerFeature(std::make_shared<GamebryoLocalSavegames>(this, "oblivion.ini"));
   registerFeature(std::make_shared<OblivionModDataChecker>(this));
   registerFeature(
       std::make_shared<OblivionModDataContent>(m_Organizer->gameFeatures()));
