@@ -3,10 +3,6 @@
 #include "iprofile.h"
 #include <utility.h>
 
-Fallout4VRDataArchives::Fallout4VRDataArchives(const QDir& myGamesDir)
-    : GamebryoDataArchives(myGamesDir)
-{}
-
 QStringList Fallout4VRDataArchives::vanillaArchives() const
 {
   return {"Fallout4 - Textures1.ba2",   "Fallout4 - Textures2.ba2",
@@ -28,7 +24,7 @@ QStringList Fallout4VRDataArchives::archives(const MOBase::IProfile* profile) co
 
   QString iniFile = profile->localSettingsEnabled()
                         ? QDir(profile->absolutePath()).absoluteFilePath("fallout4.ini")
-                        : m_LocalGameDir.absoluteFilePath("fallout4.ini");
+                        : localGameDirectory().absoluteFilePath("fallout4.ini");
   result.append(getArchivesFromKey(iniFile, "SResourceArchiveList"));
   result.append(getArchivesFromKey(iniFile, "SResourceArchiveList2"));
 
@@ -42,7 +38,7 @@ void Fallout4VRDataArchives::writeArchiveList(MOBase::IProfile* profile,
 
   QString iniFile = profile->localSettingsEnabled()
                         ? QDir(profile->absolutePath()).absoluteFilePath("fallout4.ini")
-                        : m_LocalGameDir.absoluteFilePath("fallout4.ini");
+                        : localGameDirectory().absoluteFilePath("fallout4.ini");
   if (list.length() > 255) {
     int splitIdx = list.lastIndexOf(",", 256);
     setArchivesToKey(iniFile, "SResourceArchiveList", list.mid(0, splitIdx));

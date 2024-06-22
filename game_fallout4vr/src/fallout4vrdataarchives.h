@@ -13,11 +13,9 @@ class IProfile;
 
 class Fallout4VRDataArchives : public GamebryoDataArchives
 {
-
 public:
-  Fallout4VRDataArchives(const QDir& myGamesDir);
+  using GamebryoDataArchives::GamebryoDataArchives;
 
-public:
   virtual QStringList vanillaArchives() const override;
   virtual QStringList archives(const MOBase::IProfile* profile) const override;
 
