@@ -6,11 +6,9 @@
 
 class Fallout3DataArchives : public GamebryoDataArchives
 {
-
 public:
-  Fallout3DataArchives(const QDir& myGamesDir);
+  using GamebryoDataArchives::GamebryoDataArchives;
 
-public:
   virtual QStringList vanillaArchives() const override;
   virtual QStringList archives(const MOBase::IProfile* profile) const override;
 

@@ -35,13 +35,12 @@ bool GameFallout3::init(IOrganizer* moInfo)
     return false;
   }
 
-  auto dataArchives = std::make_shared<Fallout3DataArchives>(myGamesPath());
+  auto dataArchives = std::make_shared<Fallout3DataArchives>(this);
   registerFeature(std::make_shared<Fallout3ScriptExtender>(this));
   registerFeature(dataArchives);
   registerFeature(std::make_shared<Fallout3BSAInvalidation>(dataArchives.get(), this));
   registerFeature(std::make_shared<GamebryoSaveGameInfo>(this));
-  registerFeature(
-      std::make_shared<GamebryoLocalSavegames>(myGamesPath(), "fallout.ini"));
+  registerFeature(std::make_shared<GamebryoLocalSavegames>(this, "fallout.ini"));
   registerFeature(std::make_shared<Fallout3ModDataChecker>(this));
   registerFeature(
       std::make_shared<Fallout3ModDataContent>(m_Organizer->gameFeatures()));
@@ -139,7 +138,7 @@ void GameFallout3::initializeProfile(const QDir& path, ProfileSettings settings)
 
   if (settings.testFlag(IPluginGame::CONFIGURATION)) {
     if (settings.testFlag(IPluginGame::PREFER_DEFAULTS) ||
-        !QFileInfo(myGamesPath() + "/fallout.ini").exists()) {
+        !QFileInfo(myGamesPath(), "fallout.ini").exists()) {
       copyToProfile(gameDirectory().absolutePath(), path, "fallout_default.ini",
                     "fallout.ini");
     } else {
