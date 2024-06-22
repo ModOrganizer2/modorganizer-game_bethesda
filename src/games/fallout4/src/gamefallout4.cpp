@@ -37,12 +37,11 @@ bool GameFallout4::init(IOrganizer* moInfo)
     return false;
   }
 
-  auto dataArchives = std::make_shared<Fallout4DataArchives>(myGamesPath());
+  auto dataArchives = std::make_shared<Fallout4DataArchives>(this);
 
   registerFeature(std::make_shared<Fallout4ScriptExtender>(this));
   registerFeature(dataArchives);
-  registerFeature(
-      std::make_shared<GamebryoLocalSavegames>(myGamesPath(), "fallout4custom.ini"));
+  registerFeature(std::make_shared<GamebryoLocalSavegames>(this, "fallout4custom.ini"));
   registerFeature(std::make_shared<Fallout4ModDataChecker>(this));
   registerFeature(
       std::make_shared<Fallout4ModDataContent>(m_Organizer->gameFeatures()));
