@@ -41,13 +41,12 @@ bool GameSkyrim::init(IOrganizer* moInfo)
     return false;
   }
 
-  auto dataArchives = std::make_shared<SkyrimDataArchives>(myGamesPath());
+  auto dataArchives = std::make_shared<SkyrimDataArchives>(this);
   registerFeature(std::make_shared<SkyrimScriptExtender>(this));
   registerFeature(dataArchives);
   registerFeature(std::make_shared<SkyrimBSAInvalidation>(dataArchives.get(), this));
   registerFeature(std::make_shared<GamebryoSaveGameInfo>(this));
-  registerFeature(
-      std::make_shared<GamebryoLocalSavegames>(myGamesPath(), "skyrim.ini"));
+  registerFeature(std::make_shared<GamebryoLocalSavegames>(this, "skyrim.ini"));
   registerFeature(std::make_shared<SkyrimModDataChecker>(this));
   registerFeature(std::make_shared<SkyrimModDataContent>(m_Organizer->gameFeatures()));
   registerFeature(std::make_shared<SkyrimGamePlugins>(moInfo));
