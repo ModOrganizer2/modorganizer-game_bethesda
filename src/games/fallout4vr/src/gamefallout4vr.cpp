@@ -35,9 +35,8 @@ bool GameFallout4VR::init(IOrganizer* moInfo)
     return false;
   }
 
-  registerFeature(std::make_shared<Fallout4VRDataArchives>(myGamesPath()));
-  registerFeature(
-      std::make_shared<GamebryoLocalSavegames>(myGamesPath(), "fallout4custom.ini"));
+  registerFeature(std::make_shared<Fallout4VRDataArchives>(this));
+  registerFeature(std::make_shared<GamebryoLocalSavegames>(this, "fallout4custom.ini"));
   registerFeature(std::make_shared<Fallout4VRModDataChecker>(this));
   registerFeature(
       std::make_shared<Fallout4VRModDataContent>(m_Organizer->gameFeatures()));
