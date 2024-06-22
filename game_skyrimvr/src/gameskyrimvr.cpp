@@ -68,9 +68,8 @@ bool GameSkyrimVR::init(IOrganizer* moInfo)
   }
 
   registerFeature(std::make_shared<SkyrimVRScriptExtender>(this));
-  registerFeature(std::make_shared<SkyrimVRDataArchives>(myGamesPath()));
-  registerFeature(
-      std::make_shared<GamebryoLocalSavegames>(myGamesPath(), "SkyrimVR.ini"));
+  registerFeature(std::make_shared<SkyrimVRDataArchives>(this));
+  registerFeature(std::make_shared<GamebryoLocalSavegames>(this, "SkyrimVR.ini"));
   registerFeature(std::make_shared<SkyrimVRModDataChecker>(this));
   registerFeature(std::make_shared<GamebryoSaveGameInfo>(this));
   registerFeature(
