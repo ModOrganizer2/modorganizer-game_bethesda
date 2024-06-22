@@ -83,7 +83,7 @@ QDir GameGamebryo::documentsDirectory() const
 
 QDir GameGamebryo::savesDirectory() const
 {
-  return QDir(m_MyGamesPath + "/Saves");
+  return QDir(myGamesPath() + "/Saves");
 }
 
 std::vector<std::shared_ptr<const MOBase::ISaveGame>>

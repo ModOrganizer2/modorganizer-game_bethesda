@@ -85,6 +85,9 @@ public:  // IPluginGame interface
 public:  // IPluginFileMapper interface
   virtual MappingType mappings() const;
 
+public:  // Other (e.g. for game features)
+  QString myGamesPath() const;
+
 protected:
   // Retrieve the saves extension for the game.
   virtual QString savegameExtension() const   = 0;
@@ -95,7 +98,6 @@ protected:
   makeSaveGame(QString filepath) const = 0;
 
   QFileInfo findInGameFolder(const QString& relativePath) const;
-  QString myGamesPath() const;
   QString selectedVariant() const;
   WORD getArch(QString const& program) const;
 
