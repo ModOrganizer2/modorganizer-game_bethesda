@@ -4,17 +4,17 @@
 <context>
     <name>GameFalloutTTW</name>
     <message>
-        <location filename="gamefalloutttw.cpp" line="193"/>
+        <location filename="gamefalloutttw.cpp" line="185"/>
         <source>Fallout TTW Support Plugin</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="gamefalloutttw.cpp" line="203"/>
+        <location filename="gamefalloutttw.cpp" line="195"/>
         <source>Adds support for the game Fallout TTW</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="gamefalloutttw.cpp" line="215"/>
+        <location filename="gamefalloutttw.cpp" line="207"/>
         <source>While not recommended by the TTW modding community, enables LOOT sorting</source>
         <translation type="unfinished"></translation>
     </message>

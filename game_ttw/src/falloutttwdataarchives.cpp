@@ -1,10 +1,6 @@
 #include "falloutttwdataarchives.h"
 #include <utility.h>
 
-FalloutTTWDataArchives::FalloutTTWDataArchives(const QDir& myGamesDir)
-    : GamebryoDataArchives(myGamesDir)
-{}
-
 QStringList FalloutTTWDataArchives::vanillaArchives() const
 {
   return {"Fallout - Textures.bsa", "Fallout - Textures2.bsa", "Fallout - Meshes.bsa",
@@ -17,7 +13,7 @@ QStringList FalloutTTWDataArchives::archives(const MOBase::IProfile* profile) co
 
   QString iniFile = profile->localSettingsEnabled()
                         ? QDir(profile->absolutePath()).absoluteFilePath("fallout.ini")
-                        : m_LocalGameDir.absoluteFilePath("fallout.ini");
+                        : localGameDirectory().absoluteFilePath("fallout.ini");
   result.append(getArchivesFromKey(iniFile, "SArchiveList"));
 
   return result;
@@ -30,6 +26,6 @@ void FalloutTTWDataArchives::writeArchiveList(MOBase::IProfile* profile,
 
   QString iniFile = profile->localSettingsEnabled()
                         ? QDir(profile->absolutePath()).absoluteFilePath("fallout.ini")
-                        : m_LocalGameDir.absoluteFilePath("fallout.ini");
+                        : localGameDirectory().absoluteFilePath("fallout.ini");
   setArchivesToKey(iniFile, "SArchiveList", list);
 }
