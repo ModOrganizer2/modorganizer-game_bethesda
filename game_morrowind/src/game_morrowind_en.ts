@@ -9,7 +9,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="gamemorrowind.cpp" line="117"/>
+        <location filename="gamemorrowind.cpp" line="116"/>
         <source>Adds support for the game Morrowind.
 Splash by %1</source>
         <translation type="unfinished"></translation>
@@ -48,12 +48,12 @@ Splash by %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="morrowindsavegameinfowidget.cpp" line="75"/>
+        <location filename="morrowindsavegameinfowidget.cpp" line="85"/>
         <source>Missing ESPs</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="morrowindsavegameinfowidget.cpp" line="108"/>
+        <location filename="morrowindsavegameinfowidget.cpp" line="118"/>
         <source>None</source>
         <translation type="unfinished"></translation>
     </message>
@@ -61,7 +61,7 @@ Splash by %1</source>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="morrowindgameplugins.cpp" line="116"/>
+        <location filename="morrowindgameplugins.cpp" line="120"/>
         <source>Some of your plugins have invalid names! These plugins can not be loaded by the game. Please see mo_interface.log for a list of affected plugins and rename them.</source>
         <translation type="unfinished"></translation>
     </message>

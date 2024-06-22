@@ -2,12 +2,7 @@
 #include "registry.h"
 #include <utility.h>
 
-MorrowindDataArchives::MorrowindDataArchives(const MOBase::IPluginGame* game)
-    : GamebryoDataArchives(
-          QDir())  // m_LocalGameDir is not used as it's determined too soon
-      ,
-      m_GamePlugin(game)
-{}
+#include "gamegamebryo.h"
 
 QStringList MorrowindDataArchives::vanillaArchives() const
 {
@@ -57,7 +52,7 @@ QStringList MorrowindDataArchives::archives(const MOBase::IProfile* profile) con
   QString iniFile =
       profile->localSettingsEnabled()
           ? QDir(profile->absolutePath()).absoluteFilePath("morrowind.ini")
-          : m_GamePlugin->gameDirectory().absoluteFilePath("morrowind.ini");
+          : gameDirectory().absoluteFilePath("morrowind.ini");
   result.append(getArchives(iniFile));
 
   return result;
@@ -69,6 +64,6 @@ void MorrowindDataArchives::writeArchiveList(MOBase::IProfile* profile,
   QString iniFile =
       profile->localSettingsEnabled()
           ? QDir(profile->absolutePath()).absoluteFilePath("morrowind.ini")
-          : m_GamePlugin->gameDirectory().absoluteFilePath("morrowind.ini");
+          : gameDirectory().absoluteFilePath("morrowind.ini");
   setArchives(iniFile, before);
 }

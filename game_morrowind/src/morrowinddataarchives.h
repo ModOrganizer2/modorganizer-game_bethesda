@@ -10,11 +10,9 @@
 
 class MorrowindDataArchives : public GamebryoDataArchives
 {
-
 public:
-  MorrowindDataArchives(const MOBase::IPluginGame* game);
+  using GamebryoDataArchives::GamebryoDataArchives;
 
-public:
   virtual QStringList vanillaArchives() const override;
   virtual QStringList archives(const MOBase::IProfile* profile) const override;
 
@@ -25,8 +23,6 @@ protected:
 private:
   virtual void writeArchiveList(MOBase::IProfile* profile,
                                 const QStringList& before) override;
-
-  const MOBase::IPluginGame* m_GamePlugin;
 };
 
 #endif  // MORROWINDDATAARCHIVES_H
