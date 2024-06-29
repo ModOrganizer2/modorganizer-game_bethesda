@@ -1,4 +1,4 @@
-name: Build Fallout 4 VR Plugin
+name: Build Game Bethesda Plugin
 
 on:
   push:
@@ -10,7 +10,7 @@ jobs:
   build:
     runs-on: windows-2022
     steps:
-      - name: Build Fallout 4 VR Plugin
+      - name: Build Game Bethesda Plugin
         uses: ModOrganizer2/build-with-mob-action@master
         with:
-          mo2-dependencies: cmake_common uibase game_gamebryo
+          mo2-dependencies: cmake_common uibase
