@@ -1,12 +1,17 @@
 cmake_minimum_required(VERSION 3.16)
 
-if(DEFINED DEPENDENCIES_DIR)
-	include(${DEPENDENCIES_DIR}/modorganizer_super/cmake_common/mo2.cmake)
-else()
-	include(${CMAKE_CURRENT_LIST_DIR}/../cmake_common/mo2.cmake)
-endif()
+# TODO: clean include directives
+set(MO2_CMAKE_DEPRECATED_UIBASE_INCLUDE ON)
 
 project(game_gamebryo)
 
+find_package(mo2-cmake CONFIG REQUIRED)
+find_package(Qt6 COMPONENTS Widgets)
+
 add_subdirectory(src/gamebryo)
 add_subdirectory(src/creation)
+
+mo2_add_subdirectories(
+    FOLDER games
+    GLOB src/games/*
+)
