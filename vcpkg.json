@@ -1,3 +1,9 @@
 {
-  "dependencies": ["mo2-cmake", "lz4", "zlib"]
+  "dependencies": ["mo2-cmake", "lz4", "zlib"],
+  "features": {
+    "standalone": {
+      "description": "Build Standalone.",
+      "dependencies": ["mo2-uibase"]
+    }
+  }
 }
