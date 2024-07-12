@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.16)
 # TODO: clean include directives
 set(MO2_CMAKE_DEPRECATED_UIBASE_INCLUDE ON)
 
-project(game_gamebryo)
+project(game_bethesda)
 
 find_package(mo2-cmake CONFIG REQUIRED)
 find_package(Qt6 COMPONENTS Widgets)
