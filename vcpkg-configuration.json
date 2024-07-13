@@ -8,7 +8,7 @@
     {
       "kind": "git",
       "repository": "https://github.com/ModOrganizer2/vcpkg-registry",
-      "baseline": "a7aee8c0085f42b5e42f026cd4a41bad48d490da",
+      "baseline": "e27d8f51d5f46de7f2b72f64c2771384b0e52bdf",
       "packages": ["mo2-*"]
     }
   ]
