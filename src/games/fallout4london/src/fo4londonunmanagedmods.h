@@ -1,5 +1,5 @@
-#ifndef FALLOUT4UNMANAGEDMODS_H
-#define FALLOUT4UNMANAGEDMODS_H
+#ifndef FO4LONDONUNMANAGEDMODS_H
+#define FO4LONDONUNMANAGEDMODS_H
 
 #include "gamebryounmanagedmods.h"
 #include <gamegamebryo.h>
@@ -15,4 +15,4 @@ public:
   virtual QString displayName(const QString& modName) const override;
 };
 
-#endif  // FALLOUT4UNMANAGEDMODS_H
+#endif  // FO4LONDONUNMANAGEDMODS_H

@@ -1,4 +1,4 @@
-#include "fallout4scriptextender.h"
+#include "fo4londonscriptextender.h"
 
 #include <QString>
 #include <QStringList>

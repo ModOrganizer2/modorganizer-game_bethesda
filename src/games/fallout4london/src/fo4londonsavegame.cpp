@@ -1,8 +1,8 @@
-#include "fallout4savegame.h"
+#include "fo4londonsavegame.h"
 
 #include <Windows.h>
 
-#include "gamefallout4.h"
+#include "gamefo4london.h"
 
 Fallout4LondonSaveGame::Fallout4LondonSaveGame(QString const& fileName, GameFallout4London const* game)
     : GamebryoSaveGame(fileName, game, true)

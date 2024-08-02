@@ -1,5 +1,5 @@
-#ifndef FALLOUT4_MODDATACONTENT_H
-#define FALLOUT4_MODDATACONTENT_H
+#ifndef FO4LONDON_MODDATACONTENT_H
+#define FO4LONDON_MODDATACONTENT_H
 
 #include <gamebryomoddatacontent.h>
 #include <ifiletree.h>
@@ -41,4 +41,4 @@ public:
   }
 };
 
-#endif  // FALLOUT4_MODDATACONTENT_H
+#endif  // FO4LONDON_MODDATACONTENT_H

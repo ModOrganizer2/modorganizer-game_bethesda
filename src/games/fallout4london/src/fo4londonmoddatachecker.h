@@ -1,5 +1,5 @@
-#ifndef FALLOUT4_MODATACHECKER_H
-#define FALLOUT4_MODATACHECKER_H
+#ifndef FO4LONDON_MODATACHECKER_H
+#define FO4LONDON_MODATACHECKER_H
 
 #include <gamebryomoddatachecker.h>
 
@@ -26,4 +26,4 @@ protected:
   }
 };
 
-#endif  // FALLOUT4_MODATACHECKER_H
+#endif  // FO4LONDON_MODATACHECKER_H

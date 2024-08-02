@@ -1,5 +1,5 @@
-#ifndef FALLOUT4SAVEGAME_H
-#define FALLOUT4SAVEGAME_H
+#ifndef FO4LONDONSAVEGAME_H
+#define FO4LONDONSAVEGAME_H
 
 #include "gamebryosavegame.h"
 
@@ -21,4 +21,4 @@ protected:
   std::unique_ptr<DataFields> fetchDataFields() const override;
 };
 
-#endif  // FALLOUT4SAVEGAME_H
+#endif  // FO4LONDONSAVEGAME_H

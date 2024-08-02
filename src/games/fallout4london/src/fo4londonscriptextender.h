@@ -1,5 +1,5 @@
-#ifndef FALLOUT4SCRIPTEXTENDER_H
-#define FALLOUT4SCRIPTEXTENDER_H
+#ifndef FO4LONDONSCRIPTEXTENDER_H
+#define FO4LONDONSCRIPTEXTENDER_H
 
 #include "gamebryoscriptextender.h"
 
@@ -14,4 +14,4 @@ public:
   virtual QString PluginPath() const override;
 };
 
-#endif  // FALLOUT4SCRIPTEXTENDER_H
+#endif  // FO4LONDONSCRIPTEXTENDER_H

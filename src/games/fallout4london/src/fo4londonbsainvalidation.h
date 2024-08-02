@@ -1,7 +1,7 @@
-#ifndef FALLOUT4BSAINVALIDATION_H
-#define FALLOUT4BSAINVALIDATION_H
+#ifndef FO4LONDONBSAINVALIDATION_H
+#define FO4LONDONBSAINVALIDATION_H
 
-#include "fallout4dataarchives.h"
+#include "fo4londondataarchives.h"
 #include "gamebryobsainvalidation.h"
 #include <bsainvalidation.h>
 #include <dataarchives.h>
@@ -30,4 +30,4 @@ private:
   MOBase::IPluginGame const* m_Game;
 };
 
-#endif  // FALLOUT4BSAINVALIDATION_H
+#endif  // FO4LONDONBSAINVALIDATION_H

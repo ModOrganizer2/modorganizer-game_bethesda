@@ -1,5 +1,5 @@
-#ifndef GAMEFALLOUT4_H
-#define GAMEFALLOUT4_H
+#ifndef GAMEFO4LONDON_H
+#define GAMEFO4LONDON_H
 
 #include "gamegamebryo.h"
 #include "iplugindiagnose.h"
@@ -11,7 +11,7 @@ class GameFallout4London : public GameGamebryo, public MOBase::IPluginDiagnose
 {
   Q_OBJECT
   Q_INTERFACES(MOBase::IPlugin MOBase::IPluginGame MOBase::IPluginDiagnose)
-  Q_PLUGIN_METADATA(IID "org.tannin.GameFallout4London" FILE "gamefallout4.json")
+  Q_PLUGIN_METADATA(IID "org.tannin.GameFallout4London" FILE "gamefo4london.json")
 
 public:
   GameFallout4London();
@@ -23,6 +23,7 @@ public:
 
 public:  // IPluginGame interface
   virtual QString gameName() const override;
+  virtual QString identifyGamePath() const override;
   virtual void detectGame() override;
   virtual QList<MOBase::ExecutableInfo> executables() const override;
   virtual QList<MOBase::ExecutableForcedLoadSetting>
@@ -31,9 +32,13 @@ public:  // IPluginGame interface
                                  ProfileSettings settings) const override;
   virtual QString steamAPPId() const override;
   virtual QStringList primaryPlugins() const override;
+  virtual QStringList enabledPlugins() const override;
   virtual QStringList gameVariants() const override;
   virtual QString gameShortName() const override;
+  virtual QStringList validShortNames() const override;
   virtual QString gameNexusName() const override;
+  virtual QString binaryName() const override;
+  virtual QString getLauncherName() const override;
   virtual QStringList iniFiles() const override;
   virtual QStringList DLCPlugins() const override;
   virtual QStringList CCPlugins() const override;

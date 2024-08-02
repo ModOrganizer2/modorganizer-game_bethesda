@@ -1,5 +1,5 @@
-#ifndef FALLOUT4DATAARCHIVES_H
-#define FALLOUT4DATAARCHIVES_H
+#ifndef FO4LONDONDATAARCHIVES_H
+#define FO4LONDONDATAARCHIVES_H
 
 #include "gamebryodataarchives.h"
 
@@ -24,4 +24,4 @@ private:
                                 const QStringList& before) override;
 };
 
-#endif  // FALLOUT4DATAARCHIVES_H
+#endif  // FO4LONDONDATAARCHIVES_H
