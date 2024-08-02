@@ -4,7 +4,8 @@
 
 #include "gamefo4london.h"
 
-Fallout4LondonSaveGame::Fallout4LondonSaveGame(QString const& fileName, GameFallout4London const* game)
+Fallout4LondonSaveGame::Fallout4LondonSaveGame(QString const& fileName,
+                                               GameFallout4London const* game)
     : GamebryoSaveGame(fileName, game, true)
 {
   FileWrapper file(getFilepath(), "FO4_SAVEGAME");
@@ -47,7 +48,8 @@ void Fallout4LondonSaveGame::fetchInformationFields(
   file.read(creationTime);
 }
 
-std::unique_ptr<GamebryoSaveGame::DataFields> Fallout4LondonSaveGame::fetchDataFields() const
+std::unique_ptr<GamebryoSaveGame::DataFields>
+Fallout4LondonSaveGame::fetchDataFields() const
 {
   FileWrapper file(getFilepath(), "FO4_SAVEGAME");  // 10bytes
 

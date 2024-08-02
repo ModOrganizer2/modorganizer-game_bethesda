@@ -130,8 +130,7 @@ MappingType GameFallout4London::mappings() const
   if (testFilePlugins().isEmpty()) {
     for (const QString& profileFile : {"plugins.txt", "loadorder.txt"}) {
       result.push_back({m_Organizer->profilePath() + "/" + profileFile,
-                        localAppFolder() + "/Fallout4/" + profileFile,
-                        false});
+                        localAppFolder() + "/Fallout4/" + profileFile, false});
     }
   }
   return result;

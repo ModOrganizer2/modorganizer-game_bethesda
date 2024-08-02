@@ -7,8 +7,8 @@
 #include <imoinfo.h>
 #include <utility.h>
 
-Fallout4LondonBSAInvalidation::Fallout4LondonBSAInvalidation(MOBase::DataArchives* dataArchives,
-                                                 MOBase::IPluginGame const* game)
+Fallout4LondonBSAInvalidation::Fallout4LondonBSAInvalidation(
+    MOBase::DataArchives* dataArchives, MOBase::IPluginGame const* game)
     : GamebryoBSAInvalidation(dataArchives, "Fallout4Custom.ini", game)
 {
   m_IniFileName = "Fallout4Custom.ini";

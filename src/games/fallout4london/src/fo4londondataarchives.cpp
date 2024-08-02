@@ -31,7 +31,7 @@ QStringList Fallout4LondonDataArchives::archives(const MOBase::IProfile* profile
 }
 
 void Fallout4LondonDataArchives::writeArchiveList(MOBase::IProfile* profile,
-                                            const QStringList& before)
+                                                  const QStringList& before)
 {
   QString list = before.join(", ");
 

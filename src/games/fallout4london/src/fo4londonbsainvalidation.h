@@ -17,7 +17,7 @@ class Fallout4LondonBSAInvalidation : public GamebryoBSAInvalidation
 {
 public:
   Fallout4LondonBSAInvalidation(MOBase::DataArchives* dataArchives,
-                          MOBase::IPluginGame const* game);
+                                MOBase::IPluginGame const* game);
   virtual bool isInvalidationBSA(const QString& bsaName) override;
   virtual bool prepareProfile(MOBase::IProfile* profile) override;
 
