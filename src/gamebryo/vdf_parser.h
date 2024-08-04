@@ -44,6 +44,8 @@
 // internal
 #include <stack>
 
+#include <QString>
+
 // VS < 2015 has only partial C++11 support
 #if defined(_MSC_VER) && _MSC_VER < 1900
 #ifndef CONSTEXPR
@@ -108,22 +110,9 @@ namespace vdf
       return w;
     }
 
-    // utility wrapper to adapt locale-bound facets for wstring/wbuffer convert
-    // from cppreference
-    template <class Facet>
-    struct deletable_facet : Facet
+    inline std::string string_converter(const std::wstring& w)
     {
-      template <class... Args>
-      deletable_facet(Args&&... args) : Facet(std::forward<Args>(args)...)
-      {}
-      ~deletable_facet() {}
-    };
-
-    inline std::string string_converter(const std::wstring& w)  // todo: use us-locale
-    {
-      std::wstring_convert<deletable_facet<std::codecvt<wchar_t, char, std::mbstate_t>>>
-          conv1;
-      return conv1.to_bytes(w);
+      return QString::fromStdWString(w).toStdString();
     }
 
     ///////////////////////////////////////////////////////////////////////////

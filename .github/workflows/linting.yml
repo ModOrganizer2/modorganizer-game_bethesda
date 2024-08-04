@@ -1,4 +1,4 @@
-name: Lint GameBryo Library
+name: Lint Game Bethesda
 
 on:
   push:
