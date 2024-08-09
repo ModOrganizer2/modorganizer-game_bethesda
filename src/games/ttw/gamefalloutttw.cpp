@@ -185,21 +185,6 @@ QString GameFalloutTTW::localizedName() const
   return tr("Fallout TTW Support Plugin");
 }
 
-QString GameFalloutTTW::author() const
-{
-  return "SuperSandro2000 & MO2 Team";
-}
-
-QString GameFalloutTTW::description() const
-{
-  return tr("Adds support for the game Fallout TTW");
-}
-
-MOBase::VersionInfo GameFalloutTTW::version() const
-{
-  return VersionInfo(1, 6, 0, VersionInfo::RELEASE_FINAL);
-}
-
 QList<PluginSetting> GameFalloutTTW::settings() const
 {
   return QList<PluginSetting>()

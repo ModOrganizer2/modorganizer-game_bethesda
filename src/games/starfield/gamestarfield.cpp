@@ -143,21 +143,6 @@ QString GameStarfield::localizedName() const
   return tr("Starfield Support Plugin");
 }
 
-QString GameStarfield::author() const
-{
-  return "Silarn";
-}
-
-QString GameStarfield::description() const
-{
-  return tr("Adds support for the game Starfield.");
-}
-
-MOBase::VersionInfo GameStarfield::version() const
-{
-  return VersionInfo(1, 1, 0, VersionInfo::RELEASE_FINAL);
-}
-
 QList<PluginSetting> GameStarfield::settings() const
 {
   return QList<PluginSetting>()

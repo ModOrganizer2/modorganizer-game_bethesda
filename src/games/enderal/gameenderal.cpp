@@ -93,21 +93,6 @@ QString GameEnderal::localizedName() const
   return tr("Enderal Support Plugin");
 }
 
-QString GameEnderal::author() const
-{
-  return "AL12 & MO2 Team";
-}
-
-QString GameEnderal::description() const
-{
-  return tr("Adds support for the game Enderal");
-}
-
-MOBase::VersionInfo GameEnderal::version() const
-{
-  return VersionInfo(1, 3, 1, VersionInfo::RELEASE_FINAL);
-}
-
 QList<PluginSetting> GameEnderal::settings() const
 {
   QList<PluginSetting> results;

@@ -185,21 +185,6 @@ QString GameEnderalSE::localizedName() const
   return tr("Enderal Special Edition Support Plugin");
 }
 
-QString GameEnderalSE::author() const
-{
-  return "Archost, ZachHaber & MO2 Team";
-}
-
-QString GameEnderalSE::description() const
-{
-  return tr("Adds support for the game Enderal Special Edition.");
-}
-
-MOBase::VersionInfo GameEnderalSE::version() const
-{
-  return VersionInfo(1, 2, 0, VersionInfo::RELEASE_FINAL);
-}
-
 QList<PluginSetting> GameEnderalSE::settings() const
 {
   return QList<PluginSetting>();

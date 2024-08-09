@@ -109,21 +109,6 @@ QString GameFallout3::localizedName() const
   return tr("Fallout 3 Support Plugin");
 }
 
-QString GameFallout3::author() const
-{
-  return "Tannin";
-}
-
-QString GameFallout3::description() const
-{
-  return tr("Adds support for the game Fallout 3.");
-}
-
-MOBase::VersionInfo GameFallout3::version() const
-{
-  return VersionInfo(1, 4, 1, VersionInfo::RELEASE_FINAL);
-}
-
 QList<PluginSetting> GameFallout3::settings() const
 {
   return QList<PluginSetting>();

@@ -8,6 +8,8 @@ project(game_bethesda)
 find_package(mo2-cmake CONFIG REQUIRED)
 find_package(Qt6 COMPONENTS Widgets)
 
+mo2_configure_extension()
+
 add_subdirectory(src/gamebryo)
 add_subdirectory(src/creation)
 

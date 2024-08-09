@@ -1,0 +1,41 @@
+{
+  "id": "mo2-game-bethesda",
+  "name": "Elder Scrolls & Fallout Games",
+  "version": "1.0.0",
+  "description": "ModOrganizer2 support for The Elder Scrolls & Fallout games.",
+  "icon": "icon.png",
+  "author": {
+    "name": "Mod Organizer 2",
+    "homepage": "https://www.modorganizer.org/"
+  },
+  "contributors": [
+    "AL",
+    "AnyOldName3",
+    "EmberQuill",
+    "Grant Kim",
+    "Holt59",
+    "Hugues92",
+    "isanae",
+    "Lachlan Collins",
+    "LePresidente",
+    "LostDragonist",
+    "matzman666",
+    "Sandro Jäckel",
+    "Silarn",
+    "Schilduin",
+    "Tannin",
+    "Thomas Tanner",
+    "VishVadeva50",
+    "ZachHaber",
+    "Zanoth"
+  ],
+  "type": "game",
+  "content": {
+    "plugins": {
+      "autodetect": true
+    },
+    "translations": {
+      "autodetect": "translations"
+    }
+  }
+}
