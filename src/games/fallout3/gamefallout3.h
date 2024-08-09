@@ -9,7 +9,7 @@
 class GameFallout3 : public GameGamebryo
 {
   Q_OBJECT
-  Q_PLUGIN_METADATA(IID "org.tannin.GameFallout3" FILE "gamefallout3.json")
+  Q_PLUGIN_METADATA(IID "org.tannin.GameFallout3")
 
 public:
   GameFallout3();
@@ -39,9 +39,6 @@ public:  // IPluginGame interface
 public:  // IPlugin interface
   virtual QString name() const override;
   virtual QString localizedName() const override;
-  virtual QString author() const override;
-  virtual QString description() const override;
-  virtual MOBase::VersionInfo version() const override;
   virtual QList<MOBase::PluginSetting> settings() const override;
 
 protected:

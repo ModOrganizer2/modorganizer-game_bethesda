@@ -84,21 +84,6 @@ QString GameNehrim::localizedName() const
   return tr("Nehrim Support Plugin");
 }
 
-QString GameNehrim::author() const
-{
-  return "Tannin & MO2 Team";
-}
-
-QString GameNehrim::description() const
-{
-  return tr("Adds support for the game Nehrim");
-}
-
-MOBase::VersionInfo GameNehrim::version() const
-{
-  return VersionInfo(1, 1, 1, VersionInfo::RELEASE_FINAL);
-}
-
 QList<PluginSetting> GameNehrim::settings() const
 {
   return QList<PluginSetting>();

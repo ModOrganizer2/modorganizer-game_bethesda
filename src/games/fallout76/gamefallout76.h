@@ -9,8 +9,7 @@
 class GameFallout76 : public GameGamebryo
 {
   Q_OBJECT
-
-  Q_PLUGIN_METADATA(IID "in.ejew.GameFallout76" FILE "gamefallout76.json")
+  Q_PLUGIN_METADATA(IID "in.ejew.GameFallout76")
 
 public:
   GameFallout76();
@@ -38,9 +37,6 @@ public:  // IPluginGame interface
 
 public:  // IPlugin interface
   QString name() const override;
-  QString author() const override;
-  QString description() const override;
-  MOBase::VersionInfo version() const override;
   QList<MOBase::PluginSetting> settings() const override;
 
 protected:

@@ -92,21 +92,6 @@ QString GameSkyrim::localizedName() const
   return tr("Skyrim Support Plugin");
 }
 
-QString GameSkyrim::author() const
-{
-  return "Tannin & MO2 Team";
-}
-
-QString GameSkyrim::description() const
-{
-  return tr("Adds support for the game Skyrim");
-}
-
-MOBase::VersionInfo GameSkyrim::version() const
-{
-  return VersionInfo(1, 6, 1, VersionInfo::RELEASE_FINAL);
-}
-
 QList<PluginSetting> GameSkyrim::settings() const
 {
   QList<PluginSetting> results;

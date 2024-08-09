@@ -82,23 +82,6 @@ QString GameFallout4VR::localizedName() const
   return tr("Fallout 4 VR Support Plugin");
 }
 
-QString GameFallout4VR::author() const
-{
-  return "MO2 Contibutors";
-}
-
-QString GameFallout4VR::description() const
-{
-  return tr("Adds support for the game Fallout 4 VR.\n"
-            "Splash by %1")
-      .arg("nekoyoubi");
-}
-
-MOBase::VersionInfo GameFallout4VR::version() const
-{
-  return VersionInfo(1, 6, 1, VersionInfo::RELEASE_FINAL);
-}
-
 QList<PluginSetting> GameFallout4VR::settings() const
 {
   return QList<PluginSetting>();

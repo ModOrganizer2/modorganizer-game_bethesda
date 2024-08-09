@@ -11,7 +11,7 @@ class GameFallout4London : public GameGamebryo, public MOBase::IPluginDiagnose
 {
   Q_OBJECT
   Q_INTERFACES(MOBase::IPlugin MOBase::IPluginGame MOBase::IPluginDiagnose)
-  Q_PLUGIN_METADATA(IID "org.tannin.GameFallout4London" FILE "gamefo4london.json")
+  Q_PLUGIN_METADATA(IID "org.tannin.GameFallout4London")
 
 public:
   GameFallout4London();
@@ -57,9 +57,6 @@ public:  // IPluginDiagnose interface
 public:  // IPlugin interface
   virtual QString name() const override;
   virtual QString localizedName() const override;
-  virtual QString author() const override;
-  virtual QString description() const override;
-  virtual MOBase::VersionInfo version() const override;
   virtual QList<MOBase::PluginSetting> settings() const override;
   virtual MappingType mappings() const override;
 

@@ -8,10 +8,5 @@
         <source>Skyrim VR Support Plugin</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <location filename="gameskyrimvr.cpp" line="128"/>
-        <source>Adds support for the game Skyrim VR.</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 </TS>

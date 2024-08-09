@@ -104,21 +104,6 @@ QString GameFallout4London::localizedName() const
   return tr("Fallout 4 London Support Plugin");
 }
 
-QString GameFallout4London::author() const
-{
-  return "MO2 Team";
-}
-
-QString GameFallout4London::description() const
-{
-  return tr("Adds support for the game Fallout 4 London.");
-}
-
-MOBase::VersionInfo GameFallout4London::version() const
-{
-  return VersionInfo(0, 0, 1, VersionInfo::RELEASE_PREALPHA);
-}
-
 QList<PluginSetting> GameFallout4London::settings() const
 {
   return QList<PluginSetting>();

@@ -9,7 +9,7 @@
 class GameSkyrimVR : public GameGamebryo
 {
   Q_OBJECT
-  Q_PLUGIN_METADATA(IID "com.soundcontactstudio.GameSkyrimVR" FILE "gameskyrimVR.json")
+  Q_PLUGIN_METADATA(IID "com.soundcontactstudio.GameSkyrimVR")
 
 public:
   GameSkyrimVR();
@@ -47,9 +47,6 @@ public:  // IPluginGame interface
 public:  // IPlugin interface
   virtual QString name() const override;
   virtual QString localizedName() const override;
-  virtual QString author() const override;
-  virtual QString description() const override;
-  virtual MOBase::VersionInfo version() const override;
   virtual QList<MOBase::PluginSetting> settings() const override;
 
 public:  // IPluginFileMapper

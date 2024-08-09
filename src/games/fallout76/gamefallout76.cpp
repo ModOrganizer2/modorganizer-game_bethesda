@@ -75,23 +75,6 @@ QString GameFallout76::name() const
   return "Fallout 76 Support Plugin";
 }
 
-QString GameFallout76::author() const
-{
-  return "Mod Organizer Team; EntranceJew";
-}
-
-QString GameFallout76::description() const
-{
-  return tr("Adds support for the game Fallout 76.\n"
-            "Splash by %1")
-      .arg("nekoyoubi");
-}
-
-MOBase::VersionInfo GameFallout76::version() const
-{
-  return VersionInfo(1, 0, 0, VersionInfo::RELEASE_FINAL);
-}
-
 QList<PluginSetting> GameFallout76::settings() const
 {
   return QList<PluginSetting>();

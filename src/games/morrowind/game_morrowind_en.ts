@@ -8,12 +8,6 @@
         <source>Morrowind Support Plugin</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <location filename="gamemorrowind.cpp" line="116"/>
-        <source>Adds support for the game Morrowind.
-Splash by %1</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>MorrowindSaveGameInfoWidget</name>

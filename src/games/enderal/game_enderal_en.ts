@@ -8,10 +8,5 @@
         <source>Enderal Support Plugin</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <location filename="gameenderal.cpp" line="103"/>
-        <source>Adds support for the game Enderal</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 </TS>

@@ -8,10 +8,5 @@
         <source>Oblivion Support Plugin</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <location filename="gameoblivion.cpp" line="94"/>
-        <source>Adds support for the game Oblivion</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 </TS>
