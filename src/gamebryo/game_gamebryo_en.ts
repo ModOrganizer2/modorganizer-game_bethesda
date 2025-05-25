@@ -158,12 +158,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="gamegamebryo.cpp" line="318"/>
+        <location filename="gamegamebryo.cpp" line="319"/>
         <source>failed to query registry path (preflight): %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="gamegamebryo.cpp" line="326"/>
+        <location filename="gamegamebryo.cpp" line="327"/>
         <source>failed to query registry path (read): %1</source>
         <translation type="unfinished"></translation>
     </message>

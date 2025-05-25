@@ -622,7 +622,7 @@ namespace vdf
   template <typename IterT>
   inline auto read(IterT first, const IterT last, bool* ok,
                    const Options& opt = Options{}) NOEXCEPT
-      ->basic_object<typename std::iterator_traits<IterT>::value_type>
+      -> basic_object<typename std::iterator_traits<IterT>::value_type>
   {
     return read<basic_object<typename std::iterator_traits<IterT>::value_type>>(
         first, last, ok, opt);
@@ -631,7 +631,7 @@ namespace vdf
   template <typename IterT>
   inline auto read(IterT first, IterT last, std::error_code& ec,
                    const Options& opt = Options{}) NOEXCEPT
-      ->basic_object<typename std::iterator_traits<IterT>::value_type>
+      -> basic_object<typename std::iterator_traits<IterT>::value_type>
   {
     return read<basic_object<typename std::iterator_traits<IterT>::value_type>>(
         first, last, ec, opt);
