@@ -15,6 +15,6 @@ jobs:
     steps:
       - name: Build Game Bethesda
         id: build-game-bethesda
-        uses: ModOrganizer2/build-with-mob-action@dev/vcpkg
+        uses: ModOrganizer2/build-with-mob-action@master
         with:
           mo2-dependencies: uibase
