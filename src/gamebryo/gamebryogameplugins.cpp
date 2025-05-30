@@ -9,6 +9,7 @@
 
 #include <QDateTime>
 #include <QDir>
+#include <QHash>
 #include <QString>
 #include <QStringEncoder>
 #include <QStringList>
@@ -183,22 +184,20 @@ QStringList GamebryoGamePlugins::readPluginList(MOBase::IPluginList* pluginList)
   }
 
   // Always use filetime loadorder to get the actual load order
-  std::sort(plugins.begin(), plugins.end(),
-            [&](const QString& lhs, const QString& rhs) {
-              MOBase::IModInterface* lhm =
-                  organizer()->modList()->getMod(pluginList->origin(lhs));
-              MOBase::IModInterface* rhm =
-                  organizer()->modList()->getMod(pluginList->origin(rhs));
-              QDir lhd = organizer()->managedGame()->dataDirectory();
-              QDir rhd = organizer()->managedGame()->dataDirectory();
-              if (lhm != nullptr)
-                lhd = lhm->absolutePath();
-              if (rhm != nullptr)
-                rhd = rhm->absolutePath();
-              QString lhp = lhd.absoluteFilePath(lhs);
-              QString rhp = rhd.absoluteFilePath(rhs);
-              return QFileInfo(lhp).lastModified() < QFileInfo(rhp).lastModified();
-            });
+  QHash<QString, QDateTime> modificationTimes;
+  modificationTimes.reserve(plugins.size());
+  for (const auto& pluginName : plugins) {
+    MOBase::IModInterface* mod =
+        organizer()->modList()->getMod(pluginList->origin(pluginName));
+    QDir dir = mod ? mod->absolutePath() : organizer()->managedGame()->dataDirectory();
+    QString absPath = dir.absoluteFilePath(pluginName);
+    modificationTimes.insert(pluginName, QFileInfo(absPath).lastModified());
+  }
+
+  std::ranges::sort(
+      plugins, [&modificationTimes](const QString& lhs, const QString& rhs) {
+        return modificationTimes.value(lhs) < modificationTimes.value(rhs);
+      });
 
   // Determine plugin active state by the plugins.txt file.
   bool pluginsTxtExists = true;
@@ -218,7 +217,6 @@ QStringList GamebryoGamePlugins::readPluginList(MOBase::IPluginList* pluginList)
   }
 
   QStringList activePlugins;
-  QStringList inactivePlugins;
   if (pluginsTxtExists) {
     while (!file.atEnd()) {
       QByteArray line = file.readLine();
