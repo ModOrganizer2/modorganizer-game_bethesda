@@ -5,7 +5,7 @@ set(MO2_CMAKE_DEPRECATED_UIBASE_INCLUDE ON)
 
 project(game_bethesda)
 
-find_package(mo2-cmake CONFIG REQUIRED)
+# find_package(mo2-cmake CONFIG REQUIRED)
 find_package(Qt6 COMPONENTS Widgets)
 
 add_subdirectory(src/gamebryo)
