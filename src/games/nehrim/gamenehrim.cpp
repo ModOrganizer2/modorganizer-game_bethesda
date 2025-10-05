@@ -66,7 +66,7 @@ QList<ExecutableForcedLoadSetting> GameNehrim::executableForcedLoads() const
 {
   // TODO Search game directory for OBSE DLLs
   return QList<ExecutableForcedLoadSetting>()
-         << ExecutableForcedLoadSetting("Oblvion.exe", "obse_1_2_416.dll")
+         << ExecutableForcedLoadSetting("Oblivion.exe", "obse_1_2_416.dll")
                 .withForced()
                 .withEnabled()
          << ExecutableForcedLoadSetting("TESConstructionSet.exe", "obse_editor_1_2.dll")
@@ -107,7 +107,7 @@ QList<PluginSetting> GameNehrim::settings() const
 void GameNehrim::initializeProfile(const QDir& path, ProfileSettings settings) const
 {
   if (settings.testFlag(IPluginGame::MODS)) {
-    copyToProfile(localAppFolder() + "/Oblvion", path, "plugins.txt");
+    copyToProfile(localAppFolder() + "/Oblivion", path, "plugins.txt");
   }
 
   if (settings.testFlag(IPluginGame::CONFIGURATION)) {
