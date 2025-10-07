@@ -27,7 +27,8 @@ protected:
         "CalienteTools", "NetScriptFramework",
         "shadersfx",     "Nemesis_Engine",
         "Platform",      "grass",
-        "LightPlacer",   "mainmenuwallpapers"};
+        "LightPlacer",   "mainmenuwallpapers",
+        "MainMenuVideo"};
     return result;
   }
   virtual const FileNameSet& possibleFileExtensions() const override
