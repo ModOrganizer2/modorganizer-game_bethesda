@@ -38,7 +38,8 @@ protected:
                               "config",
                               "KEYWORDS",
                               "BaseObjectSwapper",
-                              "RaceMenuPresets"};
+                              "RaceMenuPresets",
+                              "Devkit"};
     return result;
   }
   virtual const FileNameSet& possibleFileExtensions() const override
