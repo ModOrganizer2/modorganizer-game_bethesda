@@ -28,7 +28,8 @@ protected:
         "shadersfx",     "Nemesis_Engine",
         "Platform",      "grass",
         "LightPlacer",   "mainmenuwallpapers",
-        "MainMenuVideo"};
+        "MainMenuVideo", "PBRMaterialObjects",
+        "PBRNifPatcher", "PBRTextureSets"};
     return result;
   }
   virtual const FileNameSet& possibleFileExtensions() const override
