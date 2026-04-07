@@ -216,11 +216,20 @@ QStringList GameStarfield::testFilePlugins() const
 
 QStringList GameStarfield::primaryPlugins() const
 {
-  QStringList plugins = {"Starfield.esm",      "Constellation.esm",
-                         "ShatteredSpace.esm", "OldMars.esm",
-                         "SFBGS003.esm",       "SFBGS004.esm",
-                         "SFBGS006.esm",       "SFBGS007.esm",
-                         "SFBGS008.esm",       "BlueprintShips-Starfield.esm"};
+  QStringList plugins = {"Starfield.esm",
+                         "Constellation.esm",
+                         "ShatteredSpace.esm",
+                         "OldMars.esm",
+                         "SFBGS003.esm",
+                         "SFBGS004.esm",
+                         "SFBGS006.esm",
+                         "SFBGS007.esm",
+                         "SFBGS008.esm",
+                         "SFBGS00D.esm",
+                         "SFBGS047.esm",
+                         "SFBGS050.esm",
+                         "BlueprintShips-SFBGS050.esm",
+                         "BlueprintShips-Starfield.esm"};
 
   for (auto plugin : CCCPlugins()) {
     if (!plugins.contains(plugin, Qt::CaseInsensitive)) {
