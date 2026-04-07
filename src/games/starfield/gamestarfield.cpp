@@ -228,8 +228,8 @@ QStringList GameStarfield::primaryPlugins() const
                          "SFBGS00D.esm",
                          "SFBGS047.esm",
                          "SFBGS050.esm",
-                         "BlueprintShips-SFBGS050.esm",
-                         "BlueprintShips-Starfield.esm"};
+                         "BlueprintShips-Starfield.esm",
+                         "BlueprintShips-SFBGS050.esm"};
 
   for (auto plugin : CCCPlugins()) {
     if (!plugins.contains(plugin, Qt::CaseInsensitive)) {
