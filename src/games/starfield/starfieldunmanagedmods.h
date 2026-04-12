@@ -30,6 +30,7 @@ private:
   std::map<QString, ContentCatalog> parseContentCatalog() const;
 
 private:
+  const GameStarfield* m_Game;
   QString m_AppDataFolder;
 };
 

@@ -319,11 +319,14 @@ QStringList GameStarfield::CCPlugins() const
   if (unmanagedMods.get()) {
     auto contentCatalog = unmanagedMods->parseContentCatalog();
     for (const auto& mod : contentCatalog) {
-      if (!plugins.contains(mod.first, Qt::CaseInsensitive)) {
-        plugins.append(mod.first);
+      QStringList pluginFiles = mod.second.files.filter(QRegularExpression(
+          "\\.es(m|p|l)$", QRegularExpression::CaseInsensitiveOption));
+      if (!pluginFiles.isEmpty()) {
+        plugins += pluginFiles;
       }
     }
   }
+  plugins.removeDuplicates();
   return plugins;
 }
 
