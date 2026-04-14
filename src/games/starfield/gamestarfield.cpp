@@ -330,6 +330,11 @@ QStringList GameStarfield::CCPlugins() const
   return plugins;
 }
 
+QString GameStarfield::blueprintPrefix() const
+{
+  return "blueprintships-";
+}
+
 IPluginGame::SortMechanism GameStarfield::sortMechanism() const
 {
   return IPluginGame::SortMechanism::LOOT;

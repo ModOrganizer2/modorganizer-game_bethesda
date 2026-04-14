@@ -67,7 +67,7 @@ void CreationGamePlugins::writePluginList(const IPluginList* pluginList,
 
   // TODO: do not write plugins in OFFICIAL_FILES container
   for (const QString& pluginName : plugins) {
-    if (!PrimaryPlugins.contains(pluginName, Qt::CaseInsensitive) && !pluginList->isBlueprintFlagged(pluginName)) {
+    if (!PrimaryPlugins.contains(pluginName, Qt::CaseInsensitive)) {
       if (pluginList->state(pluginName) == IPluginList::STATE_ACTIVE) {
         auto result = encoder.encode(pluginName);
         if (encoder.hasError()) {
