@@ -20,7 +20,7 @@ bool StarfieldGamePlugins::blueprintPluginsAreSupported()
 }
 
 void StarfieldGamePlugins::writePluginList(const IPluginList* pluginList,
-                                          const QString& filePath)
+                                           const QString& filePath)
 {
   if (m_Organizer->managedGame()->loadOrderMechanism() ==
       MOBase::IPluginGame::LoadOrderMechanism::PluginsTxt) {

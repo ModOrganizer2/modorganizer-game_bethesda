@@ -109,10 +109,10 @@ StarfieldUnmanagedMods::parseContentCatalog() const
             pluginList.append(fileName);
           }
         }
-        QString name                 = modInfo.value("Title").toString();
-        contentCatalog[name]         = ContentCatalog();
-        contentCatalog[name].files   = files;
-        contentCatalog[name].name    = name;
+        QString name               = modInfo.value("Title").toString();
+        contentCatalog[name]       = ContentCatalog();
+        contentCatalog[name].files = files;
+        contentCatalog[name].name  = name;
       }
     }
   }
