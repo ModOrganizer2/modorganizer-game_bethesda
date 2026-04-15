@@ -9,7 +9,7 @@
 
 StarfieldUnmanagedMods::StarfieldUnmanagedMods(const GameStarfield* game,
                                                const QString& appDataFolder)
-    : GamebryoUnmangedMods(game), m_AppDataFolder(appDataFolder)
+    : GamebryoUnmangedMods(game), m_Game(game), m_AppDataFolder(appDataFolder)
 {}
 
 StarfieldUnmanagedMods::~StarfieldUnmanagedMods() {}
@@ -25,29 +25,52 @@ QStringList StarfieldUnmanagedMods::mods(bool onlyOfficial) const
     pluginList.removeAll(plugin);
   }
   QMap<QString, QDir> directories = {{"data", game()->dataDirectory()}};
+  auto contentCatalog             = parseContentCatalog();
   directories.insert(game()->secondaryDataDirectories());
   for (QDir directory : directories) {
     for (const QString& fileName : directory.entryList({"*.esp", "*.esl", "*.esm"})) {
       if (!pluginList.contains(fileName, Qt::CaseInsensitive)) {
         if (!onlyOfficial || pluginList.contains(fileName, Qt::CaseInsensitive)) {
-          result.append(fileName.chopped(4));  // trims the extension off
+          bool found = false;
+          for (const auto& mod : contentCatalog) {
+            if (mod.second.files.contains(fileName, Qt::CaseInsensitive)) {
+              result.append(mod.second.name);
+              found = true;
+            }
+          }
+          if (!found && !fileName.startsWith("blueprintships-", Qt::CaseInsensitive)) {
+            result.append(fileName.chopped(4));  // trims the extension off
+          }
         }
       }
     }
   }
-
+  result.removeDuplicates();
   return result;
 }
 
 QFileInfo StarfieldUnmanagedMods::referenceFile(const QString& modName) const
 {
-  QFileInfoList files;
+  QStringList modFiles;
+  auto contentCatalog = parseContentCatalog();
+  if (contentCatalog.contains(modName)) {
+    modFiles = contentCatalog[modName].files;
+  }
+  QDir dataDir        = m_Game->secondaryDataDirectories().first();
+  QStringList plugins = modFiles.filter(
+      QRegularExpression("\\.es(m|p|l)$", QRegularExpression::CaseInsensitiveOption));
   QMap<QString, QDir> directories = {{"data", game()->dataDirectory()}};
   directories.insert(game()->secondaryDataDirectories());
+  QFileInfoList pluginFiles;
+  QFileInfoList files;
   for (QDir directory : directories) {
+    if (!plugins.isEmpty())
+      pluginFiles += dataDir.entryInfoList(plugins);
     files += directory.entryInfoList(QStringList() << modName + ".es*");
   }
-  if (files.size() > 0) {
+  if (!pluginFiles.isEmpty()) {
+    return pluginFiles.at(0);
+  } else if (!files.isEmpty()) {
     return files.at(0);
   } else {
     return QFileInfo();
@@ -86,11 +109,10 @@ StarfieldUnmanagedMods::parseContentCatalog() const
             pluginList.append(fileName);
           }
         }
-        for (const auto& plugin : pluginList) {
-          contentCatalog[plugin]       = ContentCatalog();
-          contentCatalog[plugin].files = files;
-          contentCatalog[plugin].name  = modInfo.value("Title").toString();
-        }
+        QString name               = modInfo.value("Title").toString();
+        contentCatalog[name]       = ContentCatalog();
+        contentCatalog[name].files = files;
+        contentCatalog[name].name  = name;
       }
     }
   }
@@ -101,17 +123,16 @@ QStringList StarfieldUnmanagedMods::secondaryFiles(const QString& modName) const
 {
   QStringList files;
   auto contentCatalog = parseContentCatalog();
-  for (const auto& mod : contentCatalog) {
-    if (mod.first.startsWith(modName, Qt::CaseInsensitive)) {
-      files += mod.second.files;
-      break;
-    }
+  if (contentCatalog.contains(modName)) {
+    return contentCatalog[modName].files;
   }
   // file extension in FO4 is .ba2 instead of bsa
   QMap<QString, QDir> directories = {{"data", game()->dataDirectory()}};
   directories.insert(game()->secondaryDataDirectories());
   for (QDir directory : directories) {
-    for (const QString& archiveName : directory.entryList({modName + "*.ba2"})) {
+    for (const QString& archiveName :
+         directory.entryList({modName + "*.ba2", "blueprintships-" + modName + ".esm",
+                              "blueprintships-" + modName + "*.ba2"})) {
       files.append(directory.absoluteFilePath(archiveName));
     }
   }
@@ -121,12 +142,12 @@ QStringList StarfieldUnmanagedMods::secondaryFiles(const QString& modName) const
 QString StarfieldUnmanagedMods::displayName(const QString& modName) const
 {
   auto contentCatalog = parseContentCatalog();
-  for (const auto& mod : contentCatalog) {
-    if (mod.first.startsWith(modName, Qt::CaseInsensitive)) {
-      return mod.second.name;
-    }
+  if (contentCatalog.contains(modName)) {
+    return contentCatalog[modName].name;
   }
-  // unlike in earlier games, in fallout 4 the file name doesn't correspond to
-  // the public name
+  if (modName == "ShatteredSpace")
+    return "Shattered Space";
+  else if (modName == "SFBGS050")
+    return "Terran Armada";
   return modName;
 }

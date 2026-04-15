@@ -41,6 +41,7 @@ public:  // IPluginGame interface
   virtual bool prepareIni(const QString& exec) override;
   virtual QStringList DLCPlugins() const override;
   virtual QStringList CCPlugins() const override;
+  virtual QString blueprintPrefix() const override;
   virtual SortMechanism sortMechanism() const override;
   virtual LoadOrderMechanism loadOrderMechanism() const override;
   virtual int nexusModOrganizerID() const override;

@@ -216,11 +216,10 @@ QStringList GameStarfield::testFilePlugins() const
 
 QStringList GameStarfield::primaryPlugins() const
 {
-  QStringList plugins = {"Starfield.esm",      "Constellation.esm",
-                         "ShatteredSpace.esm", "OldMars.esm",
-                         "SFBGS003.esm",       "SFBGS004.esm",
-                         "SFBGS006.esm",       "SFBGS007.esm",
-                         "SFBGS008.esm",       "BlueprintShips-Starfield.esm"};
+  QStringList plugins = {"Starfield.esm",      "Constellation.esm", "OldMars.esm",
+                         "ShatteredSpace.esm", "SFBGS00D.esm",      "SFBGS050.esm",
+                         "SFBGS003.esm",       "SFBGS004.esm",      "SFBGS006.esm",
+                         "SFBGS007.esm",       "SFBGS008.esm",      "SFBGS047.esm"};
 
   for (auto plugin : CCCPlugins()) {
     if (!plugins.contains(plugin, Qt::CaseInsensitive)) {
@@ -271,7 +270,7 @@ bool GameStarfield::prepareIni(const QString& exec)
 
 QStringList GameStarfield::DLCPlugins() const
 {
-  return {"Constellation.esm", "ShatteredSpace.esm"};
+  return {"Constellation.esm", "ShatteredSpace.esm", "SFBGS050.esm"};
 }
 
 QStringList GameStarfield::CCCPlugins() const
@@ -320,12 +319,20 @@ QStringList GameStarfield::CCPlugins() const
   if (unmanagedMods.get()) {
     auto contentCatalog = unmanagedMods->parseContentCatalog();
     for (const auto& mod : contentCatalog) {
-      if (!plugins.contains(mod.first, Qt::CaseInsensitive)) {
-        plugins.append(mod.first);
+      QStringList pluginFiles = mod.second.files.filter(QRegularExpression(
+          "\\.es(m|p|l)$", QRegularExpression::CaseInsensitiveOption));
+      if (!pluginFiles.isEmpty()) {
+        plugins += pluginFiles;
       }
     }
   }
+  plugins.removeDuplicates();
   return plugins;
+}
+
+QString GameStarfield::blueprintPrefix() const
+{
+  return "blueprintships-";
 }
 
 IPluginGame::SortMechanism GameStarfield::sortMechanism() const
