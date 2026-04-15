@@ -77,9 +77,9 @@ private:
   bool hasUnpairedBlueprint() const;
 
 private:
-  static const unsigned int PROBLEM_ESP       = 1;
-  static const unsigned int PROBLEM_TEST_FILE = 2;
-  static const unsigned int PROBLEM_INVALID_BLUEPRINT = 3;
+  static const unsigned int PROBLEM_ESP                = 1;
+  static const unsigned int PROBLEM_TEST_FILE          = 2;
+  static const unsigned int PROBLEM_INVALID_BLUEPRINT  = 3;
   static const unsigned int PROBLEM_UNPAIRED_BLUEPRINT = 4;
 
   mutable std::set<QString> m_Active_ESPs;
