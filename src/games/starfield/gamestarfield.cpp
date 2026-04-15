@@ -369,6 +369,10 @@ std::vector<unsigned int> GameStarfield::activeProblems() const
       if (testFilePresent())
         result.push_back(PROBLEM_TEST_FILE);
     }
+    if (hasInvalidBlueprint())
+      result.push_back(PROBLEM_INVALID_BLUEPRINT);
+    if (hasUnpairedBlueprint())
+      result.push_back(PROBLEM_UNPAIRED_BLUEPRINT);
   }
   return result;
 }
@@ -401,6 +405,38 @@ bool GameStarfield::testFilePresent() const
   return false;
 }
 
+bool GameStarfield::hasInvalidBlueprint() const
+{
+  auto plugins = m_Organizer->pluginList()->pluginNames();
+  for (auto plugin : plugins) {
+    if (m_Organizer->pluginList()->isBlueprintFlagged(plugin)) {
+      if (!plugin.startsWith(blueprintPrefix(), Qt::CaseInsensitive) ||
+          !m_Organizer->pluginList()->hasMasterExtension(plugin))
+        return true;
+    } else if (plugin.startsWith(blueprintPrefix(), Qt::CaseInsensitive)) {
+      return true;
+    }
+  }
+  return false;
+}
+
+bool GameStarfield::hasUnpairedBlueprint() const
+{
+  auto plugins = m_Organizer->pluginList()->pluginNames();
+  for (auto plugin : plugins) {
+    if (plugin.startsWith(blueprintPrefix(), Qt::CaseInsensitive) &&
+        m_Organizer->pluginList()->hasMasterExtension(plugin)) {
+      QString parent  = plugin.mid(blueprintPrefix().size(),
+                                   plugin.size() - blueprintPrefix().size() - 4);
+      auto mainPlugin = plugins.filter(QRegularExpression(
+          "^" + parent + "\.es(m|p|l)$", QRegularExpression::CaseInsensitiveOption));
+      if (mainPlugin.isEmpty())
+        return true;
+    }
+  }
+  return false;
+}
+
 QString GameStarfield::shortDescription(unsigned int key) const
 {
   switch (key) {
@@ -408,6 +444,10 @@ QString GameStarfield::shortDescription(unsigned int key) const
     return tr("You have active ESP plugins in Starfield");
   case PROBLEM_TEST_FILE:
     return tr("sTestFile entries are present");
+  case PROBLEM_INVALID_BLUEPRINT:
+    return tr("Invalid blueprint plugins found");
+  case PROBLEM_UNPAIRED_BLUEPRINT:
+    return tr("Unpaired blueprint plugins found");
   }
   return "";
 }
@@ -435,6 +475,17 @@ QString GameStarfield::fullDescription(unsigned int key) const
               "settings in your StarfieldCustom.ini. These must be removed or the game "
               "will not read the plugins.txt file. Management is still disabled.</p>");
   }
+  case PROBLEM_INVALID_BLUEPRINT:
+    return tr(
+        "<p>You have a blueprint file that is invalid. Blueprints require the "
+        "blueprint flag and prefix and must have the ESM extension to be valid.</p>");
+  case PROBLEM_UNPAIRED_BLUEPRINT:
+    return tr(
+        "<p>You have a valid blueprint file that has no paired main plugin. The only "
+        "way to load blueprint files is by enabling a main plugin with the same base "
+        "name. This is the part after the prefix and before the extension.</p><p>eg. "
+        "<strong>BlueprintShips-example.esm</strong> should have a paired main plugin "
+        "<strong>example.esm</strong></p>");
   }
   return "";
 }
