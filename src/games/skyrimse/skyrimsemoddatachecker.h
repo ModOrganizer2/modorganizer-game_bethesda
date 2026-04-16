@@ -29,7 +29,8 @@ protected:
         "Platform",      "grass",
         "LightPlacer",   "mainmenuwallpapers",
         "MainMenuVideo", "PBRMaterialObjects",
-        "PBRNifPatcher", "PBRTextureSets"};
+        "PBRNifPatcher", "PBRTextureSets",
+        "Pandora_Engine"};
     return result;
   }
   virtual const FileNameSet& possibleFileExtensions() const override
