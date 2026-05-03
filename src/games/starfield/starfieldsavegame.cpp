@@ -109,7 +109,6 @@ std::unique_ptr<GamebryoSaveGame::DataFields> StarfieldSaveGame::fetchDataFields
     extraInfo = 1;
   if (saveVersion >= 140)
     extraInfo = 2;
-  QStringList gamePlugins = m_Game->primaryPlugins() + m_Game->enabledPlugins();
 
   QString ignore;
   std::unique_ptr<DataFields> fields = std::make_unique<DataFields>();
@@ -119,10 +118,10 @@ std::unique_ptr<GamebryoSaveGame::DataFields> StarfieldSaveGame::fetchDataFields
   file.read(ignore);  // game version again?
   file.readInt();     // plugin info size
 
-  fields->Plugins      = file.readPlugins(0, extraInfo, gamePlugins);
-  fields->LightPlugins = file.readLightPlugins(0, extraInfo, gamePlugins);
+  fields->Plugins      = file.readPlugins(0, extraInfo, v122CorePlugins);
+  fields->LightPlugins = file.readLightPlugins(0, extraInfo, v122CorePlugins);
   if (saveVersion >= 122)
-    fields->MediumPlugins = file.readMediumPlugins(0, extraInfo, gamePlugins);
+    fields->MediumPlugins = file.readMediumPlugins(0, extraInfo, v122CorePlugins);
   file.closeCompressedData();
   file.close();
 
