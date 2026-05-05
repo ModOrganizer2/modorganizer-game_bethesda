@@ -11,6 +11,11 @@ class GameStarfield;
 class StarfieldSaveGame : public GamebryoSaveGame
 {
 public:
+  const QStringList v122CorePlugins = {"Starfield.esm", "Constellation.esm",
+                                       "OldMars.esm",   "BlueprintShips-Starfield.esm",
+                                       "SFBGS003.esm",  "SFBGS006.esm",
+                                       "SFBGS007.esm",  "SFBGS008.esm"};
+
   StarfieldSaveGame(QString const& fileName, GameStarfield const* game);
 
 protected:
