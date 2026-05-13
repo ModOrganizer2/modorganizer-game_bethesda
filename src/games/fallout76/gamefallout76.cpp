@@ -190,7 +190,7 @@ QStringList GameFallout76::CCPlugins() const
       return plugins;
     }
     const QByteArray contents = file.readAll();
-    qsizetype lineStart      = 0;
+    qsizetype lineStart       = 0;
     while (lineStart < contents.size()) {
       qsizetype lineEnd = contents.indexOf('\n', lineStart);
       if (lineEnd < 0) {
@@ -199,8 +199,9 @@ QStringList GameFallout76::CCPlugins() const
       const qsizetype lineSize = lineEnd - lineStart;
       QString modName;
       if ((lineSize > 0) && (contents.at(lineStart) != '#')) {
-        modName =
-            QString::fromUtf8(contents.constData() + lineStart, lineSize).trimmed().toLower();
+        modName = QString::fromUtf8(contents.constData() + lineStart, lineSize)
+                      .trimmed()
+                      .toLower();
       }
 
       if (modName.size() > 0) {

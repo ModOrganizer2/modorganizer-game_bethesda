@@ -93,7 +93,7 @@ QStringList SkyrimGamePlugins::readPluginList(MOBase::IPluginList* pluginList)
 
   if (pluginsTxtExists) {
     const QByteArray contents = file.readAll();
-    qsizetype lineStart      = 0;
+    qsizetype lineStart       = 0;
     while (lineStart < contents.size()) {
       qsizetype lineEnd = contents.indexOf('\n', lineStart);
       if (lineEnd < 0) {
@@ -102,8 +102,8 @@ QStringList SkyrimGamePlugins::readPluginList(MOBase::IPluginList* pluginList)
       const qsizetype lineSize = lineEnd - lineStart;
       QString pluginName;
       if ((lineSize > 0) && (contents.at(lineStart) != '#')) {
-        pluginName =
-            QString::fromLocal8Bit(contents.constData() + lineStart, lineSize).trimmed();
+        pluginName = QString::fromLocal8Bit(contents.constData() + lineStart, lineSize)
+                         .trimmed();
       }
       if (pluginName.size() > 0) {
         pluginList->setState(pluginName, IPluginList::STATE_ACTIVE);

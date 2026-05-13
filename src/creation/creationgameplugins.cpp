@@ -134,7 +134,7 @@ QStringList CreationGamePlugins::readPluginList(MOBase::IPluginList* pluginList)
 
   QStringList pluginsFound;
   const QByteArray contents = file.readAll();
-  qsizetype lineStart      = 0;
+  qsizetype lineStart       = 0;
   while (lineStart < contents.size()) {
     qsizetype lineEnd = contents.indexOf('\n', lineStart);
     if (lineEnd < 0) {

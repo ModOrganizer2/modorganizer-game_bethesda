@@ -291,7 +291,7 @@ QStringList GameStarfield::CCCPlugins() const
     if (file->open(QIODevice::ReadOnly)) {
       if (file->size() > 0) {
         const QByteArray contents = file->readAll();
-        qsizetype lineStart      = 0;
+        qsizetype lineStart       = 0;
         while (lineStart < contents.size()) {
           qsizetype lineEnd = contents.indexOf('\n', lineStart);
           if (lineEnd < 0) {
