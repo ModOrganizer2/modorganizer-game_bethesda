@@ -134,17 +134,10 @@ QStringList CreationGamePlugins::readPluginList(MOBase::IPluginList* pluginList)
 
   QStringList pluginsFound;
   const QByteArray contents = file.readAll();
-  qsizetype lineStart       = 0;
-  while (lineStart < contents.size()) {
-    qsizetype lineEnd = contents.indexOf('\n', lineStart);
-    if (lineEnd < 0) {
-      lineEnd = contents.size();
-    }
-    const qsizetype lineSize = lineEnd - lineStart;
+  for (const QByteArray& line : contents.split('\n')) {
     QString pluginName;
-    if ((lineSize > 0) && (contents.at(lineStart) != '#')) {
-      pluginName =
-          QString::fromLocal8Bit(contents.constData() + lineStart, lineSize).trimmed();
+    if ((line.size() > 0) && (line.at(0) != '#')) {
+      pluginName = QString::fromLocal8Bit(line).trimmed();
     }
     if (!primaryPlugins.contains(pluginName, Qt::CaseInsensitive)) {
       if (pluginName.startsWith('*')) {
@@ -169,7 +162,6 @@ QStringList CreationGamePlugins::readPluginList(MOBase::IPluginList* pluginList)
       pluginName.remove(0, 1);
       pluginsFound.append(pluginName);
     }
-    lineStart = lineEnd + 1;
   }
 
   file.close();

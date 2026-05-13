@@ -219,23 +219,15 @@ QStringList GamebryoGamePlugins::readPluginList(MOBase::IPluginList* pluginList)
   QStringList activePlugins;
   if (pluginsTxtExists) {
     const QByteArray contents = file.readAll();
-    qsizetype lineStart       = 0;
-    while (lineStart < contents.size()) {
-      qsizetype lineEnd = contents.indexOf('\n', lineStart);
-      if (lineEnd < 0) {
-        lineEnd = contents.size();
-      }
-      const qsizetype lineSize = lineEnd - lineStart;
+    for (const QByteArray& line : contents.split('\n')) {
       QString pluginName;
-      if ((lineSize > 0) && (contents.at(lineStart) != '#')) {
-        pluginName = QString::fromLocal8Bit(contents.constData() + lineStart, lineSize)
-                         .trimmed();
+      if ((line.size() > 0) && (line.at(0) != '#')) {
+        pluginName = QString::fromLocal8Bit(line).trimmed();
       }
       if (pluginName.size() > 0) {
         pluginList->setState(pluginName, IPluginList::STATE_ACTIVE);
         activePlugins.push_back(pluginName);
       }
-      lineStart = lineEnd + 1;
     }
 
     for (const auto& pluginName : plugins) {

@@ -256,18 +256,10 @@ QStringList GameFallout4::CCPlugins() const
       return plugins;
     }
     const QByteArray contents = file.readAll();
-    qsizetype lineStart       = 0;
-    while (lineStart < contents.size()) {
-      qsizetype lineEnd = contents.indexOf('\n', lineStart);
-      if (lineEnd < 0) {
-        lineEnd = contents.size();
-      }
-      const qsizetype lineSize = lineEnd - lineStart;
+    for (const QByteArray& line : contents.split('\n')) {
       QString modName;
-      if ((lineSize > 0) && (contents.at(lineStart) != '#')) {
-        modName = QString::fromUtf8(contents.constData() + lineStart, lineSize)
-                      .trimmed()
-                      .toLower();
+      if ((line.size() > 0) && (line.at(0) != '#')) {
+        modName = QString::fromUtf8(line).trimmed().toLower();
       }
 
       if (modName.size() > 0) {
@@ -275,7 +267,6 @@ QStringList GameFallout4::CCPlugins() const
           plugins.append(modName);
         }
       }
-      lineStart = lineEnd + 1;
     }
   }
   return plugins;

@@ -93,17 +93,10 @@ QStringList SkyrimGamePlugins::readPluginList(MOBase::IPluginList* pluginList)
 
   if (pluginsTxtExists) {
     const QByteArray contents = file.readAll();
-    qsizetype lineStart       = 0;
-    while (lineStart < contents.size()) {
-      qsizetype lineEnd = contents.indexOf('\n', lineStart);
-      if (lineEnd < 0) {
-        lineEnd = contents.size();
-      }
-      const qsizetype lineSize = lineEnd - lineStart;
+    for (const QByteArray& line : contents.split('\n')) {
       QString pluginName;
-      if ((lineSize > 0) && (contents.at(lineStart) != '#')) {
-        pluginName = QString::fromLocal8Bit(contents.constData() + lineStart, lineSize)
-                         .trimmed();
+      if ((line.size() > 0) && (line.at(0) != '#')) {
+        pluginName = QString::fromLocal8Bit(line).trimmed();
       }
       if (pluginName.size() > 0) {
         pluginList->setState(pluginName, IPluginList::STATE_ACTIVE);
@@ -111,7 +104,6 @@ QStringList SkyrimGamePlugins::readPluginList(MOBase::IPluginList* pluginList)
         // we already have the old loadorder and we ignore the positions in plugins.txt
         // (needs fix) loadOrder.append(pluginName);
       }
-      lineStart = lineEnd + 1;
     }
 
     file.close();
