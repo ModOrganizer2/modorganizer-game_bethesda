@@ -239,12 +239,18 @@ QStringList GameSkyrimVR::CCPlugins() const
     if (file.size() == 0) {
       return plugins;
     }
-    QByteArray line(static_cast<qsizetype>(file.size() + 1), Qt::Uninitialized);
-    while (!file.atEnd()) {
-      const qint64 bytesRead = file.readLine(line.data(), line.size());
+    const QByteArray contents = file.readAll();
+    qsizetype lineStart      = 0;
+    while (lineStart < contents.size()) {
+      qsizetype lineEnd = contents.indexOf('\n', lineStart);
+      if (lineEnd < 0) {
+        lineEnd = contents.size();
+      }
+      const qsizetype lineSize = lineEnd - lineStart;
       QString modName;
-      if ((bytesRead > 0) && (line.at(0) != '#')) {
-        modName = QString::fromUtf8(line.constData(), bytesRead).trimmed().toLower();
+      if ((lineSize > 0) && (contents.at(lineStart) != '#')) {
+        modName =
+            QString::fromUtf8(contents.constData() + lineStart, lineSize).trimmed().toLower();
       }
 
       if (modName.size() > 0) {
@@ -252,6 +258,7 @@ QStringList GameSkyrimVR::CCPlugins() const
           plugins.append(modName);
         }
       }
+      lineStart = lineEnd + 1;
     }
   }
   return plugins;
