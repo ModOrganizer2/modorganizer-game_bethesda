@@ -133,12 +133,11 @@ QStringList CreationGamePlugins::readPluginList(MOBase::IPluginList* pluginList)
   }
 
   QStringList pluginsFound;
-  while (!file.atEnd()) {
-    QByteArray line = file.readLine();
+  const QByteArray contents = file.readAll();
+  for (const QByteArray& line : contents.split('\n')) {
     QString pluginName;
     if ((line.size() > 0) && (line.at(0) != '#')) {
-      pluginName = QStringEncoder(QStringConverter::Encoding::System)
-                       .encode(line.trimmed().constData());
+      pluginName = QString::fromLocal8Bit(line).trimmed();
     }
     if (!primaryPlugins.contains(pluginName, Qt::CaseInsensitive)) {
       if (pluginName.startsWith('*')) {

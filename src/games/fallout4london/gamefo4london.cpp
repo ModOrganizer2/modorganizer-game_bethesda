@@ -283,11 +283,11 @@ QStringList GameFallout4London::CCPlugins() const
     if (file.size() == 0) {
       return plugins;
     }
-    while (!file.atEnd()) {
-      QByteArray line = file.readLine().trimmed();
+    const QByteArray contents = file.readAll();
+    for (const QByteArray& line : contents.split('\n')) {
       QString modName;
       if ((line.size() > 0) && (line.at(0) != '#')) {
-        modName = QString::fromUtf8(line.constData()).toLower();
+        modName = QString::fromUtf8(line).trimmed().toLower();
       }
 
       if (modName.size() > 0) {

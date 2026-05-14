@@ -290,11 +290,11 @@ QStringList GameStarfield::CCCPlugins() const
     }
     if (file->open(QIODevice::ReadOnly)) {
       if (file->size() > 0) {
-        while (!file->atEnd()) {
-          QByteArray line = file->readLine().trimmed();
+        const QByteArray contents = file->readAll();
+        for (const QByteArray& line : contents.split('\n')) {
           QString modName;
           if ((line.size() > 0) && (line.at(0) != '#')) {
-            modName = QString::fromUtf8(line.constData());
+            modName = QString::fromUtf8(line).trimmed();
           }
           if (modName.size() > 0) {
             plugins.append(modName);

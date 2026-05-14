@@ -92,12 +92,11 @@ QStringList EnderalGamePlugins::readPluginList(MOBase::IPluginList* pluginList)
   }
 
   if (pluginsTxtExists) {
-    while (!file.atEnd()) {
-      QByteArray line = file.readLine();
+    const QByteArray contents = file.readAll();
+    for (const QByteArray& line : contents.split('\n')) {
       QString pluginName;
       if ((line.size() > 0) && (line.at(0) != '#')) {
-        pluginName = QStringEncoder(QStringConverter::Encoding::System)
-                         .encode(line.trimmed().constData());
+        pluginName = QString::fromLocal8Bit(line).trimmed();
       }
       if (pluginName.size() > 0) {
         pluginList->setState(pluginName, IPluginList::STATE_ACTIVE);
